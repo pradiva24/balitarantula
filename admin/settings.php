@@ -32,6 +32,7 @@ $defaults = [];
 foreach ($fields as $key=>$field) $defaults[$key] = $field[2];
 $values = $defaults;
 $logoPath = '';
+$faviconPath = '';
 $ready = true;
 $error = null;
 $success = null;
@@ -39,6 +40,7 @@ try {
     $rows = $pdo->query('SELECT setting_key, setting_value FROM site_settings')->fetchAll(PDO::FETCH_KEY_PAIR);
     foreach ($values as $key=>$value) if (isset($rows[$key]) && (string)$rows[$key] !== '') $values[$key] = (string)$rows[$key];
     $logoPath = (string)($rows['site_logo'] ?? '');
+    $faviconPath = (string)($rows['site_favicon'] ?? '');
     $ready = true;
 } catch (Throwable $e) {
     $ready = false;
@@ -86,6 +88,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $incoming['smtp_password_encrypted'] = $currentSecret;
             }
             $newLogo = null;
+            $newFavicon = null;
             if (isset($_FILES['site_logo']) && (int)($_FILES['site_logo']['error'] ?? UPLOAD_ERR_NO_FILE) !== UPLOAD_ERR_NO_FILE) {
                 $file = $_FILES['site_logo'];
                 if ((int)$file['error'] !== UPLOAD_ERR_OK || (int)$file['size'] > 5*1024*1024) throw new DomainException('Logo upload failed or exceeds 5 MB.');
@@ -98,16 +101,31 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 if (!move_uploaded_file((string)$file['tmp_name'], $uploadDir . '/' . $name)) throw new RuntimeException('Logo could not be saved. Check folder permissions.');
                 $newLogo = '/assets/uploads/site/' . $name;
             }
+            if (isset($_FILES['site_favicon']) && (int)($_FILES['site_favicon']['error'] ?? UPLOAD_ERR_NO_FILE) !== UPLOAD_ERR_NO_FILE) {
+                $file = $_FILES['site_favicon'];
+                if ((int)$file['error'] !== UPLOAD_ERR_OK || (int)$file['size'] > 2*1024*1024) throw new DomainException('Favicon upload failed or exceeds 2 MB.');
+                $mime = (new finfo(FILEINFO_MIME_TYPE))->file((string)$file['tmp_name']);
+                $extensions = ['image/png'=>'png','image/jpeg'=>'jpg','image/webp'=>'webp','image/vnd.microsoft.icon'=>'ico','image/x-icon'=>'ico'];
+                if (!isset($extensions[$mime])) throw new DomainException('Favicon must be PNG, JPG, WEBP, or ICO.');
+                $uploadDir = dirname(__DIR__) . '/assets/uploads/site';
+                if (!is_dir($uploadDir) && !mkdir($uploadDir, 0755, true) && !is_dir($uploadDir)) throw new RuntimeException('Favicon upload directory could not be created.');
+                $name = 'favicon-' . bin2hex(random_bytes(12)) . '.' . $extensions[$mime];
+                if (!move_uploaded_file((string)$file['tmp_name'], $uploadDir . '/' . $name)) throw new RuntimeException('Favicon could not be saved. Check folder permissions.');
+                $newFavicon = '/assets/uploads/site/' . $name;
+            }
             $pdo->beginTransaction();
             $save = $pdo->prepare('INSERT INTO site_settings (setting_key,setting_value,updated_by) VALUES (:key,:value,:admin) ON DUPLICATE KEY UPDATE setting_value=VALUES(setting_value),updated_by=VALUES(updated_by)');
             foreach ($incoming as $key=>$value) $save->execute(['key'=>$key,'value'=>$value,'admin'=>(int)$admin['id']]);
             if ($newLogo !== null) $save->execute(['key'=>'site_logo','value'=>$newLogo,'admin'=>(int)$admin['id']]);
+            if ($newFavicon !== null) $save->execute(['key'=>'site_favicon','value'=>$newFavicon,'admin'=>(int)$admin['id']]);
             $pdo->commit();
             $success = 'Settings saved successfully.';
             $rows = $pdo->query('SELECT setting_key, setting_value FROM site_settings')->fetchAll(PDO::FETCH_KEY_PAIR);
             foreach ($values as $key=>$value) if (isset($rows[$key]) && (string)$rows[$key] !== '') $values[$key] = (string)$rows[$key];
             $logoPath = (string)($rows['site_logo'] ?? $logoPath);
+            $faviconPath = (string)($rows['site_favicon'] ?? $faviconPath);
             if ($newLogo !== null) $logoPath = $newLogo;
+            if ($newFavicon !== null) $faviconPath = $newFavicon;
         } catch (Throwable $e) {
             if ($pdo->inTransaction()) $pdo->rollBack();
             error_log('Site settings save failed: ' . $e->getMessage());
@@ -143,6 +161,7 @@ function settings_field(string $key, array $field, array $values, bool $ready): 
 <section class="settings-card"><div class="card-heading"><span class="num">01</span><div><h2>Brand & SEO</h2><p>Website title, description, URL, and logo.</p></div></div><div class="fields">
 <?php foreach(['site_title','site_description','site_url'] as $key):?><div class="settings-field<?=$key==='site_description'?' full':''?>"><?php settings_field($key,$fields[$key],$values,$ready);?></div><?php endforeach;?>
 <div class="settings-field full"><label for="site_logo">Website logo</label><?php if($logoPath!==''):?><img class="logo-preview" src="<?=e($logoPath)?>" alt="Current website logo"><?php endif;?><input id="site_logo" type="file" name="site_logo" accept="image/jpeg,image/png,image/webp" <?=$ready?'':'disabled'?>><p class="hint">JPG, PNG or WEBP · max 5 MB. Leave empty to keep the current logo.</p></div>
+<div class="settings-field full"><label for="site_favicon">Browser favicon</label><?php if($faviconPath!==''):?><div style="display:flex;align-items:center;gap:12px;margin:0 0 12px"><img src="<?=e($faviconPath)?>" alt="Current favicon" style="width:48px;height:48px;object-fit:contain;background:#f4f5f3;border:1px solid #e4e8e2;padding:6px"><span class="hint">Current favicon preview</span></div><?php endif;?><input id="site_favicon" type="file" name="site_favicon" accept=".png,.jpg,.jpeg,.webp,.ico,image/png,image/jpeg,image/webp,image/x-icon" <?=$ready?'':'disabled'?>><p class="hint">PNG, JPG, WEBP or ICO · max 2 MB. This image appears in the browser tab and bookmarks. Leave empty to keep the current favicon.</p></div>
 </div></section>
 <section class="settings-card"><div class="card-heading"><span class="num">02</span><div><h2>Contact information</h2><p>Contact details displayed across the website.</p></div></div><div class="fields">
 <?php foreach(['contact_email','contact_phone','contact_whatsapp','contact_address','contact_hours'] as $key):?><div class="settings-field<?=$key==='contact_address'?' full':''?>"><?php settings_field($key,$fields[$key],$values,$ready);?><?php if($key==='contact_whatsapp'):?><p class="hint">Use international digits only, e.g. 6281234567890. Do not include +, spaces, or dashes.</p><?php endif;?></div><?php endforeach;?>
