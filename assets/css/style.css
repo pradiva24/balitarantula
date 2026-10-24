@@ -241,3 +241,64 @@ body{background:#f5f4ef;color:#191919}
   .main-nav.open{background:rgba(14,14,14,.97)}
   .package-detail-layout .booking-panel{top:70px;padding:18px;box-shadow:0 10px 28px rgba(0,0,0,.12)}
 }
+
+
+/* Contrast audit: enforce readable text on light surfaces and image overlays */
+:root{--white:#f7f5f0;--muted:#66645f;--line:#dedbd4;--panel:#fff}
+body{background:#f5f4ef;color:#191919}
+main{color:#191919}
+.section-heading h2,.inner-title,.article-main h2,.article-main h3,.detail-block h3,
+.contact-intro h1,.contact-intro h2,.inner-copy h2{color:#191919}
+.section-description,.inner-copy p,.package-detail-main p,.article-main p,.contact-detail p,
+.blog-copy>p:not(.blog-meta){color:#5d5b56}
+.page-banner{background:#e8e5dd;color:#191919}
+.page-banner-content h1{color:#191919}
+.page-banner-content .eyebrow{color:#494741}
+.page-banner-content>p:not(.eyebrow){color:#55534d}
+.breadcrumbs{color:#66635c}
+.breadcrumbs a{color:#292824}
+.package-tabs{border-color:#dedbd4}
+.package-tabs a{color:#34322e}
+.detail-block{border-color:#dedbd4}
+.detail-block ul{color:#55534d}
+.adventure-card,.track-card,.blog-card,.gallery-grid a{background:#fff}
+.blog-card,.contact-detail,.inner-copy,.package-detail-main{color:#191919}
+.blog-copy{background:#fff;color:#191919;padding:20px}
+.blog-copy h2,.blog-copy h3,.blog-copy a{color:#191919}
+.blog-copy>p:not(.blog-meta){color:#5d5b56}
+.blog-meta{color:#77736b}
+.contact-form{background:#fff;color:#191919;border:1px solid #e4e0d8;border-top:3px solid #ff5a1f;box-shadow:0 16px 42px rgba(30,25,15,.06)}
+.contact-form label{color:#393731}
+.contact-form input,.contact-form select,.contact-form textarea{background:#fff;color:#191919;border:1px solid #d8d4cc}
+.contact-form input::placeholder,.contact-form textarea::placeholder{color:#77736b;opacity:1}
+.contact-form select option{background:#fff;color:#191919}
+.contact-form small{color:#68655f}
+.article-sidebar,.booking-panel{color:#191919;background:#fff}
+.article-sidebar h3,.booking-panel h3,.booking-panel>b{color:#191919}
+.article-sidebar p,.booking-panel p{color:#5d5b56}
+.booking-panel ul{color:#55534d}
+.booking-panel small{color:#66635c}
+.panel-divider{background:#e2ded6}
+.reason-no{color:#69665f}
+.reasons h3{color:#191919}
+.reasons p{color:#5d5b56}
+.adventure-card .card-content,.track-card .track-info,.gallery-grid a{color:#fff}
+.adventure-card .card-content h3,.adventure-card .card-content p,.adventure-card .card-number,
+.track-card .track-info h3,.track-card .track-info p,.track-card .track-index{color:#fff}
+.adventure-card .card-content p,.track-card .track-info p{color:#f0efec}
+.card-link{color:#fff}
+.site-header:not(.is-scrolled) .brand-mark,.site-header:not(.is-scrolled) .brand-copy{color:#fff}
+.site-header:not(.is-scrolled) .main-nav>a:not(.nav-cta){color:#fff;text-shadow:0 1px 5px rgba(0,0,0,.45)}
+.site-header:not(.is-scrolled) .menu-toggle span{background:#fff}
+.hero h1,.hero .hero-text,.hero .eyebrow,.hero-bottom,.hero-stamp{color:#fff}
+.manifesto h2,.manifesto .eyebrow,.manifesto-content>p:not(.eyebrow),.manifesto-side{color:#fff}
+.site-footer{background:#171717;color:#f7f5f0}
+.site-footer .brand-copy,.site-footer .footer-main>p{color:#f7f5f0}
+.site-footer .footer-bottom,.site-footer .footer-main>p span{color:#c0bdb7}
+.button-orange{color:#151515}
+.button-dark{color:#fff}
+@media(max-width:640px){
+ .page-banner-content h1{color:#191919}
+ .main-nav.open{background:rgba(14,14,14,.98)}
+ .blog-copy{padding:18px}
+}
