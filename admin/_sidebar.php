@@ -13,10 +13,10 @@ $sidebarGroups = [
     ],
     'WEBSITE CONTENT' => [
         ['homepage-editor.php','Homepage Editor','panels-top-left'],
-        ['homepage-editor.php#media','Media Library','images'],
+        ['homepage-editor.php#hero-slider','Image Uploads','images'],
     ],
     'SYSTEM' => [
-        ['index.php#settings','Settings','settings'],
+        ['homepage-editor.php#header-footer','Site Branding','settings'],
         ['logout.php','Sign out','log-out'],
     ],
 ];
