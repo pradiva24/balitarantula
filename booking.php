@@ -108,7 +108,7 @@ if ($packageId > 0) {
     $q->execute(['package'=>$packageId,'date'=>$date]); $slots=$q->fetchAll();
 }
 ?><!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#171717">
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#171717"><?php $faviconPath=bta_site_favicon(); if($faviconPath!==''):?><link rel="icon" href="<?=e($faviconPath)?>"><?php endif;?>
 <title><?=e(bta_setting('site_title','Bali Tarantula Adventure'))?> | Booking</title><meta name="description" content="<?=e(bta_setting('site_description','Book an outdoor adventure in Bali with Bali Tarantula Adventure.'))?>">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800;900&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/css/style.css?v=20261029"><script src="assets/js/main.js?v=20261029" defer></script>
