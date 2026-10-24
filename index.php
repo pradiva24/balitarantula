@@ -83,22 +83,22 @@ $cmsImage = static fn(string $key, string $fallback): string => htmlspecialchars
         <div class="tracks-grid">
           <article class="track-card track-orange">
             <img src="<?= $cmsImage('track_1_image','https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=1000&q=85') ?>" alt="<?= $cms('track_1_title','Tarantula Jungle Track') ?>" loading="lazy">
-            <div class="track-overlay"></div><span class="track-index">TRACK / 01</span><span class="track-badge"><?= $cms('track_1_badge','MOST THRILLING') ?></span>
+            <div class="track-overlay"></div><span class="track-index"><?= $cms('track_1_index','TRACK / 01') ?></span><span class="track-badge"><?= $cms('track_1_badge','MOST THRILLING') ?></span>
             <div class="track-info"><p><?= $cms('track_1_tagline','DIRT • SPLASH • ADRENALINE') ?></p><h3><?= $cms('track_1_title','TARANTULA JUNGLE TRACK') ?></h3><span class="track-desc"><?= $cms('track_1_description','Ride through wild greenery and rugged off-road terrain.') ?></span><a href="#book" class="track-link"><?= $cms('track_link_label','EXPLORE THIS TRACK') ?> <b>↗</b></a></div>
           </article>
           <article class="track-card track-red">
             <img src="<?= $cmsImage('track_2_image','https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1000&q=85') ?>" alt="<?= $cms('track_2_title','Mud Track') ?>" loading="lazy">
-            <div class="track-overlay"></div><span class="track-index">TRACK / 02</span>
+            <div class="track-overlay"></div><span class="track-index"><?= $cms('track_2_index','TRACK / 02') ?></span>
             <div class="track-info"><p><?= $cms('track_2_tagline','GET MESSY') ?></p><h3><?= $cms('track_2_title','MUD TRACK') ?></h3><span class="track-desc"><?= $cms('track_2_description','Take on muddy paths for a raw, muddy ATV experience.') ?></span><a href="#book" class="track-link">EXPLORE THIS TRACK <b>↗</b></a></div>
           </article>
           <article class="track-card track-dark">
             <img src="<?= $cmsImage('track_3_image','https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=1000&q=85') ?>" alt="<?= $cms('track_3_title','Jungle Trail') ?>" loading="lazy">
-            <div class="track-overlay"></div><span class="track-index">TRACK / 03</span>
+            <div class="track-overlay"></div><span class="track-index"><?= $cms('track_3_index','TRACK / 03') ?></span>
             <div class="track-info"><p><?= $cms('track_3_tagline','DEEP IN THE GREEN') ?></p><h3><?= $cms('track_3_title','JUNGLE TRAIL') ?></h3><span class="track-desc"><?= $cms('track_3_description','Explore shaded forest trails surrounded by tropical nature.') ?></span><a href="#book" class="track-link">EXPLORE THIS TRACK <b>↗</b></a></div>
           </article>
           <article class="track-card track-orange">
             <img src="<?= $cmsImage('track_4_image','https://images.unsplash.com/photo-1470770841072-f978cf4d019e?auto=format&fit=crop&w=1000&q=85') ?>" alt="<?= $cms('track_4_title','River Adventure') ?>" loading="lazy">
-            <div class="track-overlay"></div><span class="track-index">TRACK / 04</span>
+            <div class="track-overlay"></div><span class="track-index"><?= $cms('track_4_index','TRACK / 04') ?></span>
             <div class="track-info"><p><?= $cms('track_4_tagline','WATER • NATURE • ACTION') ?></p><h3><?= $cms('track_4_title','RIVER ADVENTURE') ?></h3><span class="track-desc"><?= $cms('track_4_description','Add a splash of excitement as the route meets the water.') ?></span><a href="#book" class="track-link">EXPLORE THIS TRACK <b>↗</b></a></div>
           </article>
         </div>
