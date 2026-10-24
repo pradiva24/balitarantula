@@ -16,7 +16,7 @@ $sidebarGroups = [
         ['homepage-editor.php#hero-slider','Image Uploads','images'],
     ],
     'SYSTEM' => [
-        ['homepage-editor.php#header-footer','Site Branding','settings'],
+        ['settings.php','Website Settings','settings'],
         ['logout.php','Sign out','log-out'],
     ],
 ];
