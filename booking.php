@@ -3,6 +3,24 @@ declare(strict_types=1);
 require_once __DIR__ . '/app/bootstrap.php';
 
 $pdo = Database::connection();
+
+// Release a small batch of expired, unpaid temporary holds during normal booking traffic.
+try {
+    $pdo->beginTransaction();
+    $expired = $pdo->query("SELECT id,slot_id,participants FROM bookings WHERE booking_status='pending' AND payment_status='unpaid' AND reservation_expires_at IS NOT NULL AND reservation_expires_at < NOW() ORDER BY id LIMIT 25 FOR UPDATE")->fetchAll();
+    $expireStmt = $pdo->prepare("UPDATE bookings SET booking_status='expired' WHERE id=:id AND booking_status='pending' AND payment_status='unpaid'");
+    $releaseStmt = $pdo->prepare("UPDATE activity_slots SET reserved_count=GREATEST(0,reserved_count-:qty) WHERE id=:slot");
+    foreach ($expired as $oldBooking) {
+        $expireStmt->execute(['id'=>(int)$oldBooking['id']]);
+        if ($expireStmt->rowCount() === 1) {
+            $releaseStmt->execute(['qty'=>(int)$oldBooking['participants'],'slot'=>(int)$oldBooking['slot_id']]);
+        }
+    }
+    $pdo->commit();
+} catch (Throwable $expiryError) {
+    if ($pdo->inTransaction()) $pdo->rollBack();
+    error_log('Expired booking cleanup failed: '.$expiryError->getMessage());
+}
 $errors = [];
 $bookingCode = null;
 $packageId = (int)($_GET['package_id'] ?? $_POST['package_id'] ?? 0);
