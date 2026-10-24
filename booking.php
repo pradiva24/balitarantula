@@ -1,6 +1,7 @@
 <?php
 declare(strict_types=1);
 require_once __DIR__ . '/app/bootstrap.php';
+require_once __DIR__ . '/includes/site-settings.php';
 
 $pdo = Database::connection();
 
@@ -108,7 +109,7 @@ if ($packageId > 0) {
 }
 ?><!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#171717">
-<title>Book Your Adventure | Bali Tarantula Adventure</title><meta name="description" content="Book an ATV and outdoor adventure with Bali Tarantula Adventure. Choose a package, activity slot, and optional pickup.">
+<title><?=e(bta_setting('site_title','Bali Tarantula Adventure'))?> | Booking</title><meta name="description" content="<?=e(bta_setting('site_description','Book an outdoor adventure in Bali with Bali Tarantula Adventure.'))?>">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800;900&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/css/style.css?v=20261029"><script src="assets/js/main.js?v=20261029" defer></script>
 <style>.booking-message{background:#fff;padding:18px;margin:0 0 22px;border-left:4px solid #ff5a1f;color:#191919}.booking-message.error{border-color:#e52232}.booking-message h2{margin:0 0 8px}.booking-message p{color:#555}.filter-card{background:#fff;border:1px solid #e3dfd7;padding:20px;margin-bottom:22px}.filter-card .booking-fields{align-items:end}.booking-field small{color:#666;font-size:11px}</style>

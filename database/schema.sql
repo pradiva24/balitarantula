@@ -213,3 +213,23 @@ CREATE TABLE IF NOT EXISTS audit_logs (
  CONSTRAINT fk_audit_admin FOREIGN KEY (admin_id) REFERENCES admins(id) ON DELETE SET NULL,
  INDEX idx_audit_created (created_at)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+
+-- Editable public homepage and shared site copy.
+CREATE TABLE IF NOT EXISTS cms_content (
+ content_key VARCHAR(120) NOT NULL PRIMARY KEY,
+ content_value MEDIUMTEXT NULL,
+ updated_by BIGINT UNSIGNED NULL,
+ updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+ INDEX idx_cms_content_updated (updated_at)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+
+-- Global website branding, contact, social media, and SMTP settings.
+CREATE TABLE IF NOT EXISTS site_settings (
+ setting_key VARCHAR(120) NOT NULL PRIMARY KEY,
+ setting_value MEDIUMTEXT NULL,
+ updated_by BIGINT UNSIGNED NULL,
+ updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+ INDEX idx_site_settings_updated (updated_at)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
