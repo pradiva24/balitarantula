@@ -19,7 +19,7 @@ $cmsImage = static fn(string $key, string $fallback): string => htmlspecialchars
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#111111">
+  <meta name="theme-color" content="#111111"><?php $faviconPath=bta_site_favicon(); if($faviconPath!==''):?><link rel="icon" href="<?=e($faviconPath)?>"><?php endif;?>
   <meta name="description" content="Explore Bali with Bali Tarantula Adventure. Ride rugged ATV trails, discover jungle routes, and experience unforgettable outdoor adventures.">
   <title><?=e(bta_setting('site_title','Bali Tarantula Adventure'))?> | Go Beyond the Ordinary</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
