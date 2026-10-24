@@ -13,18 +13,7 @@
   <script src="assets/js/main.js?v=20261029" defer></script>
 </head>
 <body>
-  <div class="topline"><span>BUILT FOR THE WILD</span><span>BALI, INDONESIA <span class="orange">●</span></span></div>
-  <header class="site-header">
-    <a class="brand" href="#home" aria-label="Bali Tarantula Adventure home">
-      <span class="brand-mark">BT<span>A</span></span>
-      <span class="brand-copy">BALI TARANTULA<small>ADVENTURE</small></span>
-    </a>
-    <button class="menu-toggle" aria-label="Open navigation" aria-expanded="false"><span></span><span></span><span></span></button>
-    <nav class="main-nav" aria-label="Main navigation">
-      <a href="#adventures">Adventures</a><a href="#tracks">ATV Tracks</a><a href="#about">Our Story</a><a href="#why-us">Why Us</a>
-      <a class="nav-cta" href="booking.php">BOOK NOW ↗</a>
-    </nav>
-  </header>
+  <?php require_once __DIR__ . '/includes/header.php'; ?>
 
   <main>
     <section class="hero" id="home">
@@ -133,6 +122,6 @@
     <section class="booking-cta" id="book"><div class="cta-pattern"></div><div class="wrap cta-inner"><p class="eyebrow"><span class="eyebrow-line"></span> YOUR STORY STARTS HERE</p><h2>READY TO GET<br><span>DIRTY?</span></h2><p>Bring your crew. Bring your courage. We'll bring the adventure.</p><a class="button button-dark" href="https://wa.me/" target="_blank" rel="noopener">PLAN YOUR ADVENTURE <span>↗</span></a><small>UPDATE THE WHATSAPP LINK BEFORE LAUNCH</small></div></section>
   </main>
 
-  <footer class="site-footer"><div class="wrap footer-main"><a class="brand" href="#home"><span class="brand-mark">BT<span>A</span></span><span class="brand-copy">BALI TARANTULA<small>ADVENTURE</small></span></a><p>GO BEYOND THE ORDINARY.<br><span>EXPERIENCE THE WILD SIDE OF BALI.</span></p><a class="back-top" href="#home">BACK TO TOP ↑</a></div><div class="wrap footer-bottom"><span>© <span id="year">2026</span> BALI TARANTULA ADVENTURE</span><span>MADE FOR THE WILD.</span></div></footer>
+  <?php require_once __DIR__ . '/includes/footer.php'; ?>
 </body>
 </html>
