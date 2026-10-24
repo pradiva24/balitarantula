@@ -375,3 +375,5 @@ img{height:auto}
  .booking-options{flex-direction:column}
  .booking-option{width:100%}
 }
+
+.booking-fields[hidden]{display:none!important}
