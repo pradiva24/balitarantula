@@ -1,5 +1,4 @@
 <?php
-if (is_file(dirname(__DIR__) . '/config/config.php')) require_once dirname(__DIR__) . '/app/bootstrap.php';
 require_once __DIR__ . '/cms.php';
 require_once __DIR__ . '/site-settings.php';
 $headerText = static fn(string $key, string $fallback): string => htmlspecialchars(bta_content($key, $fallback), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
