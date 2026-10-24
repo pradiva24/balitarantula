@@ -91,11 +91,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 if ((int)$file['error'] !== UPLOAD_ERR_OK || (int)$file['size'] > 5*1024*1024) throw new DomainException('Logo upload failed or exceeds 5 MB.');
                 $mime = (new finfo(FILEINFO_MIME_TYPE))->file((string)$file['tmp_name']);
                 $extensions = ['image/jpeg'=>'jpg','image/png'=>'png','image/webp'=>'webp'];
-                if (!isset($extensions[$mime])) throw new DomainException('Logo must be JPG, PNG, WEBP, or SVG.');
-                if ($mime === 'image/svg+xml') {
-                    $svg = file_get_contents((string)$file['tmp_name']);
-                    if (!is_string($svg) || preg_match('/<script|on\w+\s*=|javascript:|<foreignObject/i', $svg)) throw new DomainException('This SVG logo contains unsupported active content. Please upload a clean SVG or PNG.');
-                }
+                if (!isset($extensions[$mime])) throw new DomainException('Logo must be JPG, PNG, or WEBP.');
                 $uploadDir = dirname(__DIR__) . '/assets/uploads/site';
                 if (!is_dir($uploadDir) && !mkdir($uploadDir, 0755, true) && !is_dir($uploadDir)) throw new RuntimeException('Logo upload directory could not be created.');
                 $name = 'logo-' . bin2hex(random_bytes(12)) . '.' . $extensions[$mime];
