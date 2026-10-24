@@ -60,3 +60,10 @@ function bta_decrypt_setting_secret(string $stored): string
     $plain = openssl_decrypt(substr($raw, 28), 'aes-256-gcm', bta_setting_secret_key(), OPENSSL_RAW_DATA, substr($raw, 0, 12), substr($raw, 12, 16));
     return is_string($plain) ? $plain : '';
 }
+
+/** Return only favicon files uploaded through the Website Settings form. */
+function bta_site_favicon(): string
+{
+    $path = bta_setting('site_favicon', '');
+    return preg_match('~^/assets/uploads/site/favicon-[a-f0-9]+\.(?:png|jpg|webp|ico)$~i', $path) ? $path : '';
+}
