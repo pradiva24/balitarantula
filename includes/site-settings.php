@@ -1,6 +1,10 @@
 <?php
 declare(strict_types=1);
 
+if (!function_exists('e')) {
+    function e(mixed $value): string { return htmlspecialchars((string)$value, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8'); }
+}
+
 /** Read public site settings from the database, with safe fallbacks for fresh installs. */
 function bta_setting(string $key, string $fallback = ''): string
 {
