@@ -422,3 +422,6 @@ img{height:auto}
  .page-banner-content h1{font-size:clamp(2.35rem,10vw,3rem)}
  .cta-inner h2{font-size:clamp(3rem,12.5vw,4rem)}
 }
+
+/* Global website settings */
+.site-brand-logo{width:auto;height:auto;max-width:170px;max-height:54px;object-fit:contain}.footer-settings-links,.footer-socials{display:flex;flex-wrap:wrap;gap:8px 14px;margin-top:12px;font-size:12px}.footer-settings-links a,.footer-socials a{color:inherit;opacity:.85}.footer-settings-links a:hover,.footer-socials a:hover{color:var(--orange);opacity:1}.footer-settings-links span{opacity:.8}
