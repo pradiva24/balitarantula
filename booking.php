@@ -56,7 +56,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!$errors) {
         try {
             $pdo->beginTransaction();
-            $q = $pdo->prepare("SELECT s.id,s.slot_date,s.start_time,s.capacity,s.reserved_count,p.id package_id,p.name package_name,p.price_per_person,p.currency,p.pickup_available,p.pickup_fee,p.min_participants,p.max_participants FROM activity_slots s JOIN packages p ON p.id=s.package_id WHERE s.id=:slot AND s.package_id=:package AND s.status='open' AND p.status='published' FOR UPDATE");
+            $q = $pdo->prepare("SELECT s.id,s.slot_date,s.start_time,s.capacity,s.reserved_count,p.id package_id,p.name package_name,p.price_per_person,p.currency,p.pickup_available,p.pickup_fee,p.min_participants,p.max_participants FROM activity_slots s JOIN packages p ON p.id=s.package_id WHERE s.id=:slot AND s.package_id=:package AND s.status='open' AND p.status='published' AND (s.slot_date > CURDATE() OR (s.slot_date = CURDATE() AND s.start_time > CURTIME())) FOR UPDATE");
             $q->execute(['slot'=>$slotId,'package'=>$packageId]);
             $slot = $q->fetch();
             if (!$slot) throw new DomainException('Jadwal tidak tersedia. Pilih waktu lain.');
@@ -103,7 +103,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 $slots = [];
 if ($packageId > 0) {
-    $q=$pdo->prepare("SELECT id,start_time,capacity,reserved_count FROM activity_slots WHERE package_id=:package AND slot_date=:date AND status='open' ORDER BY start_time");
+    $q=$pdo->prepare("SELECT id,start_time,capacity,reserved_count FROM activity_slots WHERE package_id=:package AND slot_date=:date AND status='open' AND (slot_date > CURDATE() OR (slot_date = CURDATE() AND start_time > CURTIME())) ORDER BY start_time");
     $q->execute(['package'=>$packageId,'date'=>$date]); $slots=$q->fetchAll();
 }
 ?><!doctype html>
