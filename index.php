@@ -45,7 +45,7 @@ $cmsImage = static fn(string $key, string $fallback): string => htmlspecialchars
     </section>
 
     <section class="intro-strip">
-      <div class="wrap strip-inner"><span class="strip-label"><?= $cms('intro_label','NOT JUST A RIDE.') ?></span><p><?= $cms('intro_title',"IT'S YOUR CALL TO ADVENTURE.") ?></p><span class="strip-symbol">✳</span></div>
+      <div class="wrap strip-inner"><span class="strip-label"><?= $cms('intro_label','NOT JUST A RIDE.') ?></span><p><?= $cms('intro_title',"IT'S YOUR CALL TO ADVENTURE.") ?></p><span class="strip-symbol"><?= $cms('intro_symbol','✳') ?></span></div>
     </section>
 
     <section class="section adventures wrap" id="adventures">
@@ -56,21 +56,21 @@ $cmsImage = static fn(string $key, string $fallback): string => htmlspecialchars
       <div class="adventure-grid">
         <article class="adventure-card card-featured">
           <img src="<?= $cmsImage('adventure_1_image','https://images.unsplash.com/photo-1551632811-561732d1e306?auto=format&fit=crop&w=1200&q=85') ?>" alt="<?= $cms('adventure_1_title','ATV Adventure') ?>" loading="lazy">
-          <div class="card-shade"></div><span class="card-number">01 / LAND</span>
-          <div class="card-content"><span class="card-tag"><?= $cms('adventure_1_tag','DIRT. POWER. FREEDOM.') ?></span><h3><?= $cms('adventure_1_title','ATV ADVENTURE') ?></h3><p><?= $cms('adventure_1_description','Push through rugged tracks, rice fields, and tropical terrain.') ?></p><a href="#book" class="card-link">EXPLORE ATV <span>↗</span></a></div>
+          <div class="card-shade"></div><span class="card-number"><?= $cms('adventure_1_number','01 / LAND') ?></span>
+          <div class="card-content"><span class="card-tag"><?= $cms('adventure_1_tag','DIRT. POWER. FREEDOM.') ?></span><h3><?= $cms('adventure_1_title','ATV ADVENTURE') ?></h3><p><?= $cms('adventure_1_description','Push through rugged tracks, rice fields, and tropical terrain.') ?></p><a href="#book" class="card-link"><?= $cms('adventure_1_link','EXPLORE ATV') ?> <span>↗</span></a></div>
         </article>
         <article class="adventure-card">
           <img src="<?= $cmsImage('adventure_2_image','https://images.unsplash.com/photo-1530866495561-507c9faab2ed?auto=format&fit=crop&w=1000&q=85') ?>" alt="<?= $cms('adventure_2_title','White Water Rafting') ?>" loading="lazy">
-          <div class="card-shade"></div><span class="card-number">02 / WATER</span>
-          <div class="card-content"><span class="card-tag"><?= $cms('adventure_2_tag','RIDE THE CURRENT.') ?></span><h3><?= $cms('adventure_2_title','WHITE WATER RAFTING') ?></h3><p><?= $cms('adventure_2_description',"Take on the river and feel the rush of Bali's wild side.") ?></p><a href="#book" class="card-link">EXPLORE RAFTING <span>↗</span></a></div>
+          <div class="card-shade"></div><span class="card-number"><?= $cms('adventure_2_number','02 / WATER') ?></span>
+          <div class="card-content"><span class="card-tag"><?= $cms('adventure_2_tag','RIDE THE CURRENT.') ?></span><h3><?= $cms('adventure_2_title','WHITE WATER RAFTING') ?></h3><p><?= $cms('adventure_2_description',"Take on the river and feel the rush of Bali's wild side.") ?></p><a href="#book" class="card-link"><?= $cms('adventure_2_link','EXPLORE RAFTING') ?> <span>↗</span></a></div>
         </article>
         <article class="adventure-card">
           <img src="<?= $cmsImage('adventure_3_image','https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=1000&q=85') ?>" alt="<?= $cms('adventure_3_title','Jungle Explorer') ?>" loading="lazy">
-          <div class="card-shade"></div><span class="card-number">03 / JUNGLE</span>
-          <div class="card-content"><span class="card-tag"><?= $cms('adventure_3_tag','OFF THE BEATEN PATH.') ?></span><h3><?= $cms('adventure_3_title','JUNGLE EXPLORER') ?></h3><p><?= $cms('adventure_3_description','Discover hidden corners and unforgettable natural scenery.') ?></p><a href="#book" class="card-link">EXPLORE TRACKS <span>↗</span></a></div>
+          <div class="card-shade"></div><span class="card-number"><?= $cms('adventure_3_number','03 / JUNGLE') ?></span>
+          <div class="card-content"><span class="card-tag"><?= $cms('adventure_3_tag','OFF THE BEATEN PATH.') ?></span><h3><?= $cms('adventure_3_title','JUNGLE EXPLORER') ?></h3><p><?= $cms('adventure_3_description','Discover hidden corners and unforgettable natural scenery.') ?></p><a href="#book" class="card-link"><?= $cms('adventure_3_link','EXPLORE TRACKS') ?> <span>↗</span></a></div>
         </article>
       </div>
-      <div class="section-foot"><span>01 — 03</span><span class="foot-line"></span><span>YOUR NEXT STORY IS OUT THERE.</span></div>
+      <div class="section-foot"><span><?= $cms('adventures_foot_left','01 — 03') ?></span><span class="foot-line"></span><span><?= $cms('adventures_foot_right','YOUR NEXT STORY IS OUT THERE.') ?></span></div>
     </section>
 
 
@@ -83,33 +83,33 @@ $cmsImage = static fn(string $key, string $fallback): string => htmlspecialchars
         <div class="tracks-grid">
           <article class="track-card track-orange">
             <img src="<?= $cmsImage('track_1_image','https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=1000&q=85') ?>" alt="<?= $cms('track_1_title','Tarantula Jungle Track') ?>" loading="lazy">
-            <div class="track-overlay"></div><span class="track-index">TRACK / 01</span><span class="track-badge">MOST THRILLING</span>
-            <div class="track-info"><p>DIRT • SPLASH • ADRENALINE</p><h3><?= $cms('track_1_title','TARANTULA JUNGLE TRACK') ?></h3><span class="track-desc"><?= $cms('track_1_description','Ride through wild greenery and rugged off-road terrain.') ?></span><a href="#book" class="track-link">EXPLORE THIS TRACK <b>↗</b></a></div>
+            <div class="track-overlay"></div><span class="track-index">TRACK / 01</span><span class="track-badge"><?= $cms('track_1_badge','MOST THRILLING') ?></span>
+            <div class="track-info"><p><?= $cms('track_1_tagline','DIRT • SPLASH • ADRENALINE') ?></p><h3><?= $cms('track_1_title','TARANTULA JUNGLE TRACK') ?></h3><span class="track-desc"><?= $cms('track_1_description','Ride through wild greenery and rugged off-road terrain.') ?></span><a href="#book" class="track-link"><?= $cms('track_link_label','EXPLORE THIS TRACK') ?> <b>↗</b></a></div>
           </article>
           <article class="track-card track-red">
             <img src="<?= $cmsImage('track_2_image','https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1000&q=85') ?>" alt="<?= $cms('track_2_title','Mud Track') ?>" loading="lazy">
             <div class="track-overlay"></div><span class="track-index">TRACK / 02</span>
-            <div class="track-info"><p>GET MESSY</p><h3><?= $cms('track_2_title','MUD TRACK') ?></h3><span class="track-desc"><?= $cms('track_2_description','Take on muddy paths for a raw, muddy ATV experience.') ?></span><a href="#book" class="track-link">EXPLORE THIS TRACK <b>↗</b></a></div>
+            <div class="track-info"><p><?= $cms('track_2_tagline','GET MESSY') ?></p><h3><?= $cms('track_2_title','MUD TRACK') ?></h3><span class="track-desc"><?= $cms('track_2_description','Take on muddy paths for a raw, muddy ATV experience.') ?></span><a href="#book" class="track-link">EXPLORE THIS TRACK <b>↗</b></a></div>
           </article>
           <article class="track-card track-dark">
             <img src="<?= $cmsImage('track_3_image','https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=1000&q=85') ?>" alt="<?= $cms('track_3_title','Jungle Trail') ?>" loading="lazy">
             <div class="track-overlay"></div><span class="track-index">TRACK / 03</span>
-            <div class="track-info"><p>DEEP IN THE GREEN</p><h3><?= $cms('track_3_title','JUNGLE TRAIL') ?></h3><span class="track-desc"><?= $cms('track_3_description','Explore shaded forest trails surrounded by tropical nature.') ?></span><a href="#book" class="track-link">EXPLORE THIS TRACK <b>↗</b></a></div>
+            <div class="track-info"><p><?= $cms('track_3_tagline','DEEP IN THE GREEN') ?></p><h3><?= $cms('track_3_title','JUNGLE TRAIL') ?></h3><span class="track-desc"><?= $cms('track_3_description','Explore shaded forest trails surrounded by tropical nature.') ?></span><a href="#book" class="track-link">EXPLORE THIS TRACK <b>↗</b></a></div>
           </article>
           <article class="track-card track-orange">
             <img src="<?= $cmsImage('track_4_image','https://images.unsplash.com/photo-1470770841072-f978cf4d019e?auto=format&fit=crop&w=1000&q=85') ?>" alt="<?= $cms('track_4_title','River Adventure') ?>" loading="lazy">
             <div class="track-overlay"></div><span class="track-index">TRACK / 04</span>
-            <div class="track-info"><p>WATER • NATURE • ACTION</p><h3><?= $cms('track_4_title','RIVER ADVENTURE') ?></h3><span class="track-desc"><?= $cms('track_4_description','Add a splash of excitement as the route meets the water.') ?></span><a href="#book" class="track-link">EXPLORE THIS TRACK <b>↗</b></a></div>
+            <div class="track-info"><p><?= $cms('track_4_tagline','WATER • NATURE • ACTION') ?></p><h3><?= $cms('track_4_title','RIVER ADVENTURE') ?></h3><span class="track-desc"><?= $cms('track_4_description','Add a splash of excitement as the route meets the water.') ?></span><a href="#book" class="track-link">EXPLORE THIS TRACK <b>↗</b></a></div>
           </article>
         </div>
-        <div class="tracks-note"><span class="tracks-note-mark">!</span><p>Adventure level and route conditions can vary. Confirm the final track details with the operator before booking.</p></div>
+        <div class="tracks-note"><span class="tracks-note-mark">!</span><p><?= $cms('tracks_note','Adventure level and route conditions can vary. Confirm the final track details with the operator before booking.') ?></p></div>
       </div>
     </section>
 
     <section class="manifesto" id="about">
       <div class="manifesto-image" style="background-image:url('<?= $cmsImage('manifesto_image','https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=1800&q=85') ?>')"></div><div class="manifesto-overlay"></div>
       <div class="manifesto-content wrap"><p class="eyebrow"><span class="eyebrow-line"></span> <?= $cms('manifesto_eyebrow','MORE THAN AN ACTIVITY') ?></p><h2><?= $cms('manifesto_title_main','LEAVE THE COMFORT ZONE.') ?><br><span><?= $cms('manifesto_title_accent','FIND YOUR EDGE.') ?></span></h2><p><?= $cms('manifesto_description','We believe the best memories happen when you get out there. Get muddy, get moving, and experience Bali beyond the usual path—with a team that lives for adventure.') ?></p><a class="button button-outline" href="#book"><?= $cms('manifesto_cta','MEET YOUR NEXT ADVENTURE') ?> <span>↗</span></a></div>
-      <div class="manifesto-side">BALI TARANTULA / ADVENTURE IS OUT THERE</div>
+      <div class="manifesto-side"><?= $cms('manifesto_side_label','BALI TARANTULA / ADVENTURE IS OUT THERE') ?></div>
     </section>
 
     <section class="section why-us wrap" id="why-us">
@@ -130,11 +130,11 @@ $cmsImage = static fn(string $key, string $fallback): string => htmlspecialchars
           <article class="review-card"><div class="review-stars" aria-label="Review rating placeholder">★★★★★</div><blockquote>“<?= $cms('review_2_quote','Add another verified guest review here.') ?>”</blockquote><footer><?= $cms('review_2_author','Guest review') ?><span>Guest review</span></footer></article>
           <article class="review-card"><div class="review-stars" aria-label="Review rating placeholder">★★★★★</div><blockquote>“<?= $cms('review_3_quote','Add another verified guest review here.') ?>”</blockquote><footer><?= $cms('review_3_author','Guest review') ?><span>Guest review</span></footer></article>
         </div>
-        <p class="review-note">Review section preview: these are layout placeholders, not published customer testimonials. Add only authentic reviews and accurate ratings before launch.</p>
+        <p class="review-note"><?= $cms('reviews_note','Review section preview: add only authentic reviews and accurate ratings before launch.') ?></p>
       </div>
     </section>
 
-    <section class="booking-cta" id="book"><div class="cta-pattern"></div><div class="wrap cta-inner"><p class="eyebrow"><span class="eyebrow-line"></span> <?= $cms('cta_eyebrow','YOUR STORY STARTS HERE') ?></p><h2><?= $cms('cta_title_main','READY TO GET') ?><br><span><?= $cms('cta_title_accent','DIRTY?') ?></span></h2><p><?= $cms('cta_description',"Bring your crew. Bring your courage. We'll bring the adventure.") ?></p><a class="button button-dark" href="<?= $cms('cta_whatsapp_url','https://wa.me/') ?>" target="_blank" rel="noopener"><?= $cms('cta_button','PLAN YOUR ADVENTURE') ?> <span>↗</span></a><small>UPDATE THE WHATSAPP LINK BEFORE LAUNCH</small></div></section>
+    <section class="booking-cta" id="book"><div class="cta-pattern"></div><div class="wrap cta-inner"><p class="eyebrow"><span class="eyebrow-line"></span> <?= $cms('cta_eyebrow','YOUR STORY STARTS HERE') ?></p><h2><?= $cms('cta_title_main','READY TO GET') ?><br><span><?= $cms('cta_title_accent','DIRTY?') ?></span></h2><p><?= $cms('cta_description',"Bring your crew. Bring your courage. We'll bring the adventure.") ?></p><a class="button button-dark" href="<?= $cms('cta_whatsapp_url','https://wa.me/') ?>" target="_blank" rel="noopener"><?= $cms('cta_button','PLAN YOUR ADVENTURE') ?> <span>↗</span></a><small><?= $cms('cta_disclaimer','UPDATE THE WHATSAPP LINK BEFORE LAUNCH') ?></small></div></section>
   </main>
 
   <?php require_once __DIR__ . '/includes/footer.php'; ?>
