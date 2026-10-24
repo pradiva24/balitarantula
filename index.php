@@ -3,6 +3,7 @@ if (is_file(__DIR__ . '/config/config.php')) {
     require_once __DIR__ . '/app/bootstrap.php';
 }
 require_once __DIR__ . '/includes/cms.php';
+require_once __DIR__ . '/includes/site-settings.php';
 $heroSlides = [
     bta_content_image('hero_image_1', 'https://images.unsplash.com/photo-1551632811-561732d1e306?auto=format&fit=crop&w=1800&q=85'),
     bta_content_image('hero_image_2', 'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1800&q=85'),
@@ -20,7 +21,7 @@ $cmsImage = static fn(string $key, string $fallback): string => htmlspecialchars
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#111111">
   <meta name="description" content="Explore Bali with Bali Tarantula Adventure. Ride rugged ATV trails, discover jungle routes, and experience unforgettable outdoor adventures.">
-  <title>Bali Tarantula Adventure | Go Beyond the Ordinary</title>
+  <title><?=e(bta_setting('site_title','Bali Tarantula Adventure'))?> | Go Beyond the Ordinary</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800;900&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
