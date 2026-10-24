@@ -13,12 +13,7 @@
 <script src="assets/js/main.js?v=20261029" defer></script>
 </head>
 <body id="top">
-<div class="topline"><span>BUILT FOR THE WILD</span><span>BALI, INDONESIA <span class="orange">●</span></span></div>
-<header class="site-header">
-<a class="brand" href="index.php"><span class="brand-mark">BT<span>A</span></span><span class="brand-copy">BALI TARANTULA<small>ADVENTURE</small></span></a>
-<button class="menu-toggle" aria-label="Open navigation" aria-expanded="false"><span></span><span></span><span></span></button>
-<nav class="main-nav"><a href="index.php">Home</a><a href="about.php">About Us</a><a href="packages.php">Packages</a><a href="blog.php">Blog</a><a href="gallery.php">Gallery</a><a href="contact.php">Contact</a><a class="nav-cta" href="booking.php">BOOK NOW ↗</a></nav>
-</header>
+<?php require_once __DIR__ . '/includes/header.php'; ?>
 <main>
 <section class="page-banner"><div class="wrap page-banner-content"><p class="eyebrow"><span class="eyebrow-line"></span>RESERVE YOUR EXPERIENCE</p><h1>LET'S GET <span>WILD.</span></h1><p>Tell us when you want to ride. Our team can confirm availability, final pricing, and pickup details.</p><div class="breadcrumbs"><a href="index.php">HOME</a> / BOOKING</div></div></section>
 <section class="booking-page wrap">
@@ -68,7 +63,7 @@
 </div>
 </section>
 </main>
-<footer class="site-footer"><div class="wrap footer-main"><a class="brand" href="index.php"><span class="brand-mark">BT<span>A</span></span><span class="brand-copy">BALI TARANTULA<small>ADVENTURE</small></span></a><p>GO BEYOND THE ORDINARY.<br><span>EXPERIENCE THE WILD SIDE OF BALI.</span></p><a class="back-top" href="#top">BACK TO TOP ↑</a></div><div class="wrap footer-bottom"><span>© <span id="year">2026</span> BALI TARANTULA ADVENTURE</span><span>MADE FOR THE WILD.</span></div></footer>
+<?php require_once __DIR__ . '/includes/footer.php'; ?>
 <script>
 (() => {
  const form=document.getElementById('booking-form');
