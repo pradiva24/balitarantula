@@ -13,7 +13,7 @@ if($_SERVER['REQUEST_METHOD']==='POST'){
   if(!$b)throw new DomainException('Booking not found.');
   if($b['payment_status']==='paid')throw new DomainException('Payment is already marked paid.');
   if(in_array($b['booking_status'],['cancelled','expired'],true))throw new DomainException('Cancelled or expired bookings cannot be confirmed.');
-  $q=$pdo->prepare("UPDATE payments SET status='paid',verified_by=:admin,verified_at=NOW(),paid_at=NOW() WHERE booking_id=:id AND status IN ('pending','submitted')");
+  $q=$pdo->prepare("UPDATE payments SET status='paid',verified_by=:admin,verified_at=NOW(),paid_at=NOW() WHERE booking_id=:id AND status IN ('pending','submitted','rejected')");
   $q->execute(['admin'=>(int)$admin['id'],'id'=>$id]);
   if($q->rowCount()===0)throw new DomainException('No pending payment was found.');
   $pdo->prepare("UPDATE bookings SET payment_status='paid',booking_status='confirmed' WHERE id=:id")->execute(['id'=>$id]);
