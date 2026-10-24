@@ -89,7 +89,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $pdo->prepare("INSERT INTO payments (booking_id,method,amount,currency,status,notes) VALUES (:booking,'bank_transfer',:amount,:currency,'pending','Awaiting manual transfer and administrator verification')")->execute(['booking'=>$bookingId,'amount'=>$total,'currency'=>$slot['currency']]);
             $pdo->prepare('UPDATE activity_slots SET reserved_count=reserved_count+:qty WHERE id=:id')->execute(['qty'=>$participants,'id'=>$slotId]);
             $pdo->commit();
-            $bookingCode = $code;
+            redirect('booking-success.php?code=' . rawurlencode($code));
         } catch (DomainException $ex) {
             if ($pdo->inTransaction()) $pdo->rollBack();
             $errors[] = $ex->getMessage();
