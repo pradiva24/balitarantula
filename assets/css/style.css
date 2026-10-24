@@ -58,3 +58,131 @@
 .contact-intro p{color:var(--muted);font-size:13px;line-height:1.9}
 @media(max-width:850px){.card-featured{min-height:420px}.package-grid .adventure-card{min-height:390px}}
 @media(max-width:640px){.card-featured,.package-grid .adventure-card{min-height:400px}.contact-intro{margin-bottom:22px}}
+
+/* Global typography system: consistent display titles and readable body copy */
+:root{
+  --font-title:"Barlow Condensed",Impact,sans-serif;
+  --font-body:"Inter",Arial,sans-serif;
+  --text-xs:clamp(.7rem,.68rem + .08vw,.76rem);
+  --text-sm:clamp(.78rem,.74rem + .12vw,.86rem);
+  --text-base:clamp(.9rem,.86rem + .16vw,1rem);
+  --text-lg:clamp(1.02rem,.96rem + .25vw,1.18rem);
+  --title-xl:clamp(3.25rem,7.2vw,6.25rem);
+  --title-lg:clamp(2.7rem,5.5vw,4.75rem);
+  --title-md:clamp(2rem,3.8vw,3.25rem);
+}
+html{font-size:16px;text-size-adjust:100%;-webkit-text-size-adjust:100%}
+body{font-family:var(--font-body);font-size:var(--text-base);line-height:1.7;font-weight:400;font-synthesis:none;text-rendering:optimizeLegibility;-webkit-font-smoothing:antialiased}
+h1,h2,h3,h4,h5,h6,.inner-title,.page-banner-content h1,.hero h1,.section-heading h2,.manifesto h2,.cta-inner h2,.card-content h3,.track-info h3,.blog-copy h3,.article-main h2,.article-main h3,.detail-block h3,.article-sidebar h3,.booking-panel h3,.reasons h3{
+  font-family:var(--font-title);font-weight:800;line-height:.98;letter-spacing:.005em;text-wrap:balance
+}
+h1,.hero h1,.page-banner-content h1{font-size:var(--title-xl)}
+h2,.inner-title,.section-heading h2{font-size:var(--title-lg)}
+h3,.article-main h3,.detail-block h3{font-size:var(--title-md)}
+p,li,label,input,select,textarea,button{font-family:var(--font-body)}
+p{line-height:1.8}
+img,video,iframe{max-width:100%}
+button,input,select,textarea{font-size:16px}
+a,button{-webkit-tap-highlight-color:transparent}
+:focus-visible{outline:2px solid var(--orange);outline-offset:3px}
+.hero h1{font-size:clamp(4rem,9.5vw,8.1rem)}
+.section-heading h2{font-size:clamp(2.8rem,6.5vw,5.1rem)}
+.manifesto h2{font-size:clamp(3.4rem,7.5vw,6.1rem)}
+.cta-inner h2{font-size:clamp(4rem,9vw,7.2rem)}
+.card-content h3{font-size:clamp(2.1rem,3.4vw,3.1rem)}
+.track-info h3{font-size:clamp(1.9rem,2.8vw,2.7rem)}
+.blog-copy h3,.article-sidebar h3,.booking-panel h3{font-size:clamp(1.55rem,2.3vw,2rem)}
+.article-main h2{font-size:clamp(2.4rem,4.8vw,3.8rem)}
+.article-main h3,.detail-block h3{font-size:clamp(1.6rem,2.4vw,2rem)}
+.eyebrow,.card-tag,.card-number,.track-index,.track-badge,.track-info>p,.track-link,.nav-cta,.breadcrumbs,.blog-meta,.contact-form label,.panel-label,.footer-bottom,.back-top{
+  line-height:1.4;text-wrap:pretty
+}
+.hero-text,.section-description,.inner-copy p,.package-detail-main p,.article-main p,.contact-detail p,.blog-copy>p:not(.blog-meta){
+  font-size:var(--text-base);line-height:1.85
+}
+
+/* Responsive layout hardening across all pages */
+.wrap{width:min(1180px,calc(100% - 48px))}
+.adventure-grid,.tracks-grid,.blog-grid,.gallery-grid,.reasons{min-width:0}
+.adventure-card,.track-card,.blog-card,.gallery-grid a,.contact-form,.article-main,.article-sidebar,.package-detail-main,.booking-panel{min-width:0}
+.adventure-card img,.track-card img,.blog-image img,.gallery-grid img{display:block}
+.contact-form input,.contact-form select,.contact-form textarea{min-width:0;max-width:100%}
+.contact-form .button,.booking-panel .button{min-height:48px}
+.page-banner-content,.inner-split>*,.contact-layout>*,.article-layout>*,.package-detail-layout>*{min-width:0}
+@media(max-width:1024px){
+  .wrap{width:calc(100% - 40px)}
+  .main-nav{gap:clamp(12px,2vw,22px)}
+  .section{padding-top:clamp(65px,8vw,95px);padding-bottom:clamp(65px,8vw,90px)}
+  .inner-split,.contact-layout{gap:32px}
+  .package-detail-layout{grid-template-columns:minmax(0,1.5fr) minmax(240px,.8fr);gap:24px}
+}
+@media(max-width:850px){
+  .site-header{padding-left:20px;padding-right:20px}
+  .main-nav{gap:14px;font-size:10px}
+  .main-nav .nav-cta{padding:11px 12px}
+  .adventure-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .adventure-card:first-child{grid-column:span 2}
+  .tracks-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .blog-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .gallery-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .inner-split,.contact-layout{grid-template-columns:1fr}
+  .article-layout,.package-detail-layout{grid-template-columns:minmax(0,1fr)}
+  .article-sidebar,.booking-panel{width:100%}
+  .hero-stamp{transform:scale(.9) rotate(9deg);transform-origin:bottom right}
+}
+@media(max-width:640px){
+  html{scroll-padding-top:76px}
+  .wrap{width:calc(100% - 36px)}
+  .topline{height:28px;padding:0 18px;font-size:8px;letter-spacing:1px}
+  .site-header{height:70px;top:28px;padding:0 18px}
+  .main-nav{inset:98px 0 0;padding:24px 22px;overflow-y:auto}
+  .main-nav>a:not(.nav-cta){font-size:clamp(1.6rem,7vw,2rem);padding:15px 0}
+  .nav-cta{font-size:11px}
+  .hero{min-height:660px;height:min(760px,100svh)}
+  .hero-content{padding-top:65px}
+  .hero h1{font-size:clamp(3.6rem,15vw,6rem);line-height:.86}
+  .hero-text{max-width:34rem;font-size:var(--text-sm);line-height:1.8}
+  .hero-stamp{right:14px;bottom:76px}
+  .hero-bottom{bottom:18px;font-size:8px}
+  .strip-inner{flex-wrap:wrap;padding-top:15px;padding-bottom:15px}
+  .strip-inner p{max-width:75%;font-size:clamp(1.15rem,5.5vw,1.5rem)}
+  .section-heading{gap:16px}
+  .section-heading h2{font-size:clamp(2.65rem,11.5vw,4rem);line-height:.92}
+  .section-description{font-size:var(--text-sm)}
+  .adventure-grid,.tracks-grid,.blog-grid,.gallery-grid,.reasons{grid-template-columns:minmax(0,1fr)}
+  .adventure-card,.adventure-card:first-child{grid-column:auto;min-height:390px}
+  .track-card{min-height:390px}
+  .track-info h3{font-size:clamp(2.2rem,10vw,3rem)}
+  .blog-image{height:clamp(210px,62vw,280px)}
+  .gallery-grid a{height:clamp(230px,70vw,320px)}
+  .page-banner{min-height:320px;padding:135px 0 32px}
+  .page-banner-content h1{font-size:clamp(2.8rem,12vw,4.4rem);line-height:.92}
+  .page-banner-content>p:not(.eyebrow){font-size:var(--text-sm)}
+  .inner-title{font-size:clamp(2.5rem,10vw,3.7rem)}
+  .manifesto{min-height:540px}
+  .manifesto-content{padding-top:65px;padding-bottom:65px}
+  .manifesto h2{font-size:clamp(3rem,12vw,4.6rem)}
+  .manifesto-content>p:not(.eyebrow){font-size:var(--text-sm)}
+  .cta-inner h2{font-size:clamp(3.6rem,15vw,5.8rem)}
+  .contact-form{padding:20px}
+  .contact-form input,.contact-form select,.contact-form textarea{padding:13px 12px}
+  .article-main h2{font-size:clamp(2.2rem,9vw,3.2rem)}
+  .article-main blockquote{font-size:1.4rem}
+  .package-tabs{gap:12px}
+  .package-tabs a{font-size:9px}
+  .footer-main{gap:18px}
+  .footer-bottom{flex-wrap:wrap;line-height:1.6}
+}
+@media(max-width:380px){
+  .wrap{width:calc(100% - 28px)}
+  .brand{gap:7px}
+  .brand-mark{font-size:27px}
+  .brand-copy{font-size:9px;letter-spacing:.8px}
+  .brand-copy small{font-size:7px;letter-spacing:2.5px}
+  .hero h1{font-size:clamp(3.2rem,14vw,4rem)}
+  .hero-stamp{width:65px;height:65px;font-size:16px}
+  .hero-stamp small{font-size:3.5px}
+  .strip-label{font-size:7px}
+  .strip-inner p{font-size:1.05rem}
+  .button{max-width:100%;padding:0 15px;font-size:9px}
+}
