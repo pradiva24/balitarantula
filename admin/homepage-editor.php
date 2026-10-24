@@ -244,7 +244,7 @@ function cms_editor_value(array $stored, string $key, string $fallback): string 
 <?php if($error):?><div class="notice error"><?=e($error)?></div><?php endif;?>
 <?php if(!$tableReady):?><div class="notice info"><strong>Database setup required.</strong> Import <code>database/migrations/20261024_homepage_cms.sql</code> in phpMyAdmin first, then reload this page. The public homepage remains available with its current default content.</div><?php endif;?>
 <form method="post" enctype="multipart/form-data"><?=csrf_field()?>
-<?php foreach($groups as $groupTitle=>$fields):?><section class="editor-group" id="<?=e(strtolower(str_replace([' ','/'],'-',$groupTitle)))?>"><h2><?=e($groupTitle)?></h2><div class="field-grid">
+<?php foreach($groups as $groupTitle=>$fields):?><section class="editor-group" id="<?=e(trim((string)preg_replace('/[^a-z0-9]+/', '-', strtolower($groupTitle)), '-'))?>"><h2><?=e($groupTitle)?></h2><div class="field-grid">
 <?php foreach($fields as [$key,$label,$type,$fallback]):$value=cms_editor_value($stored,$key,$fallback);?><div class="field<?=$type==='textarea'?' full':''?>"><label for="<?=e($key)?>"><?=e($label)?></label>
 <?php if($type==='textarea'):?><textarea id="<?=e($key)?>" name="<?=e($key)?>" maxlength="12000" <?=$tableReady?'':'disabled'?>><?=e($value)?></textarea>
 <?php elseif($type==='image'):?><?php if($value!==''):?><img class="preview" src="<?=e($value)?>" alt="<?=e($label)?> current image" loading="lazy"><?php endif;?><input id="<?=e($key)?>" type="file" name="<?=e($key)?>" accept="image/jpeg,image/png,image/webp,image/gif" <?=$tableReady?'':'disabled'?>><span class="help">JPG, PNG, WEBP, GIF · max 8 MB. Leave empty to keep the current image.</span>
