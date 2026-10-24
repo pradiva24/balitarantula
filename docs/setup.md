@@ -31,6 +31,6 @@ Do not merge to `main` or deploy to cPanel until the code review, PHP syntax che
 ## Website Settings
 - Open `/admin/settings.php` as an `owner` or `admin` to manage the site title, SEO description, logo, contact details, social links, and SMTP server settings.
 - Fresh databases get the `site_settings` table from `database/schema.sql`. Existing databases need `database/migrations/20261024_site_settings.sql` imported once if that table is missing.
-- Logo uploads accept JPG, PNG, WEBP, or SVG up to 5 MB. The hosting account must allow PHP to write to `assets/uploads/site/`.
+- Logo uploads accept JPG, PNG, or WEBP up to 5 MB. The hosting account must allow PHP to write to `assets/uploads/site/`.
 - SMTP passwords are encrypted in the database using the stable `security.csrf_key` in `config/config.php`. Do not rotate this key after saving SMTP credentials unless you re-enter the SMTP password.
 - Save SMTP settings first, then use **Send Test Email**. The test action sends using the saved settings. Booking-related email workflows must explicitly use `includes/smtp.php` / `bta_smtp_send()` to send through this SMTP transport; configuring SMTP alone does not automatically wire every booking notification.
