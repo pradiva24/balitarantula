@@ -9,8 +9,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800;900&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/css/style.css?v=20261026">
-  <script src="assets/js/main.js?v=20261026" defer></script>
+  <link rel="stylesheet" href="assets/css/style.css?v=20261027">
+  <script src="assets/js/main.js?v=20261027" defer></script>
 </head>
 <body>
   <div class="topline"><span>BUILT FOR THE WILD</span><span>BALI, INDONESIA <span class="orange">●</span></span></div>
@@ -22,7 +22,7 @@
     <button class="menu-toggle" aria-label="Open navigation" aria-expanded="false"><span></span><span></span><span></span></button>
     <nav class="main-nav" aria-label="Main navigation">
       <a href="#adventures">Adventures</a><a href="#tracks">ATV Tracks</a><a href="#about">Our Story</a><a href="#why-us">Why Us</a>
-      <a class="nav-cta" href="#book">LET'S RIDE <span>↗</span></a>
+      <a class="nav-cta" href="booking.php">BOOK NOW ↗</a>
     </nav>
   </header>
 
