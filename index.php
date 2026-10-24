@@ -9,8 +9,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800;900&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/css/style.css?v=20261025">
-  <script src="assets/js/main.js?v=20261025" defer></script>
+  <link rel="stylesheet" href="assets/css/style.css?v=20261026">
+  <script src="assets/js/main.js?v=20261026" defer></script>
 </head>
 <body>
   <div class="topline"><span>BUILT FOR THE WILD</span><span>BALI, INDONESIA <span class="orange">●</span></span></div>
