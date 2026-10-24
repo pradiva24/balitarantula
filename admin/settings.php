@@ -90,7 +90,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $file = $_FILES['site_logo'];
                 if ((int)$file['error'] !== UPLOAD_ERR_OK || (int)$file['size'] > 5*1024*1024) throw new DomainException('Logo upload failed or exceeds 5 MB.');
                 $mime = (new finfo(FILEINFO_MIME_TYPE))->file((string)$file['tmp_name']);
-                $extensions = ['image/jpeg'=>'jpg','image/png'=>'png','image/webp'=>'webp','image/svg+xml'=>'svg'];
+                $extensions = ['image/jpeg'=>'jpg','image/png'=>'png','image/webp'=>'webp'];
                 if (!isset($extensions[$mime])) throw new DomainException('Logo must be JPG, PNG, WEBP, or SVG.');
                 if ($mime === 'image/svg+xml') {
                     $svg = file_get_contents((string)$file['tmp_name']);
@@ -146,7 +146,7 @@ function settings_field(string $key, array $field, array $values, bool $ready): 
 <form method="post" enctype="multipart/form-data"><?=csrf_field()?><input type="hidden" name="action" value="save">
 <section class="settings-card"><div class="card-heading"><span class="num">01</span><div><h2>Brand & SEO</h2><p>Website title, description, URL, and logo.</p></div></div><div class="fields">
 <?php foreach(['site_title','site_description','site_url'] as $key):?><div class="settings-field<?=$key==='site_description'?' full':''?>"><?php settings_field($key,$fields[$key],$values,$ready);?></div><?php endforeach;?>
-<div class="settings-field full"><label for="site_logo">Website logo</label><?php if($logoPath!==''):?><img class="logo-preview" src="<?=e($logoPath)?>" alt="Current website logo"><?php endif;?><input id="site_logo" type="file" name="site_logo" accept="image/jpeg,image/png,image/webp,image/svg+xml" <?=$ready?'':'disabled'?>><p class="hint">JPG, PNG, WEBP or SVG · max 5 MB. Leave empty to keep the current logo.</p></div>
+<div class="settings-field full"><label for="site_logo">Website logo</label><?php if($logoPath!==''):?><img class="logo-preview" src="<?=e($logoPath)?>" alt="Current website logo"><?php endif;?><input id="site_logo" type="file" name="site_logo" accept="image/jpeg,image/png,image/webp" <?=$ready?'':'disabled'?>><p class="hint">JPG, PNG or WEBP · max 5 MB. Leave empty to keep the current logo.</p></div>
 </div></section>
 <section class="settings-card"><div class="card-heading"><span class="num">02</span><div><h2>Contact information</h2><p>Contact details displayed across the website.</p></div></div><div class="fields">
 <?php foreach(['contact_email','contact_phone','contact_whatsapp','contact_address','contact_hours'] as $key):?><div class="settings-field<?=$key==='contact_address'?' full':''?>"><?php settings_field($key,$fields[$key],$values,$ready);?><?php if($key==='contact_whatsapp'):?><p class="hint">Use international digits only, e.g. 6281234567890. Do not include +, spaces, or dashes.</p><?php endif;?></div><?php endforeach;?>
@@ -157,7 +157,7 @@ function settings_field(string $key, array $field, array $values, bool $ready): 
 <section class="settings-card"><div class="card-heading"><span class="num">04</span><div><h2>SMTP email settings</h2><p>Configure your mail server and send a test message.</p></div></div><div class="fields">
 <?php foreach(['smtp_host','smtp_port','smtp_encryption','smtp_username','smtp_from_email','smtp_from_name'] as $key):?><div class="settings-field"><?php settings_field($key,$fields[$key],$values,$ready);?></div><?php endforeach;?>
 <div class="settings-field full"><label for="smtp_password">SMTP password / app password</label><input id="smtp_password" type="password" name="smtp_password" value="" autocomplete="new-password" placeholder="<?=isset($rows['smtp_password_encrypted'])&&$rows['smtp_password_encrypted']!==''?'Saved securely — enter a new value to replace it':'Enter SMTP password'?>" <?=$ready?'':'disabled'?>><p class="hint">The password is encrypted before it is stored. It is never displayed after saving. Leave blank to keep the current password.</p></div>
-</div><div class="password-note">Recommended: use your email provider's SMTP host and port 587 with STARTTLS, or the provider's documented SSL/TLS settings. The sender email should be authorized by your provider.</div>
+</div><div class="password-note">Save the SMTP fields first, then send a test email. Use your email provider's documented host, port, and encryption settings. The sender email must be authorized by your provider.</div>
 <div class="smtp-test"><div class="settings-field"><label for="test_email_to">Send test email to</label><input id="test_email_to" type="email" name="test_email_to" placeholder="you@example.com" <?=$ready?'':'disabled'?>></div><button class="btn secondary" type="submit" formnovalidate onclick="this.form.querySelector('[name=action]').value='test_email' " <?=$ready?'':'disabled'?>>SEND TEST EMAIL</button></div>
 </section>
 <div class="savebar"><p>Save changes to update your global site settings.</p><button class="btn" type="submit" <?=$ready?'':'disabled'?>>SAVE SETTINGS</button></div>
