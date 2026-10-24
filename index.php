@@ -9,8 +9,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800;900&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/css/style.css?v=20261028">
-  <script src="assets/js/main.js?v=20261028" defer></script>
+  <link rel="stylesheet" href="assets/css/style.css?v=20261029">
+  <script src="assets/js/main.js?v=20261029" defer></script>
 </head>
 <body>
   <div class="topline"><span>BUILT FOR THE WILD</span><span>BALI, INDONESIA <span class="orange">●</span></span></div>
@@ -114,6 +114,19 @@
         <article><span class="reason-no">01</span><div class="reason-icon">✳</div><h3>REAL ADVENTURE</h3><p>Immersive outdoor experiences that take you beyond the ordinary.</p></article>
         <article><span class="reason-no">02</span><div class="reason-icon">↗</div><h3>LOCAL KNOW-HOW</h3><p>Explore Bali with a team that knows the terrain and loves the island.</p></article>
         <article><span class="reason-no">03</span><div class="reason-icon">＋</div><h3>YOUR KIND OF WILD</h3><p>Choose an experience that matches your crew, your pace, and your spirit.</p></article>
+      </div>
+    </section>
+
+
+    <section class="reviews-section" id="guest-reviews">
+      <div class="wrap">
+        <div class="section-heading"><div><p class="eyebrow"><span class="eyebrow-line"></span> GUEST REVIEWS</p><h2>THE ADVENTURE<br><span>IN THEIR WORDS.</span></h2></div><p class="section-description">Real feedback helps future adventurers choose the right experience. Replace these sample cards with verified guest reviews before publishing.</p></div>
+        <div class="review-grid">
+          <article class="review-card"><div class="review-stars" aria-label="Review rating placeholder">★★★★★</div><blockquote>“Add a verified guest review here describing the trail, guide, and overall experience.”</blockquote><footer>Guest review placeholder<span>Replace with verified reviewer name and source</span></footer></article>
+          <article class="review-card"><div class="review-stars" aria-label="Review rating placeholder">★★★★★</div><blockquote>“Use a real customer comment about the activity, safety briefing, or service.”</blockquote><footer>Guest review placeholder<span>Replace with verified reviewer name and source</span></footer></article>
+          <article class="review-card"><div class="review-stars" aria-label="Review rating placeholder">★★★★★</div><blockquote>“Feature another authentic review that helps visitors understand what to expect.”</blockquote><footer>Guest review placeholder<span>Replace with verified reviewer name and source</span></footer></article>
+        </div>
+        <p class="review-note">Review section preview: these are layout placeholders, not published customer testimonials. Add only authentic reviews and accurate ratings before launch.</p>
       </div>
     </section>
 
