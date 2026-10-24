@@ -39,9 +39,9 @@ $cmsImage = static fn(string $key, string $fallback): string => htmlspecialchars
         <h1><?= $cms('hero_title_main','CHASE THE') ?><br><span><?= $cms('hero_title_accent','UNTAMED.') ?></span></h1>
         <p class="hero-text"><?= $cms('hero_description','Trade the ordinary for muddy trails, wild landscapes, and stories worth telling. Bali is calling. Are you ready?') ?></p>
         <div class="hero-actions"><a class="button button-orange" href="#adventures"><?= $cms('hero_cta_primary','EXPLORE ADVENTURES') ?> <span>↗</span></a><a class="text-link" href="#about"><span class="play-icon">▶</span> <?= $cms('hero_cta_secondary','DISCOVER OUR WORLD') ?></a></div>
-        <div class="hero-bottom"><span><b>01</b> / OUTDOOR EXPERIENCES</span><span class="scroll-note">SCROLL TO EXPLORE <i>↓</i></span></div>
+        <div class="hero-bottom"><span><?= $cms('hero_bottom_left','01 / OUTDOOR EXPERIENCES') ?></span><span class="scroll-note"><?= $cms('hero_scroll_label','SCROLL TO EXPLORE') ?> <i>↓</i></span></div>
       </div>
-      <div class="hero-stamp"><span>GO</span><span>WILD</span><small> BALI • EST. FOR ADVENTURE</small></div>
+      <div class="hero-stamp"><span><?= $cms('hero_stamp_top','GO') ?></span><span><?= $cms('hero_stamp_bottom','WILD') ?></span><small><?= $cms('hero_stamp_caption','BALI • EST. FOR ADVENTURE') ?></small></div>
     </section>
 
     <section class="intro-strip">
