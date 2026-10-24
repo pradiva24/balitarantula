@@ -21,6 +21,13 @@
     });
   }
 
+  const header = document.querySelector('.site-header');
+  if (header) {
+    const updateHeader = () => header.classList.toggle('is-scrolled', window.scrollY > 40);
+    updateHeader();
+    window.addEventListener('scroll', updateHeader, { passive: true });
+  }
+
   const year = document.querySelector('#year');
   if (year) year.textContent = String(new Date().getFullYear());
 })();
