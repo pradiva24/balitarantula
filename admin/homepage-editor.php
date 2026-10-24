@@ -192,6 +192,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $tableReady) {
                     if (mb_strlen($value) > 12000) {
                         throw new DomainException($label . ' is too long.');
                     }
+                    if ($key === 'cta_whatsapp_url' && $value !== '') {
+                        $scheme = strtolower((string)parse_url($value, PHP_URL_SCHEME));
+                        if (!filter_var($value, FILTER_VALIDATE_URL) || !in_array($scheme, ['https', 'http'], true)) {
+                            throw new DomainException('WhatsApp / booking URL must be a valid HTTP or HTTPS URL.');
+                        }
+                    }
                     $save->execute(['key'=>$key,'value'=>$value,'admin'=>(int)$admin['id']]);
                 }
                 if ($type === 'image' && isset($_FILES[$key]) && (int)($_FILES[$key]['error'] ?? UPLOAD_ERR_NO_FILE) !== UPLOAD_ERR_NO_FILE) {
