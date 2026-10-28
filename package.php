@@ -1028,7 +1028,7 @@ body {
     row-gap: 8px;
   }
   .booking-panel .special-price-badge {
-    grid-column: 1;
+    grid-column: 1 / -1;
     grid-row: 1;
     margin: 0;
     justify-self: start;
@@ -1036,22 +1036,41 @@ body {
     font-size: 10px;
   }
   .booking-panel .panel-price-row {
-    grid-column: 1;
+    grid-column: 1 / -1;
     grid-row: 2;
     margin: 0;
   }
-  .panel-price-current { font-size: 25px; }
+  .booking-panel .panel-price-old {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    font-size: 14px;
+    line-height: 1.3;
+  }
+  .booking-panel .panel-price-save {
+    margin-left: 0;
+    padding: 3px 7px;
+    font-size: 11px;
+  }
+  .booking-panel .panel-price-current {
+    grid-column: 1 / -1;
+    grid-row: 3;
+    font-size: 25px;
+    margin: 0;
+  }
   .panel-price-current small { font-size: 12px; }
   .booking-panel .panel-actions {
-    grid-column: 2;
-    grid-row: 1 / span 2;
+    grid-column: 1 / -1;
+    grid-row: 4;
     margin: 0;
-    flex-direction: column;
-    gap: 6px;
+    flex-direction: row;
+    gap: 8px;
   }
   .booking-panel .btn-book-now,
   .booking-panel .btn-whatsapp {
-    width: 100%;
+    flex: 1 1 0;
+    width: auto;
     min-width: 0;
     padding: 10px 8px;
     font-size: 12px;
