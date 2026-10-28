@@ -843,6 +843,8 @@ body {
 .related-section .adventure-grid::-webkit-scrollbar-thumb { background: var(--bta-orange); border-radius: 8px; }
 .related-section .adventure-grid::-webkit-scrollbar-track { background: rgba(255,90,31,.10); }
 .related-heading { align-items: end; }
+.related-heading .eyebrow { color: #171717; }
+.related-heading h2 { text-align: left; }
 .related-slider-controls { display: flex; gap: 8px; flex: 0 0 auto; }
 .related-slider-btn {
   width: 42px; height: 42px; display: inline-flex; align-items: center; justify-content: center;
@@ -985,6 +987,11 @@ body {
 }
 
 @media (max-width: 768px) {
+  .related-heading { align-items: flex-start; justify-content: flex-start; text-align: left; }
+  .related-heading > div:first-child { width: 100%; text-align: left; }
+  .related-heading .eyebrow { color: #171717; justify-content: flex-start; }
+  .related-heading h2 { text-align: left; }
+  .related-heading .related-slider-controls { margin-left: auto; }
   .panel-confirm-note {
     display: none !important; /* Hidden on mobile as per user requirement */
   }
