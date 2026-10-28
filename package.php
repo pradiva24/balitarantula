@@ -1002,9 +1002,64 @@ body {
   .related-section .adventure-grid > .adventure-card {
     flex-basis: min(82vw, 340px);
   }
-  .panel-details-list { display: none !important; }
+  /* Compact fixed booking/price card at the bottom of mobile screens. */
+  .bta-pkg-detail { padding-bottom: 150px; }
+  .booking-panel {
+    position: fixed !important;
+    z-index: 999;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: auto !important;
+    width: 100%;
+    max-width: none;
+    box-sizing: border-box;
+    margin: 0 !important;
+    padding: 12px 16px calc(12px + env(safe-area-inset-bottom));
+    border-radius: 14px 14px 0 0;
+    border: 1px solid var(--bta-border);
+    border-top: 3px solid var(--bta-orange);
+    background: var(--bta-panel);
+    box-shadow: 0 -8px 30px rgba(0,0,0,.14);
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr);
+    align-items: center;
+    column-gap: 12px;
+    row-gap: 8px;
+  }
+  .booking-panel .special-price-badge {
+    grid-column: 1;
+    grid-row: 1;
+    margin: 0;
+    justify-self: start;
+    padding: 3px 8px;
+    font-size: 10px;
+  }
+  .booking-panel .panel-price-row {
+    grid-column: 1;
+    grid-row: 2;
+    margin: 0;
+  }
   .panel-price-current { font-size: 25px; }
   .panel-price-current small { font-size: 12px; }
+  .booking-panel .panel-actions {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+    margin: 0;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .booking-panel .btn-book-now,
+  .booking-panel .btn-whatsapp {
+    width: 100%;
+    min-width: 0;
+    padding: 10px 8px;
+    font-size: 12px;
+    line-height: 1.2;
+    justify-content: center;
+  }
+  .panel-details-list { display: none !important; }
+  .panel-divider { display: none !important; }
   .panel-details-list li { gap: 10px; font-size: 12px; }
   .panel-details-list li span { flex-basis: 40%; }
   .panel-details-list li b { flex-basis: 60%; }
