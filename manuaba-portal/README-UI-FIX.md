@@ -1,0 +1,1 @@
+Admin V4 fixes stylesheet loading by using BASE_URL and cache-busting v=4. If the page is unstyled, verify this URL in browser: http://localhost:8888/balitarantulaadventure/admin/assets/css/admin.css?v=4
