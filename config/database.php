@@ -1,13 +1,13 @@
 <?php
 // MAMP default MySQL settings.
 // Change these if your MAMP configuration is different.
-define('DB_HOST', (string)(getenv('BTA_DB_HOST') ?: '127.0.0.1'));
-define('DB_PORT', (string)(getenv('BTA_DB_PORT') ?: '3306'));
-define('DB_NAME', (string)(getenv('BTA_DB_NAME') ?: ''));
-define('DB_USER', (string)(getenv('BTA_DB_USER') ?: ''));
-define('DB_PASS', (string)(getenv('BTA_DB_PASS') ?: ''));
+define('DB_HOST', 'localhost');
+define('DB_PORT', '3306');
+define('DB_NAME', 'gapurabo_balitarantula');
+define('DB_USER', 'gapurabo_balitarantula');
+define('DB_PASS', '#~o(HX4nV^jg@Ys]');
 
-define('BASE_URL', rtrim((string)(getenv('BTA_BASE_URL') ?: 'http://localhost/balitarantula'), '/'));
+define('BASE_URL', 'https://tarantula.baliatvgo.com/');
 
 date_default_timezone_set('Asia/Makassar');
 
