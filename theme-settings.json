@@ -1,0 +1,20 @@
+{
+  "primary": "#ff5500",
+  "secondary": "#111111",
+  "accent": "#ff5500",
+  "background": "#ffffff",
+  "surface": "#f7f7f7",
+  "text": "#222222",
+  "heading": "#111111",
+  "button": "#ff5500",
+  "button_hover": "#e04800",
+  "header": "#ffffff",
+  "footer": "#111111",
+  "overlay": "rgba(0,0,0,.35)",
+  "body_font": "'Inter', sans-serif",
+  "heading_font": "'Barlow Condensed', sans-serif",
+  "body_size": "15px",
+  "menu_size": "15px",
+  "button_radius": "4px",
+  "sticky_header": "1"
+}
