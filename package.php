@@ -1054,15 +1054,23 @@ body {
     font-size: 11px;
   }
   .booking-panel .panel-price-current {
-    grid-column: 1 / -1;
-    grid-row: 3;
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 0 6px;
     font-size: 25px;
-    margin: 0;
+    line-height: 1.15;
+    margin: 6px 0 0;
   }
-  .panel-price-current small { font-size: 12px; }
+  .booking-panel .panel-price-current small {
+    display: inline;
+    font-size: 12px;
+    margin: 0;
+    white-space: nowrap;
+  }
   .booking-panel .panel-actions {
     grid-column: 1 / -1;
-    grid-row: 4;
+    grid-row: 3;
     margin: 0;
     flex-direction: row;
     gap: 8px;
