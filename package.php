@@ -67,7 +67,7 @@ try {
         WHERE p.status = 1 AND p.id <> ? 
           AND p.name NOT LIKE '%Manuaba Crystalfall Full Package%'
         ORDER BY p.homepage_order ASC, p.id ASC 
-        LIMIT 3
+        LIMIT 8
     ");
     $rs->execute([(int)$p['id']]);
     $related = $rs->fetchAll();
@@ -397,9 +397,9 @@ body {
   scrollbar-width: none;
 }
 
-.package-tabs a {
+ .package-tabs a {
   font-family: var(--bta-font-display);
-  font-size: 16px;
+  font-size: 13px;
   font-weight: 800;
   letter-spacing: 1.5px;
   text-transform: uppercase;
@@ -480,8 +480,8 @@ body {
 }
 
 /* Orange feature block for editable package highlights */
-.experience-highlights {
-  background: var(--bta-orange);
+ .experience-highlights {
+  background: #fcf6f3;
   color: #171717;
   padding: 28px 30px;
   border-radius: 10px;
@@ -602,7 +602,7 @@ body {
 }
 
 /* Special Price Badge with Green Animated Dot */
-.special-price-badge {
+ .special-price-badge {
   display: inline-flex;
   align-items: center;
   gap: 8px;
@@ -610,7 +610,7 @@ body {
   border: 1px solid rgba(22, 163, 74, 0.3);
   color: #15803d;
   font-family: var(--bta-font-display);
-  font-size: 13px;
+  font-size: 10px;
   font-weight: 900;
   letter-spacing: 1px;
   text-transform: uppercase;
@@ -664,6 +664,10 @@ body {
 }
 
 .panel-price-current {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 0 6px;
   font-family: var(--bta-font-display);
   font-size: 34px;
   font-weight: 900;
@@ -673,11 +677,13 @@ body {
 }
 
 .panel-price-current small {
+  display: inline;
   font-family: var(--bta-font-body);
   font-size: 13px;
   color: var(--bta-muted);
   font-weight: 500;
-  margin-left: 6px;
+  margin-left: 0;
+  white-space: nowrap;
 }
 
 /* Action Buttons (Book Now & WhatsApp) */
@@ -745,7 +751,7 @@ body {
   align-items: flex-start;
   gap: 10px;
   background: #fff8eb;
-  border: 1px solid #fed7aa;
+  border: none;
   border-radius: 8px;
   padding: 12px 14px;
   margin-bottom: 20px;
@@ -836,6 +842,14 @@ body {
 .related-section .adventure-grid::-webkit-scrollbar { height: 6px; }
 .related-section .adventure-grid::-webkit-scrollbar-thumb { background: var(--bta-orange); border-radius: 8px; }
 .related-section .adventure-grid::-webkit-scrollbar-track { background: rgba(255,90,31,.10); }
+.related-heading { align-items: end; }
+.related-slider-controls { display: flex; gap: 8px; flex: 0 0 auto; }
+.related-slider-btn {
+  width: 42px; height: 42px; display: inline-flex; align-items: center; justify-content: center;
+  border: 1px solid var(--bta-border); background: #fff; color: var(--bta-heading);
+  font-size: 20px; cursor: pointer; transition: background .2s, color .2s, border-color .2s;
+}
+.related-slider-btn:hover, .related-slider-btn:focus-visible { background: var(--bta-orange); border-color: var(--bta-orange); color: #171717; }
 .related-section .adventure-grid > .adventure-card {
   flex: 0 0 calc((100% - 36px) / 3);
   scroll-snap-align: start;
@@ -988,6 +1002,9 @@ body {
   .related-section .adventure-grid > .adventure-card {
     flex-basis: min(82vw, 340px);
   }
+  .panel-details-list { display: none !important; }
+  .panel-price-current { font-size: 25px; }
+  .panel-price-current small { font-size: 12px; }
   .panel-details-list li { gap: 10px; font-size: 12px; }
   .panel-details-list li span { flex-basis: 40%; }
   .panel-details-list li b { flex-basis: 60%; }
@@ -1161,13 +1178,17 @@ body {
   <?php if (!empty($related)): ?>
     <section class="related-section">
       <div class="wrap">
-        <div class="section-heading">
+        <div class="section-heading related-heading">
           <div>
             <p class="eyebrow"><span class="eyebrow-line"></span>MORE THRILLS</p>
             <h2 style="font-size: 38px;">OTHER <span>ADVENTURES.</span></h2>
           </div>
+          <div class="related-slider-controls" aria-label="Other adventures slider controls">
+            <button type="button" class="related-slider-btn" data-slide="prev" aria-label="Previous adventures">&#8592;</button>
+            <button type="button" class="related-slider-btn" data-slide="next" aria-label="Next adventures">&#8594;</button>
+          </div>
         </div>
-        <div class="adventure-grid" aria-label="Other adventure packages">
+        <div class="adventure-grid" id="relatedAdventureSlider" aria-label="Other adventure packages" tabindex="0">
           <?php foreach ($related as $rel): ?>
             <a href="<?=BASE_URL?>/package/<?=e($rel['slug'])?>" class="adventure-card" style="height: 420px; min-height: 420px;">
               <img src="<?=!empty($rel['cover_image']) ? e(asset_url($rel['cover_image'])) : 'https://images.unsplash.com/photo-1551632811-561732d1e306?auto=format&fit=crop&w=1000&q=85'?>" alt="<?=e($rel['name'])?>" loading="lazy">
@@ -1188,6 +1209,18 @@ body {
 </div>
 
 <script>
+const relatedSlider = document.getElementById('relatedAdventureSlider');
+if (relatedSlider) {
+  document.querySelectorAll('.related-slider-btn').forEach(button => {
+    button.addEventListener('click', () => {
+      const card = relatedSlider.querySelector('.adventure-card');
+      const gap = parseFloat(getComputedStyle(relatedSlider).columnGap || getComputedStyle(relatedSlider).gap) || 18;
+      const step = card ? card.getBoundingClientRect().width + gap : relatedSlider.clientWidth * 0.8;
+      relatedSlider.scrollBy({ left: button.dataset.slide === 'next' ? step : -step, behavior: 'smooth' });
+    });
+  });
+}
+
 function changePackageCover(src, btn) {
   const cover = document.getElementById('mainPackageCover');
   if (!cover) return;
