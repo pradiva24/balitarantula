@@ -65,6 +65,7 @@ try {
         FROM packages p 
         LEFT JOIN categories c ON c.id = p.category_id 
         WHERE p.status = 1 AND p.id <> ? 
+          AND p.name NOT LIKE '%Manuaba Crystalfall Full Package%'
         ORDER BY p.homepage_order ASC, p.id ASC 
         LIMIT 3
     ");
