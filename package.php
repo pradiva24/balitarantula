@@ -387,28 +387,65 @@ body {
   border-color: var(--bta-orange);
 }
 
-/* Tabs Navigation */
+/* Responsive package tabs */
 .package-tabs {
   display: flex;
-  gap: 12px;
+  align-items: stretch;
+  gap: 6px;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
   border-bottom: 1px solid var(--bta-border);
   margin: 30px 0 35px;
   overflow-x: auto;
+  overflow-y: hidden;
   scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-x: contain;
 }
 
- .package-tabs a {
+.package-tabs::-webkit-scrollbar {
+  display: none;
+}
+
+.package-tabs a {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
   font-family: var(--bta-font-display);
   font-size: 13px;
   font-weight: 800;
-  letter-spacing: 1.5px;
+  letter-spacing: 1.2px;
   text-transform: uppercase;
   color: var(--bta-muted);
   text-decoration: none;
-  padding: 12px 18px;
+  padding: 12px;
   border-bottom: 3px solid transparent;
-  transition: all 0.2s ease;
+  transition: color 0.2s ease, border-color 0.2s ease;
   white-space: nowrap;
+}
+
+@media (max-width: 768px) {
+  .package-tabs {
+    gap: 2px;
+    margin: 22px 0 28px;
+  }
+
+  .package-tabs a {
+    padding: 12px 10px;
+    font-size: 12px;
+    letter-spacing: 0.8px;
+  }
+}
+
+@media (max-width: 380px) {
+  .package-tabs a {
+    padding: 12px 8px;
+    font-size: 11px;
+    letter-spacing: 0.5px;
+  }
 }
 
 .package-tabs a:hover, .package-tabs a.is-active {
