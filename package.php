@@ -479,6 +479,26 @@ body {
   font-size: 16px;
 }
 
+/* Orange feature block for editable package highlights */
+.experience-highlights {
+  background: var(--bta-orange);
+  color: #171717;
+  padding: 28px 30px;
+  border-radius: 10px;
+}
+.experience-highlights h3,
+.experience-highlights h3 span,
+.experience-highlights .highlight-list li,
+.experience-highlights .highlight-list li::before {
+  color: #171717;
+}
+.experience-highlights h3 { margin-bottom: 18px; }
+.experience-highlights .highlight-list { margin-bottom: 0; }
+.experience-highlights .highlight-list li { color: #21160f; }
+@media (max-width: 640px) {
+  .experience-highlights { padding: 22px 18px; }
+}
+
 .check-list li::before {
   content: "✓";
   position: absolute;
@@ -759,34 +779,39 @@ body {
 
 .panel-details-list li {
   display: flex;
-  align-items: flex-start;
-  gap: 10px;
-  justify-content: flex-start;
-  padding: 10px 12px;
-  margin: 0 0 8px;
-  border: 1px solid rgba(255, 90, 31, .18);
-  border-radius: 6px;
-  background: rgba(255, 90, 31, .09);
-  font-size: 12px;
-  line-height: 1.55;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 11px 0;
+  margin: 0;
+  border: 0;
+  border-bottom: 1px dashed var(--bta-border);
+  border-radius: 0;
+  background: transparent;
+  font-size: 13px;
+  line-height: 1.5;
   color: var(--bta-text);
 }
 
-.panel-details-list li::before {
-  content: "✓";
-  flex: 0 0 16px;
-  color: var(--bta-orange);
-  font-weight: 900;
-}
+.panel-details-list li::before { content: none; }
 
 .panel-details-list li span {
-  color: var(--bta-heading);
-  font-weight: 700;
+  flex: 0 1 42%;
+  color: var(--bta-text);
+  font-weight: 400;
 }
 
 .panel-details-list li b {
-  color: var(--bta-text);
-  font-weight: 500;
+  flex: 1 1 58%;
+  color: var(--bta-heading);
+  font-weight: 700;
+  text-align: right;
+}
+
+/* Admin-managed price bullets remain visible without changing their stored values. */
+.panel-details-list li:not(:has(span)) {
+  justify-content: flex-start;
+  text-align: left;
 }
 
 /* Related Packages */
@@ -963,6 +988,9 @@ body {
   .related-section .adventure-grid > .adventure-card {
     flex-basis: min(82vw, 340px);
   }
+  .panel-details-list li { gap: 10px; font-size: 12px; }
+  .panel-details-list li span { flex-basis: 40%; }
+  .panel-details-list li b { flex-basis: 60%; }
 }
 </style>
 
@@ -1014,14 +1042,13 @@ body {
 
       <!-- Section: Overview -->
       <section id="overview" class="detail-block">
-        <h2>CHASE THE <span>UNTAMED.</span></h2>
         <div>
           <?=!empty($p['description']) ? nl2br(e($p['description'])) : '<p>Experience the ultimate thrill of navigating through Bali’s rugged terrain, ancient bamboo forests, muddy rice paddies, and thrilling river beds. Fully guided by experienced local trail masters.</p>'?>
         </div>
       </section>
 
       <!-- Section: Highlights -->
-      <section id="highlights" class="detail-block">
+      <section id="highlights" class="detail-block experience-highlights">
         <h3><span>⚡</span> EXPERIENCE HIGHLIGHTS</h3>
         <ul class="highlight-list">
           <?php foreach ($highlightRows as $hl): ?>
@@ -1071,8 +1098,6 @@ body {
 
     <!-- Right Column: Booking Panel -->
     <aside class="booking-panel">
-      <h3><?=e($p['name'])?></h3>
-
       <!-- Special Price Badge with Green Animated Dot -->
       <div class="special-price-badge">
         SPECIAL ONLINE RATE
