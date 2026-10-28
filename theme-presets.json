@@ -1,0 +1,22 @@
+{
+  "jungle": {
+    "primary": "#0f5132",
+    "secondary": "#198754",
+    "accent": "#f4b400"
+  },
+  "adventure": {
+    "primary": "#123b5d",
+    "secondary": "#1d6fa5",
+    "accent": "#ff8a00"
+  },
+  "sunset": {
+    "primary": "#7a2e1f",
+    "secondary": "#c75b39",
+    "accent": "#f2a65a"
+  },
+  "clean": {
+    "primary": "#1f2937",
+    "secondary": "#4b5563",
+    "accent": "#0ea5e9"
+  }
+}

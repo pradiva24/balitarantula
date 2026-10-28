@@ -1,0 +1,14 @@
+User-agent: *
+Allow: /
+
+# Private/admin areas
+Disallow: /admin/
+Disallow: /config/
+Disallow: /database/
+Disallow: /includes/
+Disallow: /admin/includes/
+Disallow: /setup_v11.php
+Disallow: /setup_v17.php
+Disallow: /uploads/payment-proofs/
+
+Sitemap: https://manuabacrystalfall.com//sitemap

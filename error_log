@@ -1,0 +1,706 @@
+[17-Sep-2026 04:12:05 Asia/Makassar] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /home/alohaubu/newsite.alohaubudswing.com/config/database.php:29
+Stack trace:
+#0 /home/alohaubu/newsite.alohaubudswing.com/config/database.php(29): PDO->__construct()
+#1 /home/alohaubu/newsite.alohaubudswing.com/index.php(39): db()
+#2 /home/alohaubu/newsite.alohaubudswing.com/index.php(30): {closure}()
+#3 /home/alohaubu/newsite.alohaubudswing.com/index.php(38): homepage_cache()
+#4 {main}
+  thrown in /home/alohaubu/newsite.alohaubudswing.com/config/database.php on line 29
+[17-Sep-2026 04:12:05 Asia/Makassar] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /home/alohaubu/newsite.alohaubudswing.com/config/database.php:29
+Stack trace:
+#0 /home/alohaubu/newsite.alohaubudswing.com/config/database.php(29): PDO->__construct()
+#1 /home/alohaubu/newsite.alohaubudswing.com/index.php(39): db()
+#2 /home/alohaubu/newsite.alohaubudswing.com/index.php(30): {closure}()
+#3 /home/alohaubu/newsite.alohaubudswing.com/index.php(38): homepage_cache()
+#4 {main}
+  thrown in /home/alohaubu/newsite.alohaubudswing.com/config/database.php on line 29
+[17-Sep-2026 04:12:26 Asia/Makassar] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /home/alohaubu/newsite.alohaubudswing.com/config/database.php:29
+Stack trace:
+#0 /home/alohaubu/newsite.alohaubudswing.com/config/database.php(29): PDO->__construct()
+#1 /home/alohaubu/newsite.alohaubudswing.com/index.php(39): db()
+#2 /home/alohaubu/newsite.alohaubudswing.com/index.php(30): {closure}()
+#3 /home/alohaubu/newsite.alohaubudswing.com/index.php(38): homepage_cache()
+#4 {main}
+  thrown in /home/alohaubu/newsite.alohaubudswing.com/config/database.php on line 29
+[17-Sep-2026 04:12:33 Asia/Makassar] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /home/alohaubu/newsite.alohaubudswing.com/config/database.php:29
+Stack trace:
+#0 /home/alohaubu/newsite.alohaubudswing.com/config/database.php(29): PDO->__construct()
+#1 /home/alohaubu/newsite.alohaubudswing.com/index.php(39): db()
+#2 /home/alohaubu/newsite.alohaubudswing.com/index.php(30): {closure}()
+#3 /home/alohaubu/newsite.alohaubudswing.com/index.php(38): homepage_cache()
+#4 {main}
+  thrown in /home/alohaubu/newsite.alohaubudswing.com/config/database.php on line 29
+[17-Sep-2026 04:12:41 Asia/Makassar] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /home/alohaubu/newsite.alohaubudswing.com/config/database.php:29
+Stack trace:
+#0 /home/alohaubu/newsite.alohaubudswing.com/config/database.php(29): PDO->__construct()
+#1 /home/alohaubu/newsite.alohaubudswing.com/index.php(39): db()
+#2 /home/alohaubu/newsite.alohaubudswing.com/index.php(30): {closure}()
+#3 /home/alohaubu/newsite.alohaubudswing.com/index.php(38): homepage_cache()
+#4 {main}
+  thrown in /home/alohaubu/newsite.alohaubudswing.com/config/database.php on line 29
+[17-Sep-2026 04:14:19 Asia/Makassar] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /home/alohaubu/newsite.alohaubudswing.com/config/database.php:29
+Stack trace:
+#0 /home/alohaubu/newsite.alohaubudswing.com/config/database.php(29): PDO->__construct()
+#1 /home/alohaubu/newsite.alohaubudswing.com/index.php(39): db()
+#2 /home/alohaubu/newsite.alohaubudswing.com/index.php(30): {closure}()
+#3 /home/alohaubu/newsite.alohaubudswing.com/index.php(38): homepage_cache()
+#4 {main}
+  thrown in /home/alohaubu/newsite.alohaubudswing.com/config/database.php on line 29
+[17-Sep-2026 04:16:23 Asia/Makassar] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /home/alohaubu/newsite.alohaubudswing.com/config/database.php:29
+Stack trace:
+#0 /home/alohaubu/newsite.alohaubudswing.com/config/database.php(29): PDO->__construct()
+#1 /home/alohaubu/newsite.alohaubudswing.com/index.php(39): db()
+#2 /home/alohaubu/newsite.alohaubudswing.com/index.php(30): {closure}()
+#3 /home/alohaubu/newsite.alohaubudswing.com/index.php(38): homepage_cache()
+#4 {main}
+  thrown in /home/alohaubu/newsite.alohaubudswing.com/config/database.php on line 29
+[17-Sep-2026 04:18:18 Asia/Makassar] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /home/alohaubu/newsite.alohaubudswing.com/config/database.php:29
+Stack trace:
+#0 /home/alohaubu/newsite.alohaubudswing.com/config/database.php(29): PDO->__construct()
+#1 /home/alohaubu/newsite.alohaubudswing.com/index.php(39): db()
+#2 /home/alohaubu/newsite.alohaubudswing.com/index.php(30): {closure}()
+#3 /home/alohaubu/newsite.alohaubudswing.com/index.php(38): homepage_cache()
+#4 {main}
+  thrown in /home/alohaubu/newsite.alohaubudswing.com/config/database.php on line 29
+[17-Sep-2026 04:26:33 Asia/Makassar] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2002] Connection refused in /home/alohaubu/newsite.alohaubudswing.com/config/database.php:29
+Stack trace:
+#0 /home/alohaubu/newsite.alohaubudswing.com/config/database.php(29): PDO->__construct()
+#1 /home/alohaubu/newsite.alohaubudswing.com/index.php(39): db()
+#2 /home/alohaubu/newsite.alohaubudswing.com/index.php(30): {closure}()
+#3 /home/alohaubu/newsite.alohaubudswing.com/index.php(38): homepage_cache()
+#4 {main}
+  thrown in /home/alohaubu/newsite.alohaubudswing.com/config/database.php on line 29
+[17-Sep-2026 11:28:35 Asia/Makassar] PHP Fatal error:  Uncaught Error: Call to undefined function clean_public_url() in /home/alohaubu/newsite.alohaubudswing.com/about.php:151
+Stack trace:
+#0 {main}
+  thrown in /home/alohaubu/newsite.alohaubudswing.com/about.php on line 151
+[17-Sep-2026 11:28:41 Asia/Makassar] PHP Fatal error:  Uncaught Error: Call to undefined function clean_public_url() in /home/alohaubu/newsite.alohaubudswing.com/about.php:151
+Stack trace:
+#0 {main}
+  thrown in /home/alohaubu/newsite.alohaubudswing.com/about.php on line 151
+[17-Sep-2026 11:28:51 Asia/Makassar] PHP Fatal error:  Uncaught Error: Call to undefined function clean_public_url() in /home/alohaubu/newsite.alohaubudswing.com/about.php:151
+Stack trace:
+#0 {main}
+  thrown in /home/alohaubu/newsite.alohaubudswing.com/about.php on line 151
+[17-Sep-2026 11:28:58 Asia/Makassar] PHP Fatal error:  Uncaught Error: Call to undefined function clean_public_url() in /home/alohaubu/newsite.alohaubudswing.com/about.php:151
+Stack trace:
+#0 {main}
+  thrown in /home/alohaubu/newsite.alohaubudswing.com/about.php on line 151
+[17-Sep-2026 11:38:19 Asia/Makassar] PHP Fatal error:  Uncaught Error: Call to undefined function clean_public_url() in /home/alohaubu/newsite.alohaubudswing.com/about.php:151
+Stack trace:
+#0 {main}
+  thrown in /home/alohaubu/newsite.alohaubudswing.com/about.php on line 151
+[17-Sep-2026 11:39:12 Asia/Makassar] PHP Fatal error:  Uncaught Error: Call to undefined function clean_public_url() in /home/alohaubu/newsite.alohaubudswing.com/about.php:151
+Stack trace:
+#0 {main}
+  thrown in /home/alohaubu/newsite.alohaubudswing.com/about.php on line 151
+[17-Sep-2026 11:39:17 Asia/Makassar] PHP Fatal error:  Uncaught Error: Call to undefined function clean_public_url() in /home/alohaubu/newsite.alohaubudswing.com/about.php:151
+Stack trace:
+#0 {main}
+  thrown in /home/alohaubu/newsite.alohaubudswing.com/about.php on line 151
+[17-Sep-2026 11:50:30 Asia/Makassar] PHP Fatal error:  Uncaught Error: Call to undefined function clean_public_url() in /home/alohaubu/newsite.alohaubudswing.com/about.php:151
+Stack trace:
+#0 {main}
+  thrown in /home/alohaubu/newsite.alohaubudswing.com/about.php on line 151
+[17-Sep-2026 11:52:56 Asia/Makassar] PHP Fatal error:  Uncaught Error: Call to undefined function clean_public_url() in /home/alohaubu/newsite.alohaubudswing.com/about.php:151
+Stack trace:
+#0 {main}
+  thrown in /home/alohaubu/newsite.alohaubudswing.com/about.php on line 151
+[17-Sep-2026 12:04:59 Asia/Makassar] PHP Fatal error:  Uncaught Error: Call to undefined function clean_public_url() in /home/alohaubu/newsite.alohaubudswing.com/about.php:151
+Stack trace:
+#0 {main}
+  thrown in /home/alohaubu/newsite.alohaubudswing.com/about.php on line 151
+[17-Sep-2026 12:09:33 Asia/Makassar] PHP Fatal error:  Uncaught Error: Call to undefined function clean_public_url() in /home/alohaubu/newsite.alohaubudswing.com/about.php:151
+Stack trace:
+#0 {main}
+  thrown in /home/alohaubu/newsite.alohaubudswing.com/about.php on line 151
+[17-Sep-2026 12:14:16 Asia/Makassar] PHP Fatal error:  Uncaught Error: Call to undefined function clean_public_url() in /home/alohaubu/newsite.alohaubudswing.com/about.php:151
+Stack trace:
+#0 {main}
+  thrown in /home/alohaubu/newsite.alohaubudswing.com/about.php on line 151
+[17-Sep-2026 12:20:02 Asia/Makassar] PHP Fatal error:  Uncaught Error: Call to undefined function clean_public_url() in /home/alohaubu/newsite.alohaubudswing.com/about.php:151
+Stack trace:
+#0 {main}
+  thrown in /home/alohaubu/newsite.alohaubudswing.com/about.php on line 151
+[17-Sep-2026 12:27:30 Asia/Makassar] PHP Fatal error:  Uncaught Error: Call to undefined function clean_public_url() in /home/alohaubu/newsite.alohaubudswing.com/about.php:151
+Stack trace:
+#0 {main}
+  thrown in /home/alohaubu/newsite.alohaubudswing.com/about.php on line 151
+[17-Sep-2026 12:27:33 Asia/Makassar] PHP Fatal error:  Uncaught Error: Call to undefined function clean_public_url() in /home/alohaubu/newsite.alohaubudswing.com/about.php:151
+Stack trace:
+#0 {main}
+  thrown in /home/alohaubu/newsite.alohaubudswing.com/about.php on line 151
+[17-Sep-2026 12:27:39 Asia/Makassar] PHP Fatal error:  Uncaught Error: Call to undefined function clean_public_url() in /home/alohaubu/newsite.alohaubudswing.com/about.php:151
+Stack trace:
+#0 {main}
+  thrown in /home/alohaubu/newsite.alohaubudswing.com/about.php on line 151
+[17-Sep-2026 12:29:06 Asia/Makassar] PHP Fatal error:  Uncaught Error: Call to undefined function clean_public_url() in /home/alohaubu/newsite.alohaubudswing.com/about.php:151
+Stack trace:
+#0 {main}
+  thrown in /home/alohaubu/newsite.alohaubudswing.com/about.php on line 151
+[17-Sep-2026 12:29:13 Asia/Makassar] PHP Fatal error:  Uncaught Error: Call to undefined function clean_public_url() in /home/alohaubu/newsite.alohaubudswing.com/about.php:151
+Stack trace:
+#0 {main}
+  thrown in /home/alohaubu/newsite.alohaubudswing.com/about.php on line 151
+[17-Sep-2026 12:29:36 Asia/Makassar] PHP Fatal error:  Uncaught Error: Call to undefined function clean_public_url() in /home/alohaubu/newsite.alohaubudswing.com/about.php:151
+Stack trace:
+#0 {main}
+  thrown in /home/alohaubu/newsite.alohaubudswing.com/about.php on line 151
+[17-Sep-2026 12:31:09 Asia/Makassar] PHP Fatal error:  Uncaught Error: Call to undefined function clean_public_url() in /home/alohaubu/newsite.alohaubudswing.com/about.php:151
+Stack trace:
+#0 {main}
+  thrown in /home/alohaubu/newsite.alohaubudswing.com/about.php on line 151
+[17-Sep-2026 12:31:28 Asia/Makassar] PHP Fatal error:  Uncaught Error: Call to undefined function clean_public_url() in /home/alohaubu/newsite.alohaubudswing.com/about.php:151
+Stack trace:
+#0 {main}
+  thrown in /home/alohaubu/newsite.alohaubudswing.com/about.php on line 151
+[17-Sep-2026 12:31:40 Asia/Makassar] PHP Fatal error:  Uncaught Error: Call to undefined function clean_public_url() in /home/alohaubu/newsite.alohaubudswing.com/about.php:151
+Stack trace:
+#0 {main}
+  thrown in /home/alohaubu/newsite.alohaubudswing.com/about.php on line 151
+[17-Sep-2026 12:31:46 Asia/Makassar] PHP Fatal error:  Uncaught Error: Call to undefined function clean_public_url() in /home/alohaubu/newsite.alohaubudswing.com/about.php:151
+Stack trace:
+#0 {main}
+  thrown in /home/alohaubu/newsite.alohaubudswing.com/about.php on line 151
+[17-Sep-2026 14:18:00 Asia/Makassar] PHP Warning:  Undefined variable $p in /home/alohaubu/newsite.alohaubudswing.com/package.php on line 497
+[17-Sep-2026 14:18:00 Asia/Makassar] PHP Warning:  Trying to access array offset on null in /home/alohaubu/newsite.alohaubudswing.com/package.php on line 497
+[17-Sep-2026 14:55:20 Asia/Makassar] [BTA EMAIL] Customer pradiva.widya@gmail.com sent for BTA-20260917-8DF6A1
+[17-Sep-2026 14:55:20 Asia/Makassar] [BTA EMAIL] Reservation social@alohaubudswing.com sent for BTA-20260917-8DF6A1
+[17-Sep-2026 15:12:35 Asia/Makassar] PHP Warning:  Undefined variable $p in /home/alohaubu/newsite.alohaubudswing.com/package.php on line 497
+[17-Sep-2026 15:12:35 Asia/Makassar] PHP Warning:  Trying to access array offset on null in /home/alohaubu/newsite.alohaubudswing.com/package.php on line 497
+[17-Sep-2026 15:14:06 Asia/Makassar] [BTA EMAIL] Customer pradiva.widya@gmail.com sent for BTA-20260917-BB65E5
+[17-Sep-2026 15:14:06 Asia/Makassar] [BTA EMAIL] Reservation social@alohaubudswing.com sent for BTA-20260917-BB65E5
+[17-Sep-2026 15:21:45 Asia/Makassar] [BTA EMAIL] Customer pradiva.widya@gmail.com sent for BTA-20260917-AE2D58
+[17-Sep-2026 15:21:45 Asia/Makassar] [BTA EMAIL] Reservation social@alohaubudswing.com sent for BTA-20260917-AE2D58
+[17-Sep-2026 16:30:47 Asia/Makassar] [BTA EMAIL] Customer pradiva.widya@gmail.com sent for BTA-20260917-6D18F2
+[17-Sep-2026 16:30:47 Asia/Makassar] [BTA EMAIL] Reservation social@alohaubudswing.com sent for BTA-20260917-6D18F2
+[21-Sep-2026 17:36:08 Asia/Makassar] PHP Warning:  Undefined variable $p in /home/alohaubu/newsite.alohaubudswing.com/package.php on line 497
+[21-Sep-2026 17:36:08 Asia/Makassar] PHP Warning:  Trying to access array offset on null in /home/alohaubu/newsite.alohaubudswing.com/package.php on line 497
+[21-Sep-2026 17:36:48 Asia/Makassar] PHP Warning:  Undefined variable $p in /home/alohaubu/newsite.alohaubudswing.com/package.php on line 497
+[21-Sep-2026 17:36:48 Asia/Makassar] PHP Warning:  Trying to access array offset on null in /home/alohaubu/newsite.alohaubudswing.com/package.php on line 497
+[21-Sep-2026 17:43:08 Asia/Makassar] PHP Warning:  Undefined array key "price_adult" in /home/alohaubu/newsite.alohaubudswing.com/my-booking.php on line 100
+[21-Sep-2026 17:48:28 Asia/Makassar] PHP Warning:  Undefined variable $p in /home/alohaubu/newsite.alohaubudswing.com/package.php on line 497
+[21-Sep-2026 17:48:28 Asia/Makassar] PHP Warning:  Trying to access array offset on null in /home/alohaubu/newsite.alohaubudswing.com/package.php on line 497
+[21-Sep-2026 20:13:28 Asia/Makassar] [BTA EMAIL] Customer pradiva.widya@gmail.com sent for BTA-20260921-09F052
+[21-Sep-2026 20:13:28 Asia/Makassar] [BTA EMAIL] Reservation social@alohaubudswing.com sent for BTA-20260921-09F052
+[21-Sep-2026 20:21:04 Asia/Makassar] [BTA EMAIL] Customer pradiva.widya@gmail.com sent for BTA-20260921-2DCD8C
+[21-Sep-2026 20:21:04 Asia/Makassar] [BTA EMAIL] Reservation social@alohaubudswing.com sent for BTA-20260921-2DCD8C
+[21-Sep-2026 20:21:42 Asia/Makassar] [BTA EMAIL] Customer pradiva.widya@gmail.com sent for BTA-20260921-43394C
+[21-Sep-2026 20:21:42 Asia/Makassar] [BTA EMAIL] Reservation social@alohaubudswing.com sent for BTA-20260921-43394C
+[21-Sep-2026 22:07:04 Asia/Makassar] [BTA MIDTRANS] Snap token created for BTA-20260921-E4C2E6 (HTTP 201).
+[21-Sep-2026 22:21:34 Asia/Makassar] [BTA MIDTRANS] Snap token created for BTA-20260921-E4C2E6 (HTTP 201).
+[21-Sep-2026 22:22:51 Asia/Makassar] [BTA MIDTRANS] Non-final status received for BTA-20260921-E4C2E6: pending
+[21-Sep-2026 22:23:01 Asia/Makassar] [BTA MIDTRANS] Payment confirmed for BTA-20260921-E4C2E6 (settlement).
+[21-Sep-2026 22:29:18 Asia/Makassar] [BTA MIDTRANS] Snap token created for BTA-20260921-70F099 (HTTP 201).
+[21-Sep-2026 22:35:50 Asia/Makassar] [BTA MIDTRANS] Snap token created for BTA-20260921-70F099 (HTTP 201).
+[21-Sep-2026 22:39:46 Asia/Makassar] [BTA MIDTRANS] Non-final status received for BTA-20260921-70F099: pending
+[21-Sep-2026 22:39:52 Asia/Makassar] [BTA MIDTRANS] Payment confirmed for BTA-20260921-70F099 (settlement).
+[21-Sep-2026 22:45:16 Asia/Makassar] [BTA MIDTRANS] Snap token created for BTA-20260921-8A5E95 (HTTP 201).
+[21-Sep-2026 22:45:25 Asia/Makassar] [BTA MIDTRANS] Non-final status received for BTA-20260921-8A5E95: pending
+[22-Sep-2026 13:36:58 Asia/Makassar] PHP Warning:  Undefined variable $bgStyle in /home/alohaubu/newsite.alohaubudswing.com/includes/footer.php on line 49
+[22-Sep-2026 13:36:58 Asia/Makassar] PHP Warning:  Undefined variable $footerName in /home/alohaubu/newsite.alohaubudswing.com/includes/footer.php on line 53
+[22-Sep-2026 13:36:58 Asia/Makassar] PHP Warning:  Undefined variable $footerLogo in /home/alohaubu/newsite.alohaubudswing.com/includes/footer.php on line 54
+[22-Sep-2026 13:36:58 Asia/Makassar] PHP Warning:  Undefined variable $footerName in /home/alohaubu/newsite.alohaubudswing.com/includes/footer.php on line 56
+[22-Sep-2026 13:36:58 Asia/Makassar] PHP Warning:  Undefined variable $footerDesc in /home/alohaubu/newsite.alohaubudswing.com/includes/footer.php on line 57
+[22-Sep-2026 13:36:58 Asia/Makassar] PHP Warning:  Undefined variable $socials in /home/alohaubu/newsite.alohaubudswing.com/includes/footer.php on line 59
+[22-Sep-2026 13:36:58 Asia/Makassar] PHP Warning:  foreach() argument must be of type array|object, null given in /home/alohaubu/newsite.alohaubudswing.com/includes/footer.php on line 59
+[22-Sep-2026 13:36:58 Asia/Makassar] PHP Warning:  Undefined variable $footerName in /home/alohaubu/newsite.alohaubudswing.com/includes/footer.php on line 65
+[22-Sep-2026 13:36:58 Asia/Makassar] PHP Warning:  Undefined variable $footerTag in /home/alohaubu/newsite.alohaubudswing.com/includes/footer.php on line 66
+[22-Sep-2026 13:36:58 Asia/Makassar] PHP Warning:  Undefined variable $quickLinks in /home/alohaubu/newsite.alohaubudswing.com/includes/footer.php on line 71
+[22-Sep-2026 13:36:58 Asia/Makassar] PHP Warning:  foreach() argument must be of type array|object, null given in /home/alohaubu/newsite.alohaubudswing.com/includes/footer.php on line 71
+[22-Sep-2026 13:36:58 Asia/Makassar] PHP Warning:  Undefined variable $popularLinks in /home/alohaubu/newsite.alohaubudswing.com/includes/footer.php on line 76
+[22-Sep-2026 13:36:58 Asia/Makassar] PHP Warning:  foreach() argument must be of type array|object, null given in /home/alohaubu/newsite.alohaubudswing.com/includes/footer.php on line 76
+[22-Sep-2026 13:36:58 Asia/Makassar] PHP Warning:  Undefined variable $footerSlides in /home/alohaubu/newsite.alohaubudswing.com/includes/footer.php on line 92
+[22-Sep-2026 13:36:58 Asia/Makassar] PHP Warning:  Undefined variable $footerSlides in /home/alohaubu/newsite.alohaubudswing.com/includes/footer.php on line 117
+[22-Sep-2026 13:36:58 Asia/Makassar] PHP Fatal error:  Uncaught TypeError: count(): Argument #1 ($value) must be of type Countable|array, null given in /home/alohaubu/newsite.alohaubudswing.com/includes/footer.php:117
+Stack trace:
+#0 /home/alohaubu/newsite.alohaubudswing.com/package.php(637): require()
+#1 {main}
+  thrown in /home/alohaubu/newsite.alohaubudswing.com/includes/footer.php on line 117
+[22-Sep-2026 13:37:16 Asia/Makassar] PHP Warning:  Undefined variable $bgStyle in /home/alohaubu/newsite.alohaubudswing.com/includes/footer.php on line 49
+[22-Sep-2026 13:37:16 Asia/Makassar] PHP Warning:  Undefined variable $footerName in /home/alohaubu/newsite.alohaubudswing.com/includes/footer.php on line 53
+[22-Sep-2026 13:37:16 Asia/Makassar] PHP Warning:  Undefined variable $footerLogo in /home/alohaubu/newsite.alohaubudswing.com/includes/footer.php on line 54
+[22-Sep-2026 13:37:16 Asia/Makassar] PHP Warning:  Undefined variable $footerName in /home/alohaubu/newsite.alohaubudswing.com/includes/footer.php on line 56
+[22-Sep-2026 13:37:16 Asia/Makassar] PHP Warning:  Undefined variable $footerDesc in /home/alohaubu/newsite.alohaubudswing.com/includes/footer.php on line 57
+[22-Sep-2026 13:37:16 Asia/Makassar] PHP Warning:  Undefined variable $socials in /home/alohaubu/newsite.alohaubudswing.com/includes/footer.php on line 59
+[22-Sep-2026 13:37:16 Asia/Makassar] PHP Warning:  foreach() argument must be of type array|object, null given in /home/alohaubu/newsite.alohaubudswing.com/includes/footer.php on line 59
+[22-Sep-2026 13:37:16 Asia/Makassar] PHP Warning:  Undefined variable $footerName in /home/alohaubu/newsite.alohaubudswing.com/includes/footer.php on line 65
+[22-Sep-2026 13:37:16 Asia/Makassar] PHP Warning:  Undefined variable $footerTag in /home/alohaubu/newsite.alohaubudswing.com/includes/footer.php on line 66
+[22-Sep-2026 13:37:16 Asia/Makassar] PHP Warning:  Undefined variable $quickLinks in /home/alohaubu/newsite.alohaubudswing.com/includes/footer.php on line 71
+[22-Sep-2026 13:37:16 Asia/Makassar] PHP Warning:  foreach() argument must be of type array|object, null given in /home/alohaubu/newsite.alohaubudswing.com/includes/footer.php on line 71
+[22-Sep-2026 13:37:16 Asia/Makassar] PHP Warning:  Undefined variable $popularLinks in /home/alohaubu/newsite.alohaubudswing.com/includes/footer.php on line 76
+[22-Sep-2026 13:37:16 Asia/Makassar] PHP Warning:  foreach() argument must be of type array|object, null given in /home/alohaubu/newsite.alohaubudswing.com/includes/footer.php on line 76
+[22-Sep-2026 13:37:16 Asia/Makassar] PHP Warning:  Undefined variable $footerSlides in /home/alohaubu/newsite.alohaubudswing.com/includes/footer.php on line 92
+[22-Sep-2026 13:37:16 Asia/Makassar] PHP Warning:  Undefined variable $footerSlides in /home/alohaubu/newsite.alohaubudswing.com/includes/footer.php on line 117
+[22-Sep-2026 13:37:16 Asia/Makassar] PHP Fatal error:  Uncaught TypeError: count(): Argument #1 ($value) must be of type Countable|array, null given in /home/alohaubu/newsite.alohaubudswing.com/includes/footer.php:117
+Stack trace:
+#0 /home/alohaubu/newsite.alohaubudswing.com/package.php(637): require()
+#1 {main}
+  thrown in /home/alohaubu/newsite.alohaubudswing.com/includes/footer.php on line 117
+[23-Sep-2026 11:43:25 Asia/Makassar] [BTA MIDTRANS] Snap token created for ALOHA-20260923-59C7CF (HTTP 201).
+[23-Sep-2026 11:43:38 Asia/Makassar] [BTA MIDTRANS] Non-final status received for ALOHA-20260923-59C7CF: pending
+[23-Sep-2026 11:43:44 Asia/Makassar] [BTA MIDTRANS] Payment confirmed for ALOHA-20260923-59C7CF (settlement).
+[23-Sep-2026 12:07:03 Asia/Makassar] PHP Warning:  Undefined array key "price_adult" in /home/alohaubu/newsite.alohaubudswing.com/my-booking.php on line 100
+[23-Sep-2026 12:40:26 Asia/Makassar] [BTA MIDTRANS] Snap token created for BTA-20260923-C524DF (HTTP 201).
+[23-Sep-2026 12:40:41 Asia/Makassar] [BTA MIDTRANS] Non-final status received for BTA-20260923-C524DF: pending
+[23-Sep-2026 12:40:51 Asia/Makassar] [BTA MIDTRANS] Payment confirmed for BTA-20260923-C524DF (settlement).
+[23-Sep-2026 12:51:18 Asia/Makassar] PHP Warning:  Undefined array key "price_adult" in /home/alohaubu/newsite.alohaubudswing.com/my-booking.php on line 107
+[23-Sep-2026 13:22:13 Asia/Makassar] PHP Warning:  Undefined array key "price_adult" in /home/alohaubu/newsite.alohaubudswing.com/my-booking.php on line 107
+[23-Sep-2026 13:29:25 Asia/Makassar] [BTA MIDTRANS] Snap token created for BTA-20260923-07F20F (HTTP 201).
+[23-Sep-2026 13:29:48 Asia/Makassar] [BTA MIDTRANS] Non-final status received for BTA-20260923-07F20F: pending
+[23-Sep-2026 13:30:00 Asia/Makassar] [BTA MIDTRANS] Payment confirmed for BTA-20260923-07F20F (settlement).
+[23-Sep-2026 13:32:04 Asia/Makassar] PHP Warning:  Undefined array key "price_adult" in /home/alohaubu/newsite.alohaubudswing.com/my-booking.php on line 107
+[23-Sep-2026 13:32:04 Asia/Makassar] PHP Warning:  Undefined array key "price_adult" in /home/alohaubu/newsite.alohaubudswing.com/my-booking.php on line 107
+[23-Sep-2026 13:38:50 Asia/Makassar] PHP Warning:  Undefined array key "price_adult" in /home/alohaubu/newsite.alohaubudswing.com/my-booking.php on line 107
+[23-Sep-2026 13:39:30 Asia/Makassar] PHP Warning:  Undefined array key "price_adult" in /home/alohaubu/newsite.alohaubudswing.com/my-booking.php on line 107
+[23-Sep-2026 13:40:09 Asia/Makassar] [BTA MIDTRANS] Snap token created for BTA-20260923-F2A7CD (HTTP 201).
+[23-Sep-2026 13:40:16 Asia/Makassar] [BTA MIDTRANS] Non-final status received for BTA-20260923-F2A7CD: pending
+[23-Sep-2026 13:40:29 Asia/Makassar] [BTA MIDTRANS] Payment confirmed for BTA-20260923-F2A7CD (settlement).
+[23-Sep-2026 13:50:42 Asia/Makassar] [BTA MIDTRANS] Snap token created for BTA-20260923-414204 (HTTP 201).
+[23-Sep-2026 13:51:01 Asia/Makassar] [BTA MIDTRANS] Non-final status received for BTA-20260923-414204: pending
+[23-Sep-2026 13:51:39 Asia/Makassar] [BTA MIDTRANS] Payment confirmed for BTA-20260923-414204 (settlement).
+[23-Sep-2026 14:21:24 Asia/Makassar] PHP Warning:  Undefined array key "price_adult" in /home/alohaubu/newsite.alohaubudswing.com/my-booking.php on line 107
+[26-Sep-2026 15:17:56 Asia/Makassar] PHP Warning:  Undefined variable $p in /home/alohaubu/newsite.alohaubudswing.com/package.php on line 494
+[26-Sep-2026 15:17:56 Asia/Makassar] PHP Warning:  Trying to access array offset on null in /home/alohaubu/newsite.alohaubudswing.com/package.php on line 494
+[28-Sep-2026 14:37:50 Asia/Makassar] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42000] [1044] Access denied for user 'manuabac_crystalfall'@'localhost' to database 'manuabac_crystalfall' in /home/manuabac/public_html/config/database.php:36
+Stack trace:
+#0 /home/manuabac/public_html/config/database.php(36): PDO->__construct()
+#1 /home/manuabac/public_html/index.php(39): db()
+#2 /home/manuabac/public_html/index.php(30): {closure}()
+#3 /home/manuabac/public_html/index.php(42): homepage_cache()
+#4 {main}
+  thrown in /home/manuabac/public_html/config/database.php on line 36
+[28-Sep-2026 14:37:53 Asia/Makassar] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42000] [1044] Access denied for user 'manuabac_crystalfall'@'localhost' to database 'manuabac_crystalfall' in /home/manuabac/public_html/config/database.php:36
+Stack trace:
+#0 /home/manuabac/public_html/config/database.php(36): PDO->__construct()
+#1 /home/manuabac/public_html/index.php(39): db()
+#2 /home/manuabac/public_html/index.php(30): {closure}()
+#3 /home/manuabac/public_html/index.php(42): homepage_cache()
+#4 {main}
+  thrown in /home/manuabac/public_html/config/database.php on line 36
+[28-Sep-2026 14:37:55 Asia/Makassar] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42000] [1044] Access denied for user 'manuabac_crystalfall'@'localhost' to database 'manuabac_crystalfall' in /home/manuabac/public_html/config/database.php:36
+Stack trace:
+#0 /home/manuabac/public_html/config/database.php(36): PDO->__construct()
+#1 /home/manuabac/public_html/index.php(39): db()
+#2 /home/manuabac/public_html/index.php(30): {closure}()
+#3 /home/manuabac/public_html/index.php(42): homepage_cache()
+#4 {main}
+  thrown in /home/manuabac/public_html/config/database.php on line 36
+[28-Sep-2026 14:40:46 Asia/Makassar] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42000] [1044] Access denied for user 'manuabac_crystalfall'@'localhost' to database 'manuabac_crystalfall' in /home/manuabac/public_html/config/database.php:36
+Stack trace:
+#0 /home/manuabac/public_html/config/database.php(36): PDO->__construct()
+#1 /home/manuabac/public_html/index.php(39): db()
+#2 /home/manuabac/public_html/index.php(30): {closure}()
+#3 /home/manuabac/public_html/index.php(42): homepage_cache()
+#4 {main}
+  thrown in /home/manuabac/public_html/config/database.php on line 36
+[28-Sep-2026 14:46:33 Asia/Makassar] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42000] [1044] Access denied for user 'manuabac_crystalfall'@'localhost' to database 'manuabac_crystalfall' in /home/manuabac/public_html/config/database.php:36
+Stack trace:
+#0 /home/manuabac/public_html/config/database.php(36): PDO->__construct()
+#1 /home/manuabac/public_html/index.php(39): db()
+#2 /home/manuabac/public_html/index.php(30): {closure}()
+#3 /home/manuabac/public_html/index.php(42): homepage_cache()
+#4 {main}
+  thrown in /home/manuabac/public_html/config/database.php on line 36
+[28-Sep-2026 14:46:34 Asia/Makassar] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42000] [1044] Access denied for user 'manuabac_crystalfall'@'localhost' to database 'manuabac_crystalfall' in /home/manuabac/public_html/config/database.php:36
+Stack trace:
+#0 /home/manuabac/public_html/config/database.php(36): PDO->__construct()
+#1 /home/manuabac/public_html/index.php(39): db()
+#2 /home/manuabac/public_html/index.php(30): {closure}()
+#3 /home/manuabac/public_html/index.php(42): homepage_cache()
+#4 {main}
+  thrown in /home/manuabac/public_html/config/database.php on line 36
+[28-Sep-2026 14:46:34 Asia/Makassar] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42000] [1044] Access denied for user 'manuabac_crystalfall'@'localhost' to database 'manuabac_crystalfall' in /home/manuabac/public_html/config/database.php:36
+Stack trace:
+#0 /home/manuabac/public_html/config/database.php(36): PDO->__construct()
+#1 /home/manuabac/public_html/index.php(39): db()
+#2 /home/manuabac/public_html/index.php(30): {closure}()
+#3 /home/manuabac/public_html/index.php(42): homepage_cache()
+#4 {main}
+  thrown in /home/manuabac/public_html/config/database.php on line 36
+[28-Sep-2026 14:46:34 Asia/Makassar] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42000] [1044] Access denied for user 'manuabac_crystalfall'@'localhost' to database 'manuabac_crystalfall' in /home/manuabac/public_html/config/database.php:36
+Stack trace:
+#0 /home/manuabac/public_html/config/database.php(36): PDO->__construct()
+#1 /home/manuabac/public_html/index.php(39): db()
+#2 /home/manuabac/public_html/index.php(30): {closure}()
+#3 /home/manuabac/public_html/index.php(42): homepage_cache()
+#4 {main}
+  thrown in /home/manuabac/public_html/config/database.php on line 36
+[28-Sep-2026 14:47:12 Asia/Makassar] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42000] [1044] Access denied for user 'manuabac_crystalfall'@'localhost' to database 'manuabac_crystalfall' in /home/manuabac/public_html/config/database.php:36
+Stack trace:
+#0 /home/manuabac/public_html/config/database.php(36): PDO->__construct()
+#1 /home/manuabac/public_html/index.php(39): db()
+#2 /home/manuabac/public_html/index.php(30): {closure}()
+#3 /home/manuabac/public_html/index.php(42): homepage_cache()
+#4 {main}
+  thrown in /home/manuabac/public_html/config/database.php on line 36
+[28-Sep-2026 14:50:21 Asia/Makassar] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [1044] Access denied for user 'manuabac_crystalfall'@'localhost' to database 'manuabac_crystalfall' in /home/manuabac/public_html/config/database.php:35
+Stack trace:
+#0 /home/manuabac/public_html/config/database.php(35): PDO->__construct()
+#1 /home/manuabac/public_html/index.php(39): db()
+#2 /home/manuabac/public_html/index.php(30): {closure}()
+#3 /home/manuabac/public_html/index.php(38): homepage_cache()
+#4 {main}
+  thrown in /home/manuabac/public_html/config/database.php on line 35
+[28-Sep-2026 14:50:25 Asia/Makassar] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [1044] Access denied for user 'manuabac_crystalfall'@'localhost' to database 'manuabac_crystalfall' in /home/manuabac/public_html/config/database.php:35
+Stack trace:
+#0 /home/manuabac/public_html/config/database.php(35): PDO->__construct()
+#1 /home/manuabac/public_html/index.php(39): db()
+#2 /home/manuabac/public_html/index.php(30): {closure}()
+#3 /home/manuabac/public_html/index.php(38): homepage_cache()
+#4 {main}
+  thrown in /home/manuabac/public_html/config/database.php on line 35
+[28-Sep-2026 14:50:28 Asia/Makassar] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [1044] Access denied for user 'manuabac_crystalfall'@'localhost' to database 'manuabac_crystalfall' in /home/manuabac/public_html/config/database.php:35
+Stack trace:
+#0 /home/manuabac/public_html/config/database.php(35): PDO->__construct()
+#1 /home/manuabac/public_html/index.php(39): db()
+#2 /home/manuabac/public_html/index.php(30): {closure}()
+#3 /home/manuabac/public_html/index.php(38): homepage_cache()
+#4 {main}
+  thrown in /home/manuabac/public_html/config/database.php on line 35
+[28-Sep-2026 14:50:28 Asia/Makassar] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [1044] Access denied for user 'manuabac_crystalfall'@'localhost' to database 'manuabac_crystalfall' in /home/manuabac/public_html/config/database.php:35
+Stack trace:
+#0 /home/manuabac/public_html/config/database.php(35): PDO->__construct()
+#1 /home/manuabac/public_html/index.php(39): db()
+#2 /home/manuabac/public_html/index.php(30): {closure}()
+#3 /home/manuabac/public_html/index.php(38): homepage_cache()
+#4 {main}
+  thrown in /home/manuabac/public_html/config/database.php on line 35
+[28-Sep-2026 14:50:28 Asia/Makassar] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [1044] Access denied for user 'manuabac_crystalfall'@'localhost' to database 'manuabac_crystalfall' in /home/manuabac/public_html/config/database.php:35
+Stack trace:
+#0 /home/manuabac/public_html/config/database.php(35): PDO->__construct()
+#1 /home/manuabac/public_html/index.php(39): db()
+#2 /home/manuabac/public_html/index.php(30): {closure}()
+#3 /home/manuabac/public_html/index.php(38): homepage_cache()
+#4 {main}
+  thrown in /home/manuabac/public_html/config/database.php on line 35
+[28-Sep-2026 14:59:23 Asia/Makassar] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [1044] Access denied for user 'manuabac_crystalfall'@'localhost' to database 'manuabac_crystalfall' in /home/manuabac/public_html/config/database.php:35
+Stack trace:
+#0 /home/manuabac/public_html/config/database.php(35): PDO->__construct()
+#1 /home/manuabac/public_html/index.php(39): db()
+#2 /home/manuabac/public_html/index.php(30): {closure}()
+#3 /home/manuabac/public_html/index.php(38): homepage_cache()
+#4 {main}
+  thrown in /home/manuabac/public_html/config/database.php on line 35
+[28-Sep-2026 14:59:24 Asia/Makassar] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [1044] Access denied for user 'manuabac_crystalfall'@'localhost' to database 'manuabac_crystalfall' in /home/manuabac/public_html/config/database.php:35
+Stack trace:
+#0 /home/manuabac/public_html/config/database.php(35): PDO->__construct()
+#1 /home/manuabac/public_html/index.php(39): db()
+#2 /home/manuabac/public_html/index.php(30): {closure}()
+#3 /home/manuabac/public_html/index.php(38): homepage_cache()
+#4 {main}
+  thrown in /home/manuabac/public_html/config/database.php on line 35
+[28-Sep-2026 14:59:24 Asia/Makassar] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [1044] Access denied for user 'manuabac_crystalfall'@'localhost' to database 'manuabac_crystalfall' in /home/manuabac/public_html/config/database.php:35
+Stack trace:
+#0 /home/manuabac/public_html/config/database.php(35): PDO->__construct()
+#1 /home/manuabac/public_html/index.php(39): db()
+#2 /home/manuabac/public_html/index.php(30): {closure}()
+#3 /home/manuabac/public_html/index.php(38): homepage_cache()
+#4 {main}
+  thrown in /home/manuabac/public_html/config/database.php on line 35
+[28-Sep-2026 14:59:24 Asia/Makassar] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [1044] Access denied for user 'manuabac_crystalfall'@'localhost' to database 'manuabac_crystalfall' in /home/manuabac/public_html/config/database.php:35
+Stack trace:
+#0 /home/manuabac/public_html/config/database.php(35): PDO->__construct()
+#1 /home/manuabac/public_html/index.php(39): db()
+#2 /home/manuabac/public_html/index.php(30): {closure}()
+#3 /home/manuabac/public_html/index.php(38): homepage_cache()
+#4 {main}
+  thrown in /home/manuabac/public_html/config/database.php on line 35
+[28-Sep-2026 15:03:10 Asia/Makassar] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [1044] Access denied for user 'manuabac_crystalfall'@'localhost' to database 'manuabac_crystalfall' in /home/manuabac/public_html/config/database.php:35
+Stack trace:
+#0 /home/manuabac/public_html/config/database.php(35): PDO->__construct()
+#1 /home/manuabac/public_html/index.php(39): db()
+#2 /home/manuabac/public_html/index.php(30): {closure}()
+#3 /home/manuabac/public_html/index.php(38): homepage_cache()
+#4 {main}
+  thrown in /home/manuabac/public_html/config/database.php on line 35
+[28-Sep-2026 15:03:14 Asia/Makassar] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [1044] Access denied for user 'manuabac_crystalfall'@'localhost' to database 'manuabac_crystalfall' in /home/manuabac/public_html/config/database.php:35
+Stack trace:
+#0 /home/manuabac/public_html/config/database.php(35): PDO->__construct()
+#1 /home/manuabac/public_html/index.php(39): db()
+#2 /home/manuabac/public_html/index.php(30): {closure}()
+#3 /home/manuabac/public_html/index.php(38): homepage_cache()
+#4 {main}
+  thrown in /home/manuabac/public_html/config/database.php on line 35
+[28-Sep-2026 15:05:44 Asia/Makassar] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [1044] Access denied for user 'manuabac_crystalfall'@'localhost' to database 'manuabac_crystalfall' in /home/manuabac/public_html/config/database.php:35
+Stack trace:
+#0 /home/manuabac/public_html/config/database.php(35): PDO->__construct()
+#1 /home/manuabac/public_html/index.php(39): db()
+#2 /home/manuabac/public_html/index.php(30): {closure}()
+#3 /home/manuabac/public_html/index.php(38): homepage_cache()
+#4 {main}
+  thrown in /home/manuabac/public_html/config/database.php on line 35
+[29-Sep-2026 06:18:17 Asia/Makassar] PHP Warning:  Undefined variable $p in /home/manuabac/public_html/package.php on line 494
+[29-Sep-2026 06:18:17 Asia/Makassar] PHP Warning:  Trying to access array offset on null in /home/manuabac/public_html/package.php on line 494
+[29-Sep-2026 09:52:02 Asia/Makassar] PHP Warning:  Undefined variable $p in /home/manuabac/public_html/package.php on line 494
+[29-Sep-2026 09:52:02 Asia/Makassar] PHP Warning:  Trying to access array offset on null in /home/manuabac/public_html/package.php on line 494
+[29-Sep-2026 10:32:29 Asia/Makassar] PHP Warning:  Undefined variable $p in /home/manuabac/public_html/package.php on line 494
+[29-Sep-2026 10:32:29 Asia/Makassar] PHP Warning:  Trying to access array offset on null in /home/manuabac/public_html/package.php on line 494
+[30-Sep-2026 05:59:18 Asia/Makassar] [BTA CONTACT EMAIL] info@manuabacrystalfall.com failed: Connection failed (110): Connection timed out
+[30-Sep-2026 17:04:50 Asia/Makassar] PHP Fatal error:  Uncaught Error: Call to undefined function site_icon_html() in /home/manuabac/public_html/404.php:102
+Stack trace:
+#0 {main}
+  thrown in /home/manuabac/public_html/404.php on line 102
+[01-Oct-2026 01:06:32 Asia/Makassar] [BTA CONTACT EMAIL] info@manuabacrystalfall.com failed: Connection failed (110): Connection timed out
+[01-Oct-2026 02:02:44 Asia/Makassar] [BTA CONTACT EMAIL] info@manuabacrystalfall.com failed: Connection failed (110): Connection timed out
+[01-Oct-2026 02:16:32 Asia/Makassar] PHP Warning:  Undefined variable $p in /home/manuabac/public_html/package.php on line 494
+[01-Oct-2026 02:16:32 Asia/Makassar] PHP Warning:  Trying to access array offset on null in /home/manuabac/public_html/package.php on line 494
+[01-Oct-2026 05:44:56 Asia/Makassar] [BTA CONTACT EMAIL] info@manuabacrystalfall.com failed: Connection failed (110): Connection timed out
+[01-Oct-2026 17:36:07 Asia/Makassar] PHP Warning:  Undefined variable $p in /home/manuabac/public_html/package.php on line 494
+[01-Oct-2026 17:36:07 Asia/Makassar] PHP Warning:  Trying to access array offset on null in /home/manuabac/public_html/package.php on line 494
+[02-Oct-2026 00:54:05 Asia/Makassar] [BTA CONTACT EMAIL] info@manuabacrystalfall.com failed: Connection failed (110): Connection timed out
+[02-Oct-2026 02:55:12 Asia/Makassar] [BTA CONTACT EMAIL] info@manuabacrystalfall.com failed: Connection failed (110): Connection timed out
+[02-Oct-2026 16:19:27 Asia/Makassar] PHP Warning:  Undefined variable $p in /home/manuabac/public_html/package.php on line 541
+[02-Oct-2026 16:19:27 Asia/Makassar] PHP Warning:  Trying to access array offset on null in /home/manuabac/public_html/package.php on line 541
+[02-Oct-2026 16:20:27 Asia/Makassar] PHP Warning:  Undefined variable $p in /home/manuabac/public_html/package.php on line 541
+[02-Oct-2026 16:20:27 Asia/Makassar] PHP Warning:  Trying to access array offset on null in /home/manuabac/public_html/package.php on line 541
+[02-Oct-2026 16:37:26 Asia/Makassar] PHP Warning:  Undefined variable $p in /home/manuabac/public_html/package.php on line 541
+[02-Oct-2026 16:37:26 Asia/Makassar] PHP Warning:  Trying to access array offset on null in /home/manuabac/public_html/package.php on line 541
+[02-Oct-2026 16:43:26 Asia/Makassar] PHP Warning:  Undefined variable $p in /home/manuabac/public_html/package.php on line 541
+[02-Oct-2026 16:43:26 Asia/Makassar] PHP Warning:  Trying to access array offset on null in /home/manuabac/public_html/package.php on line 541
+[02-Oct-2026 16:46:28 Asia/Makassar] PHP Warning:  Undefined variable $p in /home/manuabac/public_html/package.php on line 541
+[02-Oct-2026 16:46:28 Asia/Makassar] PHP Warning:  Trying to access array offset on null in /home/manuabac/public_html/package.php on line 541
+[02-Oct-2026 16:55:39 Asia/Makassar] PHP Warning:  Undefined variable $p in /home/manuabac/public_html/package.php on line 541
+[02-Oct-2026 16:55:39 Asia/Makassar] PHP Warning:  Trying to access array offset on null in /home/manuabac/public_html/package.php on line 541
+[02-Oct-2026 16:59:19 Asia/Makassar] PHP Warning:  Undefined variable $p in /home/manuabac/public_html/package.php on line 541
+[02-Oct-2026 16:59:19 Asia/Makassar] PHP Warning:  Trying to access array offset on null in /home/manuabac/public_html/package.php on line 541
+[02-Oct-2026 17:13:21 Asia/Makassar] PHP Warning:  Undefined variable $p in /home/manuabac/public_html/package.php on line 541
+[02-Oct-2026 17:13:21 Asia/Makassar] PHP Warning:  Trying to access array offset on null in /home/manuabac/public_html/package.php on line 541
+[02-Oct-2026 18:18:06 Asia/Makassar] PHP Warning:  Undefined variable $p in /home/manuabac/public_html/package.php on line 541
+[02-Oct-2026 18:18:06 Asia/Makassar] PHP Warning:  Trying to access array offset on null in /home/manuabac/public_html/package.php on line 541
+[02-Oct-2026 19:00:05 Asia/Makassar] PHP Warning:  Undefined variable $p in /home/manuabac/public_html/package.php on line 541
+[02-Oct-2026 19:00:05 Asia/Makassar] PHP Warning:  Trying to access array offset on null in /home/manuabac/public_html/package.php on line 541
+[02-Oct-2026 19:39:55 Asia/Makassar] PHP Warning:  Undefined variable $p in /home/manuabac/public_html/package.php on line 541
+[02-Oct-2026 19:39:55 Asia/Makassar] PHP Warning:  Trying to access array offset on null in /home/manuabac/public_html/package.php on line 541
+[03-Oct-2026 08:14:53 Asia/Makassar] PHP Warning:  Undefined variable $p in /home/manuabac/public_html/package.php on line 541
+[03-Oct-2026 08:14:53 Asia/Makassar] PHP Warning:  Trying to access array offset on null in /home/manuabac/public_html/package.php on line 541
+[03-Oct-2026 08:16:46 Asia/Makassar] PHP Warning:  Undefined variable $p in /home/manuabac/public_html/package.php on line 541
+[03-Oct-2026 08:16:46 Asia/Makassar] PHP Warning:  Trying to access array offset on null in /home/manuabac/public_html/package.php on line 541
+[03-Oct-2026 09:29:24 Asia/Makassar] [BTA BOOKING EMAIL] Customer delivery accepted for AUS-20261003-997CCA to pradiva.widya@gmail.com
+[03-Oct-2026 09:29:24 Asia/Makassar] [BTA BOOKING EMAIL] Admin delivery accepted for AUS-20261003-997CCA to info@manuabacrystalfall.com
+[03-Oct-2026 09:30:36 Asia/Makassar] [BTA BOOKING EMAIL] Customer delivery accepted for AUS-20261003-C68CE5 to pradiva.widya@gmail.com
+[03-Oct-2026 09:30:36 Asia/Makassar] [BTA BOOKING EMAIL] Admin delivery accepted for AUS-20261003-C68CE5 to info@manuabacrystalfall.com
+[03-Oct-2026 09:31:02 Asia/Makassar] [BTA BOOKING EMAIL] Customer delivery accepted for AUS-20261003-3571B5 to pradiva.widya@gmail.com
+[03-Oct-2026 09:31:02 Asia/Makassar] [BTA BOOKING EMAIL] Admin delivery accepted for AUS-20261003-3571B5 to info@manuabacrystalfall.com
+[03-Oct-2026 09:39:45 Asia/Makassar] [BTA BOOKING EMAIL] Customer delivery accepted for AUS-20261003-5BEA5D to pradiva.widya@gmail.com
+[03-Oct-2026 09:39:45 Asia/Makassar] [BTA BOOKING EMAIL] Admin delivery accepted for AUS-20261003-5BEA5D to info@manuabacrystalfall.com
+[03-Oct-2026 12:14:01 Asia/Makassar] PHP Warning:  Undefined variable $p in /home/manuabac/public_html/package.php on line 541
+[03-Oct-2026 12:14:01 Asia/Makassar] PHP Warning:  Trying to access array offset on null in /home/manuabac/public_html/package.php on line 541
+[03-Oct-2026 14:02:48 Asia/Makassar] PHP Warning:  Undefined variable $p in /home/manuabac/public_html/package.php on line 541
+[03-Oct-2026 14:02:48 Asia/Makassar] PHP Warning:  Trying to access array offset on null in /home/manuabac/public_html/package.php on line 541
+[03-Oct-2026 15:15:01 Asia/Makassar] PHP Warning:  Undefined variable $waButtonText in /home/manuabac/public_html/includes/footer.php on line 273
+[03-Oct-2026 15:15:01 Asia/Makassar] PHP Warning:  Undefined variable $waMessage in /home/manuabac/public_html/includes/footer.php on line 274
+[03-Oct-2026 15:15:01 Asia/Makassar] PHP Fatal error:  Uncaught TypeError: whatsapp_url(): Argument #2 ($text) must be of type string, null given, called in /home/manuabac/public_html/includes/footer.php on line 274 and defined in /home/manuabac/public_html/includes/functions.php:85
+Stack trace:
+#0 /home/manuabac/public_html/includes/footer.php(274): whatsapp_url()
+#1 /home/manuabac/public_html/index.php(715): require('/home/manuabac/...')
+#2 {main}
+  thrown in /home/manuabac/public_html/includes/functions.php on line 85
+[03-Oct-2026 15:49:05 Asia/Makassar] [BTA BOOKING EMAIL] Customer delivery accepted for AUS-20261003-DE5675 to pradiva.widya@gmail.com
+[03-Oct-2026 15:49:05 Asia/Makassar] [BTA BOOKING EMAIL] Admin delivery accepted for AUS-20261003-DE5675 to info@manuabacrystalfall.com
+[03-Oct-2026 16:34:07 Asia/Makassar] PHP Warning:  Undefined variable $contactDefaults in /home/manuabac/public_html/contact.php on line 20
+[03-Oct-2026 16:34:07 Asia/Makassar] PHP Warning:  Trying to access array offset on null in /home/manuabac/public_html/contact.php on line 53
+[03-Oct-2026 16:34:07 Asia/Makassar] PHP Warning:  Trying to access array offset on null in /home/manuabac/public_html/contact.php on line 54
+[03-Oct-2026 16:34:07 Asia/Makassar] PHP Warning:  Trying to access array offset on null in /home/manuabac/public_html/contact.php on line 55
+[03-Oct-2026 16:34:07 Asia/Makassar] PHP Warning:  Trying to access array offset on null in /home/manuabac/public_html/contact.php on line 56
+[03-Oct-2026 16:34:07 Asia/Makassar] PHP Warning:  Trying to access array offset on null in /home/manuabac/public_html/contact.php on line 57
+[03-Oct-2026 16:34:07 Asia/Makassar] PHP Warning:  Trying to access array offset on null in /home/manuabac/public_html/contact.php on line 59
+[03-Oct-2026 16:34:07 Asia/Makassar] PHP Warning:  Trying to access array offset on null in /home/manuabac/public_html/contact.php on line 61
+[03-Oct-2026 16:34:07 Asia/Makassar] PHP Warning:  Trying to access array offset on null in /home/manuabac/public_html/contact.php on line 267
+[03-Oct-2026 16:34:07 Asia/Makassar] PHP Warning:  Trying to access array offset on null in /home/manuabac/public_html/contact.php on line 268
+[03-Oct-2026 16:34:07 Asia/Makassar] PHP Warning:  Trying to access array offset on null in /home/manuabac/public_html/contact.php on line 268
+[03-Oct-2026 16:34:07 Asia/Makassar] PHP Warning:  Trying to access array offset on null in /home/manuabac/public_html/contact.php on line 269
+[03-Oct-2026 16:34:07 Asia/Makassar] PHP Warning:  Trying to access array offset on null in /home/manuabac/public_html/contact.php on line 282
+[03-Oct-2026 16:34:07 Asia/Makassar] PHP Warning:  Trying to access array offset on null in /home/manuabac/public_html/contact.php on line 287
+[03-Oct-2026 16:34:07 Asia/Makassar] PHP Warning:  Trying to access array offset on null in /home/manuabac/public_html/contact.php on line 287
+[03-Oct-2026 16:34:07 Asia/Makassar] PHP Warning:  Trying to access array offset on null in /home/manuabac/public_html/contact.php on line 292
+[03-Oct-2026 16:34:07 Asia/Makassar] PHP Warning:  Trying to access array offset on null in /home/manuabac/public_html/contact.php on line 307
+[03-Oct-2026 16:34:07 Asia/Makassar] PHP Warning:  Trying to access array offset on null in /home/manuabac/public_html/contact.php on line 312
+[03-Oct-2026 16:34:07 Asia/Makassar] PHP Warning:  Trying to access array offset on null in /home/manuabac/public_html/contact.php on line 313
+[03-Oct-2026 16:34:07 Asia/Makassar] PHP Warning:  Trying to access array offset on null in /home/manuabac/public_html/contact.php on line 377
+[03-Oct-2026 16:34:07 Asia/Makassar] PHP Warning:  Trying to access array offset on null in /home/manuabac/public_html/contact.php on line 378
+[03-Oct-2026 16:34:07 Asia/Makassar] PHP Warning:  Trying to access array offset on null in /home/manuabac/public_html/contact.php on line 379
+[03-Oct-2026 16:34:07 Asia/Makassar] PHP Warning:  Trying to access array offset on null in /home/manuabac/public_html/contact.php on line 381
+[03-Oct-2026 16:34:13 Asia/Makassar] PHP Warning:  Undefined variable $contactDefaults in /home/manuabac/public_html/contact.php on line 20
+[03-Oct-2026 16:34:13 Asia/Makassar] PHP Warning:  Trying to access array offset on null in /home/manuabac/public_html/contact.php on line 53
+[03-Oct-2026 16:34:13 Asia/Makassar] PHP Warning:  Trying to access array offset on null in /home/manuabac/public_html/contact.php on line 54
+[03-Oct-2026 16:34:13 Asia/Makassar] PHP Warning:  Trying to access array offset on null in /home/manuabac/public_html/contact.php on line 55
+[03-Oct-2026 16:34:13 Asia/Makassar] PHP Warning:  Trying to access array offset on null in /home/manuabac/public_html/contact.php on line 56
+[03-Oct-2026 16:34:13 Asia/Makassar] PHP Warning:  Trying to access array offset on null in /home/manuabac/public_html/contact.php on line 57
+[03-Oct-2026 16:34:13 Asia/Makassar] PHP Warning:  Trying to access array offset on null in /home/manuabac/public_html/contact.php on line 59
+[03-Oct-2026 16:34:13 Asia/Makassar] PHP Warning:  Trying to access array offset on null in /home/manuabac/public_html/contact.php on line 61
+[03-Oct-2026 16:34:13 Asia/Makassar] PHP Warning:  Trying to access array offset on null in /home/manuabac/public_html/contact.php on line 267
+[03-Oct-2026 16:34:13 Asia/Makassar] PHP Warning:  Trying to access array offset on null in /home/manuabac/public_html/contact.php on line 268
+[03-Oct-2026 16:34:13 Asia/Makassar] PHP Warning:  Trying to access array offset on null in /home/manuabac/public_html/contact.php on line 268
+[03-Oct-2026 16:34:13 Asia/Makassar] PHP Warning:  Trying to access array offset on null in /home/manuabac/public_html/contact.php on line 269
+[03-Oct-2026 16:34:13 Asia/Makassar] PHP Warning:  Trying to access array offset on null in /home/manuabac/public_html/contact.php on line 282
+[03-Oct-2026 16:34:13 Asia/Makassar] PHP Warning:  Trying to access array offset on null in /home/manuabac/public_html/contact.php on line 287
+[03-Oct-2026 16:34:13 Asia/Makassar] PHP Warning:  Trying to access array offset on null in /home/manuabac/public_html/contact.php on line 287
+[03-Oct-2026 16:34:13 Asia/Makassar] PHP Warning:  Trying to access array offset on null in /home/manuabac/public_html/contact.php on line 292
+[03-Oct-2026 16:34:13 Asia/Makassar] PHP Warning:  Trying to access array offset on null in /home/manuabac/public_html/contact.php on line 307
+[03-Oct-2026 16:34:13 Asia/Makassar] PHP Warning:  Trying to access array offset on null in /home/manuabac/public_html/contact.php on line 312
+[03-Oct-2026 16:34:13 Asia/Makassar] PHP Warning:  Trying to access array offset on null in /home/manuabac/public_html/contact.php on line 313
+[03-Oct-2026 16:34:13 Asia/Makassar] PHP Warning:  Trying to access array offset on null in /home/manuabac/public_html/contact.php on line 377
+[03-Oct-2026 16:34:13 Asia/Makassar] PHP Warning:  Trying to access array offset on null in /home/manuabac/public_html/contact.php on line 378
+[03-Oct-2026 16:34:13 Asia/Makassar] PHP Warning:  Trying to access array offset on null in /home/manuabac/public_html/contact.php on line 379
+[03-Oct-2026 16:34:13 Asia/Makassar] PHP Warning:  Trying to access array offset on null in /home/manuabac/public_html/contact.php on line 381
+[03-Oct-2026 16:39:56 Asia/Makassar] PHP Warning:  Undefined variable $p in /home/manuabac/public_html/package.php on line 541
+[03-Oct-2026 16:39:56 Asia/Makassar] PHP Warning:  Trying to access array offset on null in /home/manuabac/public_html/package.php on line 541
+[03-Oct-2026 18:32:46 Asia/Makassar] PHP Warning:  Undefined variable $p in /home/manuabac/public_html/package.php on line 541
+[03-Oct-2026 18:32:46 Asia/Makassar] PHP Warning:  Trying to access array offset on null in /home/manuabac/public_html/package.php on line 541
+[03-Oct-2026 21:23:59 Asia/Makassar] PHP Warning:  Undefined variable $p in /home/manuabac/public_html/package.php on line 541
+[03-Oct-2026 21:23:59 Asia/Makassar] PHP Warning:  Trying to access array offset on null in /home/manuabac/public_html/package.php on line 541
+[03-Oct-2026 21:24:03 Asia/Makassar] PHP Warning:  Undefined variable $p in /home/manuabac/public_html/package.php on line 541
+[03-Oct-2026 21:24:03 Asia/Makassar] PHP Warning:  Trying to access array offset on null in /home/manuabac/public_html/package.php on line 541
+[03-Oct-2026 21:24:04 Asia/Makassar] PHP Warning:  Undefined variable $p in /home/manuabac/public_html/package.php on line 541
+[03-Oct-2026 21:24:04 Asia/Makassar] PHP Warning:  Trying to access array offset on null in /home/manuabac/public_html/package.php on line 541
+[03-Oct-2026 23:57:32 Asia/Makassar] PHP Warning:  Undefined variable $p in /home/manuabac/public_html/package.php on line 541
+[03-Oct-2026 23:57:32 Asia/Makassar] PHP Warning:  Trying to access array offset on null in /home/manuabac/public_html/package.php on line 541
+[04-Oct-2026 00:51:13 Asia/Makassar] PHP Warning:  Undefined variable $p in /home/manuabac/public_html/package.php on line 541
+[04-Oct-2026 00:51:13 Asia/Makassar] PHP Warning:  Trying to access array offset on null in /home/manuabac/public_html/package.php on line 541
+[04-Oct-2026 10:05:49 Asia/Makassar] [BTA BOOKING EMAIL] Customer delivery accepted for AUS-20261004-4E7499 to pradiva.widya@gmail.com
+[04-Oct-2026 10:05:49 Asia/Makassar] [BTA BOOKING EMAIL] Admin delivery accepted for AUS-20261004-4E7499 to info@manuabacrystalfall.com
+[04-Oct-2026 10:18:25 Asia/Makassar] PHP Warning:  Undefined variable $p in /home/manuabac/public_html/package.php on line 541
+[04-Oct-2026 10:18:25 Asia/Makassar] PHP Warning:  Trying to access array offset on null in /home/manuabac/public_html/package.php on line 541
+[04-Oct-2026 10:24:18 Asia/Makassar] PHP Warning:  Undefined variable $p in /home/manuabac/public_html/package.php on line 541
+[04-Oct-2026 10:24:18 Asia/Makassar] PHP Warning:  Trying to access array offset on null in /home/manuabac/public_html/package.php on line 541
+[04-Oct-2026 10:24:42 Asia/Makassar] PHP Warning:  Undefined variable $p in /home/manuabac/public_html/package.php on line 541
+[04-Oct-2026 10:24:42 Asia/Makassar] PHP Warning:  Trying to access array offset on null in /home/manuabac/public_html/package.php on line 541
+[04-Oct-2026 10:27:23 Asia/Makassar] PHP Warning:  Undefined variable $p in /home/manuabac/public_html/package.php on line 541
+[04-Oct-2026 10:27:23 Asia/Makassar] PHP Warning:  Trying to access array offset on null in /home/manuabac/public_html/package.php on line 541
+[04-Oct-2026 10:29:05 Asia/Makassar] PHP Warning:  Undefined variable $p in /home/manuabac/public_html/package.php on line 541
+[04-Oct-2026 10:29:05 Asia/Makassar] PHP Warning:  Trying to access array offset on null in /home/manuabac/public_html/package.php on line 541
+[04-Oct-2026 10:36:41 Asia/Makassar] PHP Warning:  Undefined variable $p in /home/manuabac/public_html/package.php on line 541
+[04-Oct-2026 10:36:41 Asia/Makassar] PHP Warning:  Trying to access array offset on null in /home/manuabac/public_html/package.php on line 541
+[04-Oct-2026 10:47:22 Asia/Makassar] PHP Warning:  Undefined variable $p in /home/manuabac/public_html/package.php on line 541
+[04-Oct-2026 10:47:22 Asia/Makassar] PHP Warning:  Trying to access array offset on null in /home/manuabac/public_html/package.php on line 541
+[04-Oct-2026 18:52:54 Asia/Makassar] PHP Warning:  Undefined variable $p in /home/manuabac/public_html/package.php on line 541
+[04-Oct-2026 18:52:54 Asia/Makassar] PHP Warning:  Trying to access array offset on null in /home/manuabac/public_html/package.php on line 541
+[04-Oct-2026 18:53:39 Asia/Makassar] PHP Warning:  Undefined variable $p in /home/manuabac/public_html/package.php on line 541
+[04-Oct-2026 18:53:39 Asia/Makassar] PHP Warning:  Trying to access array offset on null in /home/manuabac/public_html/package.php on line 541
+[04-Oct-2026 18:53:55 Asia/Makassar] PHP Warning:  Undefined variable $p in /home/manuabac/public_html/package.php on line 541
+[04-Oct-2026 18:53:55 Asia/Makassar] PHP Warning:  Trying to access array offset on null in /home/manuabac/public_html/package.php on line 541
+[04-Oct-2026 18:54:50 Asia/Makassar] PHP Warning:  Undefined variable $p in /home/manuabac/public_html/package.php on line 541
+[04-Oct-2026 18:54:50 Asia/Makassar] PHP Warning:  Trying to access array offset on null in /home/manuabac/public_html/package.php on line 541
+[04-Oct-2026 18:56:42 Asia/Makassar] PHP Warning:  Undefined variable $p in /home/manuabac/public_html/package.php on line 541
+[04-Oct-2026 18:56:42 Asia/Makassar] PHP Warning:  Trying to access array offset on null in /home/manuabac/public_html/package.php on line 541
+[04-Oct-2026 19:07:04 Asia/Makassar] PHP Warning:  Undefined variable $p in /home/manuabac/public_html/package.php on line 541
+[04-Oct-2026 19:07:04 Asia/Makassar] PHP Warning:  Trying to access array offset on null in /home/manuabac/public_html/package.php on line 541
+[04-Oct-2026 19:14:46 Asia/Makassar] PHP Warning:  Undefined variable $p in /home/manuabac/public_html/package.php on line 541
+[04-Oct-2026 19:14:46 Asia/Makassar] PHP Warning:  Trying to access array offset on null in /home/manuabac/public_html/package.php on line 541
+[04-Oct-2026 23:38:30 Asia/Makassar] PHP Warning:  Undefined variable $p in /home/manuabac/public_html/package.php on line 541
+[04-Oct-2026 23:38:30 Asia/Makassar] PHP Warning:  Trying to access array offset on null in /home/manuabac/public_html/package.php on line 541
+[05-Oct-2026 20:12:54 Asia/Makassar] PHP Warning:  Undefined variable $p in /home/manuabac/public_html/package.php on line 541
+[05-Oct-2026 20:12:54 Asia/Makassar] PHP Warning:  Trying to access array offset on null in /home/manuabac/public_html/package.php on line 541
+[05-Oct-2026 21:11:42 Asia/Makassar] PHP Warning:  Undefined variable $p in /home/manuabac/public_html/package.php on line 541
+[05-Oct-2026 21:11:42 Asia/Makassar] PHP Warning:  Trying to access array offset on null in /home/manuabac/public_html/package.php on line 541
+[05-Oct-2026 21:32:00 Asia/Makassar] PHP Warning:  Undefined variable $p in /home/manuabac/public_html/package.php on line 541
+[05-Oct-2026 21:32:00 Asia/Makassar] PHP Warning:  Trying to access array offset on null in /home/manuabac/public_html/package.php on line 541
+[06-Oct-2026 10:42:27 Asia/Makassar] PHP Warning:  Undefined variable $p in /home/manuabac/public_html/package.php on line 541
+[06-Oct-2026 10:42:27 Asia/Makassar] PHP Warning:  Trying to access array offset on null in /home/manuabac/public_html/package.php on line 541
+[06-Oct-2026 14:23:52 Asia/Makassar] PHP Warning:  Undefined variable $p in /home/manuabac/public_html/package.php on line 541
+[06-Oct-2026 14:23:52 Asia/Makassar] PHP Warning:  Trying to access array offset on null in /home/manuabac/public_html/package.php on line 541
+[07-Oct-2026 03:41:04 Asia/Makassar] PHP Warning:  Undefined variable $p in /home/manuabac/public_html/package.php on line 541
+[07-Oct-2026 03:41:04 Asia/Makassar] PHP Warning:  Trying to access array offset on null in /home/manuabac/public_html/package.php on line 541
+[07-Oct-2026 10:41:44 Asia/Makassar] PHP Warning:  Undefined variable $p in /home/manuabac/public_html/package.php on line 541
+[07-Oct-2026 10:41:44 Asia/Makassar] PHP Warning:  Trying to access array offset on null in /home/manuabac/public_html/package.php on line 541
+[08-Oct-2026 15:08:10 Asia/Makassar] PHP Warning:  Undefined variable $p in /home/manuabac/public_html/package.php on line 541
+[08-Oct-2026 15:08:10 Asia/Makassar] PHP Warning:  Trying to access array offset on null in /home/manuabac/public_html/package.php on line 541
+[08-Oct-2026 15:08:37 Asia/Makassar] PHP Warning:  Undefined variable $p in /home/manuabac/public_html/package.php on line 541
+[08-Oct-2026 15:08:37 Asia/Makassar] PHP Warning:  Trying to access array offset on null in /home/manuabac/public_html/package.php on line 541
+[09-Oct-2026 10:22:46 Asia/Makassar] PHP Warning:  Undefined variable $p in /home/manuabac/public_html/package.php on line 541
+[09-Oct-2026 10:22:46 Asia/Makassar] PHP Warning:  Trying to access array offset on null in /home/manuabac/public_html/package.php on line 541
+[10-Oct-2026 10:20:14 Asia/Makassar] PHP Warning:  Undefined variable $p in /home/manuabac/public_html/package.php on line 541
+[10-Oct-2026 10:20:14 Asia/Makassar] PHP Warning:  Trying to access array offset on null in /home/manuabac/public_html/package.php on line 541
+[10-Oct-2026 18:20:03 Asia/Makassar] PHP Warning:  Undefined variable $p in /home/manuabac/public_html/package.php on line 541
+[10-Oct-2026 18:20:03 Asia/Makassar] PHP Warning:  Trying to access array offset on null in /home/manuabac/public_html/package.php on line 541
+[10-Oct-2026 20:23:47 Asia/Makassar] PHP Warning:  Undefined variable $p in /home/manuabac/public_html/package.php on line 541
+[10-Oct-2026 20:23:47 Asia/Makassar] PHP Warning:  Trying to access array offset on null in /home/manuabac/public_html/package.php on line 541
+[10-Oct-2026 20:23:56 Asia/Makassar] PHP Warning:  Undefined variable $p in /home/manuabac/public_html/package.php on line 541
+[10-Oct-2026 20:23:56 Asia/Makassar] PHP Warning:  Trying to access array offset on null in /home/manuabac/public_html/package.php on line 541
+[10-Oct-2026 20:24:44 Asia/Makassar] PHP Warning:  Undefined variable $p in /home/manuabac/public_html/package.php on line 541
+[10-Oct-2026 20:24:44 Asia/Makassar] PHP Warning:  Trying to access array offset on null in /home/manuabac/public_html/package.php on line 541
+[10-Oct-2026 20:25:32 Asia/Makassar] PHP Warning:  Undefined variable $p in /home/manuabac/public_html/package.php on line 541
+[10-Oct-2026 20:25:32 Asia/Makassar] PHP Warning:  Trying to access array offset on null in /home/manuabac/public_html/package.php on line 541
+[10-Oct-2026 22:09:21 Asia/Makassar] PHP Warning:  Undefined variable $p in /home/manuabac/public_html/package.php on line 541
+[10-Oct-2026 22:09:21 Asia/Makassar] PHP Warning:  Trying to access array offset on null in /home/manuabac/public_html/package.php on line 541
+[10-Oct-2026 22:30:31 Asia/Makassar] PHP Warning:  Undefined variable $p in /home/manuabac/public_html/package.php on line 541
+[10-Oct-2026 22:30:31 Asia/Makassar] PHP Warning:  Trying to access array offset on null in /home/manuabac/public_html/package.php on line 541
+[10-Oct-2026 23:12:03 Asia/Makassar] PHP Warning:  Undefined variable $p in /home/manuabac/public_html/package.php on line 541
+[10-Oct-2026 23:12:03 Asia/Makassar] PHP Warning:  Trying to access array offset on null in /home/manuabac/public_html/package.php on line 541
+[11-Oct-2026 00:50:49 Asia/Makassar] PHP Warning:  Undefined variable $p in /home/manuabac/public_html/package.php on line 541
+[11-Oct-2026 00:50:49 Asia/Makassar] PHP Warning:  Trying to access array offset on null in /home/manuabac/public_html/package.php on line 541
+[11-Oct-2026 01:00:28 Asia/Makassar] PHP Warning:  Undefined variable $p in /home/manuabac/public_html/package.php on line 541
+[11-Oct-2026 01:00:28 Asia/Makassar] PHP Warning:  Trying to access array offset on null in /home/manuabac/public_html/package.php on line 541
+[11-Oct-2026 01:01:04 Asia/Makassar] PHP Warning:  Undefined variable $p in /home/manuabac/public_html/package.php on line 541
+[11-Oct-2026 01:01:04 Asia/Makassar] PHP Warning:  Trying to access array offset on null in /home/manuabac/public_html/package.php on line 541
+[12-Oct-2026 10:06:56 Asia/Makassar] PHP Warning:  Undefined variable $p in /home/manuabac/public_html/package.php on line 541
+[12-Oct-2026 10:06:56 Asia/Makassar] PHP Warning:  Trying to access array offset on null in /home/manuabac/public_html/package.php on line 541
+[12-Oct-2026 10:07:41 Asia/Makassar] PHP Warning:  Undefined variable $p in /home/manuabac/public_html/package.php on line 541
+[12-Oct-2026 10:07:41 Asia/Makassar] PHP Warning:  Trying to access array offset on null in /home/manuabac/public_html/package.php on line 541
+[12-Oct-2026 10:15:42 Asia/Makassar] PHP Warning:  Undefined variable $p in /home/manuabac/public_html/package.php on line 541
+[12-Oct-2026 10:15:42 Asia/Makassar] PHP Warning:  Trying to access array offset on null in /home/manuabac/public_html/package.php on line 541
+[12-Oct-2026 10:15:50 Asia/Makassar] PHP Warning:  Undefined variable $p in /home/manuabac/public_html/package.php on line 541
+[12-Oct-2026 10:15:50 Asia/Makassar] PHP Warning:  Trying to access array offset on null in /home/manuabac/public_html/package.php on line 541
+[13-Oct-2026 11:30:52 Asia/Makassar] PHP Warning:  Undefined variable $p in /home/manuabac/public_html/package.php on line 541
+[13-Oct-2026 11:30:52 Asia/Makassar] PHP Warning:  Trying to access array offset on null in /home/manuabac/public_html/package.php on line 541
+[13-Oct-2026 11:49:36 Asia/Makassar] PHP Warning:  Undefined variable $p in /home/manuabac/public_html/package.php on line 541
+[13-Oct-2026 11:49:36 Asia/Makassar] PHP Warning:  Trying to access array offset on null in /home/manuabac/public_html/package.php on line 541
+[13-Oct-2026 12:48:17 Asia/Makassar] PHP Warning:  Undefined variable $p in /home/manuabac/public_html/package.php on line 541
+[13-Oct-2026 12:48:17 Asia/Makassar] PHP Warning:  Trying to access array offset on null in /home/manuabac/public_html/package.php on line 541
+[13-Oct-2026 13:25:58 Asia/Makassar] PHP Warning:  Undefined variable $p in /home/manuabac/public_html/package.php on line 541
+[13-Oct-2026 13:25:58 Asia/Makassar] PHP Warning:  Trying to access array offset on null in /home/manuabac/public_html/package.php on line 541
+[13-Oct-2026 13:41:05 Asia/Makassar] PHP Warning:  Undefined variable $p in /home/manuabac/public_html/package.php on line 541
+[13-Oct-2026 13:41:05 Asia/Makassar] PHP Warning:  Trying to access array offset on null in /home/manuabac/public_html/package.php on line 541
+[13-Oct-2026 13:41:10 Asia/Makassar] PHP Warning:  Undefined variable $p in /home/manuabac/public_html/package.php on line 541
+[13-Oct-2026 13:41:10 Asia/Makassar] PHP Warning:  Trying to access array offset on null in /home/manuabac/public_html/package.php on line 541
+[13-Oct-2026 13:46:33 Asia/Makassar] PHP Warning:  Undefined variable $p in /home/manuabac/public_html/package.php on line 541
+[13-Oct-2026 13:46:33 Asia/Makassar] PHP Warning:  Trying to access array offset on null in /home/manuabac/public_html/package.php on line 541
+[13-Oct-2026 13:46:39 Asia/Makassar] PHP Warning:  Undefined variable $p in /home/manuabac/public_html/package.php on line 541
+[13-Oct-2026 13:46:39 Asia/Makassar] PHP Warning:  Trying to access array offset on null in /home/manuabac/public_html/package.php on line 541
+[13-Oct-2026 13:51:49 Asia/Makassar] PHP Warning:  Undefined variable $p in /home/manuabac/public_html/package.php on line 541
+[13-Oct-2026 13:51:49 Asia/Makassar] PHP Warning:  Trying to access array offset on null in /home/manuabac/public_html/package.php on line 541
+[13-Oct-2026 13:56:36 Asia/Makassar] PHP Warning:  Undefined variable $p in /home/manuabac/public_html/package.php on line 541
+[13-Oct-2026 13:56:36 Asia/Makassar] PHP Warning:  Trying to access array offset on null in /home/manuabac/public_html/package.php on line 541
+[13-Oct-2026 13:56:38 Asia/Makassar] PHP Warning:  Undefined variable $p in /home/manuabac/public_html/package.php on line 541
+[13-Oct-2026 13:56:38 Asia/Makassar] PHP Warning:  Trying to access array offset on null in /home/manuabac/public_html/package.php on line 541
+[13-Oct-2026 14:01:11 Asia/Makassar] PHP Warning:  Undefined variable $p in /home/manuabac/public_html/package.php on line 541
+[13-Oct-2026 14:01:11 Asia/Makassar] PHP Warning:  Trying to access array offset on null in /home/manuabac/public_html/package.php on line 541
+[13-Oct-2026 14:04:54 Asia/Makassar] PHP Warning:  Undefined variable $p in /home/manuabac/public_html/package.php on line 541
+[13-Oct-2026 14:04:54 Asia/Makassar] PHP Warning:  Trying to access array offset on null in /home/manuabac/public_html/package.php on line 541
+[13-Oct-2026 22:14:35 Asia/Makassar] PHP Warning:  Undefined variable $p in /home/manuabac/public_html/package.php on line 541
+[13-Oct-2026 22:14:35 Asia/Makassar] PHP Warning:  Trying to access array offset on null in /home/manuabac/public_html/package.php on line 541
+[13-Oct-2026 22:45:22 Asia/Makassar] PHP Warning:  Undefined variable $p in /home/manuabac/public_html/package.php on line 541
+[13-Oct-2026 22:45:22 Asia/Makassar] PHP Warning:  Trying to access array offset on null in /home/manuabac/public_html/package.php on line 541
+[14-Oct-2026 11:16:19 Asia/Makassar] PHP Warning:  Undefined variable $p in /home/manuabac/public_html/package.php on line 541
+[14-Oct-2026 11:16:19 Asia/Makassar] PHP Warning:  Trying to access array offset on null in /home/manuabac/public_html/package.php on line 541
+[14-Oct-2026 12:13:42 Asia/Makassar] PHP Warning:  Undefined variable $p in /home/manuabac/public_html/package.php on line 541
+[14-Oct-2026 12:13:42 Asia/Makassar] PHP Warning:  Trying to access array offset on null in /home/manuabac/public_html/package.php on line 541
+[14-Oct-2026 12:33:18 Asia/Makassar] PHP Warning:  Undefined variable $p in /home/manuabac/public_html/package.php on line 541
+[14-Oct-2026 12:33:18 Asia/Makassar] PHP Warning:  Trying to access array offset on null in /home/manuabac/public_html/package.php on line 541
+[14-Oct-2026 13:18:39 Asia/Makassar] [BTA BOOKING EMAIL] Customer delivery accepted for AUS-20261014-132F08 to pradiva.widya@gmail.com
+[14-Oct-2026 13:18:40 Asia/Makassar] [BTA BOOKING EMAIL] Admin delivery accepted for AUS-20261014-132F08 to info@manuabacrystalfall.com
+[14-Oct-2026 13:24:02 Asia/Makassar] [BTA BOOKING EMAIL] Customer delivery accepted for AUS-20261014-F2A97F to pradiva.widya@gmail.com
+[14-Oct-2026 13:24:02 Asia/Makassar] [BTA BOOKING EMAIL] Admin delivery accepted for AUS-20261014-F2A97F to info@manuabacrystalfall.com
+[14-Oct-2026 13:34:11 Asia/Makassar] [BTA BOOKING EMAIL] Customer delivery accepted for AUS-20261014-C16C68 to pradiva.widya@gmail.com
+[14-Oct-2026 13:34:11 Asia/Makassar] [BTA BOOKING EMAIL] Admin delivery accepted for AUS-20261014-C16C68 to info@manuabacrystalfall.com
+[14-Oct-2026 14:02:54 Asia/Makassar] [BTA BOOKING EMAIL] Customer delivery accepted for MCF-20261014-7CA1F5 to pradiva.widya@gmail.com
+[14-Oct-2026 14:02:55 Asia/Makassar] [BTA BOOKING EMAIL] Admin delivery accepted for MCF-20261014-7CA1F5 to info@manuabacrystalfall.com
+[14-Oct-2026 14:08:35 Asia/Makassar] [BTA BOOKING EMAIL] Customer delivery accepted for MCF-20261014-80E1C9 to pradiva.widya@gmail.com
+[14-Oct-2026 14:08:36 Asia/Makassar] [BTA BOOKING EMAIL] Admin delivery accepted for MCF-20261014-80E1C9 to info@manuabacrystalfall.com
+[14-Oct-2026 15:42:56 Asia/Makassar] [BTA BOOKING EMAIL] Customer delivery accepted for AUS-20261014-FADA44 to pradiva.widya@gmail.com
+[14-Oct-2026 15:42:57 Asia/Makassar] [BTA BOOKING EMAIL] Admin delivery accepted for AUS-20261014-FADA44 to info@manuabacrystalfall.com
+[14-Oct-2026 15:53:19 Asia/Makassar] [BTA BOOKING EMAIL] Customer delivery accepted for MCF-20261014-92ECA2 to pradiva.widya@gmail.com
+[14-Oct-2026 15:53:19 Asia/Makassar] [BTA BOOKING EMAIL] Admin delivery accepted for MCF-20261014-92ECA2 to info@manuabacrystalfall.com
+[14-Oct-2026 16:05:42 Asia/Makassar] [BTA BOOKING EMAIL] Customer delivery accepted for MCF-20261014-3F0089 to pradiva.widya@gmail.com
+[14-Oct-2026 16:05:42 Asia/Makassar] [BTA BOOKING EMAIL] Admin delivery accepted for MCF-20261014-3F0089 to info@manuabacrystalfall.com
+[14-Oct-2026 16:43:09 Asia/Makassar] [BTA BOOKING EMAIL] Customer delivery accepted for MCF-20261014-A1D954 to pradiva.widya@gmail.com
+[14-Oct-2026 16:43:09 Asia/Makassar] [BTA BOOKING EMAIL] Admin delivery accepted for MCF-20261014-A1D954 to info@manuabacrystalfall.com
+[14-Oct-2026 17:26:11 Asia/Makassar] PHP Warning:  Undefined variable $p in /home/manuabac/public_html/package.php on line 541
+[14-Oct-2026 17:26:11 Asia/Makassar] PHP Warning:  Trying to access array offset on null in /home/manuabac/public_html/package.php on line 541
+[14-Oct-2026 17:50:58 Asia/Makassar] [BTA BOOKING EMAIL] Customer delivery accepted for MCF-20261014-4C5EB7 to pradiva.widya@gmail.com
+[14-Oct-2026 17:50:58 Asia/Makassar] [BTA BOOKING EMAIL] Admin delivery accepted for MCF-20261014-4C5EB7 to info@manuabacrystalfall.com
+[14-Oct-2026 17:53:41 Asia/Makassar] PHP Warning:  Undefined variable $p in /home/manuabac/public_html/package.php on line 541
+[14-Oct-2026 17:53:41 Asia/Makassar] PHP Warning:  Trying to access array offset on null in /home/manuabac/public_html/package.php on line 541
+[16-Oct-2026 14:53:55 Asia/Makassar] PHP Warning:  Undefined variable $p in /home/manuabac/public_html/package.php on line 541
+[16-Oct-2026 14:53:55 Asia/Makassar] PHP Warning:  Trying to access array offset on null in /home/manuabac/public_html/package.php on line 541

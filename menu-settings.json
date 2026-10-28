@@ -1,0 +1,58 @@
+[
+    {
+        "label": "Home",
+        "url": "/",
+        "enabled": 1,
+        "button": 0,
+        "ticket": 0
+    },
+    {
+        "label": "Adventures",
+        "url": "/packages",
+        "enabled": 1,
+        "button": 0,
+        "ticket": 0
+    },
+    {
+        "label": "About Us",
+        "url": "/about",
+        "enabled": 1,
+        "button": 0,
+        "ticket": 0
+    },
+    {
+        "label": "Travel Guide",
+        "url": "/blog",
+        "enabled": 1,
+        "button": 0,
+        "ticket": 0
+    },
+    {
+        "label": "Gallery",
+        "url": "/gallery",
+        "enabled": 1,
+        "button": 0,
+        "ticket": 0
+    },
+    {
+        "label": "Contact Us",
+        "url": "/contact-us",
+        "enabled": 1,
+        "button": 0,
+        "ticket": 0
+    },
+    {
+        "label": "Check Ticket",
+        "url": "/my-booking",
+        "enabled": 1,
+        "button": 0,
+        "ticket": 1
+    },
+    {
+        "label": "Book Now",
+        "url": "/booking",
+        "enabled": 1,
+        "button": 0,
+        "ticket": 0
+    }
+]

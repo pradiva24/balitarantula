@@ -1,0 +1,12 @@
+{
+  "enabled": "0",
+  "mode": "slider",
+  "autoplay": "1",
+  "interval": "5000",
+  "cover": "1",
+  "dots": "1",
+  "overlay": "45",
+  "video": "",
+  "video_poster": "",
+  "slides": []
+}
