@@ -93,6 +93,18 @@ try {
 if (!$originalPrice && $discountPercent > 0 && $currentPrice > 0) {
     $originalPrice = $currentPrice / (1 - $discountPercent / 100);
 }
+// Keep the visible saving badge consistent with the editable original price.
+if ($originalPrice && $originalPrice > $currentPrice && $originalPrice > 0) {
+    $discountPercent = max(0, min(90, round((($originalPrice - $currentPrice) / $originalPrice) * 100)));
+}
+
+// Price-card benefits are editable in Admin → Packages → Edit → Price bullets.
+$priceBullets = [];
+try {
+    $pb = db()->prepare('SELECT item_text FROM package_price_bullets WHERE package_id = ? ORDER BY sort_order, id LIMIT 10');
+    $pb->execute([(int)$p['id']]);
+    $priceBullets = $pb->fetchAll(PDO::FETCH_COLUMN);
+} catch (Throwable $e) {}
 
 // Package Highlights
 $highlightRows = [];
@@ -548,7 +560,7 @@ body {
 }
 
 .panel-label {
-  display: inline-block;
+  display: none;
   font-family: var(--bta-font-display);
   font-size: 12px;
   font-weight: 800;
@@ -614,15 +626,20 @@ body {
 }
 
 .panel-price-save {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
   font-family: var(--bta-font-display);
-  font-size: 11px;
+  font-size: 12px;
+  line-height: 1.3;
   font-weight: 900;
-  color: #fff;
-  background: var(--bta-orange);
-  padding: 2px 6px;
-  border-radius: 4px;
-  margin-left: 6px;
+  letter-spacing: .5px;
+  color: #c2410c;
+  background: rgba(255, 90, 31, .14);
+  border: 1px solid rgba(255, 90, 31, .24);
+  padding: 4px 9px;
+  border-radius: 3px;
+  margin-left: 8px;
+  vertical-align: middle;
 }
 
 .panel-price-current {
@@ -741,16 +758,34 @@ body {
 
 .panel-details-list li {
   display: flex;
-  justify-content: space-between;
-  padding: 8px 0;
-  border-bottom: 1px dashed var(--bta-border);
-  font-size: 13px;
+  align-items: flex-start;
+  gap: 10px;
+  justify-content: flex-start;
+  padding: 10px 12px;
+  margin: 0 0 8px;
+  border: 1px solid rgba(255, 90, 31, .18);
+  border-radius: 6px;
+  background: rgba(255, 90, 31, .09);
+  font-size: 12px;
+  line-height: 1.55;
   color: var(--bta-text);
 }
 
-.panel-details-list li b {
+.panel-details-list li::before {
+  content: "✓";
+  flex: 0 0 16px;
+  color: var(--bta-orange);
+  font-weight: 900;
+}
+
+.panel-details-list li span {
   color: var(--bta-heading);
-  font-weight: 600;
+  font-weight: 700;
+}
+
+.panel-details-list li b {
+  color: var(--bta-text);
+  font-weight: 500;
 }
 
 /* Related Packages */
@@ -761,9 +796,23 @@ body {
 }
 
 .related-section .adventure-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 24px;
+  display: flex;
+  gap: 18px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  scrollbar-width: thin;
+  scrollbar-color: var(--bta-orange) transparent;
+  padding: 4px 2px 18px;
+}
+
+.related-section .adventure-grid::-webkit-scrollbar { height: 6px; }
+.related-section .adventure-grid::-webkit-scrollbar-thumb { background: var(--bta-orange); border-radius: 8px; }
+.related-section .adventure-grid::-webkit-scrollbar-track { background: rgba(255,90,31,.10); }
+.related-section .adventure-grid > .adventure-card {
+  flex: 0 0 calc((100% - 36px) / 3);
+  scroll-snap-align: start;
 }
 
 .related-section .adventure-card {
@@ -910,8 +959,8 @@ body {
     font-size: 14px;
     white-space: nowrap;
   }
-  .related-section .adventure-grid {
-    grid-template-columns: 1fr;
+  .related-section .adventure-grid > .adventure-card {
+    flex-basis: min(82vw, 340px);
   }
 }
 </style>
@@ -964,7 +1013,6 @@ body {
 
       <!-- Section: Overview -->
       <section id="overview" class="detail-block">
-        <p class="panel-label">THE EXPERIENCE</p>
         <h2>CHASE THE <span>UNTAMED.</span></h2>
         <div>
           <?=!empty($p['description']) ? nl2br(e($p['description'])) : '<p>Experience the ultimate thrill of navigating through Bali’s rugged terrain, ancient bamboo forests, muddy rice paddies, and thrilling river beds. Fully guided by experienced local trail masters.</p>'?>
@@ -1022,7 +1070,6 @@ body {
 
     <!-- Right Column: Booking Panel -->
     <aside class="booking-panel">
-      <span class="panel-label">OFFICIAL DIRECT BOOKING</span>
       <h3><?=e($p['name'])?></h3>
 
       <!-- Special Price Badge with Green Animated Dot -->
@@ -1068,11 +1115,17 @@ body {
 
       <!-- Package Quick Specs -->
       <ul class="panel-details-list">
-        <li><span>Category:</span> <b><?=e($p['category_name'] ?: 'Extreme Adventure')?></b></li>
-        <li><span>Duration:</span> <b><?=e($p['duration'] ?: 'Approx 1.5 - 2 Hours')?></b></li>
-        <li><span>Location:</span> <b>Payangan, Ubud, Bali</b></li>
-        <li><span>Guide:</span> <b>Certified Trail Instructor</b></li>
-        <li><span>Instant Voucher:</span> <b>Yes (E-Ticket)</b></li>
+        <?php if (!empty($priceBullets)): ?>
+          <?php foreach ($priceBullets as $bullet): ?>
+            <li><?=e($bullet)?></li>
+          <?php endforeach; ?>
+        <?php else: ?>
+          <li><span>Category:</span> <b><?=e($p['category_name'] ?: 'Extreme Adventure')?></b></li>
+          <li><span>Duration:</span> <b><?=e($p['duration'] ?: 'Approx 1.5 - 2 Hours')?></b></li>
+          <li><span>Location:</span> <b>Payangan, Ubud, Bali</b></li>
+          <li><span>Guide:</span> <b>Certified Trail Instructor</b></li>
+          <li><span>Instant Voucher:</span> <b>Yes (E-Ticket)</b></li>
+        <?php endif; ?>
       </ul>
     </aside>
 
@@ -1088,7 +1141,7 @@ body {
             <h2 style="font-size: 38px;">OTHER <span>ADVENTURES.</span></h2>
           </div>
         </div>
-        <div class="adventure-grid">
+        <div class="adventure-grid" aria-label="Other adventure packages">
           <?php foreach ($related as $rel): ?>
             <a href="<?=BASE_URL?>/package/<?=e($rel['slug'])?>" class="adventure-card" style="height: 420px; min-height: 420px;">
               <img src="<?=!empty($rel['cover_image']) ? e(asset_url($rel['cover_image'])) : 'https://images.unsplash.com/photo-1551632811-561732d1e306?auto=format&fit=crop&w=1000&q=85'?>" alt="<?=e($rel['name'])?>" loading="lazy">
