@@ -28,10 +28,30 @@ if ($seoRecord) {
     $robots = seo_value($seoRecord,'robots',$robots);
     $schemaJson = trim((string)($seoRecord['schema_json'] ?? ''));
 }
-// Keep the global Site Name visible in every browser tab title, even when a page has its own SEO title.
-if ($siteName !== '' && stripos($title, $siteName) === false) {
-    $title = rtrim($title, " |–—-") . ' | ' . $siteName;
-}
+// Normalize page and social titles so the exact Site Name appears no more than once.
+$normalizeBrandTitle = static function (string $value) use ($siteName): string {
+    $value = trim($value);
+    if ($siteName === '') return $value;
+
+    $parts = preg_split('/\\s*(?:\\||–|—|-)\\s*/u', $value) ?: [$value];
+    $normalized = [];
+    $brandSeen = false;
+    foreach ($parts as $part) {
+        if (strcasecmp(trim($part), $siteName) === 0) {
+            if ($brandSeen) continue;
+            $brandSeen = true;
+        }
+        $normalized[] = trim($part);
+    }
+
+    $value = implode(' | ', array_filter($normalized, static fn($part) => $part !== ''));
+    if (!$brandSeen && stripos($value, $siteName) === false) {
+        $value = rtrim($value, " |–—-") . ' | ' . $siteName;
+    }
+    return $value;
+};
+$title = $normalizeBrandTitle($title);
+$ogTitle = $normalizeBrandTitle($ogTitle);
 if ($ogTitle==='') $ogTitle=$title;
 if ($ogDescription==='') $ogDescription=$description;
 if ($ogImage==='') $ogImage=trim((string)setting('og_image',''));
