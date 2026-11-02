@@ -67,7 +67,7 @@ if (!function_exists('bta_pdf_lines')) {
 
 if (!function_exists('bta_pdf_text')) {
     function bta_pdf_text(array &$c, float $x, float $y, string $text, float $size = 9, bool $bold = false, array $rgb = [0.15,0.29,0.24]): void {
-        $font = $bold ? '/F2' : '/F1';
+        $font = '/F1'; // Keep all PDF ticket typography regular, never bold.
         [$r,$g,$b] = $rgb;
         $c[] = sprintf('q %.3f %.3f %.3f rg BT %s %.2f Tf 1 0 0 1 %.2f %.2f Tm (%s) Tj ET Q', $r,$g,$b,$font,$size,$x,$y,bta_pdf_escape($text));
     }
