@@ -239,6 +239,7 @@ if (!function_exists('bta_pdf_build')) {
         $rows=[
             ['ACTIVITY DATE',$date],['ACTIVITY TIME',$activityTime],['PARTICIPANTS',$guests],
             ['PICKUP SERVICE',$pickupYes?'YES':'NO'],['PICKUP LOCATION',$pickupYes?($pickupLocation?:$pickupArea?:'Hotel / Villa'):'Self arrival'],
+            ['HOTEL / VILLA & ROOM',$pickupYes?trim((string)($b['hotel_name']??'')).((trim((string)($b['room_number']??''))!=='')?' / Room '.trim((string)$b['room_number']):''):'-'],
             ['PICKUP TIME',$pickupYes?$pickupTime:'-'],['CUSTOMER',$b['customer_name']??'-']
         ];
         $y=452;
