@@ -81,8 +81,8 @@ if (!function_exists('bta_booking_email_html')) {
         .$row('Activity Date',$date).$row('Activity Time',$activityTime).$row('Participants',$guestLabel).$row('Pickup Service',$pickupYes?'Yes':'No')
         .($pickupYes?$row('Hotel or Villa Name',$hotel ?: 'Not provided').$row('Room Number',$room ?: 'Not provided').$row('Pickup Time',$pickupTime):'')
         .$row('Payment Method',$payment).$row('Payment Status',$paymentStatus).$row('Total Payment',$money($total),true)
-        .'</table></td></tr>'
         .$customerRows
+        .'</table></td></tr>'
         .$cta
         .'<tr><td style="padding:14px 22px 18px"><table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr><td style="background:#fff5eb;border:1px solid #ffe1c9;border-radius:8px;padding:13px 15px"><div style="font-size:13px;color:#e85f00">Important Notes</div><div style="font-size:12px;line-height:1.7;color:#515b54;margin-top:6px">• Please present this e-ticket (digital or printed) at the registration desk.<br>• Arrive at least 15 minutes before the activity time.<br>• Wear comfortable clothes and closed shoes.<br>• Follow the safety instructions from your guide.</div><div style="font-size:12px;color:#5f6962;margin-top:10px">'.e($ticketText).'</div></td></tr></table></td></tr>'
         .'<tr><td style="padding:15px 22px;background:#151a17;color:#fff"><table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr><td style="font-size:12px;line-height:1.8;color:#f0f1ef">'.e($siteName).'<br>'.e($sitePhone).'<br>'.e($siteEmail).'<br>'.e($siteAddress).'<br>www.balitarantula.com</td></tr></table></td></tr>'
