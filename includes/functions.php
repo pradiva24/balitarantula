@@ -31,7 +31,7 @@ function verify_csrf(): void {
     }
 }
 
-function site_brand_name(string $default='Manuaba Crystalfall'): string {
+function site_brand_name(string $default='Bali Tarantula Adventure'): string {
     $name = trim((string)setting('site_name', $default));
     if ($name === '') $name = $default;
     return $name;
@@ -40,12 +40,16 @@ function site_brand_name(string $default='Manuaba Crystalfall'): string {
 function brand_replace_legacy(string $text): string {
     $brand = site_brand_name();
     if ($brand === '') return $text;
-    return str_ireplace([
-        'Bali Tarantula Adventure',
-        'Tarantula Adventure',
-        'Aloha Ubud Swing',
-        'Aloha Ubud'
-    ], $brand, $text);
+
+    // strtr performs a single-pass replacement against the original text.
+    // Unlike sequential str_ireplace calls, it will not replace substrings
+    // inside the replacement brand (which caused "Bali Bali Tarantula Adventure").
+    return strtr($text, [
+        'Bali Tarantula Adventure' => $brand,
+        'Tarantula Adventure' => $brand,
+        'Aloha Ubud Swing' => $brand,
+        'Aloha Ubud' => $brand,
+    ]);
 }
 
 function brand_output_buffer(string $buffer): string {
