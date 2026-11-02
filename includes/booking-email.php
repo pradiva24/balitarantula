@@ -41,24 +41,17 @@ if (!function_exists('bta_booking_email_html')) {
         $row = static function($label,$value,$highlight=false) {
             return '<tr><td style="padding:9px 8px;border-bottom:1px solid #ecefec;color:#5f6962;font-size:13px;width:42%">'.e($label).'</td><td style="padding:9px 8px;border-bottom:1px solid #ecefec;color:'.($highlight?'#f06400':'#202722').';font-size:13px;text-align:right">'.e((string)$value).'</td></tr>';
         };
-        // Use the public Website Logo configured in Admin Panel > Settings > Branding.
+        // The Website Logo setting is populated by the Branding media picker/upload.
+        // Use that exact selected asset; do not substitute the Admin Logo or a text-made logo.
         $logoPath = trim((string)setting('site_logo',''));
-        $logoExt = strtolower(pathinfo((string)(parse_url($logoPath, PHP_URL_PATH) ?: $logoPath), PATHINFO_EXTENSION));
-        if ($logoExt !== 'png') $logoPath = ''; // Email header logo must be PNG for reliable email-client rendering.
         $logoUrl = '';
         if ($logoPath !== '') {
-            if (preg_match('~^https?://~i', $logoPath)) {
-                $logoUrl = $logoPath;
-            } elseif (function_exists('asset_url')) {
-                $logoUrl = (string)asset_url($logoPath);
-                if (!preg_match('~^https?://~i', $logoUrl)) $logoUrl = $siteUrl.'/'.ltrim($logoUrl,'/');
-            } else {
-                $logoUrl = $siteUrl.'/'.ltrim($logoPath,'/');
-            }
+            $logoUrl = function_exists('asset_url') ? asset_url($logoPath) : $siteUrl.'/'.ltrim($logoPath,'/');
+            if (!preg_match('~^https?://~i', $logoUrl)) $logoUrl = $siteUrl.'/'.ltrim($logoUrl,'/');
         }
         $logo = $logoUrl !== ''
-            ? '<img src="'.e($logoUrl).'" width="220" alt="'.e($siteName).'" style="display:block;width:220px;max-width:100%;height:auto;max-height:82px;object-fit:contain;border:0;margin:0 auto">'
-            : '<div style="font-family:Arial,Helvetica,sans-serif;font-size:20px;line-height:1.2;color:#202722">'.e($siteName).'</div>';
+            ? '<img src="'.e($logoUrl).'" width="240" alt="'.e($siteName).'" style="display:block;width:240px;max-width:100%;height:auto;border:0;outline:none;text-decoration:none;margin:0 auto;background:transparent">'
+            : '<span style="font-family:Arial,Helvetica,sans-serif;font-size:20px;color:#202722">'.e($siteName).'</span>';
         $coverBlock = $coverUrl ? '<img src="'.e($coverUrl).'" width="170" alt="" style="display:block;width:170px;height:112px;object-fit:cover;border-radius:9px;border:0">' : '';
         $hotelRoom = trim($hotel.($room!==''?' / Room '.$room:''));
         $pickupRows = $pickupYes
@@ -73,8 +66,8 @@ if (!function_exists('bta_booking_email_html')) {
               .$row('Special Request',$b['special_request'] ?? '-')
             : '';
         $ticketUrl = trim($ticketUrl) !== '' ? $ticketUrl : $confirmUrl;
-        $cta = '<tr><td align="center" style="padding:18px 26px 8px"><a href="'.e($ticketUrl).'" style="display:inline-block;background:#ff6500;color:#fff;text-decoration:none;padding:14px 25px;border-radius:7px;font-size:14px">'.($isAdmin ? 'Open / Print E-Ticket' : 'View / Print E-Ticket').'</a></td></tr>'
-            : '<tr><td style="padding:16px 26px 8px;color:#5f6962;font-size:12px">Please open the Admin Panel to review, confirm, and manage this reservation.</td></tr>';
+        $ctaLabel = $isAdmin ? 'Open / Print E-Ticket' : 'View / Print E-Ticket';
+        $cta = '<tr><td align="center" style="padding:18px 26px 8px"><a href="'.e($ticketUrl).'" style="display:inline-block;background:#ff6500;color:#fff;text-decoration:none;padding:14px 25px;border-radius:7px;font-size:14px">'.$ctaLabel.'</a></td></tr>';
         $ticketText = $isAdmin ? 'Open the guest e-ticket from the button above to print or save it as PDF.' : 'Open your e-ticket from the button above. You can print it or save it as PDF.';
         $qrBlock = '<img src="'.e($qrUrl).'" width="112" height="112" alt="Booking QR code" style="display:block;width:112px;height:112px;border:0">';
         return '<!doctype html><html><body style="margin:0;padding:0;background:#f2f3f1;font-family:Arial,Helvetica,sans-serif;color:#202722">'
