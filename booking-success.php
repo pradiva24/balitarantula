@@ -135,360 +135,162 @@ require __DIR__ . '/includes/header.php';
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,500;0,600;0,700;0,800;0,900;1,700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
 <style id="bta-success-modern-theme">
-:root {
-  --bta-bg: #f5f4ef;
-  --bta-panel: #ffffff;
-  --bta-heading: #191919;
-  --bta-text: #5d5b56;
-  --bta-muted: #77736b;
-  --bta-border: #dedbd4;
-  --bta-orange: #ff5a1f;
-  --bta-orange-hover: #ff743f;
-  --bta-orange-glow: rgba(255, 90, 31, 0.35);
-  --bta-green: #16a34a;
-  --bta-font-display: 'Barlow Condensed', sans-serif;
-  --bta-font-body: 'Inter', sans-serif;
-}
-
-body {
-  background: var(--bta-bg);
-  color: var(--bta-text);
-  font-family: var(--bta-font-body);
-  line-height: 1.6;
-  margin: 0;
-  padding: 0;
-  -webkit-font-smoothing: antialiased;
-}
-
-.bta-success-page * {
-  box-sizing: border-box;
-}
-
-.bta-success-page .wrap {
-  width: min(1280px, 92%);
-  margin: 0 auto;
-}
-
-/* Page Banner */
-.page-banner {
-  position: relative;
-  min-height: 380px;
-  display: flex;
-  align-items: center;
-  background: linear-gradient(112deg, #171717 0%, #242321 65%, #30271f 100%);
-  border-bottom: 3px solid var(--bta-orange);
-  overflow: hidden;
-  padding: 120px 0 60px;
-}
-
-.page-banner::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: url('https://images.unsplash.com/photo-1551632811-561732d1e306?auto=format&fit=crop&w=1500&q=90') center/cover no-repeat;
-  opacity: 0.22;
-  filter: saturate(1.1);
-}
-
-.page-banner::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(180deg, rgba(23,23,23,0.7) 0%, rgba(23,23,23,0.92) 100%);
-}
-
-.page-banner-content {
-  position: relative;
-  z-index: 2;
-}
-
-.page-banner-content .eyebrow {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  font-family: var(--bta-font-display);
-  font-size: 13px;
-  font-weight: 800;
-  letter-spacing: 2.5px;
-  text-transform: uppercase;
-  color: var(--bta-orange);
-  margin: 0 0 10px;
-}
-
-.page-banner-content .eyebrow-line {
-  display: inline-block;
-  width: 24px;
-  height: 2px;
-  background: var(--bta-orange);
-}
-
-.page-banner-content h1 {
-  font-family: var(--bta-font-display);
-  font-size: clamp(40px, 6vw, 76px);
-  font-weight: 900;
-  line-height: 0.95;
-  letter-spacing: -0.5px;
-  text-transform: uppercase;
-  color: #ffffff;
-  margin: 0 0 16px;
-}
-
-.page-banner-content h1 span {
-  color: var(--bta-orange);
-}
-
-.page-banner-content p {
-  font-family: var(--bta-font-body);
-  font-size: 16px;
-  color: #e0ded9;
-  max-width: 600px;
-  margin: 0 0 20px;
-}
-
-/* Success Card */
-.success-wrap {
-  max-width: 780px;
-  margin: 0 auto;
-  padding: 60px 20px 120px;
-}
-
-.success-card {
-  background: var(--bta-panel);
-  border: 1px solid var(--bta-border);
-  border-top: 4px solid var(--bta-orange);
-  border-radius: 16px;
-  padding: clamp(28px, 5vw, 48px);
-  box-shadow: 0 16px 42px rgba(30, 25, 15, 0.06);
-}
-
-.check-circle {
-  width: 64px;
-  height: 64px;
-  border-radius: 50%;
-  background: rgba(22, 163, 74, 0.12);
-  border: 1px solid rgba(22, 163, 74, 0.35);
-  color: var(--bta-green);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 32px;
-  font-weight: 900;
-  margin-bottom: 20px;
-}
-
-.success-card h2 {
-  font-family: var(--bta-font-display);
-  font-size: clamp(34px, 5vw, 52px);
-  font-weight: 900;
-  text-transform: uppercase;
-  color: var(--bta-heading);
-  line-height: 1;
-  margin: 0 0 10px;
-}
-
-.success-card > p {
-  font-size: 16px;
-  color: var(--bta-text);
-  margin: 0 0 24px;
-}
-
-.booking-code-box {
-  padding: 16px 20px;
-  background: #faf8f5;
-  border: 1px solid var(--bta-border);
-  border-radius: 10px;
-  font-family: var(--bta-font-display);
-  font-size: 26px;
-  font-weight: 900;
-  letter-spacing: 2px;
-  color: var(--bta-orange);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 30px;
-}
-
-.booking-code-box small {
-  font-family: var(--bta-font-body);
-  font-size: 12px;
-  color: var(--bta-muted);
-  letter-spacing: 0;
-  font-weight: 500;
-}
-
-.details-rows {
-  margin: 24px 0;
-}
-
-.detail-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 12px 0;
-  border-bottom: 1px dashed var(--bta-border);
-  font-size: 15px;
-}
-
-.detail-row span {
-  color: var(--bta-muted);
-}
-
-.detail-row strong {
-  color: var(--bta-heading);
-  text-align: right;
-  max-width: 65%;
-  overflow-wrap: anywhere;
-}
-
-.notice-box {
-  background: rgba(255, 90, 31, 0.08);
-  border-left: 3px solid var(--bta-orange);
-  padding: 16px 18px;
-  border-radius: 0 8px 8px 0;
-  font-size: 14px;
-  line-height: 1.6;
-  color: var(--bta-text);
-  margin: 30px 0;
-}
-
-.success-actions {
-  display: flex;
-  gap: 14px;
-  flex-wrap: wrap;
-  margin-top: 30px;
-}
-
-.button {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  padding: 14px 26px;
-  font-family: var(--bta-font-display);
-  font-size: 16px;
-  font-weight: 900;
-  letter-spacing: 1.5px;
-  text-transform: uppercase;
-  text-decoration: none;
-  border-radius: 8px;
-  border: 0;
-  cursor: pointer;
-  transition: all 0.25s ease;
-  white-space: nowrap;
-}
-
-.button-orange {
-  background: var(--bta-orange);
-  color: #111111 !important;
-  box-shadow: 0 4px 20px var(--bta-orange-glow);
-}
-
-.button-orange:hover {
-  background: var(--bta-orange-hover);
-  transform: translateY(-2px);
-  color: #111111 !important;
-}
-
-.button-outline {
-  background: #ffffff;
-  color: var(--bta-heading);
-  border: 1px solid var(--bta-border);
-}
-
-.button-outline:hover {
-  background: #f0eee8;
-  border-color: #c9c6c0;
-  color: #111111;
-}
-
-@media (max-width: 600px) {
-  .booking-code-box {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 6px;
-    font-size: 22px;
-  }
-  .success-actions {
-    flex-direction: column;
-  }
-  .button {
-    width: 100%;
-  }
-}
+.bta-success-page{--success-orange:#ff6500;--success-dark:#171a18;--success-muted:#68716c;--success-line:#e7e9e6;background:#f3f5f3;color:#171a18;font-family:'Inter',Arial,sans-serif;padding:0 0 76px}
+.bta-success-page *{box-sizing:border-box}
+.bta-success-page .success-wrap{width:min(1180px,calc(100% - 40px));margin:0 auto;padding:36px 0 0}
+.bta-success-page .success-hero{position:relative;isolation:isolate;overflow:hidden;min-height:285px;display:flex;align-items:center;background:#151a17;border-radius:0 0 24px 24px;color:#fff}
+.bta-success-page .success-hero:before{content:"";position:absolute;z-index:-2;inset:0;background:linear-gradient(90deg,rgba(8,13,10,.96) 0%,rgba(8,13,10,.84) 42%,rgba(8,13,10,.12) 100%),url('<?=e(asset_url($booking['cover_image'] ?? ''))?>') center 48%/cover no-repeat}
+.bta-success-page .success-hero:after{content:"";position:absolute;z-index:-1;right:-80px;top:-160px;width:380px;height:260px;background:var(--success-orange);opacity:.14;filter:blur(70px);border-radius:50%}
+.bta-success-page .hero-inner{width:min(1180px,calc(100% - 40px));margin:0 auto;padding:42px 0 48px}
+.bta-success-page .success-check{width:54px;height:54px;border-radius:50%;display:grid;place-items:center;background:#16a34a;color:#fff;font-size:27px;box-shadow:0 0 0 7px rgba(22,163,74,.16);margin-bottom:20px}
+.bta-success-page .hero-kicker{font-size:12px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:#ff9b5d;margin:0 0 8px}
+.bta-success-page .success-hero h1{font-family:'Barlow Condensed',Impact,sans-serif;font-size:clamp(42px,6vw,70px);line-height:.95;text-transform:uppercase;font-weight:900;color:#fff;margin:0 0 12px}
+.bta-success-page .success-hero h1 span{color:#ff741c}
+.bta-success-page .success-hero p{font-size:15px;line-height:1.7;color:#e4e8e5;max-width:560px;margin:0}
+.bta-success-page .success-grid{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(300px,.95fr);gap:18px;align-items:start}
+.bta-success-page .success-card{background:#fff;border:1px solid #e5e8e5;border-radius:17px;box-shadow:0 10px 32px rgba(20,30,24,.06);padding:25px}
+.bta-success-page .card-heading{display:flex;align-items:center;gap:11px;font-family:'Barlow Condensed',Impact,sans-serif;font-size:25px;font-weight:800;color:#171a18;margin:0 0 18px}
+.bta-success-page .card-heading i{color:var(--success-orange);font-size:21px}
+.bta-success-page .booking-code-panel{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:17px 18px;border:1px dashed #ffad78;background:#fff8f2;border-radius:12px;margin-bottom:24px}
+.bta-success-page .booking-code-label{display:block;font-size:10px;font-weight:800;letter-spacing:1.5px;color:#8a6b58;text-transform:uppercase;margin-bottom:5px}
+.bta-success-page .booking-code-value{font-family:'Barlow Condensed',Impact,sans-serif;font-size:clamp(22px,3.2vw,34px);line-height:1.1;font-weight:900;letter-spacing:.4px;color:#171a18;overflow-wrap:anywhere}
+.bta-success-page .copy-code{flex:0 0 auto;border:1px solid var(--success-orange);background:#fff;color:#e95b00;border-radius:9px;padding:10px 14px;font-weight:800;cursor:pointer}
+.bta-success-page .copy-code:hover{background:#fff0e5}
+.bta-success-page .package-preview{display:flex;align-items:center;gap:16px;padding-bottom:20px;border-bottom:1px solid var(--success-line);margin-bottom:12px}
+.bta-success-page .package-preview img{width:150px;height:105px;object-fit:cover;border-radius:11px;background:#edf0ed}
+.bta-success-page .package-preview h3{font-family:'Barlow Condensed',Impact,sans-serif;font-size:25px;line-height:1.05;font-weight:800;color:#171a18;margin:0 0 6px}
+.bta-success-page .package-preview p{font-size:13px;line-height:1.55;color:var(--success-muted);margin:0}
+.bta-success-page .detail-list{margin:0}
+.bta-success-page .detail-row{display:grid;grid-template-columns:minmax(135px,.8fr) 16px minmax(0,1.2fr);gap:9px;align-items:start;padding:12px 0;border-bottom:1px solid #edf0ed;font-size:13px}
+.bta-success-page .detail-row:last-child{border-bottom:0}
+.bta-success-page .detail-row dt{font-weight:700;color:#555f59}
+.bta-success-page .detail-row .colon{color:#a1aaa4}
+.bta-success-page .detail-row dd{margin:0;font-weight:700;color:#171a18;overflow-wrap:anywhere}
+.bta-success-page .detail-row dd.amount{font-family:'Barlow Condensed',Impact,sans-serif;font-size:25px;color:var(--success-orange)}
+.bta-success-page .status-pill{display:inline-flex;align-items:center;gap:6px;padding:5px 10px;border-radius:30px;font-size:11px;font-weight:800;text-transform:capitalize;background:#fff4df;color:#a16207}
+.bta-success-page .status-pill.paid{background:#e5f8e9;color:#15803d}
+.bta-success-page .side-stack{display:grid;gap:18px}
+.bta-success-page .side-info{display:flex;gap:13px;padding:14px 0;border-bottom:1px solid var(--success-line)}
+.bta-success-page .side-info:last-child{border:0;padding-bottom:0}
+.bta-success-page .side-icon{flex:0 0 36px;width:36px;height:36px;display:grid;place-items:center;border-radius:10px;background:#fff0e6;color:var(--success-orange);font-size:17px}
+.bta-success-page .side-info strong{display:block;font-size:13px;color:#171a18;margin-bottom:4px}
+.bta-success-page .side-info span{display:block;font-size:12px;line-height:1.6;color:#657069}
+.bta-success-page .notes-panel{background:#fff8f1;border:1px solid #ffead9;border-radius:12px;padding:17px}
+.bta-success-page .notes-panel h3{font-family:'Barlow Condensed',Impact,sans-serif;font-size:22px;color:#e95b00;margin:0 0 10px}
+.bta-success-page .notes-panel ul{list-style:none;margin:0;padding:0;display:grid;gap:9px}
+.bta-success-page .notes-panel li{font-size:12px;line-height:1.5;color:#414a44;display:flex;gap:9px}
+.bta-success-page .notes-panel li i{color:#16a34a;margin-top:2px}
+.bta-success-page .success-actions{display:grid;grid-template-columns:1.2fr 1fr 1fr;gap:12px;margin-top:20px}
+.bta-success-page .success-action{min-height:58px;display:flex;align-items:center;justify-content:center;gap:10px;padding:13px 16px;border-radius:11px;text-decoration:none;font-size:13px;font-weight:800;text-align:center;border:1px solid #e1e5e1;background:#fff;color:#171a18;transition:.2s}
+.bta-success-page .success-action i{font-size:19px}
+.bta-success-page .success-action.primary{background:var(--success-orange);border-color:var(--success-orange);color:#fff;box-shadow:0 6px 18px rgba(255,101,0,.2)}
+.bta-success-page .success-action.whatsapp i{color:#16a34a}
+.bta-success-page .success-action:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(20,30,24,.1)}
+@media(max-width:850px){.bta-success-page .success-grid{grid-template-columns:1fr}.bta-success-page .side-stack{grid-template-columns:1fr 1fr}}
+@media(max-width:600px){.bta-success-page{padding-bottom:42px}.bta-success-page .success-hero{min-height:250px;border-radius:0}.bta-success-page .hero-inner{padding:34px 0}.bta-success-page .success-wrap{width:calc(100% - 26px);padding-top:18px}.bta-success-page .success-card{padding:18px;border-radius:14px}.bta-success-page .side-stack{grid-template-columns:1fr}.bta-success-page .booking-code-panel{align-items:flex-start;flex-direction:column}.bta-success-page .package-preview img{width:112px;height:90px}.bta-success-page .package-preview h3{font-size:22px}.bta-success-page .detail-row{grid-template-columns:112px 10px minmax(0,1fr);gap:5px;font-size:12px}.bta-success-page .success-actions{grid-template-columns:1fr}.bta-success-page .success-action{min-height:52px}.bta-success-page .card-heading{font-size:23px}}
 </style>
 
 <div class="bta-success-page">
-  <!-- Page Banner -->
-  <section class="page-banner">
-    <div class="wrap page-banner-content">
-      <p class="eyebrow"><span class="eyebrow-line"></span>BOOKING REQUEST</p>
-      <h1>YOUR NEXT <span>ADVENTURE.</span></h1>
-      <p>Keep your reservation code handy for any questions or follow-up with our crew.</p>
+  <section class="success-hero">
+    <div class="hero-inner">
+      <div class="success-check"><i class="fa-solid fa-check" aria-hidden="true"></i></div>
+      <p class="hero-kicker">Bali Tarantula Adventure · Reservation</p>
+      <h1>Booking <span>Confirmed!</span></h1>
+      <p>Thank you, <?=e($booking['customer_name'])?>. Your reservation has been successfully received. Keep your booking code for check-in and any assistance from our crew.</p>
     </div>
   </section>
 
-  <!-- Success Card Section -->
   <main class="success-wrap">
-    <article class="success-card">
-      <div class="check-circle"><i class="fa-solid fa-check" aria-hidden="true"></i></div>
-      <h2>BOOKING RECEIVED.</h2>
-      <p>Thanks, <b><?=e($booking['customer_name'])?></b>! Your adventure request has been registered in our system.</p>
+    <div class="success-grid">
+      <section class="success-card">
+        <h2 class="card-heading"><i class="fa-solid fa-ticket" aria-hidden="true"></i> Booking Details</h2>
+        <div class="booking-code-panel">
+          <div>
+            <span class="booking-code-label">Your booking reference</span>
+            <div class="booking-code-value" id="btaBookingCode"><?=e($booking['booking_code'])?></div>
+          </div>
+          <button class="copy-code" type="button" id="copyBookingCode"><i class="fa-regular fa-copy"></i> Copy</button>
+        </div>
 
-      <div class="booking-code-box">
-        <span><?=e($booking['booking_code'])?></span>
-        <small>Official Booking Code</small>
-      </div>
+        <div class="package-preview">
+          <?php if(!empty($booking['cover_image'])): ?>
+            <img src="<?=e(asset_url($booking['cover_image']))?>" alt="<?=e($booking['package_name'])?>">
+          <?php else: ?>
+            <div class="side-icon" style="width:150px;height:105px"><i class="fa-solid fa-mountain-sun"></i></div>
+          <?php endif; ?>
+          <div>
+            <h3><?=e($booking['package_name'])?></h3>
+            <p><?=e($booking['short_description'] ?: 'Get ready for an unforgettable Bali adventure.')?></p>
+          </div>
+        </div>
 
-      <div class="details-rows">
-        <div class="detail-row">
-          <span>Adventure Track</span>
-          <strong><?=e($booking['package_name'])?></strong>
-        </div>
-        <div class="detail-row">
-          <span>Activity Date &amp; Time</span>
-          <strong><?=date('D, M d, Y', strtotime($booking['booking_date']))?> &middot; <?=e(substr((string)($booking['activity_time'] ?: '09:00'), 0, 5))?></strong>
-        </div>
-        <div class="detail-row">
-          <span>Participants</span>
-          <strong><?=(int)$booking['adults']?> Adults <?=((int)$booking['children'] > 0 ? ', ' . (int)$booking['children'] . ' Children' : '')?></strong>
-        </div>
-        <div class="detail-row">
-          <span>Hotel Transport</span>
-          <strong><?=$booking['pickup_required'] ? e($booking['pickup_area_name'] . ' — ' . $booking['hotel_name']) : 'Ticket Only (Self Arrival)'?></strong>
-        </div>
-        <div class="detail-row">
-          <span>Total Amount</span>
-          <strong style="color:var(--bta-orange); font-size:18px;"><?=rupiah($total)?></strong>
-        </div>
-        <div class="detail-row">
-          <span>Payment Method</span>
-          <strong><?=e($booking['payment_method'])?></strong>
-        </div>
-        <div class="detail-row">
-          <span>Payment Status</span>
-          <strong style="text-transform:uppercase; color:<?=strcasecmp((string)$booking['payment_status'], 'paid') === 0 ? '#16a34a' : '#d97706'?>;">
-            <?=e($booking['payment_status'])?>
-          </strong>
-        </div>
-      </div>
+        <dl class="detail-list">
+          <div class="detail-row"><dt>Customer Name</dt><span class="colon">:</span><dd><?=e($booking['customer_name'])?></dd></div>
+          <div class="detail-row"><dt>Activity Date</dt><span class="colon">:</span><dd><?=date('D, d M Y',strtotime($booking['booking_date']))?></dd></div>
+          <div class="detail-row"><dt>Activity Time</dt><span class="colon">:</span><dd><?=e(substr((string)($booking['activity_time'] ?: '09:00'),0,5))?></dd></div>
+          <div class="detail-row"><dt>Participants</dt><span class="colon">:</span><dd><?=($booking['booking_mode']??'person')==='tandem'?'2 Persons (1 Tandem Unit)':((int)$booking['adults'].' Adults'.((int)$booking['children']>0?', '.(int)$booking['children'].' Children':''))?></dd></div>
+          <div class="detail-row"><dt>Payment Status</dt><span class="colon">:</span><dd><span class="status-pill <?=strcasecmp((string)$booking['payment_status'],'paid')===0?'paid':''?>"><i class="fa-solid <?=strcasecmp((string)$booking['payment_status'],'paid')===0?'fa-circle-check':'fa-clock'?>"></i><?=e($booking['payment_status'])?></span></dd></div>
+          <div class="detail-row"><dt>Total Payment</dt><span class="colon">:</span><dd class="amount"><?=rupiah($total)?></dd></div>
+        </dl>
+      </section>
 
-      <div class="notice-box">
-        An instant confirmation email and your PDF e-ticket have been generated and sent to <b><?=e($booking['customer_email'])?></b>. If you require private transfers, custom schedules, or route upgrades, contact our team on WhatsApp anytime.
-      </div>
+      <div class="side-stack">
+        <section class="success-card">
+          <h2 class="card-heading"><i class="fa-solid fa-location-dot" aria-hidden="true"></i> Activity Information</h2>
+          <div class="side-info">
+            <div class="side-icon"><i class="fa-solid fa-map-location-dot"></i></div>
+            <div><strong>Location</strong><span><?=e(trim((string)setting('site_address','Bali Tarantula Adventure, Ubud, Bali, Indonesia')))?></span></div>
+          </div>
+          <div class="side-info">
+            <div class="side-icon"><i class="fa-regular fa-clock"></i></div>
+            <div><strong>Schedule</strong><span>Activity Time: <?=e(substr((string)($booking['activity_time'] ?: '09:00'),0,5))?><br>Please arrive 15 minutes before your activity.</span></div>
+          </div>
+          <div class="side-info">
+            <div class="side-icon"><i class="fa-solid fa-car"></i></div>
+            <div><strong>Pickup Service <span class="status-pill" style="margin-left:5px;background:<?=$booking['pickup_required']?'#e5f8e9;color:#15803d':'#eef1ef;color:#59645d'?>"><?=$booking['pickup_required']?'Included':'Self Arrival'?></span></strong>
+              <span><?php if($booking['pickup_required']): ?>Pickup Time: <?=e(substr((string)($booking['pickup_time'] ?: '—'),0,5))?><br>Pickup Location: <?=e(trim((string)($booking['hotel_name'] ?: $booking['pickup_area_name'] ?: 'Hotel / Villa')))?></span><?php else: ?>No hotel pickup selected. Please arrive at the activity location directly.</span><?php endif; ?></div>
+          </div>
+        </section>
 
-      <div class="success-actions">
-        <a class="button button-orange" href="<?=BASE_URL?>/booking-success?code=<?=urlencode($booking['booking_code'])?>&amp;print=1" target="_blank">
-          PRINT / DOWNLOAD E-TICKET <span><i class="fa-solid fa-file-arrow-down" aria-hidden="true"></i></span>
-        </a>
-        <a class="button button-outline" href="<?=$waChatUrl?>" target="_blank" rel="noopener">
-          CHAT WITH CREW <span><i class="fa-brands fa-whatsapp" aria-hidden="true"></i></span>
-        </a>
-        <a class="button button-outline" href="<?=BASE_URL?>/">
-          BACK TO HOME <span><i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i></span>
-        </a>
+        <section class="success-card">
+          <div class="notes-panel">
+            <h3><i class="fa-solid fa-circle-info"></i> Important Notes</h3>
+            <ul>
+              <li><i class="fa-solid fa-check"></i>Please bring a change of clothes.</li>
+              <li><i class="fa-solid fa-check"></i>Wear comfortable clothes and closed shoes.</li>
+              <li><i class="fa-solid fa-check"></i>Follow the safety instructions from our guide.</li>
+              <li><i class="fa-solid fa-check"></i>Please arrive 15 minutes before your scheduled time.</li>
+            </ul>
+          </div>
+        </section>
       </div>
-    </article>
+    </div>
+
+    <div class="success-actions">
+      <a class="success-action primary" href="<?=BASE_URL?>/booking-success?code=<?=urlencode($booking['booking_code'])?>&amp;print=1" target="_blank"><i class="fa-solid fa-file-arrow-down"></i> Download E-Ticket</a>
+      <a class="success-action whatsapp" href="<?=$waChatUrl?>" target="_blank" rel="noopener"><i class="fa-brands fa-whatsapp"></i> Contact via WhatsApp</a>
+      <a class="success-action" href="<?=BASE_URL?>/"><i class="fa-solid fa-house"></i> Back to Homepage</a>
+    </div>
   </main>
 </div>
+
+<script>
+(function(){
+  const button=document.getElementById('copyBookingCode');
+  const code=document.getElementById('btaBookingCode');
+  if(!button||!code)return;
+  button.addEventListener('click',async function(){
+    const value=code.textContent.trim();
+    try{
+      await navigator.clipboard.writeText(value);
+      button.innerHTML='<i class="fa-solid fa-check"></i> Copied';
+    }catch(error){
+      const range=document.createRange();range.selectNodeContents(code);
+      const selection=window.getSelection();selection.removeAllRanges();selection.addRange(range);
+      button.innerHTML='<i class="fa-solid fa-copy"></i> Select & Copy';
+    }
+  });
+})();
+</script>
 
 <?php require __DIR__ . '/includes/footer.php'; ?>
