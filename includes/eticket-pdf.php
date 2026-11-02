@@ -326,8 +326,7 @@ if (!function_exists('bta_pdf_build')) {
             foreach($valueLines as $i=>$txt) bta_pdf_text($c,205,$textTop-($i*8.5),$txt,6.8,false,((string)$label==='Total Payment'?$orange:$ink));
             // Two-line labels (e.g. Hotel or Villa...) get a taller row.
             $rowHeight = $lineCount > 1 ? 31 : 27;
-            $separatorY = $y - $rowHeight;
-            bta_pdf_line($c,49,$separatorY,382,$separatorY,$line,0.35);
+            // No horizontal separator through or between detail text rows.
             $y -= $rowHeight;
         }
 
