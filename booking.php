@@ -247,11 +247,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     try {
                         $customerSent = smtp_send($email, $subject, $emailHtml, '', null, $attachments);
                         if (!$customerSent) {
-                            error_log('[BTA BOOKING EMAIL CUSTOMER] ' . $code . ': ' . smtp_last_error());
-                            // Retry once without the PDF attachment in case the attachment caused rejection.
-                            if ($attachments) {
+                            $firstError = smtp_last_error();
+                            error_log('[BTA BOOKING EMAIL CUSTOMER] ' . $code . ': ' . $firstError);
+                            // Retry without attachment even when PDF creation returned no file.
+                            $customerSent = smtp_send($email, $subject, $emailHtml, '', null, []);
+                            if (!$customerSent) {
+                                $secondError = smtp_last_error();
+                                error_log('[BTA BOOKING EMAIL CUSTOMER RETRY] ' . $code . ': ' . $secondError);
+                                // One final retry handles temporary SMTP connection/server errors.
                                 $customerSent = smtp_send($email, $subject, $emailHtml, '', null, []);
-                                if (!$customerSent) error_log('[BTA BOOKING EMAIL CUSTOMER RETRY] ' . $code . ': ' . smtp_last_error());
+                                if (!$customerSent) error_log('[BTA BOOKING EMAIL CUSTOMER FINAL] ' . $code . ': ' . smtp_last_error());
                             }
                         }
 
@@ -263,10 +268,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             $adminHtml = bta_booking_email_html($emailBooking, $confirmUrl, 'New Booking Received', 'A new adventure booking has just arrived. Please review details below. Open the e-ticket using the button.', 'admin', $ticketUrl);
                             $adminSent = smtp_send($recipient, 'New ' . $subject, $adminHtml, $email, null, $attachments);
                             if (!$adminSent) {
-                                error_log('[BTA BOOKING EMAIL ADMIN] ' . $code . ' to ' . $recipient . ': ' . smtp_last_error());
-                                if ($attachments) {
+                                $firstError = smtp_last_error();
+                                error_log('[BTA BOOKING EMAIL ADMIN] ' . $code . ' to ' . $recipient . ': ' . $firstError);
+                                // Retry without attachment, then retry once more for transient SMTP failures.
+                                $adminSent = smtp_send($recipient, 'New ' . $subject, $adminHtml, $email, null, []);
+                                if (!$adminSent) {
+                                    $secondError = smtp_last_error();
+                                    error_log('[BTA BOOKING EMAIL ADMIN RETRY] ' . $code . ' to ' . $recipient . ': ' . $secondError);
                                     $adminSent = smtp_send($recipient, 'New ' . $subject, $adminHtml, $email, null, []);
-                                    if (!$adminSent) error_log('[BTA BOOKING EMAIL ADMIN RETRY] ' . $code . ' to ' . $recipient . ': ' . smtp_last_error());
+                                    if (!$adminSent) error_log('[BTA BOOKING EMAIL ADMIN FINAL] ' . $code . ' to ' . $recipient . ': ' . smtp_last_error());
                                 }
                             }
                         }
