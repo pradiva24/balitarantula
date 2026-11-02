@@ -1,6 +1,11 @@
 <?php
 require __DIR__.'/includes/auth.php';
 $p=db();
+// Per-package booking pricing mode: person (default) or fixed tandem unit.
+try {
+  $bookingModeCol=$p->query("SHOW COLUMNS FROM packages LIKE 'booking_mode'")->fetch(PDO::FETCH_ASSOC);
+  if(!$bookingModeCol) $p->exec("ALTER TABLE packages ADD COLUMN booking_mode VARCHAR(20) NOT NULL DEFAULT 'person' AFTER price_child");
+} catch(Throwable $e) {}
 $action=$_GET['action']??'list';
 $id=(int)($_GET['id']??0);
 
@@ -361,7 +366,7 @@ try {
       $cat=(int)($_POST['category_id']??0)?:null;
       $data=[
         $cat,$name,$slug,$_POST['short_description']??'',$_POST['description']??'',
-        $_POST['duration']??'',(float)($_POST['price_adult']??0),(float)($_POST['price_child']??0),
+        $_POST['duration']??'',(float)($_POST['price_adult']??0),(float)($_POST['price_child']??0),((($_POST['booking_mode']??'person')==='tandem')?'tandem':'person'),
         isset($_POST['featured'])?1:0,isset($_POST['best_seller'])?1:0,(int)($_POST['status']??1),((int)($_POST['booking_enabled']??1)===1?1:0),$_POST['seo_title']??'',
         $_POST['meta_description']??'',$_POST['focus_keyword']??'',$_POST['canonical_url']??'',$_POST['og_image']??'',
         $_POST['og_title']??'',$_POST['og_description']??'',$_POST['schema_json']??''
@@ -373,10 +378,10 @@ try {
       $cover=admin_upload('cover_image','packages',$old);
       $data[]=$cover;
       if($id){
-        $st=$p->prepare('UPDATE packages SET category_id=?,name=?,slug=?,short_description=?,description=?,duration=?,price_adult=?,price_child=?,featured=?,best_seller=?,status=?,booking_enabled=?,seo_title=?,meta_description=?,focus_keyword=?,canonical_url=?,og_image=?,og_title=?,og_description=?,schema_json=?,cover_image=?,updated_at=NOW() WHERE id=?');
+        $st=$p->prepare('UPDATE packages SET category_id=?,name=?,slug=?,short_description=?,description=?,duration=?,price_adult=?,price_child=?,booking_mode=?,featured=?,best_seller=?,status=?,booking_enabled=?,seo_title=?,meta_description=?,focus_keyword=?,canonical_url=?,og_image=?,og_title=?,og_description=?,schema_json=?,cover_image=?,updated_at=NOW() WHERE id=?');
         $data[]=$id;$st->execute($data);
       }else{
-        $st=$p->prepare('INSERT INTO packages(category_id,name,slug,short_description,description,duration,price_adult,price_child,featured,best_seller,status,booking_enabled,seo_title,meta_description,focus_keyword,canonical_url,og_image,og_title,og_description,schema_json,cover_image) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)');
+        $st=$p->prepare('INSERT INTO packages(category_id,name,slug,short_description,description,duration,price_adult,price_child,booking_mode,featured,best_seller,status,booking_enabled,seo_title,meta_description,focus_keyword,canonical_url,og_image,og_title,og_description,schema_json,cover_image) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)');
         $st->execute($data);$id=(int)$p->lastInsertId();
         try {
           $nextOrder=(int)$p->query('SELECT COALESCE(MAX(homepage_order),0)+1 FROM packages')->fetchColumn();
@@ -806,6 +811,7 @@ if($action==='add'||$action==='edit'):
 <div class="field full"><label>Activity Start Times</label><textarea name="activity_times" rows="5" placeholder="08:00&#10;09:00&#10;10:00"><?php if(!empty($x['id'])){try{$atq=$p->prepare('SELECT TIME_FORMAT(activity_time, "%H:%i") FROM package_activity_times WHERE package_id=? ORDER BY sort_order,activity_time');$atq->execute([(int)$x['id']]);echo admin_e(implode("\n",$atq->fetchAll(PDO::FETCH_COLUMN)));}catch(Throwable $e){}}?></textarea><small class="muted-line">One start time per line in 24-hour format (for example 08:00, 09:00, 10:00). Customers will select one when booking. Leave empty if this activity has no fixed start time.</small></div>
 <div class="field"><label>Adult Price</label><input type="number" step="0.01" name="price_adult" value="<?=admin_e($x['price_adult']??0)?>"></div>
 <div class="field"><label>Child Price</label><input type="number" step="0.01" name="price_child" value="<?=admin_e($x['price_child']??0)?>"></div>
+<div class="field"><label>Booking Pricing Mode</label><select name="booking_mode"><option value="person" <?=($x['booking_mode']??'person')==='person'?'selected':''?>>Per Person (Adults / Children)</option><option value="tandem" <?=($x['booking_mode']??'person')==='tandem'?'selected':''?>>Tandem ATV — 1 Unit = 2 Persons</option></select><small class="muted-line">For Tandem ATV, price is per unit. Each booking is fixed to one unit and two participants.</small></div>
 <div class="field"><label>Original Price / Before Discount</label><input type="number" step="0.01" min="0" name="original_price" value="<?=admin_e($editOriginalPrice??'')?>" placeholder="e.g. 250000"><small class="muted-line">Shown crossed out above the current adult price. Leave empty to hide it.</small></div>
 <div class="field full package-price-card-admin-field">
 <label>Price Card List</label>
