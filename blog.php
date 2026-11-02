@@ -10,6 +10,19 @@ $title = $seo['seo_title'] ?? ('Adventure Journal & Travel Tips | ' . site_brand
 $description = $seo['meta_description'] ?? ('Explore Bali off-road advice, quad biking tips, and wilderness stories from ' . site_brand_name() . '.');
 $canonical = BASE_URL . '/blog.php';
 
+$blogPage = [];
+try {
+    $blogPage = db()->query("SELECT * FROM blog_page_settings WHERE id=1 LIMIT 1")->fetch(PDO::FETCH_ASSOC) ?: [];
+} catch (Throwable $e) {
+    $blogPage = [];
+}
+$blogValue = static function (string $key, string $fallback = '') use ($blogPage): string {
+    $value = trim((string)($blogPage[$key] ?? ''));
+    return $value !== '' ? $value : $fallback;
+};
+$blogHeroImage = trim((string)($blogPage['hero_image'] ?? ''));
+$blogHeroImageUrl = $blogHeroImage !== '' ? (preg_match('~^https?://~i', $blogHeroImage) ? $blogHeroImage : asset_url($blogHeroImage)) : '';
+
 $hasCat = false;
 try {
     $hasCat = (bool)db()->query("SHOW COLUMNS FROM blog_posts LIKE 'category_name'")->fetch(PDO::FETCH_ASSOC);
@@ -83,7 +96,7 @@ body {
   content: "";
   position: absolute;
   inset: 0;
-  background: url('https://images.unsplash.com/photo-1551632811-561732d1e306?auto=format&fit=crop&w=1800&q=85') center/cover no-repeat;
+  background: <?= $blogHeroImageUrl !== '' ? 'url(\''.e($blogHeroImageUrl).'\')' : 'linear-gradient(112deg, #171717 0%, #242321 65%, #30271f 100%)' ?> center/cover no-repeat;
   opacity: 0.28;
   filter: saturate(1.1);
 }
@@ -144,6 +157,14 @@ body {
   line-height: 1.7;
 }
 
+.page-banner-content .blog-hero-button {
+  display:inline-flex;align-items:center;gap:10px;margin:4px 0 22px;padding:13px 22px;
+  background:var(--bta-orange);color:#171717;text-decoration:none;
+  font:900 15px var(--bta-font-display);letter-spacing:1.2px;text-transform:uppercase;
+  transition:transform .2s,background .2s;
+}
+.page-banner-content .blog-hero-button:hover{background:var(--bta-orange-hover);transform:translateY(-2px)}
+.page-banner-content .breadcrumbs{margin-top:4px}
 .breadcrumbs {
   font-family: var(--bta-font-display);
   font-size: 13px;
@@ -363,27 +384,19 @@ body {
   <!-- Page Banner -->
   <section class="page-banner">
     <div class="wrap page-banner-content">
-      <p class="eyebrow"><span class="eyebrow-line"></span>ADVENTURE JOURNAL</p>
-      <h1>STORIES FROM <span>THE WILD.</span></h1>
-      <p>Tips, track guides, gear advice, and inspirational stories for your next Bali off-road expedition.</p>
+      <p class="eyebrow"><span class="eyebrow-line"></span><?=e($blogValue('hero_kicker', 'ADVENTURE JOURNAL'))?></p>
+      <h1><?=e($blogValue('hero_title', 'STORIES FROM'))?> <span><?=e($blogValue('hero_accent', 'THE WILD.'))?></span></h1>
+      <?php if ($blogValue('hero_description') !== ''): ?><p><?=nl2br(e($blogValue('hero_description')))?></p><?php endif; ?>
+      <?php if ($blogValue('hero_button_text') !== ''): ?><a class="blog-hero-button" href="#blog-list"><?=e($blogValue('hero_button_text', 'Explore Articles'))?> <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a><?php endif; ?>
       <div class="breadcrumbs">
-        <a href="<?=BASE_URL?>/">HOME</a> / ADVENTURE JOURNAL
+        <a href="<?=e(rtrim(BASE_URL, '/'))?>/">HOME</a> / <?=e($blogValue('hero_kicker', 'ADVENTURE JOURNAL'))?>
       </div>
     </div>
   </section>
 
   <!-- Blog Listing -->
-  <main class="blog-section">
+  <main class="blog-section" id="blog-list">
     <div class="wrap">
-      
-      <div class="section-heading">
-        <div>
-          <p class="eyebrow"><span class="eyebrow-line"></span>LATEST STORIES</p>
-          <h2>READ. RIDE. <span>REPEAT.</span></h2>
-        </div>
-        <p class="section-description">Get fully prepared before conquering our trails with helpful field guides and genuine rider experiences.</p>
-      </div>
-
       <div class="blog-grid">
         <?php if (!empty($rows)): ?>
           <?php foreach ($rows as $r): 
