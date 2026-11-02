@@ -21,7 +21,7 @@ $validPayment=['pending','paid','failed','refunded'];
 if(in_array($status,$validStatus,true)){ $where[]="b.booking_status=?"; $args[]=$status; } else $status='';
 if(in_array($payment,$validPayment,true)){ $where[]="b.payment_status=?"; $args[]=$payment; } else $payment='';
 
-$sql="SELECT b.*,p.name package_name,a.name pickup_name
+$sql="SELECT b.*,p.name package_name,p.booking_mode,a.name pickup_name
       FROM bookings b
       LEFT JOIN packages p ON p.id=b.package_id
       LEFT JOIN pickup_areas a ON a.id=b.pickup_area_id";
@@ -74,7 +74,7 @@ require __DIR__.'/includes/header.php';
 <td><b><?=admin_e($r['customer_name'])?></b><div class="small"><?=admin_e($r['customer_country']??'')?></div><div class="small"><?=admin_e($r['customer_whatsapp'])?></div><div class="small"><?=admin_e($r['customer_email'])?></div></td>
 <td><?=admin_e($r['package_name']??'-')?></td>
 <td><?=admin_e($r['booking_date'])?></td>
-<td><?=number_format((int)$r['adults'])?> adult<?=((int)$r['adults']===1?'':'s')?><?php if((int)$r['children']>0): ?> · <?=number_format((int)$r['children'])?> child<?=((int)$r['children']===1?'':'ren')?><?php endif; ?></td>
+<td><?php if(($r['booking_mode']??'person')==='tandem'): ?>1 Tandem ATV unit · 2 persons<?php else: ?><?=number_format((int)$r['adults'])?> adult<?=((int)$r['adults']===1?'':'s')?><?php if((int)$r['children']>0): ?> · <?=number_format((int)$r['children'])?> child<?=((int)$r['children']===1?'':'ren')?><?php endif; ?><?php endif; ?></td>
 <td><b>Rp <?=number_format((float)$r['total'],0,',','.')?></b></td>
 <td><span class="badge"><?=admin_e($r['payment_status'])?></span><?php if(!empty($r['payment_method'])): ?><div class="small"><?=admin_e($r['payment_method'])?></div><?php endif; ?></td>
 <td><span class="badge"><?=admin_e($r['booking_status'])?></span></td>
