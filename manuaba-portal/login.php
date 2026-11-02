@@ -1,12 +1,24 @@
 <?php
 require_once __DIR__.'/../config/database.php';require_once __DIR__.'/../includes/functions.php';
 if(session_status()===PHP_SESSION_NONE){
+  // Use the same session namespace and cookie settings as the authenticated
+  // admin area. A different session name here can split the login CSRF token
+  // and admin session across PHPSESSID and BTA_SESSION.
+  $https = !empty($_SERVER['HTTPS']) && strtolower((string)$_SERVER['HTTPS']) !== 'off';
   ini_set('session.use_strict_mode','1');
   ini_set('session.use_only_cookies','1');
   ini_set('session.use_trans_sid','0');
-  ini_set('session.cookie_secure', (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? '1' : '0');
+  ini_set('session.cookie_secure', $https ? '1' : '0');
   ini_set('session.cookie_httponly','1');
   ini_set('session.cookie_samesite','Lax');
+  session_name('BTA_SESSION');
+  session_set_cookie_params([
+    'lifetime'=>0,
+    'path'=>'/',
+    'secure'=>$https,
+    'httponly'=>true,
+    'samesite'=>'Lax'
+  ]);
   session_start();
 }
 if(!empty($_SESSION['admin_id'])){header('Location: index.php');exit;}
