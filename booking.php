@@ -12,6 +12,11 @@ require_once __DIR__ . '/config/midtrans.php';
 if (session_status() !== PHP_SESSION_ACTIVE) session_start();
 $db = db();
 
+try {
+    $bookingModeCol=$db->query("SHOW COLUMNS FROM packages LIKE 'booking_mode'")->fetch(PDO::FETCH_ASSOC);
+    if(!$bookingModeCol) $db->exec("ALTER TABLE packages ADD COLUMN booking_mode VARCHAR(20) NOT NULL DEFAULT 'person' AFTER price_child");
+} catch (Throwable $e) {}
+
 $ticketOnlyEnabled = setting('booking_ticket_only_enabled', '1') === '1';
 $hotelPickupEnabled = setting('booking_hotel_pickup_enabled', '1') === '1';
 $packageId = (int)($_GET['package'] ?? $_POST['package_id'] ?? 0);
@@ -43,7 +48,7 @@ try {
     }
 } catch (Throwable $e) {}
 
-$packages = $db->query("SELECT id, name, price_adult, price_child, cover_image, short_description FROM packages WHERE status = 1 AND booking_enabled = 1 ORDER BY homepage_order ASC, name ASC")->fetchAll();
+$packages = $db->query("SELECT id, name, price_adult, price_child, booking_mode, cover_image, short_description FROM packages WHERE status = 1 AND booking_enabled = 1 ORDER BY homepage_order ASC, name ASC")->fetchAll();
 $areas = $db->query("SELECT id, name FROM pickup_areas WHERE status = 1 ORDER BY sort_order, name")->fetchAll();
 
 $pickupTimeRows = $db->query("SELECT pickup_area_id, pickup_time FROM pickup_time_slots WHERE status = 1 ORDER BY pickup_area_id, sort_order, pickup_time")->fetchAll();
@@ -112,6 +117,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $st->execute([$packageId]);
     $pkg = $st->fetch();
     $today = date('Y-m-d');
+    $isTandem = $pkg && (($pkg['booking_mode'] ?? 'person') === 'tandem');
+    // Tandem ATV is sold as one fixed unit carrying exactly two participants.
+    if ($isTandem) { $adults = 2; $children = 0; }
 
     if (!$pkg || $name === '' || !filter_var($email, FILTER_VALIDATE_EMAIL) || $country === '' || !array_key_exists($country, $countries) || !$date || $date < $today) {
         $error = 'Please complete all required fields and select a valid future booking date.';
@@ -147,7 +155,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         if ($error === '') {
-            $activityPrice = ($adults * (float)$pkg['price_adult']) + ($children * (float)$pkg['price_child']);
+            $activityPrice = $isTandem ? (float)$pkg['price_adult'] : (($adults * (float)$pkg['price_adult']) + ($children * (float)$pkg['price_child']));
             $subtotal = $activityPrice + $pickupPrice;
             $coupon = coupon_validate($promoCode, $subtotal, $packageId, $date);
             if ($promoCode !== '' && !$coupon['ok']) {
@@ -195,8 +203,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $invoice = strtoupper(rtrim($invoicePrefix, '-')) . '-' . date('Y') . '-' . str_pad((string)$bookingId, 6, '0', STR_PAD_LEFT);
                     $db->prepare("UPDATE bookings SET invoice_number = ? WHERE id = ?")->execute([$invoice, $bookingId]);
 
-                    $items = [[$pkg['name'] . ' - Adult', $adults, (float)$pkg['price_adult'], $adults * (float)$pkg['price_adult']]];
-                    if ($children > 0) $items[] = [$pkg['name'] . ' - Child', $children, (float)$pkg['price_child'], $children * (float)$pkg['price_child']];
+                    $items = $isTandem ? [[$pkg['name'] . ' - Tandem ATV Unit', 1, (float)$pkg['price_adult'], (float)$pkg['price_adult']]] : [[$pkg['name'] . ' - Adult', $adults, (float)$pkg['price_adult'], $adults * (float)$pkg['price_adult']]];
+                    if (!$isTandem && $children > 0) $items[] = [$pkg['name'] . ' - Child', $children, (float)$pkg['price_child'], $children * (float)$pkg['price_child']];
                     if ($pickup) $items[] = ['Hotel Transport' . ($areaName ? ' - ' . $areaName : ''), $transportGuests, $pickupUnitPrice, $pickupPrice];
                     if ($discount > 0) $items[] = ['Promo Discount - ' . $discountCode, 1, -$discount, -$discount];
 
@@ -259,7 +267,7 @@ foreach ($packages as $bp) {
     }
 }
 if (!$heroPkg && $packageId > 0) {
-    $st = $db->prepare("SELECT id, name, price_adult, price_child, cover_image, short_description FROM packages WHERE id = ? AND status = 1 LIMIT 1");
+    $st = $db->prepare("SELECT id, name, price_adult, price_child, booking_mode, cover_image, short_description FROM packages WHERE id = ? AND status = 1 LIMIT 1");
     $st->execute([$packageId]);
     $heroPkg = $st->fetch() ?: null;
 }
@@ -713,7 +721,8 @@ body {
             <option value="">Select track package</option>
             <?php foreach ($packages as $p): ?>
               <option value="<?=$p['id']?>" 
-                      data-adult="<?=$p['price_adult']?>" 
+                      data-adult="<?=$p['price_adult']?>"
+                      data-booking-mode="<?=e($p['booking_mode'] ?? 'person')?>" 
                       data-child="<?=$p['price_child']?>" 
                       data-cover="<?=e(asset_url($p['cover_image'] ?? ''))?>" 
                       data-description="<?=e($p['short_description'] ?? '')?>" 
@@ -729,12 +738,16 @@ body {
             <label id="bookingDateLabel">Activity Date <span class="req">*</span></label>
             <input class="form-control" type="date" name="booking_date" min="<?=date('Y-m-d')?>" value="<?=e($_POST['booking_date'] ?? date('Y-m-d', strtotime('+1 day')))?>" required>
           </div>
-          <div class="form-group">
+          <div class="form-group" id="guestCountSelector">
             <label>Guests (Adults &amp; Children) <span class="req">*</span></label>
             <div style="display:flex; gap:10px;">
               <input class="form-control" type="number" id="adults" name="adults" min="1" value="<?=e($_POST['adults'] ?? '1')?>" placeholder="Adults" required>
               <input class="form-control" type="number" id="children" name="children" min="0" value="<?=e($_POST['children'] ?? '0')?>" placeholder="Children">
             </div>
+          </div>
+          <div class="form-group" id="tandemGuestNotice" style="display:none;">
+            <label>Booking Unit</label>
+            <div class="form-control" style="display:flex;align-items:center;background:#fff7ed;border-color:#fed7aa;color:#9a3412;font-weight:700;">1 Tandem ATV Unit · 2 Persons</div>
           </div>
         </div>
 
@@ -913,6 +926,8 @@ body {
   const hidden = document.getElementById('package_id');
   const adults = document.getElementById('adults');
   const children = document.getElementById('children');
+  const guestCountSelector = document.getElementById('guestCountSelector');
+  const tandemGuestNotice = document.getElementById('tandemGuestNotice');
   const pickup = document.getElementById('pickup_required');
   const area = document.getElementById('pickup_area_id');
   const fields = document.getElementById('pickupFields');
@@ -945,11 +960,25 @@ body {
     return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(n);
   }
 
+  function isTandemPackage(){
+    const o = picker.options[picker.selectedIndex];
+    return o?.dataset.bookingMode === 'tandem';
+  }
+
+  function syncGuestFields(){
+    const tandem = isTandemPackage();
+    if (guestCountSelector) guestCountSelector.style.display = tandem ? 'none' : '';
+    if (tandemGuestNotice) tandemGuestNotice.style.display = tandem ? 'block' : 'none';
+    if (tandem) { adults.value = '2'; children.value = '0'; }
+    else if (guestCountSelector?.dataset.wasTandem === '1') { adults.value = '1'; children.value = '0'; }
+    if (guestCountSelector) guestCountSelector.dataset.wasTandem = tandem ? '1' : '0';
+  }
+
   function activitySubtotal(){
     const o = picker.options[picker.selectedIndex];
     const a = parseFloat(o?.dataset.adult || 0);
     const c = parseFloat(o?.dataset.child || 0);
-    return (+adults.value || 1) * a + (+children.value || 0) * c;
+    return isTandemPackage() ? a : ((+adults.value || 1) * a + (+children.value || 0) * c);
   }
 
   function transportInfo(){
@@ -1004,6 +1033,7 @@ body {
   }
 
   function update(){
+    syncGuestFields();
     const o = picker.options[picker.selectedIndex];
     const guests = (+adults.value || 1) + (+children.value || 0);
     const actSub = activitySubtotal();
@@ -1060,6 +1090,7 @@ body {
   }
 
   picker.addEventListener('change', () => {
+    syncGuestFields();
     hidden.value = picker.value;
     discount = 0;
     promoResult.textContent = '';
@@ -1069,8 +1100,8 @@ body {
   });
 
   document.querySelector('[name=booking_date]').addEventListener('change', update);
-  adults.addEventListener('input', () => { discount = 0; promoResult.textContent = ''; update(); });
-  children.addEventListener('input', () => { discount = 0; promoResult.textContent = ''; update(); });
+  adults.addEventListener('input', () => { if (isTandemPackage()) { adults.value = '2'; return; } discount = 0; promoResult.textContent = ''; update(); });
+  children.addEventListener('input', () => { if (isTandemPackage()) { children.value = '0'; return; } discount = 0; promoResult.textContent = ''; update(); });
   pickup.addEventListener('change', togglePickup);
   area.addEventListener('change', () => { refreshPickupTimes(); update(); });
   if (pickupTime) pickupTime.addEventListener('change', update);
@@ -1106,6 +1137,7 @@ body {
   });
 
   renderActivityTimes();
+  syncGuestFields();
   togglePickup();
 })();
 </script>
