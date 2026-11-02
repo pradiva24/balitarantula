@@ -225,7 +225,7 @@ if (!function_exists('bta_pdf_build')) {
         bta_pdf_text($c,36,699,'Please present this e-ticket at the registration desk upon arrival.',7.5,false,[0.92,0.94,0.92]);
         // Main ticket white panel with detachable QR side.
         bta_pdf_rect($c,30,150,535,535,[1,1,1]);
-        bta_pdf_rect($c,30,190,535,440,[0.88,0.89,0.87],false,1);
+        bta_pdf_rect($c,30,150,535,535,[0.88,0.89,0.87],false,1);
         bta_pdf_line($c,408,164,408,670,[0.45,0.47,0.45],1.1,[4,4]);
         bta_pdf_text($c,52,650,'BOOKING CODE',8,true,$orange);
         bta_pdf_rect($c,50,605,285,32,[1.0,0.91,0.84]);
@@ -233,16 +233,19 @@ if (!function_exists('bta_pdf_build')) {
         bta_pdf_rect($c,280,646,105,20,$payment==='PAID'?[0.78,0.96,0.80]:[1.0,0.94,0.78]);
         bta_pdf_text($c,290,652,$status,8,true,$payment==='PAID'?[0.05,0.42,0.16]:[0.55,0.34,0.04]);
         bta_pdf_line($c,50,593,390,593,$line,0.8);
-        bta_pdf_text($c,50,575,$package,14,true,$ink);
-        bta_pdf_multiline($c,50,558,330,(string)($b['short_description'] ?? 'Bali off-road adventure experience'),8,false,$muted,10);
-        bta_pdf_line($c,50,530,390,530,$line,0.8);
+        $packageLines=bta_pdf_lines($package,42);
+        foreach($packageLines as $pi=>$packageLine) bta_pdf_text($c,50,575-($pi*12),$packageLine,11,false,$ink);
+        $descriptionY=558-(max(0,count($packageLines)-1)*12);
+        bta_pdf_multiline($c,50,$descriptionY,330,(string)($b['short_description'] ?? 'Bali off-road adventure experience'),7,false,$muted,9);
+        $detailsStartY=min(530,$descriptionY-22);
+        bta_pdf_line($c,50,$detailsStartY,390,$detailsStartY,$line,0.8);
         $rows=[
             ['ACTIVITY DATE',$date],['ACTIVITY TIME',$activityTime],['PARTICIPANTS',$guests],
             ['PICKUP SERVICE',$pickupYes?'YES':'NO'],['PICKUP LOCATION',$pickupYes?($pickupLocation?:$pickupArea?:'Hotel / Villa'):'Self arrival'],
             ['HOTEL / VILLA & ROOM',$pickupYes?trim((string)($b['hotel_name']??'')).((trim((string)($b['room_number']??''))!=='')?' / Room '.trim((string)$b['room_number']):''):'-'],
             ['PICKUP TIME',$pickupYes?$pickupTime:'-'],['CUSTOMER',$b['customer_name']??'-']
         ];
-        $y=510;
+        $y=$detailsStartY-20;
         foreach($rows as [$label,$value]){
             $labelLines=bta_pdf_lines((string)$label,22);
             $valueLines=bta_pdf_lines((string)$value,48);
