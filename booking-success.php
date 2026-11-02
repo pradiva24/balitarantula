@@ -19,7 +19,7 @@ if ($code === '') {
 }
 
 $st = $db->prepare("
-    SELECT b.*, p.name AS package_name, p.short_description, p.cover_image, p.price_adult, p.price_child, pa.name AS pickup_area_name 
+    SELECT b.*, p.name AS package_name, p.short_description, p.cover_image, p.price_adult, p.price_child, p.booking_mode, pa.name AS pickup_area_name 
     FROM bookings b 
     LEFT JOIN packages p ON p.id = b.package_id 
     LEFT JOIN pickup_areas pa ON pa.id = b.pickup_area_id 
@@ -97,7 +97,7 @@ if (isset($_GET['print']) && $_GET['print'] === '1') {
             <div class="info-row"><span>Adventure Track</span><b><?=e($booking['package_name'])?></b></div>
             <div class="info-row"><span>Date</span><b><?=date('D, M d, Y', strtotime($booking['booking_date']))?></b></div>
             <div class="info-row"><span>Time Slot</span><b><?=e(substr((string)($booking['activity_time'] ?: '09:00'), 0, 5))?></b></div>
-            <div class="info-row"><span>Participants</span><b><?=(int)$booking['adults']?> Adults <?=((int)$booking['children'] > 0 ? ', ' . (int)$booking['children'] . ' Children' : '')?></b></div>
+            <div class="info-row"><span>Participants</span><b><?=($booking['booking_mode']??'person')==='tandem'?'1 Tandem ATV Unit · 2 Participants':((int)$booking['adults'].' Adults'.((int)$booking['children'] > 0 ? ', ' . (int)$booking['children'] . ' Children' : ''))?></b></div>
             <div class="info-row"><span>Transport</span><b><?=$booking['pickup_required'] ? e($booking['pickup_area_name'] . ' — ' . $booking['hotel_name']) : 'Self Arrival'?></b></div>
             <div class="info-row"><span>Payment Status</span><b><?=strtoupper((string)$booking['payment_status'])?></b></div>
             <div class="info-row"><span>Total Paid/Due</span><b><?=rupiah($booking['total'])?></b></div>
