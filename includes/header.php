@@ -44,7 +44,7 @@ $normalizeBrandTitle = static function (string $value) use ($siteName): string {
     // Clean separators and whitespace left where duplicate brand occurrences were removed.
     $value = preg_replace('/\\s*(?:\\||–|—)\\s*(?=(?:\\||–|—|$))/u', '', $value) ?? $value;
     $value = preg_replace('/\\s{2,}/u', ' ', $value) ?? $value;
-    $value = trim($value, " |–—\\t\\n\\r\\0\\x0B");
+    $value = trim($value, " |–—");
     if ($value === '') return $siteName;
 
     // Add the Site Name only if it was not already present.
