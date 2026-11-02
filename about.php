@@ -118,7 +118,17 @@ require __DIR__ . '/includes/header.php';
 
 /* About page adaptations of the homepage Why Choose Us section. */
 .bta-about img,.bta-about .about-photo,.bta-about .values-photo,.bta-about .hero-photo,.bta-about .mindset-photo,.bta-about .cta-photo{border-radius:0!important}
-.about-why{padding-top:88px;padding-bottom:105px}
+.about-why{padding-top:88px;padding-bottom:105px;background:#171717;color:#fff}
+.about-why .about-why-heading .eyebrow{color:#fff}
+.about-why .about-why-heading h2{color:#fff}
+.about-why .about-why-description{color:#d2d0cb}
+.about-why .about-reasons{border-top-color:#45413c}
+.about-why .about-reasons article+article{border-left-color:#45413c}
+.about-why .about-reasons article:nth-child(n+3){border-top-color:#45413c}
+.about-why .about-reason-no{color:#aaa}
+.about-why .about-reason-icon{color:var(--about-orange)}
+.about-why .about-reasons h3{color:#fff}
+.about-why .about-reasons p{color:#d2d0cb}
 .about-why-heading{display:flex;align-items:flex-end;justify-content:space-between;gap:32px;margin-bottom:39px}
 .about-why-heading>div{max-width:760px;min-width:0}
 .about-why-heading .eyebrow{color:#191919;margin-bottom:15px}
@@ -147,7 +157,7 @@ require __DIR__ . '/includes/header.php';
 .about-value-item .value-copy>span{color:var(--about-text);font-size:12px;line-height:1.7}
 .about-value-item .value-number{padding-top:5px;color:var(--about-muted);font-size:9px;text-align:right;letter-spacing:1px}
 @media(max-width:980px){.about-reasons{grid-template-columns:repeat(2,minmax(0,1fr))}.about-reasons article:nth-child(3){padding-left:0;border-left:0}.about-reasons article:nth-child(n+3){border-top:1px solid var(--about-border);padding-top:25px}.about-values{gap:35px}}
-@media(max-width:700px){.about-why{padding-top:65px;padding-bottom:70px}.about-why-heading{align-items:flex-start;flex-direction:column;gap:18px;margin-bottom:27px}.about-why-heading h2{font-size:clamp(46px,12vw,66px);line-height:.92}.about-why-description{max-width:500px;font-size:13px}.about-reasons{grid-template-columns:1fr}.about-reasons article,.about-reasons article+article,.about-reasons article:nth-child(3){min-height:auto;padding:25px 35px 25px 0;border-left:0;border-bottom:1px solid var(--about-border);border-top:0}.about-reason-no{top:28px;right:5px}.about-reason-icon{margin-bottom:10px}.about-reasons h3{font-size:25px}.about-reasons p{max-width:350px}.about-values-section{padding:65px 0}.about-values{grid-template-columns:1fr;gap:28px}.about-values .values-photo{min-height:250px;max-height:360px}.about-value-item{grid-template-columns:34px 1fr 24px;gap:10px;padding:15px 0}}
+@media(max-width:700px){.about-why{padding-top:65px;padding-bottom:70px}.about-why-heading{align-items:flex-start;flex-direction:column;gap:18px;margin-bottom:27px}.about-why-heading h2{font-size:clamp(46px,12vw,66px);line-height:.92}.about-why-description{max-width:500px;font-size:13px}.about-reasons{grid-template-columns:1fr}.about-reasons article,.about-reasons article+article,.about-reasons article:nth-child(3){min-height:auto;padding:25px 35px 25px 0;border-left:0;border-bottom:1px solid #45413c;border-top:0}.about-reason-no{top:28px;right:5px}.about-reason-icon{margin-bottom:10px}.about-reasons h3{font-size:25px}.about-reasons p{max-width:350px}.about-values-section{padding:65px 0}.about-values{grid-template-columns:1fr;gap:28px}.about-values .values-photo{min-height:250px;max-height:360px}.about-value-item{grid-template-columns:34px 1fr 24px;gap:10px;padding:15px 0}}
 @media(max-width:980px){.about-card-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.about-story{gap:34px}.about-stat-grid{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:700px){.about-hero{min-height:390px;padding:115px 0 55px}.about-story,.about-values{grid-template-columns:1fr;padding:62px 0;gap:27px}.about-story .story-visual{order:2}.about-story .story-copy{order:1}.about-photo,.about-values .values-photo{min-height:240px;max-height:330px}.about-mindset{min-height:350px;padding:65px 0}.about-section{padding:65px 0}.about-card-grid{grid-template-columns:1fr;gap:14px}.about-values .about-card-grid{grid-template-columns:1fr}.about-stat-grid{grid-template-columns:repeat(2,1fr);gap:14px}.about-stat{padding:14px}.about-cta{min-height:330px;padding:60px 0}}
 </style>
@@ -159,7 +169,6 @@ require __DIR__ . '/includes/header.php';
       <p class="eyebrow"><?=e($aboutText('hero_kicker', 'ABOUT US'))?></p>
       <h1><?=e($heroTitle)?><?php if ($heroAccent !== '' && strcasecmp($heroAccent, $heroTitle) !== 0): ?> <span class="accent"><?=e($heroAccent)?></span><?php endif; ?></h1>
       <?php if ($aboutText('hero_text') !== ''): ?><p class="hero-copy"><?=nl2br(e($aboutText('hero_text')))?></p><?php endif; ?>
-      <?php if ($aboutText('hero_button_text') !== ''): ?><p><a class="about-btn" href="<?=e($aboutUrl($aboutText('hero_button_url', '#our-story')))?>"><?=e($aboutText('hero_button_text'))?> <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a></p><?php endif; ?>
       <div class="about-crumb"><a href="<?=e(rtrim(BASE_URL, '/'))?>/">HOME</a> / <?=e($aboutText('hero_kicker', 'ABOUT US'))?></div>
     </div>
   </section>
@@ -174,6 +183,7 @@ require __DIR__ . '/includes/header.php';
       <?php if ($aboutText('story_text_1') !== ''): ?><p><?=nl2br(e($aboutText('story_text_1')))?></p><?php endif; ?>
       <?php if ($aboutText('story_text_2') !== ''): ?><p><?=nl2br(e($aboutText('story_text_2')))?></p><?php endif; ?>
       <?php if ($aboutText('story_quote') !== ''): ?><blockquote class="about-quote"><?=nl2br(e($aboutText('story_quote')))?><cite><?=e($aboutText('story_quote_author', '— ' . $brand))?></cite></blockquote><?php endif; ?>
+      <p><a class="about-btn" href="<?=e($aboutUrl($aboutText('story_button_url', '/packages'), '/packages'))?>"><?=e($aboutText('story_button_text', 'EXPLORE EXPERIENCE'))?> <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a></p>
     </div>
   </section>
 
