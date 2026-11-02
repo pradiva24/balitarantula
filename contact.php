@@ -32,6 +32,23 @@ $contactHeroAccent = trim((string)($contactPageData['hero_accent'] ?? 'RIDE.'));
 $contactHeroText = trim((string)($contactPageData['hero_text'] ?? 'Questions about our tracks, schedules, or package details? Send us a direct message or connect with our crew.'));
 $contactHeroImage = trim((string)($contactPageData['hero_image'] ?? ''));
 
+$contactSocialTitle = trim((string)($contactPageData['follow_title'] ?? 'Follow Us'));
+$contactSocialText = trim((string)($contactPageData['follow_text'] ?? 'Follow our latest updates and adventures.'));
+$contactSocialLinks = [];
+if (!empty($contactPageData['social_links']) && is_array($contactPageData['social_links'])) {
+    foreach ($contactPageData['social_links'] as $social) {
+        if (!is_array($social) || empty($social['enabled']) || empty($social['url'])) continue;
+        $socialUrl = trim((string)$social['url']);
+        if (!preg_match('~^(https?://|mailto:|tel:)~i', $socialUrl)) continue;
+        $contactSocialLinks[] = [
+            'name' => trim((string)($social['name'] ?? 'Social Media')),
+            'url' => $socialUrl,
+            'icon' => preg_replace('/[^a-zA-Z0-9_\\- ]+/', '', (string)($social['icon'] ?? 'fa-solid fa-link')),
+            'logo' => trim((string)($social['logo'] ?? '')),
+        ];
+    }
+}
+
 $phone = trim((string)setting('contact_phone', setting('site_phone', '+62 81 339 13939')));
 $whatsapp = trim((string)setting('contact_whatsapp', setting('site_whatsapp', '+62 81 339 13939')));
 $email = trim((string)setting('contact_email', setting('site_email', 'info@balitarantula.com')));
@@ -335,6 +352,51 @@ body {
   text-decoration: underline;
 }
 
+.contact-social {
+  margin-top: 42px;
+  padding-top: 28px;
+  border-top: 1px solid var(--bta-border);
+}
+.contact-social h3 {
+  margin: 0 0 8px;
+  color: var(--bta-heading);
+  font: 900 28px/.95 var(--bta-font-display);
+  text-transform: uppercase;
+}
+.contact-social > p {
+  margin: 0 0 18px;
+  color: var(--bta-text);
+  font-size: 14px;
+}
+.contact-social-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.contact-social-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  min-height: 44px;
+  padding: 9px 15px;
+  border: 1px solid var(--bta-border);
+  border-radius: 8px;
+  background: var(--bta-panel);
+  color: var(--bta-heading);
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 700;
+  transition: border-color .2s, color .2s, transform .2s;
+}
+.contact-social-link:hover {
+  color: var(--bta-orange);
+  border-color: var(--bta-orange);
+  transform: translateY(-2px);
+}
+.contact-social-link i { color: var(--bta-orange); font-size: 17px; }
+.contact-social-link img { width: 20px; height: 20px; object-fit: contain; }
+
 /* Contact Form */
 .contact-form {
   background: var(--bta-panel);
@@ -497,6 +559,25 @@ body {
           <?php endif; ?>
         </div>
       </div>
+
+      <?php if (!empty($contactSocialLinks)): ?>
+      <section class="contact-social" aria-label="Social media">
+        <h3><?=e($contactSocialTitle)?></h3>
+        <p><?=e($contactSocialText)?></p>
+        <div class="contact-social-links">
+          <?php foreach ($contactSocialLinks as $social): ?>
+            <a class="contact-social-link" href="<?=e($social['url'])?>" target="_blank" rel="noopener noreferrer">
+              <?php if ($social['logo'] !== ''): ?>
+                <img src="<?=e(asset_url($social['logo']))?>" alt="" loading="lazy">
+              <?php else: ?>
+                <i class="<?=e($social['icon'])?>" aria-hidden="true"></i>
+              <?php endif; ?>
+              <span><?=e($social['name'])?></span>
+            </a>
+          <?php endforeach; ?>
+        </div>
+      </section>
+      <?php endif; ?>
     </div>
 
     <!-- Form Column -->
