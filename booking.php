@@ -727,7 +727,7 @@ body {
                       data-cover="<?=e(asset_url($p['cover_image'] ?? ''))?>" 
                       data-description="<?=e($p['short_description'] ?? '')?>" 
                       <?=$packageId == (int)$p['id'] ? 'selected' : ''?>>
-                <?=e($p['name'])?> &mdash; <?=rupiah($p['price_adult'])?> / adult
+                <?=e($p['name'])?> &mdash; <?=rupiah($p['price_adult'])?> / <?=($p['booking_mode']??'person')==='tandem'?'unit':'adult'?>
               </option>
             <?php endforeach; ?>
           </select>
