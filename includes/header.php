@@ -28,6 +28,10 @@ if ($seoRecord) {
     $robots = seo_value($seoRecord,'robots',$robots);
     $schemaJson = trim((string)($seoRecord['schema_json'] ?? ''));
 }
+// Keep the global Site Name visible in every browser tab title, even when a page has its own SEO title.
+if ($siteName !== '' && stripos($title, $siteName) === false) {
+    $title = rtrim($title, " |–—-") . ' | ' . $siteName;
+}
 if ($ogTitle==='') $ogTitle=$title;
 if ($ogDescription==='') $ogDescription=$description;
 if ($ogImage==='') $ogImage=trim((string)setting('og_image',''));
