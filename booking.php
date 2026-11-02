@@ -218,7 +218,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         'booking_code' => $code, 'access_token' => $accessToken, 'invoice_number' => $invoice, 'package_name' => $pkg['name'],
                         'short_description' => $pkg['short_description'] ?? '', 'cover_image' => $pkg['cover_image'] ?? '',
                         'booking_date' => $date, 'activity_time' => $activityTime, 'pickup_time' => $pickupTime,
-                        'adults' => $adults, 'children' => $children, 'customer_name' => $name, 'customer_email' => $email,
+                        'adults' => $adults, 'children' => $children, 'booking_mode' => $isTandem ? 'tandem' : 'person', 'customer_name' => $name, 'customer_email' => $email,
                         'customer_whatsapp' => $wa, 'customer_country' => $country, 'payment_method' => $paymentMethod,
                         'payment_status' => 'pending', 'booking_status' => 'new', 'subtotal' => $subtotal, 'discount_amount' => $discount, 'total' => $total,
                         'pickup_required' => $pickup, 'pickup_price' => $pickupPrice, 'hotel_name' => $hotel, 'room_number' => $room, 'special_request' => $special
