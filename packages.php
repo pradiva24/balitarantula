@@ -38,11 +38,41 @@ foreach ($packages as $p) {
 }
 asort($packageCategories, SORT_NATURAL | SORT_FLAG_CASE);
 
+// Packages page hero: read the same settings managed in Manuaba Portal.
+$packagesHero = [
+    'kicker' => strtoupper(site_brand_name()),
+    'title' => 'CHOOSE YOUR',
+    'accent' => 'ADVENTURE',
+    'text' => 'Discover exciting Bali experiences, from ATV and rafting to swing, Volkswagen tours and unforgettable combination packages.',
+    'button_text' => 'Explore Packages',
+    'button_url' => '#adventure-packages',
+    'image' => '',
+];
+try {
+    $heroRows = db()->query("SELECT setting_key, setting_value FROM settings WHERE setting_key LIKE 'packages_hero_%'")->fetchAll(PDO::FETCH_ASSOC);
+    foreach ($heroRows as $heroRow) {
+        $key = str_replace('packages_hero_', '', (string)$heroRow['setting_key']);
+        if (array_key_exists($key, $packagesHero)) {
+            $packagesHero[$key] = (string)$heroRow['setting_value'];
+        }
+    }
+} catch (Throwable $e) {
+    // Keep the public page available with defaults if the settings table is unavailable.
+}
+if (preg_match('/Tarantula|Aloha Ubud/i', (string)$packagesHero['kicker'])) {
+    $packagesHero['kicker'] = strtoupper(site_brand_name());
+}
+
 $heroImage = '';
-foreach ($packages as $hp) {
-    if (!empty($hp['cover_image'])) {
-        $heroImage = asset_url($hp['cover_image']);
-        break;
+if (!empty($packagesHero['image'])) {
+    $heroImage = asset_url($packagesHero['image']);
+}
+if (!$heroImage) {
+    foreach ($packages as $hp) {
+        if (!empty($hp['cover_image'])) {
+            $heroImage = asset_url($hp['cover_image']);
+            break;
+        }
     }
 }
 if (!$heroImage) {
@@ -161,6 +191,25 @@ body {
 .page-banner-content h1 span {
   color: var(--bta-orange);
 }
+
+.packages-hero-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  margin: 0 0 22px;
+  padding: 12px 20px;
+  background: var(--bta-orange);
+  color: #111;
+  font-family: var(--bta-font-display);
+  font-size: 15px;
+  font-weight: 900;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: background .2s ease, transform .2s ease;
+}
+.packages-hero-button:hover { background: var(--bta-orange-hover); color: #111; transform: translateY(-2px); }
+.packages-hero-button span { font-size: 20px; line-height: 1; }
 
 .page-banner-content p {
   font-family: var(--bta-font-body);
@@ -770,9 +819,12 @@ body { color: #222; }
   <!-- Page Banner -->
   <section class="page-banner">
     <div class="wrap page-banner-content">
-      <p class="eyebrow"><span class="eyebrow-line"></span>OUR PACKAGES</p>
-      <h1>CHOOSE YOUR <span>THRILL.</span></h1>
-      <p>Find your route, pick your pace, and get ready to ride through the heart of Bali's rugged wilderness.</p>
+      <p class="eyebrow"><span class="eyebrow-line"></span><?=e($packagesHero['kicker'])?></p>
+      <h1><?=e($packagesHero['title'])?> <span><?=e($packagesHero['accent'])?></span></h1>
+      <p><?=e($packagesHero['text'])?></p>
+      <?php if (trim((string)$packagesHero['button_text']) !== '' && trim((string)$packagesHero['button_url']) !== ''): ?>
+        <a class="packages-hero-button" href="<?=e($packagesHero['button_url'])?>"><?=e($packagesHero['button_text'])?> <span aria-hidden="true">→</span></a>
+      <?php endif; ?>
       <div class="breadcrumbs">
         <a href="<?=BASE_URL?>/">HOME</a> / OUR PACKAGES
       </div>
