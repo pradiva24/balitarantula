@@ -371,31 +371,38 @@ body {
 .contact-social-links {
   display: flex;
   flex-wrap: wrap;
+  align-items: center;
   gap: 12px;
 }
 .contact-social-link {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 9px;
-  min-height: 44px;
-  padding: 9px 15px;
-  border: 1px solid var(--bta-border);
-  border-radius: 8px;
-  background: var(--bta-panel);
-  color: var(--bta-heading);
+  width: 48px;
+  height: 48px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: var(--bta-orange);
+  color: #fff;
   text-decoration: none;
-  font-size: 13px;
-  font-weight: 700;
-  transition: border-color .2s, color .2s, transform .2s;
+  transition: background .2s ease, transform .2s ease, box-shadow .2s ease;
 }
 .contact-social-link:hover {
-  color: var(--bta-orange);
-  border-color: var(--bta-orange);
-  transform: translateY(-2px);
+  background: var(--bta-heading);
+  color: #fff;
+  transform: translateY(-3px);
+  box-shadow: 0 6px 16px rgba(25,25,25,.18);
 }
-.contact-social-link i { color: var(--bta-orange); font-size: 17px; }
-.contact-social-link img { width: 20px; height: 20px; object-fit: contain; }
+.contact-social-link i { color: #fff; font-size: 20px; }
+.contact-social-link img {
+  display: block;
+  width: 21px;
+  height: 21px;
+  object-fit: contain;
+  filter: brightness(0) invert(1);
+}
+.contact-social-link span { display: none; }
 
 /* Contact Form */
 .contact-form {
@@ -572,7 +579,6 @@ body {
               <?php else: ?>
                 <i class="<?=e($social['icon'])?>" aria-hidden="true"></i>
               <?php endif; ?>
-              <span><?=e($social['name'])?></span>
             </a>
           <?php endforeach; ?>
         </div>
