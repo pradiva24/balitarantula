@@ -276,7 +276,6 @@ if (!function_exists('bta_pdf_build')) {
         // Main white ticket with left booking information and right QR stub.
         bta_pdf_rect($c,28,205,539,465,[1,1,1]);
         bta_pdf_rect($c,28,205,539,465,[0.88,0.89,0.87],false,0.8);
-        bta_pdf_line($c,399,216,399,659,[0.48,0.50,0.48],0.8,[3,3]);
 
         // Booking reference and confirmation status.
         bta_pdf_text($c,49,642,'BOOKING CODE',8,false,$orange);
@@ -286,7 +285,6 @@ if (!function_exists('bta_pdf_build')) {
         $statusInk = [0.08,0.43,0.19];
         bta_pdf_rect($c,307,604,78,29,$statusColor);
         bta_pdf_center($c,346,615,74,$status,7.2,false,$statusInk);
-        bta_pdf_line($c,49,592,382,592,$line,0.6);
 
         // Embed the actual package cover image in the left thumbnail.
         $cover = bta_pdf_fetch_cover_jpeg((string)($b['cover_image'] ?? ''));
@@ -300,7 +298,6 @@ if (!function_exists('bta_pdf_build')) {
         foreach($packageLines as $i=>$lineText) bta_pdf_text($c,174,568-($i*13),$lineText,11,false,$ink);
         $descLines = array_slice(bta_pdf_lines((string)($b['short_description'] ?? 'Experience the thrill of Bali adventure trails.'),58),0,3);
         foreach($descLines as $i=>$lineText) bta_pdf_text($c,174,548-($i*9),$lineText,6.6,false,$muted);
-        bta_pdf_line($c,49,513,382,513,$line,0.6);
 
         // Details in the same order and wording as the supplied reference PDF.
         $rows = [
@@ -339,7 +336,6 @@ if (!function_exists('bta_pdf_build')) {
             bta_pdf_center($c,483,527,96,'QR UNAVAILABLE',7,false,$muted);
         }
         bta_pdf_center($c,482,461,130,$code,7.2,false,$ink);
-        bta_pdf_line($c,416,445,549,445,$line,0.6);
         bta_pdf_center($c,482,415,130,'BALI TARANTULA',10,false,$ink);
         bta_pdf_center($c,482,402,130,'ADVENTURE',7.2,false,$orange);
         bta_pdf_center($c,482,377,130,$siteAddress,6.5,false,$muted);
