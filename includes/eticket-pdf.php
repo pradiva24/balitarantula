@@ -306,6 +306,7 @@ if (!function_exists('bta_pdf_build')) {
         $pdf.="trailer\n<< /Size ".(count($objects)+1)." /Root 1 0 R >>\nstartxref\n".$xref."\n%%EOF";
         return $pdf;
     }
+}
 
 if (!function_exists('bta_make_eticket_pdf')) {
     /**
