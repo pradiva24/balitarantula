@@ -213,7 +213,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                     $db->commit();
 
-                    $confirmUrl = rtrim(setting('site_url', BASE_URL), '/') . '/booking-confirmation?code=' . rawurlencode($code) . '&token=' . rawurlencode($accessToken);
+                    $siteBaseUrl = rtrim((string)setting('site_url', BASE_URL), '/');
+                    $confirmUrl = $siteBaseUrl . '/booking-confirmation?code=' . rawurlencode($code) . '&token=' . rawurlencode($accessToken);
+                    // Email e-ticket opens the same A4 print view used by Booking Success.
+                    $ticketUrl = $siteBaseUrl . '/booking-success?code=' . rawurlencode($code) . '&print=1';
                     $emailBooking = [
                         'booking_code' => $code, 'access_token' => $accessToken, 'invoice_number' => $invoice, 'package_name' => $pkg['name'],
                         'short_description' => $pkg['short_description'] ?? '', 'cover_image' => $pkg['cover_image'] ?? '',
@@ -226,22 +229,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                     $siteName = trim((string)setting('site_name', 'Bali Tarantula Adventure'));
                     $subject = 'Booking ' . $code . ' - ' . $siteName;
-                    $emailHtml = bta_booking_email_html($emailBooking, $confirmUrl, 'Booking Received', 'Thank you for choosing Bali Tarantula Adventure. Your booking has been received and your e-ticket is attached.', 'customer');
-                    $ticketPath = bta_make_eticket_pdf($emailBooking);
-                    $attachments = $ticketPath ? [['path' => $ticketPath, 'filename' => $code . '-E-Ticket.pdf', 'mime' => 'application/pdf']] : [];
-
-                    smtp_send($email, $subject, $emailHtml, '', null, $attachments);
+                    $emailHtml = bta_booking_email_html($emailBooking, $confirmUrl, 'Booking Received', 'Thank you for choosing Bali Tarantula Adventure. Your booking has been received. Use the button below to open your A4 e-ticket.', 'customer', $ticketUrl);
+                    // The printable Booking Success page is the single source of truth for the guest e-ticket.
+                    smtp_send($email, $subject, $emailHtml);
 
                     $adminEmail = setting('booking_notification_email', setting('site_email', ''));
                     $adminRecipients = preg_split('/[,;\r\n]+/', (string)$adminEmail, -1, PREG_SPLIT_NO_EMPTY);
                     foreach ($adminRecipients as $recipient) {
                         $recipient = trim($recipient);
                         if (filter_var($recipient, FILTER_VALIDATE_EMAIL)) {
-                            $adminHtml = bta_booking_email_html($emailBooking, $confirmUrl, 'New Booking Received', 'A new adventure booking has just arrived. Please review details below.', 'admin');
-                            smtp_send($recipient, 'New ' . $subject, $adminHtml, $email, null, $attachments);
+                            $adminHtml = bta_booking_email_html($emailBooking, $confirmUrl, 'New Booking Received', 'A new adventure booking has just arrived. Please review details below. Open the e-ticket using the button.', 'admin', $ticketUrl);
+                            smtp_send($recipient, 'New ' . $subject, $adminHtml, $email);
                         }
                     }
-                    if ($ticketPath) @unlink($ticketPath);
 
                     if (strcasecmp($paymentMethod, 'Midtrans') === 0) {
                         header('Location: ' . rtrim(BASE_URL, '/') . '/midtrans-checkout?code=' . rawurlencode($code) . '&email=' . rawurlencode($email), true, 303);
