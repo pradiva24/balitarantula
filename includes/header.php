@@ -33,7 +33,7 @@ $normalizeBrandTitle = static function (string $value) use ($siteName): string {
     $value = trim($value);
     if ($siteName === '') return $value;
 
-    $parts = preg_split('/\\s*(?:\\||–|—|-)\\s*/u', $value) ?: [$value];
+    $parts = preg_split('/\\s*(?:\\||–|—)\\s*/u', $value) ?: [$value];
     $normalized = [];
     $brandSeen = false;
     foreach ($parts as $part) {
