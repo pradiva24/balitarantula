@@ -193,7 +193,8 @@ if (!function_exists('bta_pdf_real_qr')) {
 if (!function_exists('bta_pdf_build')) {
     function bta_pdf_build(array $b, string $siteName = '', string $siteEmail = '', string $sitePhone = '', string $siteAddress = ''): string {
         $siteName = trim(eticket_text('eticket_ticket_brand', trim($siteName) ?: 'Bali Tarantula Adventure')) ?: 'Bali Tarantula Adventure';
-        $siteEmail = trim($siteEmail); $sitePhone = trim($sitePhone);
+        $siteEmail = trim($siteEmail);
+        $sitePhone = trim($sitePhone);
         $siteAddress = trim($siteAddress) ?: 'Bali, Indonesia';
         $code = (string)($b['booking_code'] ?? '-');
         $package = (string)($b['package_name'] ?? 'Bali Adventure');
@@ -201,7 +202,7 @@ if (!function_exists('bta_pdf_build')) {
         $activityTime = bta_pdf_time($b['activity_time'] ?? '');
         $pickupTime = bta_pdf_time($b['pickup_time'] ?? '');
         $isTandem = (($b['booking_mode'] ?? 'person') === 'tandem');
-        $guests = $isTandem ? '2 Persons (1 Tandem Unit)' : ((int)($b['adults'] ?? 0).' Adults, '.(int)($b['children'] ?? 0).' Children');
+        $guests = $isTandem ? '2 Persons (1 Tandem Unit)' : ((int)($b['adults'] ?? 0).' Adults'.((int)($b['children'] ?? 0) > 0 ? ', '.(int)$b['children'].' Children' : ''));
         $pickupYes = !empty($b['pickup_required']);
         $pickupPlace = trim((string)($b['hotel_name'] ?? ''));
         $pickupArea = trim((string)($b['pickup_area_name'] ?? ''));
@@ -210,85 +211,105 @@ if (!function_exists('bta_pdf_build')) {
         if ($status === 'NEW') $status = 'CONFIRMED';
         $payment = strtoupper((string)($b['payment_status'] ?? 'PENDING'));
         $total = bta_pdf_money($b['total'] ?? 0);
+
         $c = [];
-        $dark=[0.055,0.075,0.065]; $orange=[1.0,0.34,0.0]; $ink=[0.08,0.09,0.08]; $muted=[0.37,0.40,0.38]; $line=[0.86,0.88,0.86];
-        // Dark adventure canvas and orange top accent.
+        $dark=[0.035,0.055,0.045]; $orange=[1.0,0.34,0.0]; $ink=[0.08,0.09,0.08]; $muted=[0.37,0.40,0.38]; $line=[0.88,0.89,0.87];
+        // Full dark canvas and compact adventure header.
         bta_pdf_rect($c,0,0,595,842,$dark);
-        bta_pdf_rect($c,0,830,595,12,$orange);
-        bta_pdf_text($c,36,811,'BALI',15,true,[1,1,1]);
-        bta_pdf_text($c,36,793,'TARANTULA',18,true,[1,1,1]);
-        bta_pdf_text($c,37,779,'ADVENTURE',8,true,$orange);
-        bta_pdf_text($c,36,748,'E-TICKET',27,true,[1,1,1]);
-        bta_pdf_rect($c,36,718,205,19,$orange);
-        bta_pdf_text($c,46,724,'BOOKING CONFIRMATION',8.5,true,[1,1,1]);
-        bta_pdf_text($c,36,699,'Please present this e-ticket at the registration desk upon arrival.',7.5,false,[0.92,0.94,0.92]);
-        // Main ticket white panel with detachable QR side.
-        bta_pdf_rect($c,30,150,535,535,[1,1,1]);
-        bta_pdf_rect($c,30,150,535,535,[0.88,0.89,0.87],false,1);
-        bta_pdf_line($c,408,164,408,670,[0.45,0.47,0.45],1.1,[4,4]);
-        bta_pdf_text($c,52,650,'BOOKING CODE',8,true,$orange);
-        bta_pdf_rect($c,50,605,285,32,[1.0,0.91,0.84]);
-        bta_pdf_text($c,58,615,$code,15,true,$ink);
-        bta_pdf_rect($c,280,646,105,20,$payment==='PAID'?[0.78,0.96,0.80]:[1.0,0.94,0.78]);
-        bta_pdf_text($c,290,652,$status,8,true,$payment==='PAID'?[0.05,0.42,0.16]:[0.55,0.34,0.04]);
-        bta_pdf_line($c,50,593,390,593,$line,0.8);
-        $packageLines=array_slice(bta_pdf_lines($package,42),0,2);
-        foreach($packageLines as $pi=>$packageLine) bta_pdf_text($c,50,575-($pi*12),$packageLine,11,false,$ink);
-        $descriptionY=558-(max(0,count($packageLines)-1)*12);
-        $descriptionLines=array_slice(bta_pdf_lines((string)($b['short_description'] ?? 'Bali off-road adventure experience'),78),0,2);
-        foreach($descriptionLines as $di=>$descriptionLine) bta_pdf_text($c,50,$descriptionY-($di*9),$descriptionLine,7,false,$muted);
-        $detailsStartY=min(530,$descriptionY-22);
-        bta_pdf_line($c,50,$detailsStartY,390,$detailsStartY,$line,0.8);
-        // Keep the same information order and labels as booking-success.php print view.
-        $rows=[
-            ['CUSTOMER NAME',(string)($b['customer_name'] ?? '-')],
-            ['ACTIVITY DATE',$date],
-            ['ACTIVITY TIME',$activityTime],
-            ['PARTICIPANTS',$guests],
-            ['PICKUP SERVICE',$pickupYes?'YES':'NO'],
-            ['PICKUP LOCATION',$pickupYes?($pickupLocation?:$pickupArea?:'Hotel / Villa'):'Self Arrival'],
-            ['HOTEL / VILLA',$pickupYes?(trim((string)($b['hotel_name'] ?? '')) ?: '-'):'-'],
-            ['ROOM NUMBER',$pickupYes?(trim((string)($b['room_number'] ?? '')) ?: '-'):'-'],
-            ['PICKUP TIME',$pickupYes?$pickupTime:'-'],
-            ['PAYMENT STATUS',$payment],
-            ['TOTAL PAYMENT',$total]
+        bta_pdf_rect($c,28,814,539,9,$orange);
+        bta_pdf_text($c,49,790,'BALI TARANTULA',15,false,[1,1,1]);
+        bta_pdf_text($c,49,773,'A D V E N T U R E',7,false,$orange);
+        bta_pdf_text($c,49,731,'E-TICKET',28,false,[1,1,1]);
+        bta_pdf_rect($c,49,704,145,20,$orange);
+        bta_pdf_text($c,58,711,'BOOKING CONFIRMATION',7.5,false,[1,1,1]);
+        bta_pdf_text($c,49,686,'Please present this e-ticket at the registration desk upon arrival.',7.2,false,[0.91,0.93,0.91]);
+
+        // Main white ticket with left booking information and right QR stub.
+        bta_pdf_rect($c,28,205,539,465,[1,1,1]);
+        bta_pdf_rect($c,28,205,539,465,[0.88,0.89,0.87],false,0.8);
+        bta_pdf_line($c,399,216,399,659,[0.48,0.50,0.48],0.8,[3,3]);
+
+        // Booking reference and confirmation status.
+        bta_pdf_text($c,49,642,'BOOKING CODE',8,false,$orange);
+        bta_pdf_rect($c,49,604,250,29,[1.0,0.94,0.89]);
+        bta_pdf_text($c,59,614,$code,13,false,$ink);
+        $statusColor = $payment === 'PAID' ? [0.86,0.97,0.88] : [0.90,0.97,0.91];
+        $statusInk = [0.08,0.43,0.19];
+        bta_pdf_rect($c,307,604,78,29,$statusColor);
+        bta_pdf_center($c,346,615,74,$status,7.2,false,$statusInk);
+        bta_pdf_line($c,49,592,382,592,$line,0.6);
+
+        // Package summary; thumbnail area is reserved cleanly when no local image renderer is available.
+        bta_pdf_rect($c,49,525,112,55,[0.93,0.95,0.93]);
+        bta_pdf_center($c,105,550,100,'BALI',10,false,$muted);
+        bta_pdf_center($c,105,537,100,'ADVENTURE',6.5,false,$orange);
+        $packageLines = array_slice(bta_pdf_lines($package,31),0,2);
+        foreach($packageLines as $i=>$lineText) bta_pdf_text($c,174,568-($i*13),$lineText,11,false,$ink);
+        $descLines = array_slice(bta_pdf_lines((string)($b['short_description'] ?? 'Experience the thrill of Bali adventure trails.'),58),0,3);
+        foreach($descLines as $i=>$lineText) bta_pdf_text($c,174,548-($i*9),$lineText,6.6,false,$muted);
+        bta_pdf_line($c,49,513,382,513,$line,0.6);
+
+        // Details in the same order and wording as the supplied reference PDF.
+        $rows = [
+            ['Activity Date',$date],
+            ['Activity Time',$activityTime],
+            ['Participants',$guests],
+            ['Pickup Service',$pickupYes?'Yes':'No'],
+            ['Pickup Location',$pickupYes?($pickupLocation?:$pickupArea?:'Hotel / Villa'):'Self Arrival'],
+            ['Hotel or Villa Name & Room Number',$pickupYes?trim($pickupPlace.($b['room_number'] ?? '' !== '' ? ' / Room '.(string)$b['room_number'] : '')):'-'],
+            ['Pickup Time',$pickupYes?$pickupTime:'-'],
+            ['Payment Status',$payment],
+            ['Total Payment',$total]
         ];
-        $y=$detailsStartY-20;
-        foreach($rows as [$label,$value]){
-            $labelLines=array_slice(bta_pdf_lines((string)$label,20),0,2);
-            $valueLines=array_slice(bta_pdf_lines((string)$value,44),0,3);
+        $y=496;
+        foreach($rows as [$label,$value]) {
+            $labelLines = array_slice(bta_pdf_lines((string)$label,25),0,2);
+            $valueLines = array_slice(bta_pdf_lines((string)$value,34),0,2);
             $lineCount=max(count($labelLines),count($valueLines));
-            foreach($labelLines as $li=>$labelLine) bta_pdf_text($c,52,$y-($li*9),$labelLine,6.7,false,$orange);
-            foreach($valueLines as $vi=>$valueLine) bta_pdf_text($c,165,$y-($vi*9),$valueLine,7.4,false,((string)$label==='TOTAL PAYMENT'?$orange:$ink));
-            $rowHeight=max(21,($lineCount*8.5)+7);
-            bta_pdf_line($c,50,$y-$rowHeight+5,390,$y-$rowHeight+5,$line,0.45);
+            foreach($labelLines as $i=>$txt) bta_pdf_text($c,49,$y-($i*7.5),$txt,6.6,false,$ink);
+            bta_pdf_text($c,190,$y,':',6.6,false,$muted);
+            foreach($valueLines as $i=>$txt) bta_pdf_text($c,205,$y-($i*7.5),$txt,6.8,false,((string)$label==='Total Payment'?$orange:$ink));
+            $rowHeight=max(19,($lineCount*7.5)+7);
+            bta_pdf_line($c,49,$y-$rowHeight+3,382,$y-$rowHeight+3,$line,0.35);
             $y-=$rowHeight;
         }
-        // QR detachable panel.
-        bta_pdf_rect($c,425,630,145,26,$orange);
-        bta_pdf_center($c,497,638,135,'E-TICKET',12,true,[1,1,1]);
+
+        // QR ticket stub.
+        bta_pdf_rect($c,414,615,137,29,$orange);
+        bta_pdf_center($c,482,625,130,'E-TICKET',14,false,[1,1,1]);
         $qr=null;
-        if(!bta_pdf_local_qr($c,443,450,108,$code,$qr)){
-            bta_pdf_rect($c,443,450,108,108,[0.96,0.96,0.96]);
-            bta_pdf_center($c,497,504,100,'QR UNAVAILABLE',8,true,$muted);
+        if(!bta_pdf_local_qr($c,431,475,104,$code,$qr)) {
+            bta_pdf_rect($c,431,475,104,104,[0.96,0.96,0.96]);
+            bta_pdf_center($c,483,527,96,'QR UNAVAILABLE',7,false,$muted);
         }
-        bta_pdf_center($c,497,432,140,$code,8.3,true,$ink);
-        bta_pdf_line($c,430,414,565,414,$line,0.8);
-        bta_pdf_center($c,497,392,135,'BALI TARANTULA',11,true,$ink);
-        bta_pdf_center($c,497,377,135,'ADVENTURE',8.5,true,$orange);
-        bta_pdf_multiline($c,438,352,120,$siteAddress,7.2,false,$muted,9);
-        // Important notes.
-        bta_pdf_rect($c,30,65,535,75,[1.0,0.96,0.92]);
-        bta_pdf_text($c,48,122,'IMPORTANT NOTES',13,false,$orange);
-        $notes=['Bring this e-ticket (digital or printed) to the registration counter.','Arrive at least 15 minutes before the activity time.','Wear comfortable clothes and closed shoes.','Follow all safety instructions from your guide.'];
-        $ny=104;
-        foreach($notes as $note){bta_pdf_text($c,50,$ny,'+',9,true,$orange);bta_pdf_multiline($c,65,$ny,475,$note,8,false,$ink,9);$ny-=12;}
-        // Footer strip.
-        bta_pdf_rect($c,0,0,595,52,[0.025,0.035,0.03]);
-        bta_pdf_text($c,34,36,'BALI TARANTULA ADVENTURE',9,true,[1,1,1]);
-        bta_pdf_text($c,34,20,$sitePhone?:$siteEmail?:'Bali, Indonesia',7,false,[0.88,0.90,0.88]);
-        bta_pdf_text($c,420,36,'THANK YOU FOR BOOKING',7,true,$orange);
-        bta_pdf_text($c,420,20,'www.balitarantula.com',7,false,[0.88,0.90,0.88]);
+        bta_pdf_center($c,482,461,130,$code,7.2,false,$ink);
+        bta_pdf_line($c,416,445,549,445,$line,0.6);
+        bta_pdf_center($c,482,415,130,'BALI TARANTULA',10,false,$ink);
+        bta_pdf_center($c,482,402,130,'ADVENTURE',7.2,false,$orange);
+        bta_pdf_center($c,482,377,130,$siteAddress,6.5,false,$muted);
+
+        // Important notes in a two-column panel.
+        bta_pdf_rect($c,28,91,539,99,[1.0,0.96,0.92]);
+        bta_pdf_text($c,48,168,'IMPORTANT NOTES',12,false,$orange);
+        $notes = [
+            [48,143,'Bring this e-ticket (digital or printed) to the registration counter.'],
+            [310,143,'Arrive at least 15 minutes before the activity time.'],
+            [48,119,'Wear comfortable clothes and closed shoes.'],
+            [310,119,'Follow the safety instructions from your guide.']
+        ];
+        foreach($notes as [$x,$yNote,$note]) {
+            bta_pdf_text($c,$x,$yNote,'+',8,false,$orange);
+            bta_pdf_multiline($c,$x+12,$yNote,225,$note,6.2,false,$ink,8);
+        }
+
+        // Compact footer matching the sample.
+        bta_pdf_rect($c,28,28,539,51,[0.025,0.035,0.03]);
+        bta_pdf_text($c,49,59,'BALI TARANTULA',9,false,[1,1,1]);
+        bta_pdf_text($c,49,45,'ADVENTURE',6.5,false,$orange);
+        bta_pdf_text($c,421,62,$sitePhone?:$siteEmail?:'Bali, Indonesia',6.4,false,[0.9,0.92,0.9]);
+        bta_pdf_text($c,421,49,$siteEmail,6.4,false,[0.9,0.92,0.9]);
+        bta_pdf_text($c,421,36,'www.balitarantula.com',6.4,false,[0.9,0.92,0.9]);
+
         $content=implode("\n",$c)."\n";
         $objects=[];
         $objects[]='<< /Type /Catalog /Pages 2 0 R >>';
@@ -298,16 +319,15 @@ if (!function_exists('bta_pdf_build')) {
         $objects[]="<< /Length ".strlen($content)." >>\nstream\n".$content."endstream";
         $objects[]='<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>';
         $objects[]='<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold >>';
-        if($qr)$objects[]='<< /Type /XObject /Subtype /Image /Width '.(int)$qr['width'].' /Height '.(int)$qr['height'].' /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length '.strlen($qr['bytes'])." >>\nstream\n".$qr['bytes']."\nendstream";
-        $pdf="%PDF-1.4\n%\xE2\xE3\xCF\xD3\n";$offsets=[0];
+        if($qr) $objects[]='<< /Type /XObject /Subtype /Image /Width '.(int)$qr['width'].' /Height '.(int)$qr['height'].' /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length '.strlen($qr['bytes'])." >>\nstream\n".$qr['bytes']."\nendstream";
+        $pdf="%PDF-1.4\n%\xE2\xE3\xCF\xD3\n"; $offsets=[0];
         foreach($objects as $i=>$obj){$offsets[]=strlen($pdf);$pdf.=($i+1)." 0 obj\n".$obj."\nendobj\n";}
         $xref=strlen($pdf);$pdf.="xref\n0 ".(count($objects)+1)."\n0000000000 65535 f \n";
-        for($i=1;$i<=count($objects);$i++)$pdf.=sprintf("%010d 00000 n \n",$offsets[$i]);
+        for($i=1;$i<=count($objects);$i++) $pdf.=sprintf("%010d 00000 n \n",$offsets[$i]);
         $pdf.="trailer\n<< /Size ".(count($objects)+1)." /Root 1 0 R >>\nstartxref\n".$xref."\n%%EOF";
         return $pdf;
     }
 }
-
 if (!function_exists('bta_make_eticket_pdf')) {
     /**
      * Build the e-ticket with the built-in lightweight PDF renderer.
