@@ -1,6 +1,5 @@
 {
   "require": {
-    "tecnickcom/tc-lib-barcode": "^2.16",
-    "dompdf/dompdf": "^3.1"
+    "tecnickcom/tc-lib-barcode": "^2.16"
   }
 }
