@@ -279,7 +279,7 @@ if (!function_exists('bta_pdf_build')) {
 
         // Total bar.
         bta_pdf_rect($c, 34, 382, 527, 31, [0.92,0.97,0.93]);
-        bta_pdf_text($c, 47, 400, 'PRICE PER PERSON', 6.9, true, [0.22,0.35,0.30]);
+        bta_pdf_text($c, 47, 400, (($b['booking_mode'] ?? 'person') === 'tandem' ? 'PRICE PER TANDEM UNIT' : 'PRICE PER PERSON'), 6.9, true, [0.22,0.35,0.30]);
         bta_pdf_text($c, 47, 388, bta_pdf_money($pricePerPerson), 8.0, false, [0.29,0.40,0.36]);
         bta_pdf_line($c, 210, 386, 210, 409, [0.82,0.89,0.84], 0.7);
         bta_pdf_text($c, 224, 400, 'NUMBER OF GUESTS', 6.9, true, [0.22,0.35,0.30]);
