@@ -339,6 +339,51 @@ body {
   box-shadow: 0 10px 30px rgba(30, 25, 15, 0.05);
 }
 
+.package-gallery-nav {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  pointer-events: none;
+  z-index: 3;
+}
+.package-gallery-arrow {
+  width: 44px;
+  height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(255,255,255,.55);
+  border-radius: 50%;
+  background: rgba(15,15,15,.58);
+  color: #fff;
+  font-size: 27px;
+  line-height: 1;
+  cursor: pointer;
+  pointer-events: auto;
+  transition: background .2s, border-color .2s, transform .2s;
+}
+.package-gallery-arrow:hover { background: var(--bta-orange); border-color: var(--bta-orange); color: #171717; transform: scale(1.06); }
+.package-gallery-counter {
+  position: absolute;
+  right: 16px;
+  bottom: 16px;
+  z-index: 3;
+  padding: 6px 11px;
+  border-radius: 999px;
+  background: rgba(15,15,15,.68);
+  color: #fff;
+  font: 700 12px/1 var(--bta-font-body);
+  letter-spacing: .5px;
+}
+@media (max-width: 600px) {
+  .package-gallery-nav { padding: 0 10px; }
+  .package-gallery-arrow { width: 38px; height: 38px; font-size: 23px; }
+  .package-gallery-counter { right: 10px; bottom: 10px; }
+}
+
 .package-cover-img {
   width: 100%;
   height: 100%;
@@ -1162,6 +1207,13 @@ body {
           <img id="mainPackageCover" class="package-cover-img" 
                src="<?=!empty($gallery[0]['image_path']) ? e(asset_url($gallery[0]['image_path'])) : 'https://images.unsplash.com/photo-1551632811-561732d1e306?auto=format&fit=crop&w=1500&q=90'?>" 
                alt="<?=e($p['name'])?>">
+          <?php if (count($gallery) > 1): ?>
+            <div class="package-gallery-nav" aria-label="Main image navigation">
+              <button type="button" class="package-gallery-arrow" onclick="stepPackageCover(-1)" aria-label="Previous image">&#8249;</button>
+              <button type="button" class="package-gallery-arrow" onclick="stepPackageCover(1)" aria-label="Next image">&#8250;</button>
+            </div>
+            <span class="package-gallery-counter" id="packageGalleryCounter" aria-live="polite">1 / <?=count($gallery)?></span>
+          <?php endif; ?>
         </div>
         <?php if (count($gallery) > 1): ?>
           <div class="package-thumb-row">
@@ -1355,8 +1407,19 @@ function changePackageCover(src, btn) {
     cover.src = src;
     cover.style.opacity = '1';
   }, 150);
-  document.querySelectorAll('.package-thumb-btn').forEach(b => b.classList.remove('is-active'));
-  btn.classList.add('is-active');
+  const thumbs = Array.from(document.querySelectorAll('.package-thumb-btn'));
+  thumbs.forEach(b => b.classList.remove('is-active'));
+  if (btn) btn.classList.add('is-active');
+  const counter = document.getElementById('packageGalleryCounter');
+  if (counter) counter.textContent = (thumbs.indexOf(btn) + 1) + ' / ' + thumbs.length;
+}
+
+function stepPackageCover(direction) {
+  const thumbs = Array.from(document.querySelectorAll('.package-thumb-btn'));
+  if (thumbs.length < 2) return;
+  const current = thumbs.findIndex(btn => btn.classList.contains('is-active'));
+  const next = (Math.max(0, current) + direction + thumbs.length) % thumbs.length;
+  thumbs[next].click();
 }
 </script>
 
