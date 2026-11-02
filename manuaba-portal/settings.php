@@ -24,7 +24,10 @@ if($_SERVER['REQUEST_METHOD']==='POST'){
         $st->execute([$k]);
         $id=$st->fetchColumn();
         if($id){
-            $p->prepare("UPDATE settings SET setting_value=?,updated_at=NOW() WHERE id=?")->execute([$v,$id]);
+            // Older databases may contain duplicate rows for the same setting_key.
+            // Update every matching row so the last row read by setting() cannot
+            // override the newly saved value with stale data.
+            $p->prepare("UPDATE settings SET setting_value=?,updated_at=NOW() WHERE setting_key=?")->execute([$v,$k]);
         }else{
             $p->prepare("INSERT INTO settings(setting_key,setting_value) VALUES(?,?)")->execute([$k,$v]);
         }
