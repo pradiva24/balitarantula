@@ -28,26 +28,27 @@ if ($seoRecord) {
     $robots = seo_value($seoRecord,'robots',$robots);
     $schemaJson = trim((string)($seoRecord['schema_json'] ?? ''));
 }
-// Normalize page and social titles so the exact Site Name appears no more than once.
+// Ensure the configured Site Name occurs exactly once in browser and social titles,
+// including when it appears inside a longer SEO title segment.
 $normalizeBrandTitle = static function (string $value) use ($siteName): string {
     $value = trim($value);
     if ($siteName === '') return $value;
 
-    $parts = preg_split('/\\s*(?:\\||–|—)\\s*/u', $value) ?: [$value];
-    $normalized = [];
-    $brandSeen = false;
-    foreach ($parts as $part) {
-        if (strcasecmp(trim($part), $siteName) === 0) {
-            if ($brandSeen) continue;
-            $brandSeen = true;
-        }
-        $normalized[] = trim($part);
-    }
+    $brandPattern = '~' . preg_quote($siteName, '~') . '~iu';
+    $seen = 0;
+    $value = preg_replace_callback($brandPattern, static function ($match) use (&$seen) {
+        $seen++;
+        return $seen === 1 ? $match[0] : '';
+    }, $value) ?? $value;
 
-    $value = implode(' | ', array_filter($normalized, static fn($part) => $part !== ''));
-    if (!$brandSeen && stripos($value, $siteName) === false) {
-        $value = rtrim($value, " |–—-") . ' | ' . $siteName;
-    }
+    // Clean separators and whitespace left where duplicate brand occurrences were removed.
+    $value = preg_replace('/\\s*(?:\\||–|—)\\s*(?=(?:\\||–|—|$))/u', '', $value) ?? $value;
+    $value = preg_replace('/\\s{2,}/u', ' ', $value) ?? $value;
+    $value = trim($value, " |–—\\t\\n\\r\\0\\x0B");
+    if ($value === '') return $siteName;
+
+    // Add the Site Name only if it was not already present.
+    if ($seen === 0) $value = rtrim($value, " |–—") . ' | ' . $siteName;
     return $value;
 };
 $title = $normalizeBrandTitle($title);
