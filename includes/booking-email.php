@@ -1,6 +1,6 @@
 <?php
 if (!function_exists('bta_booking_email_html')) {
-    function bta_booking_email_html(array $b, string $confirmUrl, string $emailTitle = 'Booking Received', string $intro = '', string $audience = 'customer'): string {
+    function bta_booking_email_html(array $b, string $confirmUrl, string $emailTitle = 'Booking Received', string $intro = '', string $audience = 'customer', string $ticketUrl = ''): string {
         $siteName = trim(eticket_text('eticket_ticket_brand', (string)site_brand_name())) ?: 'Bali Tarantula Adventure';
         $siteEmail = trim((string)setting('site_email',''));
         $sitePhone = trim((string)setting('site_whatsapp',setting('site_phone','')));
@@ -43,6 +43,8 @@ if (!function_exists('bta_booking_email_html')) {
         };
         // Use the public Website Logo configured in Admin Panel > Settings > Branding.
         $logoPath = trim((string)setting('site_logo',''));
+        $logoExt = strtolower(pathinfo((string)(parse_url($logoPath, PHP_URL_PATH) ?: $logoPath), PATHINFO_EXTENSION));
+        if ($logoExt !== 'png') $logoPath = ''; // Email header logo must be PNG for reliable email-client rendering.
         $logoUrl = '';
         if ($logoPath !== '') {
             if (preg_match('~^https?://~i', $logoPath)) {
@@ -70,10 +72,10 @@ if (!function_exists('bta_booking_email_html')) {
               .$row('Country',$b['customer_country'] ?? '-')
               .$row('Special Request',$b['special_request'] ?? '-')
             : '';
-        $cta = !$isAdmin
-            ? '<tr><td align="center" style="padding:18px 26px 8px"><a href="'.e($confirmUrl).'" style="display:inline-block;background:#ff6500;color:#fff;text-decoration:none;padding:14px 25px;border-radius:7px;font-size:14px">View Booking Details</a></td></tr>'
+        $ticketUrl = trim($ticketUrl) !== '' ? $ticketUrl : $confirmUrl;
+        $cta = '<tr><td align="center" style="padding:18px 26px 8px"><a href="'.e($ticketUrl).'" style="display:inline-block;background:#ff6500;color:#fff;text-decoration:none;padding:14px 25px;border-radius:7px;font-size:14px">'.($isAdmin ? 'Open / Print E-Ticket' : 'View / Print E-Ticket').'</a></td></tr>'
             : '<tr><td style="padding:16px 26px 8px;color:#5f6962;font-size:12px">Please open the Admin Panel to review, confirm, and manage this reservation.</td></tr>';
-        $ticketText = $isAdmin ? 'A PDF copy of the guest e-ticket is attached to this email.' : 'Your PDF e-ticket is attached. Please present it at the registration desk on arrival.';
+        $ticketText = $isAdmin ? 'Open the guest e-ticket from the button above to print or save it as PDF.' : 'Open your e-ticket from the button above. You can print it or save it as PDF.';
         $qrBlock = '<img src="'.e($qrUrl).'" width="112" height="112" alt="Booking QR code" style="display:block;width:112px;height:112px;border:0">';
         return '<!doctype html><html><body style="margin:0;padding:0;background:#f2f3f1;font-family:Arial,Helvetica,sans-serif;color:#202722">'
         .'<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#f2f3f1;padding:22px 8px"><tr><td align="center">'
