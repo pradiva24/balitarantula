@@ -231,23 +231,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $subject = 'Booking ' . $code . ' - ' . $siteName;
                     $emailHtml = bta_booking_email_html($emailBooking, $confirmUrl, 'Booking Received', 'Thank you for choosing Bali Tarantula Adventure. Your booking has been received. Use the button below to open your A4 e-ticket.', 'customer', $ticketUrl);
 
-                    // Attach the generated A4 PDF and keep the print-view link as a fallback.
+                    // Generate one temporary PDF and attach it to customer/admin emails.
+                    // Always remove the temporary file, including when an SMTP call fails.
                     $ticketPath = bta_make_eticket_pdf($emailBooking);
                     $attachments = $ticketPath && is_file($ticketPath)
                         ? [['path' => $ticketPath, 'filename' => $code . '-E-Ticket.pdf', 'mime' => 'application/pdf']]
                         : [];
-                    smtp_send($email, $subject, $emailHtml, '', null, $attachments);
+                    try {
+                        smtp_send($email, $subject, $emailHtml, '', null, $attachments);
 
-                    $adminEmail = setting('booking_notification_email', setting('site_email', ''));
-                    $adminRecipients = preg_split('/[,;\r\n]+/', (string)$adminEmail, -1, PREG_SPLIT_NO_EMPTY);
-                    foreach ($adminRecipients as $recipient) {
-                        $recipient = trim($recipient);
-                        if (filter_var($recipient, FILTER_VALIDATE_EMAIL)) {
-                            $adminHtml = bta_booking_email_html($emailBooking, $confirmUrl, 'New Booking Received', 'A new adventure booking has just arrived. Please review details below. Open the e-ticket using the button.', 'admin', $ticketUrl);
-                            smtp_send($recipient, 'New ' . $subject, $adminHtml, $email, null, $attachments);
+                        $adminEmail = setting('booking_notification_email', setting('site_email', ''));
+                        $adminRecipients = preg_split('/[,;\\r\\n]+/', (string)$adminEmail, -1, PREG_SPLIT_NO_EMPTY);
+                        foreach ($adminRecipients as $recipient) {
+                            $recipient = trim($recipient);
+                            if (filter_var($recipient, FILTER_VALIDATE_EMAIL)) {
+                                $adminHtml = bta_booking_email_html($emailBooking, $confirmUrl, 'New Booking Received', 'A new adventure booking has just arrived. Please review details below. Open the e-ticket using the button.', 'admin', $ticketUrl);
+                                smtp_send($recipient, 'New ' . $subject, $adminHtml, $email, null, $attachments);
+                            }
+                        }
+                    } finally {
+                        if ($ticketPath && is_file($ticketPath)) {
+                            @unlink($ticketPath);
                         }
                     }
-                    if ($ticketPath && is_file($ticketPath)) @unlink($ticketPath);
 
                     if (strcasecmp($paymentMethod, 'Midtrans') === 0) {
                         header('Location: ' . rtrim(BASE_URL, '/') . '/midtrans-checkout?code=' . rawurlencode($code) . '&email=' . rawurlencode($email), true, 303);
