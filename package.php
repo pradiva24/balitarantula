@@ -1360,4 +1360,4 @@ function changePackageCover(src, btn) {
 }
 </script>
 
-<?php require __DIR__ . '/includes/footer.php'; ?>
+<?php $disableFloatingWhatsApp = true; require __DIR__ . '/includes/footer.php'; ?>
