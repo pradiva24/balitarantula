@@ -309,74 +309,23 @@ if (!function_exists('bta_pdf_build')) {
 
 if (!function_exists('bta_make_eticket_pdf')) {
     /**
-     * Render the exact public Booking Success print template as an A4 PDF.
-     * The print page remains the single source of truth for both browser print
-     * and the email attachment.
+     * Build the e-ticket with the built-in lightweight PDF renderer.
+     * No Composer PDF library is required; the generated file is temporary
+     * and is removed by booking.php after email delivery.
      */
     function bta_make_eticket_pdf(array $booking): ?string {
-        $code = trim((string)($booking['booking_code'] ?? ''));
-        if ($code === '' || !defined('BASE_URL')) return null;
-
-        $autoload = dirname(__DIR__) . '/vendor/autoload.php';
-        if (!is_file($autoload)) {
-            error_log('BTA e-ticket PDF: Composer dependencies missing. Run composer install.');
+        $siteName = trim((string)site_brand_name());
+        $siteEmail = trim((string)setting('site_email',''));
+        $sitePhone = trim((string)setting('site_whatsapp',setting('site_phone','')));
+        $siteAddress = trim((string)setting('site_address','Bali, Indonesia'));
+        $pdf = bta_pdf_build($booking, $siteName, $siteEmail, $sitePhone, $siteAddress);
+        $dir = rtrim(sys_get_temp_dir(), DIRECTORY_SEPARATOR);
+        $code = preg_replace('/[^A-Za-z0-9_-]/', '_', (string)($booking['booking_code'] ?? uniqid('booking_', true)));
+        $path = $dir . DIRECTORY_SEPARATOR . $code . '-E-Ticket.pdf';
+        if (@file_put_contents($path, $pdf) === false) {
+            error_log('BTA e-ticket PDF: Failed writing temporary PDF for ' . $code);
             return null;
         }
-        require_once $autoload;
-        if (!class_exists('Dompdf\\Dompdf') || !class_exists('Dompdf\\Options')) {
-            error_log('BTA e-ticket PDF: Dompdf is not installed. Run composer install.');
-            return null;
-        }
-
-        $base = rtrim((string)BASE_URL, '/');
-        $url = $base . '/booking-success?code=' . rawurlencode($code) . '&print=1&pdf=1';
-        $html = false;
-        if (function_exists('curl_init')) {
-            $ch = curl_init($url);
-            curl_setopt_array($ch, [
-                CURLOPT_RETURNTRANSFER => true,
-                CURLOPT_FOLLOWLOCATION => true,
-                CURLOPT_CONNECTTIMEOUT => 10,
-                CURLOPT_TIMEOUT => 35,
-                CURLOPT_SSL_VERIFYPEER => true,
-                CURLOPT_SSL_VERIFYHOST => 2,
-                CURLOPT_USERAGENT => 'BaliTarantula-Eticket-PDF/1.0',
-            ]);
-            $html = curl_exec($ch);
-            $http = (int)curl_getinfo($ch, CURLINFO_HTTP_CODE);
-            curl_close($ch);
-            if ($http < 200 || $http >= 300) $html = false;
-        } elseif (ini_get('allow_url_fopen')) {
-            $ctx = stream_context_create(['http' => ['timeout' => 35, 'follow_location' => 1, 'user_agent' => 'BaliTarantula-Eticket-PDF/1.0']]);
-            $html = @file_get_contents($url, false, $ctx);
-        }
-        if (!is_string($html) || stripos($html, '<html') === false || stripos($html, 'E-TICKET') === false) {
-            error_log('BTA e-ticket PDF: Could not load print-view HTML for booking ' . $code);
-            return null;
-        }
-
-        try {
-            $options = new \\Dompdf\\Options();
-            $options->set('isRemoteEnabled', true);
-            $options->set('isHtml5ParserEnabled', true);
-            $options->set('defaultFont', 'Arial');
-            $options->set('chroot', dirname(__DIR__));
-            $dompdf = new \\Dompdf\\Dompdf($options);
-            $dompdf->loadHtml($html, 'UTF-8');
-            $dompdf->setPaper('A4', 'portrait');
-            $dompdf->render();
-
-            $safeCode = preg_replace('/[^A-Za-z0-9_-]/', '_', $code);
-            $path = rtrim(sys_get_temp_dir(), DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . $safeCode . '-E-Ticket.pdf';
-            $bytes = $dompdf->output();
-            if (!is_string($bytes) || strncmp($bytes, '%PDF-', 5) !== 0 || @file_put_contents($path, $bytes) === false) {
-                error_log('BTA e-ticket PDF: Failed writing PDF for booking ' . $code);
-                return null;
-            }
-            return $path;
-        } catch (\\Throwable $e) {
-            error_log('BTA e-ticket PDF render failed for ' . $code . ': ' . $e->getMessage());
-            return null;
-        }
+        return $path;
     }
 }
