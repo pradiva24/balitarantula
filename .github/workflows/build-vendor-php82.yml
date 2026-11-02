@@ -1,0 +1,46 @@
+name: Build PHP 8.2 vendor package
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-vendor:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Set up PHP 8.2
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          tools: composer:v2
+          extensions: curl, dom, gd, iconv, mbstring, xml, zip
+          coverage: none
+
+      - name: Resolve production dependencies
+        run: composer update --no-dev --prefer-dist --optimize-autoloader --no-interaction
+
+      - name: Validate Dompdf and barcode dependencies
+        run: |
+          php -r "require 'vendor/autoload.php'; if (!class_exists('Dompdf\\Dompdf')) { fwrite(STDERR, 'Dompdf missing'.PHP_EOL); exit(1); } echo 'Dompdf ready'.PHP_EOL;"
+          php -r "require 'vendor/autoload.php'; if (!class_exists('Com\\Tecnick\\Barcode\\Barcode')) { fwrite(STDERR, 'Barcode library missing'.PHP_EOL); exit(1); } echo 'Barcode library ready'.PHP_EOL;"
+
+      - name: Package vendor directory
+        run: |
+          mkdir -p deploy
+          rm -f deploy/vendor-php82.zip
+          zip -qr deploy/vendor-php82.zip vendor
+
+      - name: Commit Composer lock and vendor package to main
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          branch: main
+          commit_message: "Build production vendor package for PHP 8.2"
+          file_pattern: composer.lock deploy/vendor-php82.zip
