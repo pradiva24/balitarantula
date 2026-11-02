@@ -241,7 +241,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         smtp_send($email, $subject, $emailHtml, '', null, $attachments);
 
                         $adminEmail = setting('booking_notification_email', setting('site_email', ''));
-                        $adminRecipients = preg_split('/[,;\\r\\n]+/', (string)$adminEmail, -1, PREG_SPLIT_NO_EMPTY);
+                        $adminRecipients = preg_split('/[,;\r\n]+/', (string)$adminEmail, -1, PREG_SPLIT_NO_EMPTY);
                         foreach ($adminRecipients as $recipient) {
                             $recipient = trim($recipient);
                             if (filter_var($recipient, FILTER_VALIDATE_EMAIL)) {
