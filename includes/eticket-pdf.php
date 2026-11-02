@@ -164,6 +164,55 @@ if (!function_exists('bta_pdf_fetch_qr_jpeg')) {
     }
 }
 
+if (!function_exists('bta_pdf_fetch_cover_jpeg')) {
+    function bta_pdf_fetch_cover_jpeg(string $path): ?array {
+        $path = trim($path);
+        if ($path === '') return null;
+        if (preg_match('~^https?://~i', $path)) {
+            $url = $path;
+        } elseif (defined('BASE_URL')) {
+            $url = rtrim((string)BASE_URL, '/') . '/' . ltrim($path, '/');
+        } else {
+            return null;
+        }
+        $bytes = false;
+        if (function_exists('curl_init')) {
+            $ch = curl_init($url);
+            curl_setopt_array($ch, [
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_FOLLOWLOCATION => true,
+                CURLOPT_CONNECTTIMEOUT => 6,
+                CURLOPT_TIMEOUT => 12,
+                CURLOPT_SSL_VERIFYPEER => true,
+                CURLOPT_SSL_VERIFYHOST => 2,
+                CURLOPT_USERAGENT => 'BaliTarantula-Eticket/1.0'
+            ]);
+            $bytes = curl_exec($ch);
+            $http = (int)curl_getinfo($ch, CURLINFO_HTTP_CODE);
+            curl_close($ch);
+            if ($http < 200 || $http >= 300) $bytes = false;
+        } elseif (ini_get('allow_url_fopen')) {
+            $bytes = @file_get_contents($url);
+        }
+        if (!is_string($bytes) || !function_exists('imagecreatefromstring') || !function_exists('imagejpeg')) return null;
+        $im = @imagecreatefromstring($bytes);
+        if (!$im) return null;
+        $w = imagesx($im);
+        $h = imagesy($im);
+        $rgb = imagecreatetruecolor($w, $h);
+        $white = imagecolorallocate($rgb, 255, 255, 255);
+        imagefill($rgb, 0, 0, $white);
+        imagecopy($rgb, $im, 0, 0, 0, 0, $w, $h);
+        ob_start();
+        $ok = imagejpeg($rgb, null, 88);
+        $jpeg = ob_get_clean();
+        imagedestroy($im);
+        imagedestroy($rgb);
+        if (!$ok || !is_string($jpeg) || strncmp($jpeg, "\xFF\xD8\xFF", 3) !== 0) return null;
+        return ['bytes' => $jpeg, 'width' => $w, 'height' => $h];
+    }
+}
+
 if (!function_exists('bta_pdf_image_command')) {
     function bta_pdf_image_command(array &$c, float $x, float $y, float $size): void {
         $c[] = sprintf('q %.2f 0 0 %.2f %.2f %.2f cm /Im1 Do Q', $size, $size, $x, $y);
@@ -239,10 +288,14 @@ if (!function_exists('bta_pdf_build')) {
         bta_pdf_center($c,346,615,74,$status,7.2,false,$statusInk);
         bta_pdf_line($c,49,592,382,592,$line,0.6);
 
-        // Package summary; thumbnail area is reserved cleanly when no local image renderer is available.
-        bta_pdf_rect($c,49,525,112,55,[0.93,0.95,0.93]);
-        bta_pdf_center($c,105,550,100,'BALI',10,false,$muted);
-        bta_pdf_center($c,105,537,100,'ADVENTURE',6.5,false,$orange);
+        // Embed the actual package cover image in the left thumbnail.
+        $cover = bta_pdf_fetch_cover_jpeg((string)($b['cover_image'] ?? ''));
+        if ($cover) {
+            $c[] = 'q 112 0 0 55 49 525 cm /Im2 Do Q';
+        } else {
+            bta_pdf_rect($c,49,525,112,55,[0.93,0.95,0.93]);
+            bta_pdf_center($c,105,550,100,'IMAGE UNAVAILABLE',6.2,false,$muted);
+        }
         $packageLines = array_slice(bta_pdf_lines($package,31),0,2);
         foreach($packageLines as $i=>$lineText) bta_pdf_text($c,174,568-($i*13),$lineText,11,false,$ink);
         $descLines = array_slice(bta_pdf_lines((string)($b['short_description'] ?? 'Experience the thrill of Bali adventure trails.'),58),0,3);
@@ -269,8 +322,10 @@ if (!function_exists('bta_pdf_build')) {
             foreach($labelLines as $i=>$txt) bta_pdf_text($c,49,$y-($i*7.5),$txt,6.6,false,$ink);
             bta_pdf_text($c,190,$y,':',6.6,false,$muted);
             foreach($valueLines as $i=>$txt) bta_pdf_text($c,205,$y-($i*7.5),$txt,6.8,false,((string)$label==='Total Payment'?$orange:$ink));
-            $rowHeight=max(19,($lineCount*7.5)+7);
-            bta_pdf_line($c,49,$y-$rowHeight+3,382,$y-$rowHeight+3,$line,0.35);
+            // Keep separator rules below the full text block with clear breathing room.
+            $rowHeight=max(23,($lineCount*8.5)+10);
+            $separatorY=$y-$rowHeight+2;
+            bta_pdf_line($c,49,$separatorY,382,$separatorY,$line,0.35);
             $y-=$rowHeight;
         }
 
@@ -314,12 +369,16 @@ if (!function_exists('bta_pdf_build')) {
         $objects=[];
         $objects[]='<< /Type /Catalog /Pages 2 0 R >>';
         $objects[]='<< /Type /Pages /Kids [3 0 R] /Count 1 >>';
-        $xobject=$qr?' /XObject << /Im1 7 0 R >>':'';
+        $xobjects=[];
+        if ($qr) $xobjects[]='/Im1 7 0 R';
+        if ($cover) $xobjects[]='/Im2 '.($qr?8:7).' 0 R';
+        $xobject=$xobjects?' /XObject << '.implode(' ',$xobjects).' >>':'';
         $objects[]='<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 5 0 R /F2 6 0 R >>'.$xobject.' >> /Contents 4 0 R >>';
         $objects[]="<< /Length ".strlen($content)." >>\nstream\n".$content."endstream";
         $objects[]='<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>';
         $objects[]='<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold >>';
         if($qr) $objects[]='<< /Type /XObject /Subtype /Image /Width '.(int)$qr['width'].' /Height '.(int)$qr['height'].' /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length '.strlen($qr['bytes'])." >>\nstream\n".$qr['bytes']."\nendstream";
+        if($cover) $objects[]='<< /Type /XObject /Subtype /Image /Width '.(int)$cover['width'].' /Height '.(int)$cover['height'].' /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length '.strlen($cover['bytes'])." >>\nstream\n".$cover['bytes']."\nendstream";
         $pdf="%PDF-1.4\n%\xE2\xE3\xCF\xD3\n"; $offsets=[0];
         foreach($objects as $i=>$obj){$offsets[]=strlen($pdf);$pdf.=($i+1)." 0 obj\n".$obj."\nendobj\n";}
         $xref=strlen($pdf);$pdf.="xref\n0 ".(count($objects)+1)."\n0000000000 65535 f \n";
