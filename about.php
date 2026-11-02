@@ -86,7 +86,7 @@ require __DIR__ . '/includes/header.php';
 .about-section{padding:88px 0}
 .about-section-head{max-width:760px}
 .about-section-head>p:last-child{margin:14px 0 0}
-.about-card-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:20px;margin-top:36px}
+.about-card-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:20px;margin-top:36px}.about-values .about-card-grid{grid-template-columns:repeat(2,minmax(0,1fr));margin-top:0}
 .about-card{padding:27px 23px;background:#fff;border:1px solid var(--about-border);border-top:3px solid var(--about-orange);border-radius:11px;box-shadow:0 10px 28px rgba(30,25,15,.045);transition:transform .2s,box-shadow .2s}
 .about-card:hover{transform:translateY(-4px);box-shadow:0 16px 32px rgba(30,25,15,.09)}
 .about-card .card-icon{display:grid;place-items:center;width:44px;height:44px;margin-bottom:17px;border-radius:10px;background:#fff0e9;color:var(--about-orange);font-size:19px}
@@ -109,7 +109,7 @@ require __DIR__ . '/includes/header.php';
 .about-cta h2{margin:0 0 14px;color:#fff;font-size:clamp(38px,5vw,62px);font-weight:900;line-height:.98}
 .about-cta p{margin:0 0 24px;color:#e0ded9}
 @media(max-width:980px){.about-card-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.about-story{gap:34px}.about-stat-grid{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:700px){.about-hero{min-height:390px;padding:115px 0 55px}.about-story,.about-values{grid-template-columns:1fr;padding:62px 0;gap:27px}.about-story .story-visual{order:2}.about-story .story-copy{order:1}.about-photo,.about-values .values-photo{min-height:240px;max-height:330px}.about-mindset{min-height:350px;padding:65px 0}.about-section{padding:65px 0}.about-card-grid{grid-template-columns:1fr;gap:14px}.about-stat-grid{grid-template-columns:repeat(2,1fr);gap:14px}.about-stat{padding:14px}.about-cta{min-height:330px;padding:60px 0}}
+@media(max-width:700px){.about-hero{min-height:390px;padding:115px 0 55px}.about-story,.about-values{grid-template-columns:1fr;padding:62px 0;gap:27px}.about-story .story-visual{order:2}.about-story .story-copy{order:1}.about-photo,.about-values .values-photo{min-height:240px;max-height:330px}.about-mindset{min-height:350px;padding:65px 0}.about-section{padding:65px 0}.about-card-grid{grid-template-columns:1fr;gap:14px}.about-values .about-card-grid{grid-template-columns:1fr}.about-stat-grid{grid-template-columns:repeat(2,1fr);gap:14px}.about-stat{padding:14px}.about-cta{min-height:330px;padding:60px 0}}
 </style>
 
 <div class="bta-about">
@@ -135,15 +135,6 @@ require __DIR__ . '/includes/header.php';
       <?php if ($aboutText('story_text_2') !== ''): ?><p><?=nl2br(e($aboutText('story_text_2')))?></p><?php endif; ?>
       <?php if ($aboutText('story_quote') !== ''): ?><blockquote class="about-quote"><?=nl2br(e($aboutText('story_quote')))?><cite><?=e($aboutText('story_quote_author', '— ' . $brand))?></cite></blockquote><?php endif; ?>
       <?php if ($aboutText('story_button_text') !== ''): ?><p><a class="about-btn" href="<?=e($aboutUrl($aboutText('story_button_url', 'packages.php')))?>"><?=e($aboutText('story_button_text'))?> <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a></p><?php endif; ?>
-    </div>
-  </section>
-
-  <section class="about-mindset">
-    <?php if ($valuesImage !== ''): ?><img class="mindset-photo" src="<?=e($valuesImage)?>" alt="<?=e($aboutText('values_alt', $aboutText('values_title', 'Our Values')))?>" loading="lazy"><?php endif; ?>
-    <div class="wrap mindset-copy">
-      <p class="eyebrow"><?=e($aboutText('values_kicker', 'OUR VALUES'))?></p>
-      <h2><?=e($aboutText('values_title', 'Nature, People, and Meaningful Travel'))?></h2>
-      <?php if ($aboutText('values_text') !== ''): ?><p><?=nl2br(e($aboutText('values_text')))?></p><?php endif; ?>
     </div>
   </section>
 
@@ -177,7 +168,7 @@ require __DIR__ . '/includes/header.php';
       <?php if ($aboutText('values_text') !== ''): ?><p style="margin-top:16px"><?=nl2br(e($aboutText('values_text')))?></p><?php endif; ?>
       <?php if ($valuesImage !== ''): ?><img class="values-photo" src="<?=e($valuesImage)?>" alt="<?=e($aboutText('values_alt', 'Our values'))?>" loading="lazy"><?php endif; ?>
     </div>
-    <div class="about-card-grid" style="grid-template-columns:repeat(2,minmax(0,1fr));margin-top:0">
+    <div class="about-card-grid">
       <?php for ($i=1; $i<=4; $i++):
         $iconFallback = ['fa-solid fa-leaf','fa-solid fa-handshake','fa-solid fa-heart','fa-solid fa-star'][$i-1];
         $icon = $aboutIcon("value_{$i}_icon", $iconFallback);
