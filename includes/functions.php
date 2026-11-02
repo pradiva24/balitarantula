@@ -43,7 +43,7 @@ function brand_replace_legacy(string $text): string {
 
     // Replace legacy brand names once, case-insensitively, without
     // rescanning the replacement text. This prevents brand-name cascading.
-    $pattern = '~Bali Tarantula Adventure|Tarantula Adventure|Aloha Ubud Swing|Aloha Ubud~i';
+    $pattern = '~Bali Tarantula Adventure|Tarantula Adventure|Aloha Ubud Swing|Aloha Ubud|Aloha Ubu~i';
     return preg_replace_callback($pattern, static function () use ($brand) {
         return $brand;
     }, $text) ?? $text;
