@@ -231,28 +231,49 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $subject = 'Booking ' . $code . ' - ' . $siteName;
                     $emailHtml = bta_booking_email_html($emailBooking, $confirmUrl, 'Booking Received', 'Thank you for choosing Bali Tarantula Adventure. Your booking has been received. Use the button below to open your A4 e-ticket.', 'customer', $ticketUrl);
 
-                    // Generate one temporary PDF and attach it to customer/admin emails.
-                    // Always remove the temporary file, including when an SMTP call fails.
-                    $ticketPath = bta_make_eticket_pdf($emailBooking);
-                    $attachments = $ticketPath && is_file($ticketPath)
-                        ? [['path' => $ticketPath, 'filename' => $code . '-E-Ticket.pdf', 'mime' => 'application/pdf']]
-                        : [];
+                    // Email delivery must never block a successfully saved booking.
+                    // If PDF rendering fails, send the booking email without attachment.
+                    $ticketPath = null;
+                    $attachments = [];
                     try {
-                        smtp_send($email, $subject, $emailHtml, '', null, $attachments);
+                        $ticketPath = bta_make_eticket_pdf($emailBooking);
+                        if ($ticketPath && is_file($ticketPath) && is_readable($ticketPath)) {
+                            $attachments = [['path' => $ticketPath, 'filename' => $code . '-E-Ticket.pdf', 'mime' => 'application/pdf']];
+                        }
+                    } catch (Throwable $pdfError) {
+                        error_log('[BTA E-TICKET PDF] ' . $code . ': ' . $pdfError->getMessage());
+                    }
+
+                    try {
+                        $customerSent = smtp_send($email, $subject, $emailHtml, '', null, $attachments);
+                        if (!$customerSent) {
+                            error_log('[BTA BOOKING EMAIL CUSTOMER] ' . $code . ': ' . smtp_last_error());
+                            // Retry once without the PDF attachment in case the attachment caused rejection.
+                            if ($attachments) {
+                                $customerSent = smtp_send($email, $subject, $emailHtml, '', null, []);
+                                if (!$customerSent) error_log('[BTA BOOKING EMAIL CUSTOMER RETRY] ' . $code . ': ' . smtp_last_error());
+                            }
+                        }
 
                         $adminEmail = setting('booking_notification_email', setting('site_email', ''));
                         $adminRecipients = preg_split('/[,;\r\n]+/', (string)$adminEmail, -1, PREG_SPLIT_NO_EMPTY);
                         foreach ($adminRecipients as $recipient) {
                             $recipient = trim($recipient);
-                            if (filter_var($recipient, FILTER_VALIDATE_EMAIL)) {
-                                $adminHtml = bta_booking_email_html($emailBooking, $confirmUrl, 'New Booking Received', 'A new adventure booking has just arrived. Please review details below. Open the e-ticket using the button.', 'admin', $ticketUrl);
-                                smtp_send($recipient, 'New ' . $subject, $adminHtml, $email, null, $attachments);
+                            if (!filter_var($recipient, FILTER_VALIDATE_EMAIL)) continue;
+                            $adminHtml = bta_booking_email_html($emailBooking, $confirmUrl, 'New Booking Received', 'A new adventure booking has just arrived. Please review details below. Open the e-ticket using the button.', 'admin', $ticketUrl);
+                            $adminSent = smtp_send($recipient, 'New ' . $subject, $adminHtml, $email, null, $attachments);
+                            if (!$adminSent) {
+                                error_log('[BTA BOOKING EMAIL ADMIN] ' . $code . ' to ' . $recipient . ': ' . smtp_last_error());
+                                if ($attachments) {
+                                    $adminSent = smtp_send($recipient, 'New ' . $subject, $adminHtml, $email, null, []);
+                                    if (!$adminSent) error_log('[BTA BOOKING EMAIL ADMIN RETRY] ' . $code . ' to ' . $recipient . ': ' . smtp_last_error());
+                                }
                             }
                         }
+                    } catch (Throwable $mailError) {
+                        error_log('[BTA BOOKING EMAIL] ' . $code . ': ' . $mailError->getMessage());
                     } finally {
-                        if ($ticketPath && is_file($ticketPath)) {
-                            @unlink($ticketPath);
-                        }
+                        if ($ticketPath && is_file($ticketPath)) @unlink($ticketPath);
                     }
 
                     if (strcasecmp($paymentMethod, 'Midtrans') === 0) {
