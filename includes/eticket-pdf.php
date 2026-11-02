@@ -319,14 +319,16 @@ if (!function_exists('bta_pdf_build')) {
             $labelLines = array_slice(bta_pdf_lines((string)$label,25),0,2);
             $valueLines = array_slice(bta_pdf_lines((string)$value,34),0,2);
             $lineCount=max(count($labelLines),count($valueLines));
-            foreach($labelLines as $i=>$txt) bta_pdf_text($c,49,$y-($i*7.5),$txt,6.6,false,$ink);
-            bta_pdf_text($c,190,$y,':',6.6,false,$muted);
-            foreach($valueLines as $i=>$txt) bta_pdf_text($c,205,$y-($i*7.5),$txt,6.8,false,((string)$label==='Total Payment'?$orange:$ink));
-            // Keep separator rules below the full text block with clear breathing room.
-            $rowHeight=max(23,($lineCount*8.5)+10);
-            $separatorY=$y-$rowHeight+2;
+            // Put every text baseline inside a fixed-height row, never on its separator.
+            $textTop=$y-5;
+            foreach($labelLines as $i=>$txt) bta_pdf_text($c,49,$textTop-($i*8.5),$txt,6.6,false,$ink);
+            bta_pdf_text($c,190,$textTop,':',6.6,false,$muted);
+            foreach($valueLines as $i=>$txt) bta_pdf_text($c,205,$textTop-($i*8.5),$txt,6.8,false,((string)$label==='Total Payment'?$orange:$ink));
+            // Two-line labels (e.g. Hotel or Villa...) get a taller row.
+            $rowHeight = $lineCount > 1 ? 31 : 27;
+            $separatorY = $y - $rowHeight;
             bta_pdf_line($c,49,$separatorY,382,$separatorY,$line,0.35);
-            $y-=$rowHeight;
+            $y -= $rowHeight;
         }
 
         // QR ticket stub.
