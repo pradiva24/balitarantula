@@ -2,9 +2,19 @@
 require_once __DIR__ . '/config/database.php';
 require_once __DIR__ . '/includes/functions.php';
 
+$galleryPage = [];
+try {
+    $galleryPage = db()->query("SELECT * FROM gallery_page_settings WHERE id=1 LIMIT 1")->fetch(PDO::FETCH_ASSOC) ?: [];
+} catch (Throwable $e) {}
+$galleryValue = static function (string $key, string $fallback = '') use ($galleryPage): string {
+    $value = trim((string)($galleryPage[$key] ?? ''));
+    return $value !== '' ? $value : $fallback;
+};
 $title = 'Photo Gallery | ' . site_brand_name();
-$description = 'Explore thrilling moments from Bali Tarantula Adventure: rugged trails, muddy quads, bamboo jungles, and extreme Bali landscapes.';
+$description = $galleryValue('hero_description', 'Explore thrilling moments from Bali Tarantula Adventure: rugged trails, muddy quads, bamboo jungles, and extreme Bali landscapes.');
 $canonical = BASE_URL . '/gallery.php';
+$galleryHeroImage = trim((string)($galleryPage['hero_image'] ?? ''));
+$galleryHeroImageUrl = $galleryHeroImage !== '' ? (preg_match('~^https?://~i', $galleryHeroImage) ? $galleryHeroImage : asset_url($galleryHeroImage)) : '';
 
 $gallery = [];
 $categories = [];
@@ -104,7 +114,7 @@ body {
   content: "";
   position: absolute;
   inset: 0;
-  background: url('https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1800&q=85') center/cover no-repeat;
+  background: <?= $galleryHeroImageUrl !== '' ? 'url(\''.e($galleryHeroImageUrl).'\')' : 'linear-gradient(112deg, #171717 0%, #242321 65%, #30271f 100%)' ?> center/cover no-repeat;
   opacity: 0.28;
   filter: saturate(1.1);
 }
@@ -320,7 +330,7 @@ body {
   border-radius: 14px;
   overflow: hidden;
   background: #252525;
-  border: 1px solid var(--bta-border);
+  border: 0;
   cursor: pointer;
   box-shadow: 0 10px 30px rgba(30, 25, 15, 0.08);
   transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
@@ -406,9 +416,10 @@ body {
   max-width: 100%;
   max-height: 75vh;
   object-fit: contain;
-  border-radius: 12px;
-  border: 1px solid var(--bta-border);
-  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.7);
+  border-radius: 0;
+  border: 0;
+  outline: 0;
+  box-shadow: none;
 }
 
 .gallery-modal-caption {
@@ -419,6 +430,25 @@ body {
   letter-spacing: 1.5px;
   text-transform: uppercase;
   color: #ffffff;
+}
+
+.gallery-modal-nav {
+  position:absolute;top:50%;transform:translateY(-50%);z-index:3;width:50px;height:50px;
+  display:flex;align-items:center;justify-content:center;border:0;border-radius:50%;
+  background:rgba(255,255,255,.12);color:#fff;font-size:20px;cursor:pointer;
+  transition:background .2s,transform .2s;
+}
+.gallery-modal-nav:hover{background:var(--bta-orange);transform:translateY(-50%) scale(1.06)}
+.gallery-modal-prev{left:28px}.gallery-modal-next{right:28px}
+.gallery-modal-counter{margin-top:8px;color:rgba(255,255,255,.65);font:600 12px var(--bta-font-body);letter-spacing:1px}
+@media(max-width:600px){
+ .gallery-modal{padding:18px}
+ .gallery-modal-nav{width:42px;height:42px;top:auto;bottom:22px;transform:none}
+ .gallery-modal-nav:hover{transform:scale(1.04)}
+ .gallery-modal-prev{left:calc(50% - 52px)}.gallery-modal-next{right:calc(50% - 52px)}
+ .gallery-modal-close{top:14px;right:14px}
+ .gallery-modal-content{max-width:100%;max-height:80vh}
+ .gallery-modal img{max-height:68vh}
 }
 
 .gallery-modal-close {
@@ -464,11 +494,11 @@ body {
   <!-- Page Banner -->
   <section class="page-banner">
     <div class="wrap page-banner-content">
-      <p class="eyebrow"><span class="eyebrow-line"></span>PHOTO GALLERY</p>
-      <h1>FEEL THE <span>ADRENALINE.</span></h1>
-      <p>A glimpse of the landscapes, tracks, and outdoor moments that inspire every Bali Tarantula expedition.</p>
+      <p class="eyebrow"><span class="eyebrow-line"></span><?=e($galleryValue('hero_kicker', 'PHOTO GALLERY'))?></p>
+      <h1><?=e($galleryValue('hero_title', 'FEEL THE'))?> <span><?=e($galleryValue('hero_accent', 'ADRENALINE.'))?></span></h1>
+      <?php if ($galleryValue('hero_description') !== ''): ?><p><?=nl2br(e($galleryValue('hero_description')))?></p><?php endif; ?>
       <div class="breadcrumbs">
-        <a href="<?=BASE_URL?>/">HOME</a> / PHOTO GALLERY
+        <a href="<?=e(rtrim(BASE_URL, '/'))?>/">HOME</a> / <?=e($galleryValue('hero_kicker', 'PHOTO GALLERY'))?>
       </div>
     </div>
   </section>
@@ -477,14 +507,6 @@ body {
   <main class="gallery-section">
     <div class="wrap">
       
-      <div class="section-heading">
-        <div>
-          <p class="eyebrow"><span class="eyebrow-line"></span>VISUAL JOURNAL</p>
-          <h2>THE WILD IN <span>FRAMES.</span></h2>
-        </div>
-        <p class="section-description">High-octane action shots straight from our jungle circuits, volcanic sands, and muddy rivers. Click any photo to view in high resolution.</p>
-      </div>
-
       <!-- Categories Filter Tabs -->
       <?php if (!empty($categoryList)): ?>
         <div class="gallery-tabs-wrap">
@@ -509,7 +531,7 @@ body {
             $tagText = sprintf('%02d / %s ↗', $idx++, strtoupper($catLabel));
             $altText = !empty($g['title']) ? $g['title'] : (!empty($g['alt_text']) ? $g['alt_text'] : 'Bali Tarantula Adventure');
           ?>
-            <div class="gallery-card" data-cat="<?=e($catLabel)?>" onclick="openGalleryModal('<?=e($imgUrl)?>', '<?=e($altText)?>')">
+            <div class="gallery-card" data-cat="<?=e($catLabel)?>" data-full-src="<?=e($imgUrl)?>" data-caption="<?=e($altText)?>" onclick="openGalleryModal(this)">
               <img src="<?=e($imgUrl)?>" alt="<?=e($altText)?>" loading="lazy">
               <div class="gallery-card-shade"></div>
               <span class="tag"><?=e($tagText)?></span>
@@ -525,22 +547,46 @@ body {
 </div>
 
 <!-- Modal Lightbox -->
-<div class="gallery-modal" id="galleryModal" onclick="closeGalleryModal(event)">
+<div class="gallery-modal" id="galleryModal" onclick="closeGalleryModal(event)" aria-hidden="true">
   <button class="gallery-modal-close" onclick="closeGalleryModalDirect()" aria-label="Close photo preview"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button>
+  <button class="gallery-modal-nav gallery-modal-prev" type="button" onclick="navigateGalleryModal(-1,event)" aria-label="Previous photo"><i class="fa-solid fa-chevron-left" aria-hidden="true"></i></button>
   <div class="gallery-modal-content" onclick="event.stopPropagation()">
     <img id="galleryModalImg" src="" alt="Gallery Preview">
     <div class="gallery-modal-caption" id="galleryModalCaption"></div>
+    <div class="gallery-modal-counter" id="galleryModalCounter" aria-live="polite"></div>
   </div>
+  <button class="gallery-modal-nav gallery-modal-next" type="button" onclick="navigateGalleryModal(1,event)" aria-label="Next photo"><i class="fa-solid fa-chevron-right" aria-hidden="true"></i></button>
 </div>
 
 <script>
-function openGalleryModal(src, title) {
+let galleryModalItems = [];
+let galleryModalIndex = 0;
+
+function openGalleryModal(card) {
+  galleryModalItems = Array.from(document.querySelectorAll('.gallery-card:not(.is-hidden)'));
+  galleryModalIndex = galleryModalItems.indexOf(card);
+  if (galleryModalIndex < 0) return;
+  renderGalleryModal();
   const modal = document.getElementById('galleryModal');
-  const img = document.getElementById('galleryModalImg');
-  const caption = document.getElementById('galleryModalCaption');
-  img.src = src;
-  caption.textContent = title;
   modal.classList.add('is-open');
+  modal.setAttribute('aria-hidden', 'false');
+  document.body.style.overflow = 'hidden';
+}
+
+function renderGalleryModal() {
+  const item = galleryModalItems[galleryModalIndex];
+  if (!item) return;
+  document.getElementById('galleryModalImg').src = item.dataset.fullSrc || item.querySelector('img').src;
+  document.getElementById('galleryModalImg').alt = item.dataset.caption || '';
+  document.getElementById('galleryModalCaption').textContent = item.dataset.caption || '';
+  document.getElementById('galleryModalCounter').textContent = (galleryModalIndex + 1) + ' / ' + galleryModalItems.length;
+}
+
+function navigateGalleryModal(direction, event) {
+  if (event) event.stopPropagation();
+  if (!galleryModalItems.length) return;
+  galleryModalIndex = (galleryModalIndex + direction + galleryModalItems.length) % galleryModalItems.length;
+  renderGalleryModal();
 }
 
 function closeGalleryModal(e) {
@@ -550,11 +596,16 @@ function closeGalleryModal(e) {
 }
 
 function closeGalleryModalDirect() {
-  document.getElementById('galleryModal').classList.remove('is-open');
+  const modal = document.getElementById('galleryModal');
+  modal.classList.remove('is-open');
+  modal.setAttribute('aria-hidden', 'true');
+  document.body.style.overflow = '';
 }
 
 document.addEventListener('keydown', function(e) {
   if (e.key === 'Escape') closeGalleryModalDirect();
+  if (document.getElementById('galleryModal').classList.contains('is-open') && e.key === 'ArrowLeft') navigateGalleryModal(-1);
+  if (document.getElementById('galleryModal').classList.contains('is-open') && e.key === 'ArrowRight') navigateGalleryModal(1);
 });
 
 // Category Tabs Filter
