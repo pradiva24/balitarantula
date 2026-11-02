@@ -8,6 +8,13 @@ try {
     $about = [];
 }
 
+$home = [];
+try {
+    $home = db()->query("SELECT * FROM homepage_content WHERE id=1 LIMIT 1")->fetch(PDO::FETCH_ASSOC) ?: [];
+} catch (Throwable $e) {
+    $home = [];
+}
+
 $aboutText = static function (string $key, string $fallback = '') use ($about): string {
     $value = trim((string)($about[$key] ?? ''));
     return $value !== '' ? $value : $fallback;
@@ -108,6 +115,39 @@ require __DIR__ . '/includes/header.php';
 .about-cta .cta-content{max-width:760px}
 .about-cta h2{margin:0 0 14px;color:#fff;font-size:clamp(38px,5vw,62px);font-weight:900;line-height:.98}
 .about-cta p{margin:0 0 24px;color:#e0ded9}
+
+/* About page adaptations of the homepage Why Choose Us section. */
+.bta-about img,.bta-about .about-photo,.bta-about .values-photo,.bta-about .hero-photo,.bta-about .mindset-photo,.bta-about .cta-photo{border-radius:0!important}
+.about-why{padding-top:88px;padding-bottom:105px}
+.about-why-heading{display:flex;align-items:flex-end;justify-content:space-between;gap:32px;margin-bottom:39px}
+.about-why-heading>div{max-width:760px;min-width:0}
+.about-why-heading .eyebrow{color:#191919;margin-bottom:15px}
+.about-why-heading h2{margin:0;color:var(--about-heading);font:900 clamp(50px,6.2vw,78px)/.9 var(--about-font-display);letter-spacing:-.5px;text-transform:uppercase}
+.about-why-description{max-width:330px;margin:0 0 3px;color:var(--about-text);font-size:13px;line-height:1.9}
+.about-eyebrow-line{display:inline-block;width:27px;height:2px;background:var(--about-orange)}
+.about-reasons{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-top:1px solid var(--about-border)}
+.about-reasons article{position:relative;min-height:205px;padding:30px 27px 0 0}
+.about-reasons article+article{padding-left:27px;border-left:1px solid var(--about-border)}
+.about-reason-no{position:absolute;top:29px;right:20px;font-size:9px;color:#777;letter-spacing:1px}
+.about-reason-icon{margin-bottom:16px;color:var(--about-orange);font-size:26px}
+.about-reasons h3{margin:0 0 12px;color:var(--about-heading);font:800 24px/1 var(--about-font-display);text-transform:none}
+.about-reasons p{max-width:270px;margin:0;color:var(--about-text);font-size:11px;line-height:1.8}
+.about-values-section{padding:90px 0}
+.about-values{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center;padding:0}
+.about-values-visual{min-width:0}
+.about-values .values-photo{display:block;width:100%;height:100%;min-height:420px;max-height:590px;object-fit:cover;background:#e5e1d9}
+.about-values-copy{min-width:0}
+.about-values-copy .about-section-title{margin:0 0 15px}
+.about-values-copy .values-intro{margin:0 0 25px;font-size:14px;line-height:1.85}
+.about-values-list{margin:0;padding:0;list-style:none;border-top:1px solid var(--about-border)}
+.about-value-item{display:grid;grid-template-columns:38px 1fr 28px;align-items:start;gap:14px;padding:17px 0;border-bottom:1px solid var(--about-border)}
+.about-value-item .value-icon{display:grid;place-items:center;width:34px;height:34px;color:var(--about-orange);font-size:17px}
+.about-value-item .value-copy{display:flex;flex-direction:column;gap:4px}
+.about-value-item .value-copy strong{color:var(--about-heading);font:800 21px/1.1 var(--about-font-display)}
+.about-value-item .value-copy>span{color:var(--about-text);font-size:12px;line-height:1.7}
+.about-value-item .value-number{padding-top:5px;color:var(--about-muted);font-size:9px;text-align:right;letter-spacing:1px}
+@media(max-width:980px){.about-reasons{grid-template-columns:repeat(2,minmax(0,1fr))}.about-reasons article:nth-child(3){padding-left:0;border-left:0}.about-reasons article:nth-child(n+3){border-top:1px solid var(--about-border);padding-top:25px}.about-values{gap:35px}}
+@media(max-width:700px){.about-why{padding-top:65px;padding-bottom:70px}.about-why-heading{align-items:flex-start;flex-direction:column;gap:18px;margin-bottom:27px}.about-why-heading h2{font-size:clamp(46px,12vw,66px);line-height:.92}.about-why-description{max-width:500px;font-size:13px}.about-reasons{grid-template-columns:1fr}.about-reasons article,.about-reasons article+article,.about-reasons article:nth-child(3){min-height:auto;padding:25px 35px 25px 0;border-left:0;border-bottom:1px solid var(--about-border);border-top:0}.about-reason-no{top:28px;right:5px}.about-reason-icon{margin-bottom:10px}.about-reasons h3{font-size:25px}.about-reasons p{max-width:350px}.about-values-section{padding:65px 0}.about-values{grid-template-columns:1fr;gap:28px}.about-values .values-photo{min-height:250px;max-height:360px}.about-value-item{grid-template-columns:34px 1fr 24px;gap:10px;padding:15px 0}}
 @media(max-width:980px){.about-card-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.about-story{gap:34px}.about-stat-grid{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:700px){.about-hero{min-height:390px;padding:115px 0 55px}.about-story,.about-values{grid-template-columns:1fr;padding:62px 0;gap:27px}.about-story .story-visual{order:2}.about-story .story-copy{order:1}.about-photo,.about-values .values-photo{min-height:240px;max-height:330px}.about-mindset{min-height:350px;padding:65px 0}.about-section{padding:65px 0}.about-card-grid{grid-template-columns:1fr;gap:14px}.about-values .about-card-grid{grid-template-columns:1fr}.about-stat-grid{grid-template-columns:repeat(2,1fr);gap:14px}.about-stat{padding:14px}.about-cta{min-height:330px;padding:60px 0}}
 </style>
@@ -134,51 +174,64 @@ require __DIR__ . '/includes/header.php';
       <?php if ($aboutText('story_text_1') !== ''): ?><p><?=nl2br(e($aboutText('story_text_1')))?></p><?php endif; ?>
       <?php if ($aboutText('story_text_2') !== ''): ?><p><?=nl2br(e($aboutText('story_text_2')))?></p><?php endif; ?>
       <?php if ($aboutText('story_quote') !== ''): ?><blockquote class="about-quote"><?=nl2br(e($aboutText('story_quote')))?><cite><?=e($aboutText('story_quote_author', '— ' . $brand))?></cite></blockquote><?php endif; ?>
-      <?php if ($aboutText('story_button_text') !== ''): ?><p><a class="about-btn" href="<?=e($aboutUrl($aboutText('story_button_url', 'packages.php')))?>"><?=e($aboutText('story_button_text'))?> <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a></p><?php endif; ?>
     </div>
   </section>
 
-  <section class="about-section">
+  <?php if (!array_key_exists('why_enabled', $home) || !empty($home['why_enabled'])): ?>
+  <section class="about-section about-why">
     <div class="wrap">
-      <div class="about-section-head">
-        <p class="eyebrow"><?=e($aboutText('why_kicker', 'WHY CHOOSE US'))?></p>
-        <h2 class="about-section-title"><?=e($aboutText('why_title', 'A Unique Experience in Bali'))?></h2>
-        <?php if ($aboutText('why_text') !== ''): ?><p><?=nl2br(e($aboutText('why_text')))?></p><?php endif; ?>
+      <div class="about-why-heading">
+        <div>
+          <p class="eyebrow"><span class="about-eyebrow-line"></span><?=e($home['why_kicker'] ?? $aboutText('why_kicker', 'WHY CHOOSE US'))?></p>
+          <h2><?=e($home['why_title'] ?? $aboutText('why_title', 'A UNIQUE EXPERIENCE IN THE HEART OF BALI'))?> <span class="accent">WILD.</span></h2>
+        </div>
+        <p class="about-why-description"><?=e($home['why_text'] ?? $aboutText('why_text', 'We are committed to creating safe, enjoyable and memorable experiences for every traveler.'))?></p>
       </div>
-      <div class="about-card-grid">
-        <?php for ($i=1; $i<=4; $i++):
-          $iconFallback = ['fa-solid fa-mountain-sun','fa-solid fa-shield-halved','fa-solid fa-route','fa-solid fa-people-group'][$i-1];
-          $icon = $aboutIcon("why_{$i}_icon", $iconFallback);
+      <div class="about-reasons">
+        <?php for ($wi=1; $wi<=4; $wi++):
+          $whyTitle = trim((string)($home['why_'.$wi.'_title'] ?? ''));
+          $whyText = trim((string)($home['why_'.$wi.'_text'] ?? ''));
+          $whyIcon = trim((string)($home['why_'.$wi.'_icon'] ?? ''));
+          $whyIconFallback = ['fa-solid fa-water','fa-solid fa-shield-heart','fa-solid fa-mountain-sun','fa-solid fa-people-group'][$wi-1];
+          $aboutWhyTitleFallback = ['Adventure Ready','Safety First','Local Experience','Memorable Moments'][$wi-1];
+          $aboutWhyTextFallback = ['Discover the best of Bali through exciting outdoor activities.','Our team puts guest comfort and clear activity guidance first.','Experience Bali with a friendly local team.','Make memories worth taking home.'][$wi-1];
         ?>
-          <article class="about-card">
-            <div class="card-icon"><i class="<?=e($icon)?>" aria-hidden="true"></i></div>
-            <span class="card-index"><?=sprintf('%02d', $i)?></span>
-            <h3><?=e($aboutText("why_{$i}_title", ['Stunning Natural Views','Safety First','Adventure Tracks','Warm Local Hospitality'][$i-1]))?></h3>
-            <p><?=e($aboutText("why_{$i}_text"))?></p>
-          </article>
+        <article>
+          <span class="about-reason-no">0<?=$wi?></span>
+          <div class="about-reason-icon"><i class="<?=e($whyIcon ?: $whyIconFallback)?>" aria-hidden="true"></i></div>
+          <h3><?=e($whyTitle ?: $aboutWhyTitleFallback)?></h3>
+          <p><?=e($whyText ?: $aboutWhyTextFallback)?></p>
+        </article>
         <?php endfor; ?>
       </div>
     </div>
   </section>
+  <?php endif; ?>
 
-  <section class="wrap about-values">
-    <div>
-      <p class="eyebrow"><?=e($aboutText('values_kicker', 'OUR VALUES'))?></p>
-      <h2 class="about-section-title"><?=e($aboutText('values_title', 'Nature, People, and Meaningful Travel'))?></h2>
-      <?php if ($aboutText('values_text') !== ''): ?><p style="margin-top:16px"><?=nl2br(e($aboutText('values_text')))?></p><?php endif; ?>
-      <?php if ($valuesImage !== ''): ?><img class="values-photo" src="<?=e($valuesImage)?>" alt="<?=e($aboutText('values_alt', 'Our values'))?>" loading="lazy"><?php endif; ?>
-    </div>
-    <div class="about-card-grid">
-      <?php for ($i=1; $i<=4; $i++):
-        $iconFallback = ['fa-solid fa-leaf','fa-solid fa-handshake','fa-solid fa-heart','fa-solid fa-star'][$i-1];
-        $icon = $aboutIcon("value_{$i}_icon", $iconFallback);
-      ?>
-        <article class="about-card">
-          <div class="card-icon"><i class="<?=e($icon)?>" aria-hidden="true"></i></div>
-          <h3><?=e($aboutText("value_{$i}_title", ['Sustainability','Community Support','Authentic Experiences','Excellence'][$i-1]))?></h3>
-          <p><?=e($aboutText("value_{$i}_text"))?></p>
-        </article>
-      <?php endfor; ?>
+  <section class="about-section about-values-section">
+    <div class="wrap about-values">
+      <div class="about-values-visual">
+        <?php if ($valuesImage !== ''): ?><img class="values-photo" src="<?=e($valuesImage)?>" alt="<?=e($aboutText('values_alt', 'Our values'))?>" loading="lazy"><?php endif; ?>
+      </div>
+      <div class="about-values-copy">
+        <p class="eyebrow"><?=e($aboutText('values_kicker', 'OUR VALUES'))?></p>
+        <h2 class="about-section-title"><?=e($aboutText('values_title', 'Nature, People, and Meaningful Travel'))?></h2>
+        <?php if ($aboutText('values_text') !== ''): ?><p class="values-intro"><?=nl2br(e($aboutText('values_text')))?></p><?php endif; ?>
+        <ul class="about-values-list">
+          <?php for ($i=1; $i<=4; $i++):
+            $iconFallback = ['fa-solid fa-leaf','fa-solid fa-handshake','fa-solid fa-heart','fa-solid fa-star'][$i-1];
+            $icon = $aboutIcon("value_{$i}_icon", $iconFallback);
+            $valueTitle = $aboutText("value_{$i}_title", ['Sustainability','Community Support','Authentic Experiences','Excellence'][$i-1]);
+            $valueText = $aboutText("value_{$i}_text");
+          ?>
+          <li class="about-value-item">
+            <span class="value-icon"><i class="<?=e($icon)?>" aria-hidden="true"></i></span>
+            <span class="value-copy"><strong><?=e($valueTitle)?></strong><?php if ($valueText !== ''): ?><span><?=e($valueText)?></span><?php endif; ?></span>
+            <span class="value-number"><?=sprintf('%02d', $i)?></span>
+          </li>
+          <?php endfor; ?>
+        </ul>
+      </div>
     </div>
   </section>
 
