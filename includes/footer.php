@@ -265,7 +265,7 @@ $bgStyle=$footerBg ? ' style="--footer-bg-image:url(\''.e(asset_url($footerBg)).
 </script>
 <?php endif; ?>
 </footer>
-<?php if($wa): ?><a class="wa-float" target="_blank" rel="noopener" aria-label="<?=e($waButtonText)?>" href="<?=e(whatsapp_url($wa,$waMessage))?>"><span class="wa-float-icon"><?=site_icon_html('footer.whatsapp','fa-brands fa-whatsapp')?></span><span class="wa-float-label"><?=e($waButtonText)?></span></a><?php endif; ?>
+<?php if($wa && empty($disableFloatingWhatsApp)): ?><a class="wa-float" target="_blank" rel="noopener" aria-label="<?=e($waButtonText)?>" href="<?=e(whatsapp_url($wa,$waMessage))?>"><span class="wa-float-icon"><?=site_icon_html('footer.whatsapp','fa-brands fa-whatsapp')?></span><span class="wa-float-label"><?=e($waButtonText)?></span></a><?php endif; ?>
 </body></html>
 
 <?php if (function_exists('brand_output_buffer') && ob_get_level() > 0) { @ob_end_flush(); } ?>
