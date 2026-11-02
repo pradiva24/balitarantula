@@ -48,7 +48,7 @@ function confirmation_proof_upload(string $field): string {
 
 $statement = $db->prepare(
     "SELECT b.*, p.name AS package_name, p.slug AS package_slug,
-            p.short_description, p.cover_image, a.name AS pickup_area
+            p.short_description, p.cover_image, p.booking_mode, a.name AS pickup_area
      FROM bookings b
      JOIN packages p ON p.id = b.package_id
      LEFT JOIN pickup_areas a ON a.id = b.pickup_area_id
