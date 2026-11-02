@@ -76,17 +76,17 @@ if (isset($_GET['print']) && $_GET['print'] === '1') {
         @page{size:A4 portrait;margin:0}
         *{box-sizing:border-box}
         html,body{margin:0;padding:0;background:#111713;color:#171a18;font-family:Inter,Arial,sans-serif;-webkit-print-color-adjust:exact;print-color-adjust:exact}
-        .ticket-page{width:210mm;min-height:297mm;height:auto;margin:0 auto;padding:10mm;background:#111713;position:relative;overflow:visible}
+        .ticket-page{width:210mm;min-height:297mm;height:auto;margin:0 auto;padding:7mm;background:#111713;position:relative;overflow:visible}
         .ticket-page:before{content:"";position:absolute;right:-35mm;top:-40mm;width:100mm;height:80mm;background:#ff6500;opacity:.14;transform:rotate(-20deg);pointer-events:none}
-        .ticket-hero{height:62mm;position:relative;padding:6mm 7mm;color:#fff;background:linear-gradient(90deg,rgba(8,13,10,.96),rgba(8,13,10,.78)),url('<?=e(asset_url($booking['cover_image'] ?? ''))?>') center/cover no-repeat;border-top:3mm solid #ff6500;overflow:hidden}
-        .brand{font:400 21pt/.85 'Barlow Condensed',Impact,sans-serif;letter-spacing:-.5px;text-transform:uppercase;color:#fff}
-        .brand small{display:block;color:#ff6500;font:400 9pt/1 Inter,Arial,sans-serif;letter-spacing:2px;margin-top:3mm}
-        .ticket-hero h1{font:400 37pt/.9 'Barlow Condensed',Impact,sans-serif;letter-spacing:.4px;margin:7mm 0 2mm;color:#fff}
-        .ticket-hero .ribbon{display:inline-block;background:#ff6500;color:#fff;font:400 13pt/1 'Barlow Condensed',Impact,sans-serif;padding:2mm 5mm;transform:skew(-5deg)}
-        .ticket-hero p{font-size:9pt;color:#e6e9e6;margin:4mm 0 0}
-        .ticket-main{min-height:151mm;height:auto;background:#fff;border-radius:5mm;display:grid;grid-template-columns:minmax(0,1fr) 62mm;overflow:visible;position:relative;margin-top:-1mm;align-items:stretch}
-        .ticket-left{min-width:0;padding:7mm 7mm 6mm;overflow:visible}
-        .ticket-right{min-width:0;border-left:1px dashed #454a46;padding:6mm 5mm;text-align:center;display:flex;flex-direction:column;align-items:center;overflow-wrap:anywhere}
+        .ticket-hero{height:43mm;position:relative;padding:4mm 6mm;color:#fff;background:linear-gradient(90deg,rgba(8,13,10,.96),rgba(8,13,10,.78)),url('<?=e(asset_url($booking['cover_image'] ?? ''))?>') center/cover no-repeat;border-top:3mm solid #ff6500;overflow:hidden}
+        .brand{font:400 16pt/.9 'Barlow Condensed',Impact,sans-serif;letter-spacing:-.5px;text-transform:uppercase;color:#fff}
+        .brand small{display:block;color:#ff6500;font:400 7pt/1 Inter,Arial,sans-serif;letter-spacing:2px;margin-top:3mm}
+        .ticket-hero h1{font:400 25pt/.9 'Barlow Condensed',Impact,sans-serif;letter-spacing:.4px;margin:3mm 0 1mm;color:#fff}
+        .ticket-hero .ribbon{display:inline-block;background:#ff6500;color:#fff;font:400 9pt/1 'Barlow Condensed',Impact,sans-serif;padding:2mm 5mm;transform:skew(-5deg)}
+        .ticket-hero p{font-size:7pt;color:#e6e9e6;margin:2mm 0 0}
+        .ticket-main{min-height:140mm;height:auto;background:#fff;border-radius:5mm;display:grid;grid-template-columns:minmax(0,1fr) 62mm;overflow:visible;position:relative;margin-top:-1mm;align-items:stretch}
+        .ticket-left{min-width:0;padding:5mm 6mm 4mm;overflow:visible}
+        .ticket-right{min-width:0;border-left:1px dashed #454a46;padding:4mm 4mm;text-align:center;display:flex;flex-direction:column;align-items:center;overflow-wrap:anywhere}
         .section-label{font:400 13pt 'Barlow Condensed',Impact,sans-serif;color:#171a18;margin:0 0 4mm}
         .section-label i{color:#ff6500;margin-right:2mm}
         .code-line{display:flex;align-items:center;gap:3mm;margin-bottom:5mm;min-width:0;flex-wrap:wrap}
@@ -107,19 +107,19 @@ if (isset($_GET['print']) && $_GET['print'] === '1') {
         .right-brand span{display:block;color:#ff6500;font-size:10pt;margin-top:2mm}
         .right-address{font-size:7.5pt;line-height:1.45;text-align:left;margin-top:6mm;display:flex;gap:2mm;min-width:0;overflow-wrap:anywhere;word-break:break-word}
         .right-address i{color:#ff6500}
-        .notes{background:#fff5ec;border-radius:4mm;margin-top:3mm;padding:5mm 7mm;min-height:35mm;break-inside:avoid;overflow:visible}
+        .notes{background:#fff5ec;border-radius:4mm;margin-top:2mm;padding:3mm 5mm;min-height:30mm;break-inside:avoid;overflow:visible}
         .notes h3{font:400 16pt 'Barlow Condensed',Impact,sans-serif;color:#f06400;margin:0 0 3mm}
         .notes ul{list-style:none;padding:0;margin:0;display:grid;grid-template-columns:1fr 1fr;gap:2mm 5mm}
         .notes li{font-size:8pt;line-height:1.4;overflow-wrap:anywhere;break-inside:avoid}
         .notes li i{color:#ff6500;margin-right:2mm}
-        .ticket-footer{margin-top:3mm;min-height:18mm;background:#090d0b;color:#fff;padding:4mm 7mm;display:flex;justify-content:space-between;align-items:center;gap:4mm;flex-wrap:wrap;break-inside:avoid}
+        .ticket-footer{margin-top:2mm;min-height:15mm;background:#090d0b;color:#fff;padding:4mm 7mm;display:flex;justify-content:space-between;align-items:center;gap:4mm;flex-wrap:wrap;break-inside:avoid}
         .footer-brand{font:400 15pt/.85 'Barlow Condensed',Impact,sans-serif}
         .footer-brand span{display:block;color:#ff6500;font-size:8pt;margin-top:1.5mm}
         .footer-contact{text-align:right;font-size:7.5pt;line-height:1.6;color:#e5e8e5;overflow-wrap:anywhere;word-break:break-word;max-width:100%}
         .print-tools{width:210mm;margin:8px auto;display:flex;justify-content:flex-end;gap:8px}
         .print-tools button{border:0;border-radius:8px;background:#ff6500;color:#fff;font-weight:400;padding:11px 16px;cursor:pointer}
         @media screen{body{padding:18px 0}.ticket-page{box-shadow:0 15px 50px #0008}}
-        @media print{.print-tools{display:none!important}.ticket-page{margin:0;box-shadow:none;overflow:visible}.ticket-main,.ticket-left,.ticket-right,.notes,.ticket-footer{break-inside:avoid;page-break-inside:avoid}}
+        @media print{.print-tools{display:none!important}.ticket-page{margin:0;box-shadow:none;overflow:visible;height:297mm;min-height:297mm}.ticket-main,.ticket-left,.ticket-right,.notes,.ticket-footer{break-inside:avoid;page-break-inside:avoid}}
       </style>
     </head>
     <body>
