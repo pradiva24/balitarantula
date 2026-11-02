@@ -49,72 +49,129 @@ if (isset($_GET['ticket_status']) && $_GET['ticket_status'] === '1') {
     exit;
 }
 
-// Print View Handler
+// Print View Handler — standalone E-ticket layout matching the PDF design.
 if (isset($_GET['print']) && $_GET['print'] === '1') {
     $siteName = site_brand_name();
     $companyPhone = trim((string)setting('site_whatsapp', ''));
     $siteEmail = trim((string)setting('site_email', ''));
     $siteAddress = trim((string)setting('site_address', 'Bali, Indonesia'));
-    $qrUrl = 'https://api.qrserver.com/v1/create-qr-code/?size=300x300&margin=8&format=png&data=' . rawurlencode((string)$booking['booking_code']);
+    $qrUrl = 'https://api.qrserver.com/v1/create-qr-code/?size=420x420&margin=12&format=png&data=' . rawurlencode((string)$booking['booking_code']);
+    $isTandem = (($booking['booking_mode'] ?? 'person') === 'tandem');
+    $participantLabel = $isTandem ? '2 Persons (1 Tandem Unit)' : ((int)$booking['adults'].' Adults'.((int)$booking['children'] > 0 ? ', '.(int)$booking['children'].' Children' : ''));
+    $pickupLocation = trim((string)($booking['hotel_name'] ?? ''));
+    if (!empty($booking['pickup_area_name']) && stripos($pickupLocation, (string)$booking['pickup_area_name']) === false) $pickupLocation = trim($pickupLocation.', '.$booking['pickup_area_name'], ', ');
+    $bookingStatus = strtoupper((string)($booking['booking_status'] ?? 'confirmed'));
+    if ($bookingStatus === 'NEW') $bookingStatus = 'CONFIRMED';
+    $paymentStatus = strtolower((string)($booking['payment_status'] ?? 'pending'));
     ?>
     <!doctype html>
     <html lang="en">
     <head>
-      <meta charset="utf-8">
+      <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
       <title><?=e($booking['booking_code'])?> - E-Ticket</title>
+      <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+      <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800;900&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
       <style>
-        @page { size: A4 portrait; margin: 12mm; }
-        * { box-sizing: border-box; }
-        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif; color: #0f172a; margin: 0; padding: 0; background: #fff; font-size: 13px; line-height: 1.5; }
-        .ticket-box { border: 2px solid #0f172a; border-radius: 12px; padding: 24px; max-width: 720px; margin: 0 auto; }
-        .ticket-header { display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 2px solid #0f172a; padding-bottom: 16px; margin-bottom: 20px; }
-        .ticket-header h1 { margin: 0; font-size: 24px; text-transform: uppercase; letter-spacing: 1px; color: #ff5500; }
-        .ticket-header p { margin: 4px 0 0; color: #64748b; font-size: 12px; }
-        .ticket-code { font-size: 20px; font-weight: 900; background: #f1f5f9; padding: 6px 14px; border-radius: 6px; letter-spacing: 1px; }
-        .ticket-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 20px; margin-bottom: 24px; }
-        .info-row { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px dashed #cbd5e1; }
-        .info-row span { color: #64748b; }
-        .info-row b { text-align: right; }
-        .qr-box { text-align: center; }
-        .qr-box img { width: 140px; height: 140px; border: 1px solid #cbd5e1; border-radius: 8px; padding: 4px; }
-        .qr-box p { font-size: 11px; color: #64748b; margin-top: 6px; }
-        .notice-box { background: #fff7ed; border-left: 4px solid #ff5500; padding: 12px 16px; font-size: 12px; line-height: 1.5; color: #9a3412; margin-top: 20px; }
+        @page{size:A4 portrait;margin:0}
+        *{box-sizing:border-box}
+        html,body{margin:0;padding:0;background:#111713;color:#171a18;font-family:Inter,Arial,sans-serif;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+        .ticket-page{width:210mm;min-height:297mm;margin:0 auto;padding:10mm;background:#111713;position:relative;overflow:hidden}
+        .ticket-page:before{content:"";position:absolute;right:-35mm;top:-40mm;width:100mm;height:80mm;background:#ff6500;opacity:.14;transform:rotate(-20deg);pointer-events:none}
+        .ticket-hero{height:62mm;position:relative;padding:6mm 7mm;color:#fff;background:linear-gradient(90deg,rgba(8,13,10,.96),rgba(8,13,10,.78)),url('<?=e(asset_url($booking['cover_image'] ?? ''))?>') center/cover no-repeat;border-top:3mm solid #ff6500;overflow:hidden}
+        .brand{font:900 21pt/.85 'Barlow Condensed',Impact,sans-serif;letter-spacing:-.5px;text-transform:uppercase;color:#fff}
+        .brand small{display:block;color:#ff6500;font:900 9pt/1 Inter,Arial,sans-serif;letter-spacing:2px;margin-top:3mm}
+        .ticket-hero h1{font:900 37pt/.9 'Barlow Condensed',Impact,sans-serif;letter-spacing:.4px;margin:7mm 0 2mm;color:#fff}
+        .ticket-hero .ribbon{display:inline-block;background:#ff6500;color:#fff;font:800 13pt/1 'Barlow Condensed',Impact,sans-serif;padding:2mm 5mm;transform:skew(-5deg)}
+        .ticket-hero p{font-size:9pt;color:#e6e9e6;margin:4mm 0 0}
+        .ticket-main{height:151mm;background:#fff;border-radius:5mm;display:grid;grid-template-columns:1fr 62mm;overflow:hidden;position:relative;margin-top:-1mm}
+        .ticket-left{padding:7mm 7mm 6mm}
+        .ticket-right{border-left:1px dashed #454a46;padding:6mm 5mm;text-align:center;display:flex;flex-direction:column;align-items:center}
+        .section-label{font:800 13pt 'Barlow Condensed',Impact,sans-serif;color:#171a18;margin:0 0 4mm}
+        .section-label i{color:#ff6500;margin-right:2mm}
+        .code-line{display:flex;align-items:center;gap:3mm;margin-bottom:5mm}
+        .code-value{font:900 21pt/1 'Barlow Condensed',Impact,sans-serif;background:#fff0e4;padding:3mm 4mm;border-radius:3mm;overflow-wrap:anywhere;flex:1}
+        .status{font-size:8pt;font-weight:900;padding:2.5mm 3mm;border-radius:3mm;background:#e0f8e5;color:#15803d;white-space:nowrap}
+        .package-row{display:flex;gap:4mm;padding:4mm 0;border-top:1px solid #e3e6e3;border-bottom:1px solid #e3e6e3;margin-bottom:3mm;align-items:center}
+        .package-row img{width:42mm;height:27mm;object-fit:cover;border-radius:3mm}
+        .package-row h2{font:800 17pt/1 'Barlow Condensed',Impact,sans-serif;margin:0 0 2mm}
+        .package-row p{font-size:8pt;line-height:1.4;color:#5d665f;margin:0}
+        .info-row{display:grid;grid-template-columns:42mm 4mm 1fr;gap:2mm;align-items:start;padding:2.4mm 0;border-bottom:1px solid #e5e8e5;font-size:8.5pt}
+        .info-row b{font-weight:800}
+        .info-row .key{font-weight:800}
+        .ticket-stamp{background:#ff6500;color:#fff;font:900 20pt 'Barlow Condensed',Impact,sans-serif;padding:2mm 0;border-radius:3mm;width:100%;margin-bottom:6mm}
+        .qr{width:43mm;height:43mm;object-fit:contain;margin:0 auto 3mm}
+        .qr-code{font-size:8.5pt;font-weight:900;overflow-wrap:anywhere;margin-bottom:5mm}
+        .right-rule{width:100%;border-top:1px solid #cfd4cf;margin:2mm 0 5mm}
+        .right-brand{font:900 19pt/.85 'Barlow Condensed',Impact,sans-serif;text-transform:uppercase}
+        .right-brand span{display:block;color:#ff6500;font-size:10pt;margin-top:2mm}
+        .right-address{font-size:8pt;line-height:1.45;text-align:left;margin-top:6mm;display:flex;gap:2mm}
+        .right-address i{color:#ff6500}
+        .notes{background:#fff5ec;border-radius:4mm;margin-top:3mm;padding:5mm 7mm;min-height:35mm}
+        .notes h3{font:900 16pt 'Barlow Condensed',Impact,sans-serif;color:#f06400;margin:0 0 3mm}
+        .notes ul{list-style:none;padding:0;margin:0;display:grid;grid-template-columns:1fr 1fr;gap:2mm 5mm}
+        .notes li{font-size:8pt;line-height:1.35}
+        .notes li i{color:#ff6500;margin-right:2mm}
+        .ticket-footer{margin-top:3mm;min-height:18mm;background:#090d0b;color:#fff;padding:4mm 7mm;display:flex;justify-content:space-between;align-items:center}
+        .footer-brand{font:900 15pt/.85 'Barlow Condensed',Impact,sans-serif}
+        .footer-brand span{display:block;color:#ff6500;font-size:8pt;margin-top:1.5mm}
+        .footer-contact{text-align:right;font-size:7.5pt;line-height:1.6;color:#e5e8e5}
+        .print-tools{width:210mm;margin:8px auto;display:flex;justify-content:flex-end;gap:8px}
+        .print-tools button{border:0;border-radius:8px;background:#ff6500;color:#fff;font-weight:800;padding:11px 16px;cursor:pointer}
+        @media screen{body{padding:18px 0}.ticket-page{box-shadow:0 15px 50px #0008}}
+        @media print{.print-tools{display:none!important}.ticket-page{margin:0;box-shadow:none}}
       </style>
     </head>
     <body>
-      <div class="ticket-box">
-        <div class="ticket-header">
-          <div>
-            <h1><?=e($siteName)?></h1>
-            <p>Official Adventure Reservation Voucher</p>
+      <div class="print-tools"><button type="button" onclick="window.print()"><i class="fa-solid fa-print"></i> Print / Save as PDF</button></div>
+      <main class="ticket-page">
+        <header class="ticket-hero">
+          <div class="brand">Bali Tarantula<small>Adventure</small></div>
+          <h1>E-TICKET</h1><span class="ribbon">BOOKING CONFIRMATION</span>
+          <p>Please present this e-ticket at the registration desk upon arrival.</p>
+        </header>
+        <section class="ticket-main">
+          <div class="ticket-left">
+            <h2 class="section-label"><i class="fa-regular fa-calendar-check"></i> Booking Code</h2>
+            <div class="code-line"><div class="code-value"><?=e($booking['booking_code'])?></div><span class="status"><i class="fa-solid fa-circle-check"></i> <?=e($bookingStatus)?></span></div>
+            <div class="package-row">
+              <?php if(!empty($booking['cover_image'])): ?><img src="<?=e(asset_url($booking['cover_image']))?>" alt="<?=e($booking['package_name'])?>"><?php endif; ?>
+              <div><h2><?=e($booking['package_name'])?></h2><p><?=e($booking['short_description'] ?: 'Explore Bali’s scenic off-road trails.')?></p></div>
+            </div>
+            <div class="info-row"><span class="key">Activity Date</span><span>:</span><b><?=date('D, d M Y',strtotime($booking['booking_date']))?></b></div>
+            <div class="info-row"><span class="key">Activity Time</span><span>:</span><b><?=e(substr((string)($booking['activity_time'] ?: '09:00'),0,5))?></b></div>
+            <div class="info-row"><span class="key">Participants</span><span>:</span><b><?=e($participantLabel)?></b></div>
+            <div class="info-row"><span class="key">Pickup Service</span><span>:</span><b><?=$booking['pickup_required']?'Yes':'No'?></b></div>
+            <div class="info-row"><span class="key">Pickup Location</span><span>:</span><b><?=$booking['pickup_required']?e($pickupLocation ?: 'Hotel / Villa'):'Self Arrival'?></b></div>
+            <div class="info-row"><span class="key">Pickup Time</span><span>:</span><b><?=$booking['pickup_required']?e(substr((string)($booking['pickup_time'] ?: '—'),0,5)):'-'?></b></div>
+            <div class="info-row"><span class="key">Payment Status</span><span>:</span><b><?=e(strtoupper((string)$booking['payment_status']))?></b></div>
+            <div class="info-row"><span class="key">Total Payment</span><span>:</span><b style="color:#f06400;font-size:11pt"><?=e(rupiah($booking['total']))?></b></div>
           </div>
-          <div class="ticket-code"><?=e($booking['booking_code'])?></div>
-        </div>
-
-        <div class="ticket-grid">
-          <div>
-            <div class="info-row"><span>Rider Name</span><b><?=e($booking['customer_name'])?></b></div>
-            <div class="info-row"><span>Adventure Track</span><b><?=e($booking['package_name'])?></b></div>
-            <div class="info-row"><span>Date</span><b><?=date('D, M d, Y', strtotime($booking['booking_date']))?></b></div>
-            <div class="info-row"><span>Time Slot</span><b><?=e(substr((string)($booking['activity_time'] ?: '09:00'), 0, 5))?></b></div>
-            <div class="info-row"><span>Participants</span><b><?=($booking['booking_mode']??'person')==='tandem'?'1 Tandem ATV Unit · 2 Participants':((int)$booking['adults'].' Adults'.((int)$booking['children'] > 0 ? ', ' . (int)$booking['children'] . ' Children' : ''))?></b></div>
-            <div class="info-row"><span>Transport</span><b><?=$booking['pickup_required'] ? e($booking['pickup_area_name'] . ' — ' . $booking['hotel_name']) : 'Self Arrival'?></b></div>
-            <div class="info-row"><span>Payment Status</span><b><?=strtoupper((string)$booking['payment_status'])?></b></div>
-            <div class="info-row"><span>Total Paid/Due</span><b><?=rupiah($booking['total'])?></b></div>
-          </div>
-          <div class="qr-box">
-            <img src="<?=e($qrUrl)?>" alt="QR Code">
-            <p>Show voucher upon arrival</p>
-          </div>
-        </div>
-
-        <div class="notice-box">
-          Please arrive 15 minutes prior to your scheduled time. Show this digital or printed e-ticket to the registration reception. Safety briefing and gear fitment take place before entering the track.
-        </div>
-      </div>
-      <script>window.addEventListener('load', () => setTimeout(() => window.print(), 250));</script>
-    </body>
-    </html>
+          <aside class="ticket-right">
+            <div class="ticket-stamp">E-TICKET</div>
+            <img class="qr" src="<?=e($qrUrl)?>" alt="Booking QR Code">
+            <div class="qr-code"><?=e($booking['booking_code'])?></div>
+            <div class="right-rule"></div>
+            <div class="right-brand">Bali Tarantula<span>Adventure</span></div>
+            <div class="right-address"><i class="fa-solid fa-location-dot"></i><span><?=e($siteAddress)?></span></div>
+          </aside>
+        </section>
+        <section class="notes">
+          <h3><i class="fa-solid fa-circle-info"></i> Important Notes</h3>
+          <ul>
+            <li><i class="fa-solid fa-check"></i>Bring this e-ticket (digital or printed) to the registration counter.</li>
+            <li><i class="fa-solid fa-check"></i>Arrive at least 15 minutes before the activity time.</li>
+            <li><i class="fa-solid fa-check"></i>Wear comfortable clothes and closed shoes.</li>
+            <li><i class="fa-solid fa-check"></i>Follow the safety instructions from your guide.</li>
+          </ul>
+        </section>
+        <footer class="ticket-footer">
+          <div class="footer-brand">BALI TARANTULA<span>ADVENTURE</span></div>
+          <div class="footer-contact"><?=e($companyPhone ?: $siteEmail)?><br><?=e($siteEmail)?><br>www.balitarantula.com</div>
+        </footer>
+      </main>
+      <script>window.addEventListener('load',()=>{const images=[...document.images];Promise.all(images.map(img=>img.complete?Promise.resolve():new Promise(resolve=>{img.onload=img.onerror=resolve}))).then(()=>setTimeout(()=>window.print(),350));});</script>
+    </body></html>
     <?php
     exit;
 }
