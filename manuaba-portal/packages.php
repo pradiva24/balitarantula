@@ -276,6 +276,84 @@ try {
       header('Location: packages.php');exit;
     }
 
+    if($act==='duplicate'){
+      $sourceId=(int)($_POST['id']??0);
+      if($sourceId<1) throw new RuntimeException('Invalid package selected for duplication.');
+
+      $p->beginTransaction();
+      try {
+        $sourceStmt=$p->prepare('SELECT * FROM packages WHERE id=? LIMIT 1 FOR UPDATE');
+        $sourceStmt->execute([$sourceId]);
+        $source=$sourceStmt->fetch(PDO::FETCH_ASSOC);
+        if(!$source) throw new RuntimeException('Package to duplicate was not found.');
+
+        // Build the INSERT from the actual table columns so optional columns
+        // added by newer migrations are copied without breaking older installs.
+        $packageColumns=$p->query("SHOW COLUMNS FROM packages")->fetchAll(PDO::FETCH_ASSOC);
+        $insertColumns=[];$selectParts=[];
+        $copyName='Copy of '.trim((string)$source['name']);
+        $baseSlug=admin_slug('copy-of-'.(string)$source['slug']);
+        if($baseSlug==='') $baseSlug=admin_slug('copy-of-package-'.$sourceId);
+        $newSlug=$baseSlug;$suffix=2;
+        $slugCheck=$p->prepare('SELECT id FROM packages WHERE slug=? LIMIT 1');
+        do { $slugCheck->execute([$newSlug]); $slugExists=(bool)$slugCheck->fetchColumn(); if($slugExists)$newSlug=substr($baseSlug,0,175).'-'.$suffix++; } while($slugExists);
+
+        foreach($packageColumns as $column){
+          $columnName=(string)$column['Field'];
+          if($columnName==='id') continue;
+          if($columnName==='name'){ $insertColumns[]='`name`'; $selectParts[]='?'; continue; }
+          if($columnName==='slug'){ $insertColumns[]='`slug`'; $selectParts[]='?'; continue; }
+          if($columnName==='status'){ $insertColumns[]='`status`'; $selectParts[]='0'; continue; }
+          if($columnName==='featured' || $columnName==='best_seller'){ $insertColumns[]='`'.$columnName.'`'; $selectParts[]='0'; continue; }
+          if($columnName==='homepage_order'){ $insertColumns[]='`homepage_order`'; $selectParts[]='(SELECT COALESCE(MAX(homepage_order),0)+1 FROM packages)'; continue; }
+          if($columnName==='created_at' || $columnName==='updated_at'){ $insertColumns[]='`'.$columnName.'`'; $selectParts[]='NOW()'; continue; }
+          $insertColumns[]='`'.str_replace('`','', $columnName).'`';
+          $selectParts[]='src.`'.str_replace('`','', $columnName).'`';
+        }
+        if(!$insertColumns || !in_array('`name`',$insertColumns,true) || !in_array('`slug`',$insertColumns,true)){
+          throw new RuntimeException('Package table is missing required name or slug columns.');
+        }
+        $sql='INSERT INTO packages ('.implode(',',$insertColumns).') SELECT '.implode(',',$selectParts).' FROM packages src WHERE src.id=?';
+        $params=[$copyName,$newSlug,$sourceId];
+        $p->prepare($sql)->execute($params);
+        $newId=(int)$p->lastInsertId();
+        if($newId<1) throw new RuntimeException('Could not create the duplicate package.');
+
+        // Copy all package-owned content. IDs and timestamps are regenerated;
+        // package_id is replaced with the new package ID.
+        $childTables=[
+          'package_images','package_activity_times','package_highlights',
+          'package_includes','package_excludes','package_faqs',
+          'package_hero_features','package_benefits',
+          'package_price_settings','package_price_bullets',
+          'package_action_buttons'
+        ];
+        foreach($childTables as $table){
+          $tableExists=$p->prepare("SELECT COUNT(*) FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA=DATABASE() AND TABLE_NAME=?");
+          $tableExists->execute([$table]);
+          if(!(int)$tableExists->fetchColumn()) continue;
+          $columns=$p->query("SHOW COLUMNS FROM `".$table."`")->fetchAll(PDO::FETCH_ASSOC);
+          $copyCols=[];$selectCols=[];
+          foreach($columns as $column){
+            $columnName=(string)$column['Field'];
+            if($columnName==='id' || $columnName==='created_at' || $columnName==='updated_at') continue;
+            $copyCols[]='`'.$columnName.'`';
+            $selectCols[]=$columnName==='package_id'?'?':'src.`'.$columnName.'`';
+          }
+          if(!in_array('`package_id`',$copyCols,true)) continue;
+          $childSql='INSERT INTO `'.$table.'` ('.implode(',',$copyCols).') SELECT '.implode(',',$selectCols).' FROM `'.$table.'` src WHERE src.package_id=?';
+          $p->prepare($childSql)->execute([$newId,$sourceId]);
+        }
+
+        $p->commit();
+        admin_flash('','Package duplicated. Review the copy, update its name and details, then publish it when ready.');
+        header('Location: packages.php?action=edit&id='.$newId);exit;
+      } catch(Throwable $duplicateError) {
+        if($p->inTransaction()) $p->rollBack();
+        throw $duplicateError;
+      }
+    }
+
     if($act==='save'){
       $id=(int)$_POST['id'];
       $name=trim($_POST['name']);
@@ -1011,7 +1089,7 @@ $pkgGood0=count(array_filter($pkgChecks0,fn($v)=>$v[0]==='good')); $pkgBad0=coun
   foreach($rows as $i=>$r):?>
 <tr class="homepage-order-row" draggable="true" data-package-id="<?=$r['id']?>" style="cursor:grab">
 <td><span class="homepage-drag-handle" title="Drag to reorder" style="display:inline-flex;align-items:center;justify-content:center;width:34px;height:30px;border:1px solid #dce5df;border-radius:6px;background:#fff;color:#60736a;font-size:17px">☷</span><button type="button" class="homepage-move-btn homepage-move-up" title="Move up" style="margin-left:4px;border:0;background:transparent;cursor:pointer;font-size:16px">↑</button><button type="button" class="homepage-move-btn homepage-move-down" title="Move down" style="border:0;background:transparent;cursor:pointer;font-size:16px">↓</button><span class="homepage-order-number" style="margin-left:8px;font-weight:700"><?=($i+1)?></span><input type="hidden" form="homepagePackageOrderForm" name="package_order[]" value="<?=$r['id']?>"></td>
-<td><strong><?=admin_e($r['name'])?></strong></td><td><?=admin_e($r['category'])?></td><td><?=rupiah($r['price_adult'])?></td><td><?=$r['best_seller']??0?'<span class="badge" style="background:#fff7e8;color:#e58b00;border:1px solid #f59e0b">★ Best Seller</span>':'<span style="color:#8a9891">—</span>'?></td><td><?=$r['status']?'<span class="badge green">Active</span>':'<span class="badge redtxt">Hidden</span>'?></td><td><a class="btn gray" href="?action=edit&id=<?=$r['id']?>">Edit</a> <a class="btn gray" href="?action=images&id=<?=$r['id']?>">Gallery</a> <form class="inline" method="post"><input type="hidden" name="csrf" value="<?=admin_csrf()?>"><input type="hidden" name="form_action" value="delete"><input type="hidden" name="id" value="<?=$r['id']?>"><button class="btn red" data-confirm="Delete this package and its images?">Delete</button></form></td></tr>
+<td><strong><?=admin_e($r['name'])?></strong></td><td><?=admin_e($r['category'])?></td><td><?=rupiah($r['price_adult'])?></td><td><?=$r['best_seller']??0?'<span class="badge" style="background:#fff7e8;color:#e58b00;border:1px solid #f59e0b">★ Best Seller</span>':'<span style="color:#8a9891">—</span>'?></td><td><?=$r['status']?'<span class="badge green">Active</span>':'<span class="badge redtxt">Hidden</span>'?></td><td><a class="btn gray" href="?action=edit&id=<?=$r['id']?>">Edit</a> <a class="btn gray" href="?action=images&id=<?=$r['id']?>">Gallery</a> <form class="inline" method="post" style="display:inline"><input type="hidden" name="csrf" value="<?=admin_csrf()?>"><input type="hidden" name="form_action" value="duplicate"><input type="hidden" name="id" value="<?=$r['id']?>"><button class="btn gray" data-confirm="Duplicate this package with its images and content?">Duplicate</button></form> <form class="inline" method="post"><input type="hidden" name="csrf" value="<?=admin_csrf()?>"><input type="hidden" name="form_action" value="delete"><input type="hidden" name="id" value="<?=$r['id']?>"><button class="btn red" data-confirm="Delete this package and its images?">Delete</button></form></td></tr>
 <?php endforeach;?></table>
 </div>
 <style>
