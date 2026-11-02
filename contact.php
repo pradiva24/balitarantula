@@ -13,6 +13,25 @@ $title = 'Contact Us | ' . $siteName;
 $description = 'Contact ' . $siteName . ' in Bali. Plan your thrilling ATV and outdoor adventure with our expedition crew.';
 $canonical = rtrim(BASE_URL, '/') . '/contact';
 
+/* Load Contact Us page content managed from Manuaba Portal. */
+$contactPageData = [];
+try {
+    $contactStmt = db()->query("SELECT data FROM contact_page WHERE id=1 LIMIT 1");
+    $contactRow = $contactStmt ? $contactStmt->fetch(PDO::FETCH_ASSOC) : false;
+    if ($contactRow && !empty($contactRow['data'])) {
+        $decodedContact = json_decode((string)$contactRow['data'], true);
+        if (is_array($decodedContact)) $contactPageData = $decodedContact;
+    }
+} catch (Throwable $e) {
+    // Keep the public page available when the CMS table is not installed yet.
+}
+
+$contactHeroKicker = trim((string)($contactPageData['hero_kicker'] ?? 'GET IN TOUCH'));
+$contactHeroTitle = trim((string)($contactPageData['hero_title'] ?? "LET'S PLAN YOUR"));
+$contactHeroAccent = trim((string)($contactPageData['hero_accent'] ?? 'RIDE.'));
+$contactHeroText = trim((string)($contactPageData['hero_text'] ?? 'Questions about our tracks, schedules, or package details? Send us a direct message or connect with our crew.'));
+$contactHeroImage = trim((string)($contactPageData['hero_image'] ?? ''));
+
 $phone = trim((string)setting('contact_phone', setting('site_phone', '+62 81 339 13939')));
 $whatsapp = trim((string)setting('contact_whatsapp', setting('site_whatsapp', '+62 81 339 13939')));
 $email = trim((string)setting('contact_email', setting('site_email', 'info@balitarantula.com')));
@@ -423,14 +442,21 @@ body {
   }
 }
 </style>
+<?php if ($contactHeroImage !== ''): ?>
+<style id="contact-hero-cms-image">
+.page-banner::before {
+  background-image: url("<?=e(asset_url($contactHeroImage))?>");
+}
+</style>
+<?php endif; ?>
 
 <div class="bta-contact">
   <!-- Page Banner -->
   <section class="page-banner">
     <div class="wrap page-banner-content">
-      <p class="eyebrow"><span class="eyebrow-line"></span>GET IN TOUCH</p>
-      <h1>LET'S PLAN YOUR <span>RIDE.</span></h1>
-      <p>Questions about our tracks, schedules, or package details? Send us a direct message or connect with our crew.</p>
+      <p class="eyebrow"><span class="eyebrow-line"></span><?=e($contactHeroKicker)?></p>
+      <h1><?=e($contactHeroTitle)?> <span><?=e($contactHeroAccent)?></span></h1>
+      <p><?=e($contactHeroText)?></p>
       <div class="breadcrumbs">
         <a href="<?=BASE_URL?>/">HOME</a> / GET IN TOUCH
       </div>
