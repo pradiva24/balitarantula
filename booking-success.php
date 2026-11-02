@@ -76,7 +76,7 @@ if (isset($_GET['print']) && $_GET['print'] === '1') {
         @page{size:A4 portrait;margin:0}
         *{box-sizing:border-box}
         html,body{margin:0;padding:0;background:#111713;color:#171a18;font-family:Inter,Arial,sans-serif;-webkit-print-color-adjust:exact;print-color-adjust:exact}
-        .ticket-page{width:210mm;min-height:297mm;margin:0 auto;padding:10mm;background:#111713;position:relative;overflow:hidden}
+        .ticket-page{width:210mm;min-height:297mm;height:auto;margin:0 auto;padding:10mm;background:#111713;position:relative;overflow:visible}
         .ticket-page:before{content:"";position:absolute;right:-35mm;top:-40mm;width:100mm;height:80mm;background:#ff6500;opacity:.14;transform:rotate(-20deg);pointer-events:none}
         .ticket-hero{height:62mm;position:relative;padding:6mm 7mm;color:#fff;background:linear-gradient(90deg,rgba(8,13,10,.96),rgba(8,13,10,.78)),url('<?=e(asset_url($booking['cover_image'] ?? ''))?>') center/cover no-repeat;border-top:3mm solid #ff6500;overflow:hidden}
         .brand{font:400 21pt/.85 'Barlow Condensed',Impact,sans-serif;letter-spacing:-.5px;text-transform:uppercase;color:#fff}
@@ -84,19 +84,19 @@ if (isset($_GET['print']) && $_GET['print'] === '1') {
         .ticket-hero h1{font:400 37pt/.9 'Barlow Condensed',Impact,sans-serif;letter-spacing:.4px;margin:7mm 0 2mm;color:#fff}
         .ticket-hero .ribbon{display:inline-block;background:#ff6500;color:#fff;font:400 13pt/1 'Barlow Condensed',Impact,sans-serif;padding:2mm 5mm;transform:skew(-5deg)}
         .ticket-hero p{font-size:9pt;color:#e6e9e6;margin:4mm 0 0}
-        .ticket-main{height:151mm;background:#fff;border-radius:5mm;display:grid;grid-template-columns:1fr 62mm;overflow:hidden;position:relative;margin-top:-1mm}
-        .ticket-left{padding:7mm 7mm 6mm}
-        .ticket-right{border-left:1px dashed #454a46;padding:6mm 5mm;text-align:center;display:flex;flex-direction:column;align-items:center}
+        .ticket-main{min-height:151mm;height:auto;background:#fff;border-radius:5mm;display:grid;grid-template-columns:minmax(0,1fr) 62mm;overflow:visible;position:relative;margin-top:-1mm;align-items:stretch}
+        .ticket-left{min-width:0;padding:7mm 7mm 6mm;overflow:visible}
+        .ticket-right{min-width:0;border-left:1px dashed #454a46;padding:6mm 5mm;text-align:center;display:flex;flex-direction:column;align-items:center;overflow-wrap:anywhere}
         .section-label{font:400 13pt 'Barlow Condensed',Impact,sans-serif;color:#171a18;margin:0 0 4mm}
         .section-label i{color:#ff6500;margin-right:2mm}
-        .code-line{display:flex;align-items:center;gap:3mm;margin-bottom:5mm}
+        .code-line{display:flex;align-items:center;gap:3mm;margin-bottom:5mm;min-width:0;flex-wrap:wrap}
         .code-value{font:400 21pt/1 'Barlow Condensed',Impact,sans-serif;background:#fff0e4;padding:3mm 4mm;border-radius:3mm;overflow-wrap:anywhere;flex:1}
         .status{font-size:8pt;font-weight:400;padding:2.5mm 3mm;border-radius:3mm;background:#e0f8e5;color:#15803d;white-space:nowrap}
-        .package-row{display:flex;gap:4mm;padding:4mm 0;border-top:1px solid #e3e6e3;border-bottom:1px solid #e3e6e3;margin-bottom:3mm;align-items:center}
+        .package-row{display:flex;gap:4mm;padding:4mm 0;border-top:1px solid #e3e6e3;border-bottom:1px solid #e3e6e3;margin-bottom:3mm;align-items:center;min-width:0;flex-wrap:wrap}
         .package-row img{width:42mm;height:27mm;object-fit:cover;border-radius:3mm}
         .package-row h2{font:400 17pt/1 'Barlow Condensed',Impact,sans-serif;margin:0 0 2mm}
-        .package-row p{font-size:8pt;line-height:1.4;color:#5d665f;margin:0}
-        .info-row{display:grid;grid-template-columns:42mm 4mm 1fr;gap:2mm;align-items:start;padding:2.4mm 0;border-bottom:1px solid #e5e8e5;font-size:8.5pt}
+        .package-row p{font-size:8pt;line-height:1.45;color:#5d665f;margin:0;overflow-wrap:anywhere;word-break:break-word}
+        .info-row{display:grid;grid-template-columns:minmax(27mm,34mm) 3mm minmax(0,1fr);gap:1.5mm;align-items:start;padding:2.2mm 0;border-bottom:1px solid #e5e8e5;font-size:8pt;min-width:0;overflow:visible}
         .info-row b{font-weight:400}
         .info-row .key{font-weight:400}
         .ticket-stamp{background:#ff6500;color:#fff;font:400 20pt 'Barlow Condensed',Impact,sans-serif;padding:2mm 0;border-radius:3mm;width:100%;margin-bottom:6mm}
@@ -105,21 +105,21 @@ if (isset($_GET['print']) && $_GET['print'] === '1') {
         .right-rule{width:100%;border-top:1px solid #cfd4cf;margin:2mm 0 5mm}
         .right-brand{font:400 19pt/.85 'Barlow Condensed',Impact,sans-serif;text-transform:uppercase}
         .right-brand span{display:block;color:#ff6500;font-size:10pt;margin-top:2mm}
-        .right-address{font-size:8pt;line-height:1.45;text-align:left;margin-top:6mm;display:flex;gap:2mm}
+        .right-address{font-size:7.5pt;line-height:1.45;text-align:left;margin-top:6mm;display:flex;gap:2mm;min-width:0;overflow-wrap:anywhere;word-break:break-word}
         .right-address i{color:#ff6500}
-        .notes{background:#fff5ec;border-radius:4mm;margin-top:3mm;padding:5mm 7mm;min-height:35mm}
+        .notes{background:#fff5ec;border-radius:4mm;margin-top:3mm;padding:5mm 7mm;min-height:35mm;break-inside:avoid;overflow:visible}
         .notes h3{font:400 16pt 'Barlow Condensed',Impact,sans-serif;color:#f06400;margin:0 0 3mm}
         .notes ul{list-style:none;padding:0;margin:0;display:grid;grid-template-columns:1fr 1fr;gap:2mm 5mm}
-        .notes li{font-size:8pt;line-height:1.35}
+        .notes li{font-size:8pt;line-height:1.4;overflow-wrap:anywhere;break-inside:avoid}
         .notes li i{color:#ff6500;margin-right:2mm}
-        .ticket-footer{margin-top:3mm;min-height:18mm;background:#090d0b;color:#fff;padding:4mm 7mm;display:flex;justify-content:space-between;align-items:center}
+        .ticket-footer{margin-top:3mm;min-height:18mm;background:#090d0b;color:#fff;padding:4mm 7mm;display:flex;justify-content:space-between;align-items:center;gap:4mm;flex-wrap:wrap;break-inside:avoid}
         .footer-brand{font:400 15pt/.85 'Barlow Condensed',Impact,sans-serif}
         .footer-brand span{display:block;color:#ff6500;font-size:8pt;margin-top:1.5mm}
-        .footer-contact{text-align:right;font-size:7.5pt;line-height:1.6;color:#e5e8e5}
+        .footer-contact{text-align:right;font-size:7.5pt;line-height:1.6;color:#e5e8e5;overflow-wrap:anywhere;word-break:break-word;max-width:100%}
         .print-tools{width:210mm;margin:8px auto;display:flex;justify-content:flex-end;gap:8px}
         .print-tools button{border:0;border-radius:8px;background:#ff6500;color:#fff;font-weight:400;padding:11px 16px;cursor:pointer}
         @media screen{body{padding:18px 0}.ticket-page{box-shadow:0 15px 50px #0008}}
-        @media print{.print-tools{display:none!important}.ticket-page{margin:0;box-shadow:none}}
+        @media print{.print-tools{display:none!important}.ticket-page{margin:0;box-shadow:none;overflow:visible}.ticket-main,.ticket-left,.ticket-right,.notes,.ticket-footer{break-inside:avoid;page-break-inside:avoid}}
       </style>
     </head>
     <body>
@@ -219,7 +219,7 @@ require __DIR__ . '/includes/header.php';
 .bta-success-page .package-preview h3{font-family:'Barlow Condensed',Impact,sans-serif;font-size:25px;line-height:1.05;font-weight:800;color:#171a18;margin:0 0 6px}
 .bta-success-page .package-preview p{font-size:13px;line-height:1.55;color:var(--success-muted);margin:0}
 .bta-success-page .detail-list{margin:0}
-.bta-success-page .detail-row{display:grid;grid-template-columns:minmax(135px,.8fr) 16px minmax(0,1.2fr);gap:9px;align-items:start;padding:12px 0;border-bottom:1px solid #edf0ed;font-size:13px}
+.bta-success-page .detail-row{display:grid;grid-template-columns:minmax(0,36%) 10px minmax(0,1fr);gap:7px;align-items:start;padding:12px 0;border-bottom:1px solid #edf0ed;font-size:13px;min-width:0}.bta-success-page .detail-row dt,.bta-success-page .detail-row dd{min-width:0;overflow-wrap:anywhere;word-break:break-word}.bta-success-page .package-preview>div{min-width:0;flex:1}.bta-success-page .package-preview h3,.bta-success-page .package-preview p,.bta-success-page .side-info span{overflow-wrap:anywhere;word-break:break-word}.bta-success-page .success-card{min-width:0;overflow:visible}
 .bta-success-page .detail-row:last-child{border-bottom:0}
 .bta-success-page .detail-row dt{font-weight:700;color:#555f59}
 .bta-success-page .detail-row .colon{color:#a1aaa4}
@@ -245,7 +245,7 @@ require __DIR__ . '/includes/header.php';
 .bta-success-page .success-action.whatsapp i{color:#16a34a}
 .bta-success-page .success-action:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(20,30,24,.1)}
 @media(max-width:850px){.bta-success-page .success-grid{grid-template-columns:1fr}.bta-success-page .side-stack{grid-template-columns:1fr 1fr}}
-@media(max-width:600px){.bta-success-page{padding-bottom:42px}.bta-success-page .success-hero{min-height:250px;border-radius:0}.bta-success-page .hero-inner{padding:34px 0}.bta-success-page .success-wrap{width:calc(100% - 26px);padding-top:18px}.bta-success-page .success-card{padding:18px;border-radius:14px}.bta-success-page .side-stack{grid-template-columns:1fr}.bta-success-page .booking-code-panel{align-items:flex-start;flex-direction:column}.bta-success-page .package-preview img{width:112px;height:90px}.bta-success-page .package-preview h3{font-size:22px}.bta-success-page .detail-row{grid-template-columns:112px 10px minmax(0,1fr);gap:5px;font-size:12px}.bta-success-page .success-actions{grid-template-columns:1fr}.bta-success-page .success-action{min-height:52px}.bta-success-page .card-heading{font-size:23px}}
+@media(max-width:600px){.bta-success-page{padding-bottom:42px}.bta-success-page .success-hero{min-height:250px;border-radius:0}.bta-success-page .hero-inner{padding:34px 0}.bta-success-page .success-wrap{width:calc(100% - 26px);padding-top:18px}.bta-success-page .success-card{padding:18px;border-radius:14px}.bta-success-page .side-stack{grid-template-columns:1fr}.bta-success-page .booking-code-panel{align-items:flex-start;flex-direction:column}.bta-success-page .package-preview img{width:112px;height:90px}.bta-success-page .package-preview h3{font-size:22px}.bta-success-page .detail-row{grid-template-columns:minmax(0,34%) 8px minmax(0,1fr);gap:5px;font-size:12px}.bta-success-page .detail-row dt{font-size:11px}.bta-success-page .detail-row dd{font-size:12px}.bta-success-page .success-actions{grid-template-columns:1fr}.bta-success-page .success-action{min-height:52px}.bta-success-page .card-heading{font-size:23px}}
 </style>
 
 <div class="bta-success-page">
@@ -287,6 +287,8 @@ require __DIR__ . '/includes/header.php';
           <div class="detail-row"><dt>Activity Date</dt><span class="colon">:</span><dd><?=date('D, d M Y',strtotime($booking['booking_date']))?></dd></div>
           <div class="detail-row"><dt>Activity Time</dt><span class="colon">:</span><dd><?=e(substr((string)($booking['activity_time'] ?: '09:00'),0,5))?></dd></div>
           <div class="detail-row"><dt>Participants</dt><span class="colon">:</span><dd><?=($booking['booking_mode']??'person')==='tandem'?'2 Persons (1 Tandem Unit)':((int)$booking['adults'].' Adults'.((int)$booking['children']>0?', '.(int)$booking['children'].' Children':''))?></dd></div>
+          <div class="detail-row"><dt>Hotel / Villa</dt><span class="colon">:</span><dd><?=e($booking['pickup_required'] ? ($booking['hotel_name'] ?: '-') : '-')?></dd></div>
+          <div class="detail-row"><dt>Room Number</dt><span class="colon">:</span><dd><?=e($booking['pickup_required'] ? ($booking['room_number'] ?: '-') : '-')?></dd></div>
           <div class="detail-row"><dt>Payment Status</dt><span class="colon">:</span><dd><span class="status-pill <?=strcasecmp((string)$booking['payment_status'],'paid')===0?'paid':''?>"><i class="fa-solid <?=strcasecmp((string)$booking['payment_status'],'paid')===0?'fa-circle-check':'fa-clock'?>"></i><?=e($booking['payment_status'])?></span></dd></div>
           <div class="detail-row"><dt>Total Payment</dt><span class="colon">:</span><dd class="amount"><?=rupiah($total)?></dd></div>
         </dl>
