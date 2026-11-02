@@ -1,0 +1,14 @@
+# Local environment and secrets
+/config/database.local.php
+/.env
+/.env.*
+!/.env.example
+
+# Runtime logs
+/error_log
+**/error_log
+*.log
+
+# Temporary files
+*.tmp
+*.temp
