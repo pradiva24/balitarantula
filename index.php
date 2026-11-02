@@ -29,7 +29,7 @@ try {
 $packages = db()->query("
     SELECT p.*, c.name category_name
     FROM packages p
-    LEFT JOIN categories c ON c.id=p.category_id
+    LEFT JOIN categories c ON c.id=p.category_id AND c.status=1
     WHERE p.status=1
     ORDER BY p.homepage_order ASC, p.id ASC
     LIMIT 6
