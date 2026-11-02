@@ -239,11 +239,17 @@ if (!function_exists('bta_pdf_build')) {
         bta_pdf_multiline($c,50,$descriptionY,330,(string)($b['short_description'] ?? 'Bali off-road adventure experience'),7,false,$muted,9);
         $detailsStartY=min(530,$descriptionY-22);
         bta_pdf_line($c,50,$detailsStartY,390,$detailsStartY,$line,0.8);
+        // Keep the same information order and labels as booking-success.php print view.
         $rows=[
-            ['ACTIVITY DATE',$date],['ACTIVITY TIME',$activityTime],['PARTICIPANTS',$guests],
-            ['PICKUP SERVICE',$pickupYes?'YES':'NO'],['PICKUP LOCATION',$pickupYes?($pickupLocation?:$pickupArea?:'Hotel / Villa'):'Self arrival'],
+            ['ACTIVITY DATE',$date],
+            ['ACTIVITY TIME',$activityTime],
+            ['PARTICIPANTS',$guests],
+            ['PICKUP SERVICE',$pickupYes?'YES':'NO'],
+            ['PICKUP LOCATION',$pickupYes?($pickupLocation?:$pickupArea?:'Hotel / Villa'):'Self Arrival'],
             ['HOTEL / VILLA & ROOM',$pickupYes?trim((string)($b['hotel_name']??'')).((trim((string)($b['room_number']??''))!=='')?' / Room '.trim((string)$b['room_number']):''):'-'],
-            ['PICKUP TIME',$pickupYes?$pickupTime:'-'],['CUSTOMER',$b['customer_name']??'-']
+            ['PICKUP TIME',$pickupYes?$pickupTime:'-'],
+            ['PAYMENT STATUS',$payment],
+            ['TOTAL PAYMENT',$total]
         ];
         $y=$detailsStartY-20;
         foreach($rows as [$label,$value]){
@@ -251,7 +257,7 @@ if (!function_exists('bta_pdf_build')) {
             $valueLines=bta_pdf_lines((string)$value,48);
             $lineCount=max(count($labelLines),count($valueLines));
             foreach($labelLines as $li=>$labelLine) bta_pdf_text($c,52,$y-($li*9),$labelLine,6.7,false,$orange);
-            foreach($valueLines as $vi=>$valueLine) bta_pdf_text($c,165,$y-($vi*9),$valueLine,7.4,false,$ink);
+            foreach($valueLines as $vi=>$valueLine) bta_pdf_text($c,165,$y-($vi*9),$valueLine,7.4,false,((string)$label==='TOTAL PAYMENT'?$orange:$ink));
             $rowHeight=max(23,($lineCount*9)+7);
             bta_pdf_line($c,50,$y-$rowHeight+5,390,$y-$rowHeight+5,$line,0.45);
             $y-=$rowHeight;
