@@ -13,8 +13,24 @@ function package_hero_upsert(PDO $db, string $key, string $value): void {
   $st->execute([$key,$value]);
 }
 function package_hero_upload(string $field, string $old=''): string {
-  if(empty($_FILES[$field]) || ($_FILES[$field]['error']??UPLOAD_ERR_NO_FILE)===UPLOAD_ERR_NO_FILE) return $old;
-  return admin_upload($field,'packages',$old);
+  $file=$_FILES[$field]??null;
+  $hasNewUpload=is_array($file) && (int)($file['error']??UPLOAD_ERR_NO_FILE)!==UPLOAD_ERR_NO_FILE;
+
+  if(!$hasNewUpload) {
+    // No replacement file selected: keep the current hero image (or a Media Library selection).
+    return admin_upload($field,'packages',$old);
+  }
+
+  // A newly selected local file must take priority over any stale hidden Media Library value.
+  $mediaKey='media_'.$field;
+  $hadMediaValue=array_key_exists($mediaKey,$_POST);
+  $oldMediaValue=$_POST[$mediaKey]??null;
+  unset($_POST[$mediaKey]);
+  try {
+    return admin_upload($field,'packages',$old);
+  } finally {
+    if($hadMediaValue) $_POST[$mediaKey]=$oldMediaValue;
+  }
 }
 
 // Package highlights are managed from the package editor. Create the table automatically for existing installs.
@@ -223,7 +239,10 @@ try {
         $q->execute(); $heroOld=(string)$q->fetchColumn();
       }catch(Throwable $e){}
       $heroImage=package_hero_upload('package_hero_image',$heroOld);
-      if(isset($_POST['remove_package_hero_image']) && $_POST['remove_package_hero_image']==='1'){
+      $hasReplacementUpload=isset($_FILES['package_hero_image'])
+        && (int)($_FILES['package_hero_image']['error']??UPLOAD_ERR_NO_FILE)!==UPLOAD_ERR_NO_FILE;
+      // Removing the current image is only applied when no replacement was uploaded.
+      if(!$hasReplacementUpload && isset($_POST['remove_package_hero_image']) && $_POST['remove_package_hero_image']==='1'){
         if($heroOld) admin_delete_image($heroOld);
         $heroImage='';
       }
