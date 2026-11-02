@@ -41,15 +41,12 @@ function brand_replace_legacy(string $text): string {
     $brand = site_brand_name();
     if ($brand === '') return $text;
 
-    // strtr performs a single-pass replacement against the original text.
-    // Unlike sequential str_ireplace calls, it will not replace substrings
-    // inside the replacement brand (which caused "Bali Bali Tarantula Adventure").
-    return strtr($text, [
-        'Bali Tarantula Adventure' => $brand,
-        'Tarantula Adventure' => $brand,
-        'Aloha Ubud Swing' => $brand,
-        'Aloha Ubud' => $brand,
-    ]);
+    // Replace legacy brand names once, case-insensitively, without
+    // rescanning the replacement text. This prevents brand-name cascading.
+    $pattern = '~Bali Tarantula Adventure|Tarantula Adventure|Aloha Ubud Swing|Aloha Ubud~i';
+    return preg_replace_callback($pattern, static function () use ($brand) {
+        return $brand;
+    }, $text) ?? $text;
 }
 
 function brand_output_buffer(string $buffer): string {
