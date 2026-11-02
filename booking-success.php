@@ -79,45 +79,45 @@ if (isset($_GET['print']) && $_GET['print'] === '1') {
         .ticket-page{width:210mm;min-height:297mm;margin:0 auto;padding:10mm;background:#111713;position:relative;overflow:hidden}
         .ticket-page:before{content:"";position:absolute;right:-35mm;top:-40mm;width:100mm;height:80mm;background:#ff6500;opacity:.14;transform:rotate(-20deg);pointer-events:none}
         .ticket-hero{height:62mm;position:relative;padding:6mm 7mm;color:#fff;background:linear-gradient(90deg,rgba(8,13,10,.96),rgba(8,13,10,.78)),url('<?=e(asset_url($booking['cover_image'] ?? ''))?>') center/cover no-repeat;border-top:3mm solid #ff6500;overflow:hidden}
-        .brand{font:900 21pt/.85 'Barlow Condensed',Impact,sans-serif;letter-spacing:-.5px;text-transform:uppercase;color:#fff}
-        .brand small{display:block;color:#ff6500;font:900 9pt/1 Inter,Arial,sans-serif;letter-spacing:2px;margin-top:3mm}
-        .ticket-hero h1{font:900 37pt/.9 'Barlow Condensed',Impact,sans-serif;letter-spacing:.4px;margin:7mm 0 2mm;color:#fff}
-        .ticket-hero .ribbon{display:inline-block;background:#ff6500;color:#fff;font:800 13pt/1 'Barlow Condensed',Impact,sans-serif;padding:2mm 5mm;transform:skew(-5deg)}
+        .brand{font:400 21pt/.85 'Barlow Condensed',Impact,sans-serif;letter-spacing:-.5px;text-transform:uppercase;color:#fff}
+        .brand small{display:block;color:#ff6500;font:400 9pt/1 Inter,Arial,sans-serif;letter-spacing:2px;margin-top:3mm}
+        .ticket-hero h1{font:400 37pt/.9 'Barlow Condensed',Impact,sans-serif;letter-spacing:.4px;margin:7mm 0 2mm;color:#fff}
+        .ticket-hero .ribbon{display:inline-block;background:#ff6500;color:#fff;font:400 13pt/1 'Barlow Condensed',Impact,sans-serif;padding:2mm 5mm;transform:skew(-5deg)}
         .ticket-hero p{font-size:9pt;color:#e6e9e6;margin:4mm 0 0}
         .ticket-main{height:151mm;background:#fff;border-radius:5mm;display:grid;grid-template-columns:1fr 62mm;overflow:hidden;position:relative;margin-top:-1mm}
         .ticket-left{padding:7mm 7mm 6mm}
         .ticket-right{border-left:1px dashed #454a46;padding:6mm 5mm;text-align:center;display:flex;flex-direction:column;align-items:center}
-        .section-label{font:800 13pt 'Barlow Condensed',Impact,sans-serif;color:#171a18;margin:0 0 4mm}
+        .section-label{font:400 13pt 'Barlow Condensed',Impact,sans-serif;color:#171a18;margin:0 0 4mm}
         .section-label i{color:#ff6500;margin-right:2mm}
         .code-line{display:flex;align-items:center;gap:3mm;margin-bottom:5mm}
-        .code-value{font:900 21pt/1 'Barlow Condensed',Impact,sans-serif;background:#fff0e4;padding:3mm 4mm;border-radius:3mm;overflow-wrap:anywhere;flex:1}
-        .status{font-size:8pt;font-weight:900;padding:2.5mm 3mm;border-radius:3mm;background:#e0f8e5;color:#15803d;white-space:nowrap}
+        .code-value{font:400 21pt/1 'Barlow Condensed',Impact,sans-serif;background:#fff0e4;padding:3mm 4mm;border-radius:3mm;overflow-wrap:anywhere;flex:1}
+        .status{font-size:8pt;font-weight:400;padding:2.5mm 3mm;border-radius:3mm;background:#e0f8e5;color:#15803d;white-space:nowrap}
         .package-row{display:flex;gap:4mm;padding:4mm 0;border-top:1px solid #e3e6e3;border-bottom:1px solid #e3e6e3;margin-bottom:3mm;align-items:center}
         .package-row img{width:42mm;height:27mm;object-fit:cover;border-radius:3mm}
-        .package-row h2{font:800 17pt/1 'Barlow Condensed',Impact,sans-serif;margin:0 0 2mm}
+        .package-row h2{font:400 17pt/1 'Barlow Condensed',Impact,sans-serif;margin:0 0 2mm}
         .package-row p{font-size:8pt;line-height:1.4;color:#5d665f;margin:0}
         .info-row{display:grid;grid-template-columns:42mm 4mm 1fr;gap:2mm;align-items:start;padding:2.4mm 0;border-bottom:1px solid #e5e8e5;font-size:8.5pt}
-        .info-row b{font-weight:800}
-        .info-row .key{font-weight:800}
-        .ticket-stamp{background:#ff6500;color:#fff;font:900 20pt 'Barlow Condensed',Impact,sans-serif;padding:2mm 0;border-radius:3mm;width:100%;margin-bottom:6mm}
+        .info-row b{font-weight:400}
+        .info-row .key{font-weight:400}
+        .ticket-stamp{background:#ff6500;color:#fff;font:400 20pt 'Barlow Condensed',Impact,sans-serif;padding:2mm 0;border-radius:3mm;width:100%;margin-bottom:6mm}
         .qr{width:43mm;height:43mm;object-fit:contain;margin:0 auto 3mm}
-        .qr-code{font-size:8.5pt;font-weight:900;overflow-wrap:anywhere;margin-bottom:5mm}
+        .qr-code{font-size:8.5pt;font-weight:400;overflow-wrap:anywhere;margin-bottom:5mm}
         .right-rule{width:100%;border-top:1px solid #cfd4cf;margin:2mm 0 5mm}
-        .right-brand{font:900 19pt/.85 'Barlow Condensed',Impact,sans-serif;text-transform:uppercase}
+        .right-brand{font:400 19pt/.85 'Barlow Condensed',Impact,sans-serif;text-transform:uppercase}
         .right-brand span{display:block;color:#ff6500;font-size:10pt;margin-top:2mm}
         .right-address{font-size:8pt;line-height:1.45;text-align:left;margin-top:6mm;display:flex;gap:2mm}
         .right-address i{color:#ff6500}
         .notes{background:#fff5ec;border-radius:4mm;margin-top:3mm;padding:5mm 7mm;min-height:35mm}
-        .notes h3{font:900 16pt 'Barlow Condensed',Impact,sans-serif;color:#f06400;margin:0 0 3mm}
+        .notes h3{font:400 16pt 'Barlow Condensed',Impact,sans-serif;color:#f06400;margin:0 0 3mm}
         .notes ul{list-style:none;padding:0;margin:0;display:grid;grid-template-columns:1fr 1fr;gap:2mm 5mm}
         .notes li{font-size:8pt;line-height:1.35}
         .notes li i{color:#ff6500;margin-right:2mm}
         .ticket-footer{margin-top:3mm;min-height:18mm;background:#090d0b;color:#fff;padding:4mm 7mm;display:flex;justify-content:space-between;align-items:center}
-        .footer-brand{font:900 15pt/.85 'Barlow Condensed',Impact,sans-serif}
+        .footer-brand{font:400 15pt/.85 'Barlow Condensed',Impact,sans-serif}
         .footer-brand span{display:block;color:#ff6500;font-size:8pt;margin-top:1.5mm}
         .footer-contact{text-align:right;font-size:7.5pt;line-height:1.6;color:#e5e8e5}
         .print-tools{width:210mm;margin:8px auto;display:flex;justify-content:flex-end;gap:8px}
-        .print-tools button{border:0;border-radius:8px;background:#ff6500;color:#fff;font-weight:800;padding:11px 16px;cursor:pointer}
+        .print-tools button{border:0;border-radius:8px;background:#ff6500;color:#fff;font-weight:400;padding:11px 16px;cursor:pointer}
         @media screen{body{padding:18px 0}.ticket-page{box-shadow:0 15px 50px #0008}}
         @media print{.print-tools{display:none!important}.ticket-page{margin:0;box-shadow:none}}
       </style>
