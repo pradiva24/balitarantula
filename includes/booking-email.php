@@ -41,7 +41,22 @@ if (!function_exists('bta_booking_email_html')) {
         $row = static function($label,$value,$highlight=false) {
             return '<tr><td style="padding:9px 8px;border-bottom:1px solid #ecefec;color:#5f6962;font-size:13px;width:42%">'.e($label).'</td><td style="padding:9px 8px;border-bottom:1px solid #ecefec;color:'.($highlight?'#f06400':'#202722').';font-size:13px;text-align:right">'.e((string)$value).'</td></tr>';
         };
-        $logo = '<div style="font-family:Arial,sans-serif;font-size:23px;line-height:1;color:#171a18;letter-spacing:-1px">BALI <span style="color:#f06400">▲</span><br><span style="font-size:26px;letter-spacing:-1.5px">TARANTULA</span><br><span style="font-size:13px;letter-spacing:2px;color:#f06400">ADVENTURE</span></div>';
+        // Use the public Website Logo configured in Admin Panel > Settings > Branding.
+        $logoPath = trim((string)setting('site_logo',''));
+        $logoUrl = '';
+        if ($logoPath !== '') {
+            if (preg_match('~^https?://~i', $logoPath)) {
+                $logoUrl = $logoPath;
+            } elseif (function_exists('asset_url')) {
+                $logoUrl = (string)asset_url($logoPath);
+                if (!preg_match('~^https?://~i', $logoUrl)) $logoUrl = $siteUrl.'/'.ltrim($logoUrl,'/');
+            } else {
+                $logoUrl = $siteUrl.'/'.ltrim($logoPath,'/');
+            }
+        }
+        $logo = $logoUrl !== ''
+            ? '<img src="'.e($logoUrl).'" width="220" alt="'.e($siteName).'" style="display:block;width:220px;max-width:100%;height:auto;max-height:82px;object-fit:contain;border:0;margin:0 auto">'
+            : '<div style="font-family:Arial,Helvetica,sans-serif;font-size:20px;line-height:1.2;color:#202722">'.e($siteName).'</div>';
         $coverBlock = $coverUrl ? '<img src="'.e($coverUrl).'" width="170" alt="" style="display:block;width:170px;height:112px;object-fit:cover;border-radius:9px;border:0">' : '';
         $hotelRoom = trim($hotel.($room!==''?' / Room '.$room:''));
         $pickupRows = $pickupYes
@@ -62,20 +77,20 @@ if (!function_exists('bta_booking_email_html')) {
         $qrBlock = '<img src="'.e($qrUrl).'" width="112" height="112" alt="Booking QR code" style="display:block;width:112px;height:112px;border:0">';
         return '<!doctype html><html><body style="margin:0;padding:0;background:#f2f3f1;font-family:Arial,Helvetica,sans-serif;color:#202722">'
         .'<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#f2f3f1;padding:22px 8px"><tr><td align="center">'
-        .'<table role="presentation" width="650" cellpadding="0" cellspacing="0" border="0" style="width:100%;max-width:650px;background:#fff;border:1px solid #e5e8e5;border-radius:12px;overflow:hidden">'
-        .'<tr><td align="center" style="padding:22px 20px 15px">'.$logo.'<div style="margin-top:17px;font-size:22px;color:#202722">✓ &nbsp;'.e($emailTitle).'</div><div style="font-size:13px;line-height:1.6;color:#68716b;margin-top:7px">'.e($intro).'</div></td></tr>'
+        .'<table role="presentation" width="600" cellpadding="0" cellspacing="0" border="0" style="width:100%;max-width:600px;background:#fff;border:1px solid #e5e8e5;border-radius:10px;overflow:hidden">'
+        .'<tr><td align="center" style="padding:22px 22px 18px">'.$logo.'<div style="margin-top:13px;font-size:20px;line-height:1.3;color:#202722">✓ &nbsp;'.e($emailTitle).'</div><div style="font-size:13px;line-height:1.6;color:#68716b;margin-top:7px">'.e($intro).'</div></td></tr>'
         .'<tr><td style="padding:0 25px"><table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr><td align="center" style="background:#ff6500;color:#fff;padding:10px;font-size:18px;letter-spacing:5px">E-TICKET</td></tr></table></td></tr>'
-        .'<tr><td style="padding:17px 25px 10px"><table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr><td valign="middle"><div style="font-size:12px;color:#5f6962;margin-bottom:6px">Booking Code</div><div style="font-size:25px;line-height:1.2;color:#171a18;overflow-wrap:anywhere">'.e($code).'</div></td><td width="125" align="right" valign="middle">'.$qrBlock.'</td></tr></table></td></tr>'
-        .'<tr><td style="padding:12px 25px;background:#fff7f0"><table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr>'.($coverBlock?'<td width="180" valign="middle">'.$coverBlock.'</td>':'').'<td valign="middle" style="padding:5px 10px"><div style="font-size:19px;color:#202722">'.e($package).'</div><div style="font-size:12px;line-height:1.55;color:#626c65;margin-top:5px">'.e($short).'</div></td></tr></table></td></tr>'
-        .'<tr><td style="padding:12px 25px 3px"><div style="font-size:15px;color:#202722;padding:8px 0">Booking Details</div><table role="presentation" width="100%" cellpadding="0" cellspacing="0">'
+        .'<tr><td style="padding:15px 22px 12px"><table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr><td valign="middle"><div style="font-size:12px;color:#5f6962;margin-bottom:6px">Booking Code</div><div style="font-size:22px;line-height:1.3;color:#171a18;word-break:break-word">'.e($code).'</div></td><td width="125" align="right" valign="middle">'.$qrBlock.'</td></tr></table></td></tr>'
+        .'<tr><td style="padding:12px 22px;background:#fff7f0"><table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr>'.($coverBlock?'<td width="180" valign="middle">'.$coverBlock.'</td>':'').'<td valign="middle" style="padding:5px 10px"><div style="font-size:19px;color:#202722">'.e($package).'</div><div style="font-size:12px;line-height:1.55;color:#626c65;margin-top:5px">'.e($short).'</div></td></tr></table></td></tr>'
+        .'<tr><td style="padding:12px 22px 3px"><div style="font-size:15px;color:#202722;padding:8px 0">Booking Details</div><table role="presentation" width="100%" cellpadding="0" cellspacing="0">'
         .$row('Activity Date',$date).$row('Activity Time',$activityTime).$row('Participants',$guestLabel).$row('Pickup Service',$pickupYes?'Yes':'No')
         .($pickupYes?$row('Hotel or Villa Name',$hotel ?: 'Not provided').$row('Room Number',$room ?: 'Not provided').$row('Pickup Time',$pickupTime):'')
         .$row('Payment Method',$payment).$row('Payment Status',$paymentStatus).$row('Total Payment',$money($total),true)
         .'</table></td></tr>'
         .$customerRows
         .$cta
-        .'<tr><td style="padding:16px 25px 20px"><table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr><td style="background:#fff5eb;border:1px solid #ffe1c9;border-radius:8px;padding:13px 15px"><div style="font-size:13px;color:#e85f00">Important Notes</div><div style="font-size:12px;line-height:1.7;color:#515b54;margin-top:6px">• Please present this e-ticket (digital or printed) at the registration desk.<br>• Arrive at least 15 minutes before the activity time.<br>• Wear comfortable clothes and closed shoes.<br>• Follow the safety instructions from your guide.</div><div style="font-size:12px;color:#5f6962;margin-top:10px">'.e($ticketText).'</div></td></tr></table></td></tr>'
-        .'<tr><td style="padding:16px 25px;background:#151a17;color:#fff"><table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr><td style="font-size:12px;line-height:1.8;color:#f0f1ef">'.e($siteName).'<br>'.e($sitePhone).'<br>'.e($siteEmail).'<br>'.e($siteAddress).'<br>www.balitarantula.com</td></tr></table></td></tr>'
+        .'<tr><td style="padding:14px 22px 18px"><table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr><td style="background:#fff5eb;border:1px solid #ffe1c9;border-radius:8px;padding:13px 15px"><div style="font-size:13px;color:#e85f00">Important Notes</div><div style="font-size:12px;line-height:1.7;color:#515b54;margin-top:6px">• Please present this e-ticket (digital or printed) at the registration desk.<br>• Arrive at least 15 minutes before the activity time.<br>• Wear comfortable clothes and closed shoes.<br>• Follow the safety instructions from your guide.</div><div style="font-size:12px;color:#5f6962;margin-top:10px">'.e($ticketText).'</div></td></tr></table></td></tr>'
+        .'<tr><td style="padding:15px 22px;background:#151a17;color:#fff"><table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr><td style="font-size:12px;line-height:1.8;color:#f0f1ef">'.e($siteName).'<br>'.e($sitePhone).'<br>'.e($siteEmail).'<br>'.e($siteAddress).'<br>www.balitarantula.com</td></tr></table></td></tr>'
         .'</table></td></tr></table></body></html>';
     }
 }
