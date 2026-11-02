@@ -191,7 +191,6 @@ if (!function_exists('bta_pdf_real_qr')) {
 }
 
 if (!function_exists('bta_pdf_build')) {
-    if (!function_exists('bta_pdf_build')) {
     function bta_pdf_build(array $b, string $siteName = '', string $siteEmail = '', string $sitePhone = '', string $siteAddress = ''): string {
         $siteName = trim(eticket_text('eticket_ticket_brand', trim($siteName) ?: 'Bali Tarantula Adventure')) ?: 'Bali Tarantula Adventure';
         $siteEmail = trim($siteEmail); $sitePhone = trim($sitePhone);
@@ -233,32 +232,35 @@ if (!function_exists('bta_pdf_build')) {
         bta_pdf_rect($c,280,646,105,20,$payment==='PAID'?[0.78,0.96,0.80]:[1.0,0.94,0.78]);
         bta_pdf_text($c,290,652,$status,8,true,$payment==='PAID'?[0.05,0.42,0.16]:[0.55,0.34,0.04]);
         bta_pdf_line($c,50,593,390,593,$line,0.8);
-        $packageLines=bta_pdf_lines($package,42);
+        $packageLines=array_slice(bta_pdf_lines($package,42),0,2);
         foreach($packageLines as $pi=>$packageLine) bta_pdf_text($c,50,575-($pi*12),$packageLine,11,false,$ink);
         $descriptionY=558-(max(0,count($packageLines)-1)*12);
-        bta_pdf_multiline($c,50,$descriptionY,330,(string)($b['short_description'] ?? 'Bali off-road adventure experience'),7,false,$muted,9);
+        $descriptionLines=array_slice(bta_pdf_lines((string)($b['short_description'] ?? 'Bali off-road adventure experience'),78),0,2);
+        foreach($descriptionLines as $di=>$descriptionLine) bta_pdf_text($c,50,$descriptionY-($di*9),$descriptionLine,7,false,$muted);
         $detailsStartY=min(530,$descriptionY-22);
         bta_pdf_line($c,50,$detailsStartY,390,$detailsStartY,$line,0.8);
         // Keep the same information order and labels as booking-success.php print view.
         $rows=[
+            ['CUSTOMER NAME',(string)($b['customer_name'] ?? '-')],
             ['ACTIVITY DATE',$date],
             ['ACTIVITY TIME',$activityTime],
             ['PARTICIPANTS',$guests],
             ['PICKUP SERVICE',$pickupYes?'YES':'NO'],
             ['PICKUP LOCATION',$pickupYes?($pickupLocation?:$pickupArea?:'Hotel / Villa'):'Self Arrival'],
-            ['HOTEL / VILLA & ROOM',$pickupYes?trim((string)($b['hotel_name']??'')).((trim((string)($b['room_number']??''))!=='')?' / Room '.trim((string)$b['room_number']):''):'-'],
+            ['HOTEL / VILLA',$pickupYes?(trim((string)($b['hotel_name'] ?? '')) ?: '-'):'-'],
+            ['ROOM NUMBER',$pickupYes?(trim((string)($b['room_number'] ?? '')) ?: '-'):'-'],
             ['PICKUP TIME',$pickupYes?$pickupTime:'-'],
             ['PAYMENT STATUS',$payment],
             ['TOTAL PAYMENT',$total]
         ];
         $y=$detailsStartY-20;
         foreach($rows as [$label,$value]){
-            $labelLines=bta_pdf_lines((string)$label,22);
-            $valueLines=bta_pdf_lines((string)$value,48);
+            $labelLines=array_slice(bta_pdf_lines((string)$label,20),0,2);
+            $valueLines=array_slice(bta_pdf_lines((string)$value,44),0,3);
             $lineCount=max(count($labelLines),count($valueLines));
             foreach($labelLines as $li=>$labelLine) bta_pdf_text($c,52,$y-($li*9),$labelLine,6.7,false,$orange);
             foreach($valueLines as $vi=>$valueLine) bta_pdf_text($c,165,$y-($vi*9),$valueLine,7.4,false,((string)$label==='TOTAL PAYMENT'?$orange:$ink));
-            $rowHeight=max(23,($lineCount*9)+7);
+            $rowHeight=max(21,($lineCount*8.5)+7);
             bta_pdf_line($c,50,$y-$rowHeight+5,390,$y-$rowHeight+5,$line,0.45);
             $y-=$rowHeight;
         }
@@ -304,8 +306,6 @@ if (!function_exists('bta_pdf_build')) {
         $pdf.="trailer\n<< /Size ".(count($objects)+1)." /Root 1 0 R >>\nstartxref\n".$xref."\n%%EOF";
         return $pdf;
     }
-}
-}
 
 if (!function_exists('bta_make_eticket_pdf')) {
     /**
