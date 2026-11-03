@@ -8,17 +8,29 @@ $footerBg = setting('footer_background','');
 $quickLinksRaw = setting('footer_quick_links', "Home|/\nAbout Us|/about.php\nActivities|/packages.php\nPackages|/packages.php\nGallery|/#gallery\nBlog|/blog.php\nContact|/contact.php");
 $popularRaw = setting('footer_popular_links', "Bali ATV|/packages.php\nAyung Rafting|/packages.php\nBali Swing|/packages.php\nUbud Activities|/packages.php\nKintamani Tour|/packages.php\nBali Car Rental|/contact.php");
 $socialLinks = [];
-// Footer Builder social URLs. Empty values are intentionally omitted on the frontend.
-$footerSocials = [
-    'Instagram' => ['url'=>trim((string)setting('footer_social_instagram','')), 'icon'=>'fa-brands fa-instagram'],
-    'Facebook' => ['url'=>trim((string)setting('footer_social_facebook','')), 'icon'=>'fa-brands fa-facebook-f'],
-    'YouTube' => ['url'=>trim((string)setting('footer_social_youtube','')), 'icon'=>'fa-brands fa-youtube'],
-    'Tripadvisor' => ['url'=>trim((string)setting('footer_social_tripadvisor','')), 'icon'=>'fa-brands fa-tripadvisor'],
-    'TikTok' => ['url'=>trim((string)setting('footer_social_tiktok','')), 'icon'=>'fa-brands fa-tiktok'],
-];
-foreach ($footerSocials as $name=>$social) {
-    if ($social['url'] === '') continue;
-    $socialLinks[] = ['name'=>$name, 'url'=>$social['url'], 'icon'=>$social['icon'], 'logo'=>''];
+// Use the same Social Links managed in Admin → Contact Us.
+try {
+    $socialDb = db();
+    $socialStmt = $socialDb->query("SELECT data FROM contact_page WHERE id=1 LIMIT 1");
+    $socialRow = $socialStmt ? $socialStmt->fetch(PDO::FETCH_ASSOC) : false;
+    $socialData = $socialRow && !empty($socialRow['data'])
+        ? json_decode((string)$socialRow['data'], true)
+        : null;
+    if (is_array($socialData) && isset($socialData['social_links']) && is_array($socialData['social_links'])) {
+        foreach ($socialData['social_links'] as $social) {
+            if (!is_array($social)) continue;
+            $url = trim((string)($social['url'] ?? ''));
+            if (empty($social['enabled']) || $url === '') continue;
+            $socialLinks[] = [
+                'name' => trim((string)($social['name'] ?? 'Social Link')),
+                'url' => $url,
+                'icon' => trim((string)($social['icon'] ?? 'fa-solid fa-link')) ?: 'fa-solid fa-link',
+                'logo' => trim((string)($social['logo'] ?? '')),
+            ];
+        }
+    }
+} catch (Throwable $e) {
+    $socialLinks = [];
 }
 
 $payments = array_values(array_filter(array_map('trim', explode(',', setting('footer_payment_methods','VISA,MASTERCARD,BCA,MANDIRI,BNI,BRI,QRIS')))));
