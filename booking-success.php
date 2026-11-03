@@ -76,7 +76,7 @@ if (isset($_GET['print']) && $_GET['print'] === '1') {
         @page{size:A4 portrait;margin:0}
         *{box-sizing:border-box}
         html,body{margin:0;padding:0;background:#111713;color:#171a18;font-family:Inter,Arial,sans-serif;-webkit-print-color-adjust:exact;print-color-adjust:exact}
-        .ticket-page{width:210mm;min-height:297mm;height:auto;margin:0 auto;padding:7mm;background:#111713;position:relative;overflow:visible}
+        .ticket-page{width:210mm;height:297mm;min-height:297mm;margin:0 auto;padding:7mm;background:#111713;position:relative;overflow:hidden;display:flex;flex-direction:column;justify-content:center}
         .ticket-page:before{content:"";position:absolute;right:-35mm;top:-40mm;width:100mm;height:80mm;background:#ff6500;opacity:.14;transform:rotate(-20deg);pointer-events:none}
         .ticket-hero{height:43mm;position:relative;padding:4mm 6mm;color:#fff;background:linear-gradient(90deg,rgba(8,13,10,.96),rgba(8,13,10,.78)),url('<?=e(asset_url($booking['cover_image'] ?? ''))?>') center/cover no-repeat;border-top:3mm solid #ff6500;overflow:hidden}
         .brand{font:400 16pt/.9 'Barlow Condensed',Impact,sans-serif;letter-spacing:-.5px;text-transform:uppercase;color:#fff}
@@ -119,7 +119,7 @@ if (isset($_GET['print']) && $_GET['print'] === '1') {
         .print-tools{width:210mm;margin:8px auto;text-align:right}
         .print-tools button{border:0;border-radius:8px;background:#ff6500;color:#fff;font-weight:400;padding:11px 16px;cursor:pointer}
         @media screen{body{padding:18px 0}.ticket-page{box-shadow:0 15px 50px #0008}}
-        @media print{.print-tools{display:none!important}.ticket-page{margin:0;box-shadow:none;overflow:visible;height:297mm;min-height:297mm}.ticket-main,.ticket-left,.ticket-right,.notes,.ticket-footer{break-inside:avoid;page-break-inside:avoid}}
+        @media print{@page{size:210mm 297mm;margin:0}.print-tools{display:none!important}html,body{width:210mm;height:297mm;margin:0!important;padding:0!important}.ticket-page{width:210mm;height:297mm;min-height:297mm;margin:0;box-shadow:none;overflow:hidden;display:flex;flex-direction:column;justify-content:center;break-after:avoid;page-break-after:avoid}.ticket-hero,.ticket-main,.notes,.ticket-footer{flex-shrink:0}.ticket-main,.ticket-left,.ticket-right,.notes,.ticket-footer{break-inside:avoid;page-break-inside:avoid}}
       </style>
     </head>
     <body>
