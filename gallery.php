@@ -20,35 +20,62 @@ $gallery = [];
 $categories = [];
 
 try {
-    $rows = db()->query("
-        SELECT id, title, alt_text, category, image_path, sort_order 
-        FROM gallery 
-        WHERE status = 1 
+    // Package images are the primary source for the public gallery.
+    // Keep showing images attached to every active package, even when
+    // additional images have also been uploaded through Admin > Gallery.
+    $pkgImgs = db()->query("
+        SELECT pi.id, pi.image_path, pi.alt_text, p.name AS title, c.name AS category,
+               pi.sort_order, 'package' AS image_source
+        FROM package_images pi
+        JOIN packages p ON p.id = pi.package_id
+        LEFT JOIN categories c ON c.id = p.category_id
+        WHERE p.status = 1
+        ORDER BY pi.sort_order ASC, pi.id DESC
+    ")->fetchAll(PDO::FETCH_ASSOC) ?: [];
+
+    // Add manually managed gallery images after package images.
+    $customImgs = db()->query("
+        SELECT id, title, alt_text, category, image_path, sort_order,
+               'gallery' AS image_source
+        FROM gallery
+        WHERE status = 1
         ORDER BY sort_order ASC, id DESC
     ")->fetchAll(PDO::FETCH_ASSOC) ?: [];
 
-    // Fallback if gallery table is empty: use package images
-    if (empty($rows)) {
-        $pkgImgs = db()->query("
-            SELECT pi.id, pi.image_path, pi.alt_text, p.name AS title, c.name AS category 
-            FROM package_images pi 
-            JOIN packages p ON p.id = pi.package_id 
-            LEFT JOIN categories c ON c.id = p.category_id 
-            WHERE p.status = 1 
-            ORDER BY pi.sort_order ASC, pi.id DESC
-        ")->fetchAll(PDO::FETCH_ASSOC) ?: [];
-        $rows = $pkgImgs;
-    }
+    // Merge both sources and avoid showing the same file twice.
+    $seenPaths = [];
+    foreach (array_merge($pkgImgs, $customImgs) as $item) {
+        $imagePath = trim((string)($item['image_path'] ?? ''));
+        if ($imagePath === '' || isset($seenPaths[$imagePath])) continue;
+        $seenPaths[$imagePath] = true;
+        $gallery[] = $item;
 
-    $gallery = $rows;
-    foreach ($gallery as $g) {
-        $cat = trim((string)($g['category'] ?? ''));
-        if ($cat !== '' && !isset($categories[$cat])) {
-            $categories[$cat] = true;
-        }
+        $cat = trim((string)($item['category'] ?? ''));
+        if ($cat !== '') $categories[$cat] = true;
     }
 } catch (Throwable $e) {
-    $gallery = [];
+    error_log('BTA public gallery load error: '.$e->getMessage());
+    // If one source is unavailable, still try to show the other source.
+    if (empty($gallery)) {
+        try {
+            $gallery = db()->query("
+                SELECT pi.id, pi.image_path, pi.alt_text, p.name AS title, c.name AS category,
+                       pi.sort_order, 'package' AS image_source
+                FROM package_images pi
+                JOIN packages p ON p.id = pi.package_id
+                LEFT JOIN categories c ON c.id = p.category_id
+                WHERE p.status = 1
+                ORDER BY pi.sort_order ASC, pi.id DESC
+            ")->fetchAll(PDO::FETCH_ASSOC) ?: [];
+            foreach ($gallery as $item) {
+                $cat = trim((string)($item['category'] ?? ''));
+                if ($cat !== '') $categories[$cat] = true;
+            }
+        } catch (Throwable $fallbackError) {
+            error_log('BTA package gallery fallback error: '.$fallbackError->getMessage());
+            $gallery = [];
+        }
+    }
 }
 
 $categoryList = array_keys($categories);
