@@ -797,17 +797,20 @@ body>main{margin:0!important;padding:0!important;max-width:none!important;width:
  .bta-home-main .home-gallery-section .gallery-grid>a:nth-child(7){grid-column:span 2}
 }
 
-/* Homepage hero: dark burnt-orange overlay for the Adventure Wild section. */
-.bta-home-main .hero-shade{
-  background:
-    linear-gradient(90deg,rgba(73,27,0,.88) 0%,rgba(105,39,0,.72) 48%,rgba(105,39,0,.38) 100%),
-    linear-gradient(0deg,rgba(45,15,0,.72) 0%,rgba(91,31,0,.18) 62%,rgba(91,31,0,.38) 100%) !important;
+/* Homepage hero: stronger dark burnt-orange overlay. */
+.bta-home-main .hero .hero-shade{
+  background-color:rgba(66,22,0,.90) !important;
+  background-image:
+    linear-gradient(90deg,rgba(66,22,0,.94) 0%,rgba(91,31,0,.88) 52%,rgba(91,31,0,.72) 100%),
+    linear-gradient(0deg,rgba(42,14,0,.88) 0%,rgba(66,22,0,.48) 60%,rgba(66,22,0,.66) 100%) !important;
+  opacity:1 !important;
 }
 @media(max-width:640px){
-  .bta-home-main .hero-shade{
-    background:
-      linear-gradient(90deg,rgba(73,27,0,.82) 0%,rgba(105,39,0,.58) 100%),
-      linear-gradient(0deg,rgba(45,15,0,.76) 0%,rgba(91,31,0,.22) 65%,rgba(91,31,0,.35) 100%) !important;
+  .bta-home-main .hero .hero-shade{
+    background-color:rgba(66,22,0,.91) !important;
+    background-image:
+      linear-gradient(90deg,rgba(66,22,0,.90) 0%,rgba(91,31,0,.80) 100%),
+      linear-gradient(0deg,rgba(42,14,0,.90) 0%,rgba(66,22,0,.52) 65%,rgba(66,22,0,.72) 100%) !important;
   }
 }
 
