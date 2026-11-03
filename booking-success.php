@@ -142,6 +142,7 @@ if (isset($_GET['print']) && $_GET['print'] === '1') {
             <div class="info-row"><span class="key">Activity Time</span><span>:</span><b><?=e(substr((string)($booking['activity_time'] ?: '09:00'),0,5))?></b></div>
             <div class="info-row"><span class="key">Participants</span><span>:</span><b><?=e($participantLabel)?></b></div>
             <div class="info-row"><span class="key">Pickup Service</span><span>:</span><b><?=$booking['pickup_required']?'Yes':'No'?></b></div>
+            <div class="info-row"><span class="key">Pickup Area</span><span>:</span><b><?=$booking['pickup_required']?e(trim((string)($booking['pickup_area_name']??'')) ?: 'Not provided'):'-'?></b></div>
             <div class="info-row"><span class="key">Pickup Location</span><span>:</span><b><?=$booking['pickup_required']?e($pickupLocation ?: 'Hotel / Villa'):'Self Arrival'?></b></div>
             <div class="info-row"><span class="key">Hotel or Villa Name &amp; Room Number</span><span>:</span><b><?=$booking['pickup_required']?e(trim((string)($booking['hotel_name']??'')).((trim((string)($booking['room_number']??''))!=='')?' / Room '.trim((string)$booking['room_number']):'')):'-'?></b></div>
             <div class="info-row"><span class="key">Pickup Time</span><span>:</span><b><?=$booking['pickup_required']?e(substr((string)($booking['pickup_time'] ?: '—'),0,5)):'-'?></b></div>
