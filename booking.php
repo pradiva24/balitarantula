@@ -49,6 +49,38 @@ try {
 } catch (Throwable $e) {}
 
 $packages = $db->query("SELECT id, name, price_adult, price_child, booking_mode, cover_image, short_description FROM packages WHERE status = 1 AND booking_enabled = 1 ORDER BY homepage_order ASC, name ASC")->fetchAll();
+
+// Default booking artwork: use an ATV photo already stored in the Media Library
+// through an active ATV package cover, then its package gallery as fallback.
+$bookingDefaultImage = '';
+try {
+    $atvImageStmt = $db->query("
+        SELECT p.cover_image
+        FROM packages p
+        WHERE p.status = 1
+          AND p.cover_image IS NOT NULL AND TRIM(p.cover_image) <> ''
+          AND (p.name LIKE '%ATV%' OR p.short_description LIKE '%ATV%')
+        ORDER BY p.homepage_order ASC, p.id ASC
+        LIMIT 1
+    ");
+    $bookingDefaultImage = trim((string)$atvImageStmt->fetchColumn());
+
+    if ($bookingDefaultImage === '') {
+        $atvGalleryStmt = $db->query("
+            SELECT pi.image_path
+            FROM package_images pi
+            INNER JOIN packages p ON p.id = pi.package_id
+            WHERE p.status = 1
+              AND (p.name LIKE '%ATV%' OR p.short_description LIKE '%ATV%')
+              AND pi.image_path IS NOT NULL AND TRIM(pi.image_path) <> ''
+            ORDER BY p.homepage_order ASC, pi.sort_order ASC, pi.id ASC
+            LIMIT 1
+        ");
+        $bookingDefaultImage = trim((string)$atvGalleryStmt->fetchColumn());
+    }
+} catch (Throwable $imageError) {
+    error_log('BTA booking default ATV image lookup: '.$imageError->getMessage());
+}
 $areas = $db->query("SELECT id, name FROM pickup_areas WHERE status = 1 ORDER BY sort_order, name")->fetchAll();
 
 $pickupTimeRows = $db->query("SELECT pickup_area_id, pickup_time FROM pickup_time_slots WHERE status = 1 ORDER BY pickup_area_id, sort_order, pickup_time")->fetchAll();
@@ -389,7 +421,7 @@ body {
   content: "";
   position: absolute;
   inset: 0;
-  background: url('<?=!empty($heroPkg['cover_image']) ? e(asset_url($heroPkg['cover_image'])) : 'https://images.unsplash.com/photo-1551632811-561732d1e306?auto=format&fit=crop&w=1500&q=90'?>') center/cover no-repeat;
+  background: url('<?=e(asset_url(!empty($heroPkg['cover_image']) ? $heroPkg['cover_image'] : $bookingDefaultImage))?>') center/cover no-repeat;
   opacity: 0.22;
   filter: saturate(1.1);
 }
@@ -939,7 +971,7 @@ body {
     <!-- Right Sidebar: Order Summary -->
     <aside class="booking-summary-panel">
       <img id="summaryImage" class="summary-cover" 
-           src="<?=!empty($heroPkg['cover_image']) ? e(asset_url($heroPkg['cover_image'])) : 'https://images.unsplash.com/photo-1551632811-561732d1e306?auto=format&fit=crop&w=600&q=80'?>" 
+           src="<?=e(asset_url(!empty($heroPkg['cover_image']) ? $heroPkg['cover_image'] : $bookingDefaultImage))?>" 
            alt="Adventure Cover">
 
       <h3 id="summaryPackageName" class="summary-pkg-name">
