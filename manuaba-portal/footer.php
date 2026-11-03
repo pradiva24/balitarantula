@@ -63,19 +63,32 @@ $errors=[];
 if($_SERVER['REQUEST_METHOD']==='POST'){
  admin_verify_csrf();
  try{
+  // Match the established Settings page save strategy: update every legacy
+  // duplicate row, and insert only when the key does not exist.
+  $saveSetting=static function(PDO $db,string $key,string $value): void {
+   $check=$db->prepare("SELECT id FROM settings WHERE setting_key=?");
+   $check->execute([$key]);
+   $ids=$check->fetchAll(PDO::FETCH_COLUMN);
+   if($ids){
+    $update=$db->prepare("UPDATE settings SET setting_value=?,updated_at=NOW() WHERE setting_key=?");
+    $update->execute([$value,$key]);
+   }else{
+    $insert=$db->prepare("INSERT INTO settings(setting_key,setting_value) VALUES(?,?)");
+    $insert->execute([$key,$value]);
+   }
+  };
   foreach($fields as $key=>$label){
    $value=trim((string)($_POST[$key]??''));
-   $st=$db->prepare("INSERT INTO settings(setting_key,setting_value) VALUES(?,?) ON DUPLICATE KEY UPDATE setting_value=VALUES(setting_value),updated_at=NOW()");
-   $st->execute([$key,$value]);
+   $saveSetting($db,$key,$value);
    $values[$key]=$value;
   }
   foreach($imageKeys as $key){
    $path=admin_upload($key,'footer',$values[$key]);
-   if($path!==null){$st=$db->prepare("INSERT INTO settings(setting_key,setting_value) VALUES(?,?) ON DUPLICATE KEY UPDATE setting_value=VALUES(setting_value),updated_at=NOW()");$st->execute([$key,$path]);$values[$key]=$path;}
+   if($path!==null){$saveSetting($db,$key,$path);$values[$key]=$path;}
   }
   for($i=1;$i<=7;$i++){
    $key='footer_payment_'.$i.'_icon';$path=admin_upload($key,'footer',$values[$key]);
-   if($path!==null){$st=$db->prepare("INSERT INTO settings(setting_key,setting_value) VALUES(?,?) ON DUPLICATE KEY UPDATE setting_value=VALUES(setting_value),updated_at=NOW()");$st->execute([$key,$path]);$values[$key]=$path;}
+   if($path!==null){$saveSetting($db,$key,$path);$values[$key]=$path;}
   }
   $raw=trim((string)($_POST['footer_image_slides']??'[]'));
   $decoded=json_decode($raw,true);
@@ -88,8 +101,7 @@ if($_SERVER['REQUEST_METHOD']==='POST'){
    $clean[]=['image'=>$image,'url'=>trim((string)($slide['url']??'')),'alt'=>trim((string)($slide['alt']??'')),'newtab'=>!empty($slide['newtab'])];
   }
   $values['footer_image_slides']=json_encode($clean,JSON_UNESCAPED_SLASHES|JSON_UNESCAPED_UNICODE);
-  $st=$db->prepare("INSERT INTO settings(setting_key,setting_value) VALUES('footer_image_slides',?) ON DUPLICATE KEY UPDATE setting_value=VALUES(setting_value),updated_at=NOW()");
-  $st->execute([$values['footer_image_slides']]);
+  $saveSetting($db,'footer_image_slides',$values['footer_image_slides']);
   admin_flash('success','Footer settings berhasil disimpan.');
   header('Location: footer.php');exit;
  }catch(Throwable $e){$errors[]=$e->getMessage();}
@@ -124,7 +136,7 @@ require __DIR__.'/includes/header.php';
  <div class="fb-field" style="margin-top:14px"><label>Promotion Slides (JSON)</label><textarea name="footer_image_slides" style="min-height:180px"><?=admin_e(json_encode($slides,JSON_PRETTY_PRINT|JSON_UNESCAPED_SLASHES|JSON_UNESCAPED_UNICODE))?></textarea><div class="fb-hint">Setiap item: {"image":"uploads/banner.webp","url":"/packages.php","alt":"ATV offer","newtab":false}. Pilih gambar dari Media Library pada input file bila diperlukan dengan menambahkan path gambar di sini.</div></div></section>
  <section class="fb-card"><h2>Trust & Payment</h2><div class="fb-grid">
  <?php foreach(['footer_trust_1_title','footer_trust_1_text','footer_trust_2_title','footer_trust_2_text','footer_trust_3_title','footer_trust_3_text','footer_payment_title','footer_payment_methods'] as $key):?><div class="fb-field"><label><?=admin_e($fields[$key])?></label><input name="<?=admin_e($key)?>" value="<?=admin_e($values[$key])?>"></div><?php endforeach;?>
- <?php for($i=1;$i<=7;$i++):$key='footer_payment_'.$i.'_icon';?><div class="fb-field"><label>Payment Icon <?=$i?></label><input type="file" name="<?=admin_e($key)?>" accept="image/jpeg,image/png,image/webp,image/svg+xml"><?php if($values[$key]):?><div class="fb-preview"><img src="<?=admin_e(asset_url($values[$key]))?>" alt=""><small><?=admin_e($values[$key])?></small></div><?php endif;?></div><?php endfor;?>
+ <?php for($i=1;$i<=7;$i++):$key='footer_payment_'.$i.'_icon';?><div class="fb-field"><label>Payment Icon <?=$i?></label><input type="file" name="<?=admin_e($key)?>" accept="image/jpeg,image/png,image/webp,image/gif"><?php if($values[$key]):?><div class="fb-preview"><img src="<?=admin_e(asset_url($values[$key]))?>" alt=""><small><?=admin_e($values[$key])?></small></div><?php endif;?></div><?php endfor;?>
  </div></section>
  <div class="fb-save"><button type="submit">Save Footer Settings</button></div>
  </form>
