@@ -27,7 +27,6 @@ if (!function_exists('bta_booking_email_html')) {
             } catch (Throwable $ignored) {}
         }
         $hotel = trim((string)($b['hotel_name'] ?? ''));
-        $room = trim((string)($b['room_number'] ?? ''));
         $payment = (string)($b['payment_method'] ?? '-');
         $paymentStatus = ucfirst((string)($b['payment_status'] ?? 'pending'));
         $bookingStatus = strtoupper((string)($b['booking_status'] ?? 'confirmed'));
@@ -62,9 +61,8 @@ if (!function_exists('bta_booking_email_html')) {
             ? '<img src="'.e($logoUrl).'" width="240" alt="'.e($siteName).'" style="display:block;width:240px;max-width:100%;height:auto;border:0;outline:none;text-decoration:none;margin:0 auto;background:transparent">'
             : '<span style="font-family:Arial,Helvetica,sans-serif;font-size:20px;color:#202722">'.e($siteName).'</span>';
         $coverBlock = $coverUrl ? '<img src="'.e($coverUrl).'" width="170" alt="" style="display:block;width:170px;height:112px;object-fit:cover;border-radius:9px;border:0">' : '';
-        $hotelRoom = trim($hotel.($room!==''?' / Room '.$room:''));
         $pickupRows = $pickupYes
-            ? $row('Hotel / Villa',$hotel ?: 'Not provided').$row('Room Number',$room ?: 'Not provided').$row('Pickup Time',$pickupTime)
+            ? $row('Hotel / Villa',$hotel ?: 'Not provided').$row('Pickup Time',$pickupTime)
             : $row('Pickup Service','No — Self arrival');
         $customerRows = $isAdmin
             ? '<tr><td colspan="2" style="padding:16px 8px 5px;font-size:15px;color:#202722">Customer Information</td></tr>'
@@ -88,7 +86,7 @@ if (!function_exists('bta_booking_email_html')) {
         .'<tr><td style="padding:12px 22px;background:#fff7f0"><table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr>'.($coverBlock?'<td width="180" valign="middle">'.$coverBlock.'</td>':'').'<td valign="middle" style="padding:5px 10px"><div style="font-size:19px;color:#202722">'.e($package).'</div><div style="font-size:12px;line-height:1.55;color:#626c65;margin-top:5px">'.e($short).'</div></td></tr></table></td></tr>'
         .'<tr><td style="padding:12px 22px 3px"><div style="font-size:15px;color:#202722;padding:8px 0">Booking Details</div><table role="presentation" width="100%" cellpadding="0" cellspacing="0">'
         .$row('Activity Date',$date).$row('Activity Time',$activityTime).$row('Participants',$guestLabel).$row('Pickup Service',$pickupYes?'Yes':'No')
-        .($pickupYes?$row('Pickup Area',$pickupArea ?: 'Not provided').$row('Hotel or Villa Name',$hotel ?: 'Not provided').$row('Room Number',$room ?: 'Not provided').$row('Pickup Time',$pickupTime):'')
+        .($pickupYes?$row('Pickup Area',$pickupArea ?: 'Not provided').$row('Hotel or Villa Name',$hotel ?: 'Not provided').$row('Pickup Time',$pickupTime):'')
         .$row('Payment Method',$payment).$row('Payment Status',$paymentStatus).$row('Total Payment',$money($total),true)
         .$customerRows
         .'</table></td></tr>'
