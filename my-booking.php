@@ -31,13 +31,25 @@ $page_title='My Booking';
 require __DIR__.'/includes/header.php';
 
 $waSite=trim((string)setting('site_whatsapp',''));
-$heroFallback='https://images.unsplash.com/photo-1551632811-561732d1e306?auto=format&fit=crop&w=2200&q=90';
+
+/*
+ * Reuse the Bali Tarantula homepage media selected in Admin > Homepage > Hero Media.
+ * Prefer the uploaded poster, then the first uploaded slider image.
+ */
+$mybHeroMedia=json_decode((string)setting('homepage_hero_media',''),true);
+if(!is_array($mybHeroMedia)) $mybHeroMedia=[];
+$mybHeroPath=trim((string)($mybHeroMedia['poster']??''));
+if($mybHeroPath===''){
+    $mybHeroSlides=$mybHeroMedia['slides']??[];
+    if(is_array($mybHeroSlides) && !empty($mybHeroSlides[0])) $mybHeroPath=trim((string)$mybHeroSlides[0]);
+}
+$mybHeroImage=$mybHeroPath!==''?asset_url($mybHeroPath):'';
 ?>
 <style>
 .bta-myb{--myb-orange:#ff6500;--myb-ink:#151719;--myb-muted:#647080;background:#f2f3f4;color:var(--myb-ink);padding:0 0 70px;font-family:'Inter',Arial,sans-serif}
 .bta-myb *{box-sizing:border-box}
 .bta-myb-wrap{width:min(1110px,calc(100% - 48px));margin:0 auto}
-.bta-myb-hero{position:relative;isolation:isolate;min-height:410px;padding:78px 0 70px;color:#fff;background:#171a18 url('<?=e($heroFallback)?>') center 44%/cover no-repeat;overflow:hidden}
+.bta-myb-hero{position:relative;isolation:isolate;min-height:410px;padding:78px 0 70px;color:#fff;background-color:#171a18;<?= $mybHeroImage!=='' ? "background-image:url('".e($mybHeroImage)."');" : "" ?>background-position:center 44%;background-size:cover;background-repeat:no-repeat;overflow:hidden}
 .bta-myb-hero:before{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(90deg,rgba(7,10,9,.94) 0%,rgba(7,10,9,.78) 49%,rgba(7,10,9,.25) 100%),linear-gradient(0deg,rgba(7,10,9,.3),transparent 55%)}
 .bta-myb-hero:after{content:"";position:absolute;z-index:-1;left:0;right:0;bottom:0;height:90px;background:linear-gradient(0deg,#f2f3f4,transparent)}
 .bta-myb-eyebrow{display:flex;align-items:center;gap:11px;color:var(--myb-orange);font-size:13px;font-weight:900;letter-spacing:1.4px;text-transform:uppercase;margin:0 0 12px}
