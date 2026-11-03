@@ -8,27 +8,18 @@ $footerBg = setting('footer_background','');
 $quickLinksRaw = setting('footer_quick_links', "Home|/\nAbout Us|/about.php\nActivities|/packages.php\nPackages|/packages.php\nGallery|/#gallery\nBlog|/blog.php\nContact|/contact.php");
 $popularRaw = setting('footer_popular_links', "Bali ATV|/packages.php\nAyung Rafting|/packages.php\nBali Swing|/packages.php\nUbud Activities|/packages.php\nKintamani Tour|/packages.php\nBali Car Rental|/contact.php");
 $socialLinks = [];
-// Social Media source: Admin → Social Links (contact_page.data.social_links).
-try {
-    // Frontend uses the same database connection as the public pages.
-    $socialDb = function_exists('db') ? db() : null;
-    if ($socialDb instanceof PDO) {
-        $socialStmt = $socialDb->query("SELECT data FROM contact_page WHERE id=1 LIMIT 1");
-        $socialRow = $socialStmt ? $socialStmt->fetch(PDO::FETCH_ASSOC) : false;
-        $socialData = $socialRow && !empty($socialRow['data']) ? json_decode((string)$socialRow['data'], true) : null;
-        if (is_array($socialData) && !empty($socialData['social_links']) && is_array($socialData['social_links'])) {
-            foreach ($socialData['social_links'] as $social) {
-                if (!is_array($social) || empty($social['enabled']) || trim((string)($social['url'] ?? '')) === '') continue;
-                $socialLinks[] = [
-                    'name' => trim((string)($social['name'] ?? 'Social Link')),
-                    'url' => trim((string)$social['url']),
-                    'icon' => trim((string)($social['icon'] ?? 'fa-solid fa-link')) ?: 'fa-solid fa-link',
-                    'logo' => trim((string)($social['logo'] ?? '')),
-                ];
-            }
-        }
-    }
-} catch (Throwable $e) { $socialLinks = []; }
+// Footer Builder social URLs. Empty values are intentionally omitted on the frontend.
+$footerSocials = [
+    'Instagram' => ['url'=>trim((string)setting('footer_social_instagram','')), 'icon'=>'fa-brands fa-instagram'],
+    'Facebook' => ['url'=>trim((string)setting('footer_social_facebook','')), 'icon'=>'fa-brands fa-facebook-f'],
+    'YouTube' => ['url'=>trim((string)setting('footer_social_youtube','')), 'icon'=>'fa-brands fa-youtube'],
+    'Tripadvisor' => ['url'=>trim((string)setting('footer_social_tripadvisor','')), 'icon'=>'fa-brands fa-tripadvisor'],
+    'TikTok' => ['url'=>trim((string)setting('footer_social_tiktok','')), 'icon'=>'fa-brands fa-tiktok'],
+];
+foreach ($footerSocials as $name=>$social) {
+    if ($social['url'] === '') continue;
+    $socialLinks[] = ['name'=>$name, 'url'=>$social['url'], 'icon'=>$social['icon'], 'logo'=>''];
+}
 
 $payments = array_values(array_filter(array_map('trim', explode(',', setting('footer_payment_methods','VISA,MASTERCARD,BCA,MANDIRI,BNI,BRI,QRIS')))));
 $paymentIcons=[]; for($pi=1;$pi<=7;$pi++){ $paymentIcons[$pi]=setting('footer_payment_'.$pi.'_icon',''); }
@@ -121,17 +112,15 @@ $bgStyle=$footerBg ? ' style="--footer-bg-image:url(\''.e(asset_url($footerBg)).
         </a>
         <h2><?=e($footerName)?></h2>
         <p><?=nl2br(e($footerDesc))?></p>
+        <?php if (!empty($socialLinks)): ?>
         <div class="bt-socials" aria-label="Social media">
           <?php foreach($socialLinks as $social): ?>
             <a href="<?=e($social['url'])?>" target="_blank" rel="noopener noreferrer" aria-label="<?=e($social['name'])?>" class="bt-social">
-              <?php if($social['logo'] !== ''): ?>
-                <img src="<?=e(asset_url($social['logo']))?>" alt="<?=e($social['name'])?>" loading="lazy" decoding="async">
-              <?php else: ?>
-                <?=site_icon_html('footer.social', $social['icon'])?>
-              <?php endif; ?>
+              <?=site_icon_html('footer.social', $social['icon'])?>
             </a>
           <?php endforeach; ?>
         </div>
+        <?php endif; ?>
         <div class="bt-footer-hashtag">#<?=e(preg_replace('/[^A-Za-z0-9]+/','', $footerName))?></div>
         <div class="bt-footer-mini-tag"><?=e($footerTag)?></div>
       </section>
