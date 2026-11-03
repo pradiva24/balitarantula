@@ -306,7 +306,7 @@ if (!function_exists('bta_pdf_build')) {
             ['Participants',$guests],
             ['Pickup Service',$pickupYes?'Yes':'No'],
             ['Pickup Location',$pickupYes?($pickupLocation?:$pickupArea?:'Hotel / Villa'):'Self Arrival'],
-            ['Hotel or Villa Name & Room Number',$pickupYes?trim($pickupPlace.((trim((string)($b['room_number'] ?? '')) !== '') ? ' / Room '.trim((string)$b['room_number']) : '')):'-'],
+            ['Hotel / Villa Name',$pickupYes?($pickupPlace?:'Not provided'):'-'],
             ['Pickup Time',$pickupYes?$pickupTime:'-'],
             ['Payment Status',$payment],
             ['Total Payment',$total]
