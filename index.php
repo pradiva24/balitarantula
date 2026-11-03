@@ -796,6 +796,21 @@ body>main{margin:0!important;padding:0!important;max-width:none!important;width:
  .bta-home-main .home-gallery-section .gallery-grid>a:nth-child(4),
  .bta-home-main .home-gallery-section .gallery-grid>a:nth-child(7){grid-column:span 2}
 }
+
+/* Homepage hero: dark burnt-orange overlay for the Adventure Wild section. */
+.bta-home-main .hero-shade{
+  background:
+    linear-gradient(90deg,rgba(73,27,0,.88) 0%,rgba(105,39,0,.72) 48%,rgba(105,39,0,.38) 100%),
+    linear-gradient(0deg,rgba(45,15,0,.72) 0%,rgba(91,31,0,.18) 62%,rgba(91,31,0,.38) 100%) !important;
+}
+@media(max-width:640px){
+  .bta-home-main .hero-shade{
+    background:
+      linear-gradient(90deg,rgba(73,27,0,.82) 0%,rgba(105,39,0,.58) 100%),
+      linear-gradient(0deg,rgba(45,15,0,.76) 0%,rgba(91,31,0,.22) 65%,rgba(91,31,0,.35) 100%) !important;
+  }
+}
+
 </style>
 <script>document.body.classList.add('bta-redesign-home');</script>
 <div class="bta-home-main">
