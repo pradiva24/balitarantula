@@ -17,6 +17,15 @@ if (!function_exists('bta_booking_email_html')) {
         $isTandem = (($b['booking_mode'] ?? 'person') === 'tandem');
         $guestLabel = $isTandem ? '2 Persons (1 Tandem Unit)' : ((int)($b['adults'] ?? 0).' Adults, '.(int)($b['children'] ?? 0).' Children');
         $pickupYes = !empty($b['pickup_required']);
+        $pickupArea = trim((string)($b['pickup_area_name'] ?? ''));
+        // Some email callers pass the booking row without joining pickup_areas.
+        if ($pickupYes && $pickupArea === '' && (int)($b['pickup_area_id'] ?? 0) > 0) {
+            try {
+                $areaStmt = db()->prepare('SELECT name FROM pickup_areas WHERE id = ? LIMIT 1');
+                $areaStmt->execute([(int)$b['pickup_area_id']]);
+                $pickupArea = trim((string)$areaStmt->fetchColumn());
+            } catch (Throwable $ignored) {}
+        }
         $hotel = trim((string)($b['hotel_name'] ?? ''));
         $room = trim((string)($b['room_number'] ?? ''));
         $payment = (string)($b['payment_method'] ?? '-');
@@ -79,7 +88,7 @@ if (!function_exists('bta_booking_email_html')) {
         .'<tr><td style="padding:12px 22px;background:#fff7f0"><table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr>'.($coverBlock?'<td width="180" valign="middle">'.$coverBlock.'</td>':'').'<td valign="middle" style="padding:5px 10px"><div style="font-size:19px;color:#202722">'.e($package).'</div><div style="font-size:12px;line-height:1.55;color:#626c65;margin-top:5px">'.e($short).'</div></td></tr></table></td></tr>'
         .'<tr><td style="padding:12px 22px 3px"><div style="font-size:15px;color:#202722;padding:8px 0">Booking Details</div><table role="presentation" width="100%" cellpadding="0" cellspacing="0">'
         .$row('Activity Date',$date).$row('Activity Time',$activityTime).$row('Participants',$guestLabel).$row('Pickup Service',$pickupYes?'Yes':'No')
-        .($pickupYes?$row('Hotel or Villa Name',$hotel ?: 'Not provided').$row('Room Number',$room ?: 'Not provided').$row('Pickup Time',$pickupTime):'')
+        .($pickupYes?$row('Pickup Area',$pickupArea ?: 'Not provided').$row('Hotel or Villa Name',$hotel ?: 'Not provided').$row('Room Number',$room ?: 'Not provided').$row('Pickup Time',$pickupTime):'')
         .$row('Payment Method',$payment).$row('Payment Status',$paymentStatus).$row('Total Payment',$money($total),true)
         .$customerRows
         .'</table></td></tr>'
