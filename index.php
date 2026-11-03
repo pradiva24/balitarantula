@@ -814,6 +814,39 @@ body>main{margin:0!important;padding:0!important;max-width:none!important;width:
   }
 }
 
+
+/* Booking CTA: visible dark burnt-orange overlay above the background image. */
+.bta-home-main .booking-cta{
+  position:relative !important;
+  isolation:isolate !important;
+  background-color:#4b1b00 !important;
+  color:#fff !important;
+}
+.bta-home-main .booking-cta::before{
+  content:"" !important;
+  position:absolute !important;
+  inset:0 !important;
+  z-index:0 !important;
+  background:rgba(67,25,0,.88) !important;
+  pointer-events:none !important;
+}
+.bta-home-main .booking-cta[style*="background-image"]::before{
+  background:linear-gradient(135deg,rgba(67,25,0,.91),rgba(105,39,0,.84)) !important;
+}
+.bta-home-main .booking-cta .cta-inner{
+  position:relative !important;
+  z-index:1 !important;
+  color:#fff !important;
+}
+.bta-home-main .booking-cta .cta-inner .eyebrow,
+.bta-home-main .booking-cta .cta-inner>p:not(.eyebrow),
+.bta-home-main .booking-cta .cta-inner>small{
+  color:#fff !important;
+}
+.bta-home-main .booking-cta .cta-inner .eyebrow-line{background:#ff8a32 !important}
+.bta-home-main .booking-cta .cta-inner h2{color:#fff !important}
+.bta-home-main .booking-cta .cta-inner h2 span{color:#ff8a32 !important}
+
 </style>
 <script>document.body.classList.add('bta-redesign-home');</script>
 <div class="bta-home-main">
