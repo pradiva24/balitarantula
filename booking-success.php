@@ -309,7 +309,7 @@ require __DIR__ . '/includes/header.php';
           <div class="side-info">
             <div class="side-icon"><i class="fa-solid fa-car"></i></div>
             <div><strong>Pickup Service <span class="status-pill" style="margin-left:5px;background:<?=$booking['pickup_required']?'#e5f8e9;color:#15803d':'#eef1ef;color:#59645d'?>"><?=$booking['pickup_required']?'Included':'Self Arrival'?></span></strong>
-              <span><?php if($booking['pickup_required']): ?>Pickup Time: <?=e(substr((string)($booking['pickup_time'] ?: '—'),0,5))?><br>Pickup Location: <?=e(trim((string)($booking['hotel_name'] ?: $booking['pickup_area_name'] ?: 'Hotel / Villa')))?></span><?php else: ?>No hotel pickup selected. Please arrive at the activity location directly.</span><?php endif; ?></div>
+              <span><?php if($booking['pickup_required']): ?>Pickup Area: <?=e(trim((string)($booking['pickup_area_name']??'')) ?: 'Not provided')?><br>Pickup Time: <?=e(substr((string)($booking['pickup_time'] ?: '—'),0,5))?><br>Pickup Location: <?=e(trim((string)($booking['hotel_name'] ?: $booking['pickup_area_name'] ?: 'Hotel / Villa')))?></span><?php else: ?>No hotel pickup selected. Please arrive at the activity location directly.</span><?php endif; ?></div>
           </div>
         </section>
 
