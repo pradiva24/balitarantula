@@ -27,11 +27,6 @@ $fields=[
  'footer_trust_2_text'=>'Trust Item 2 Description',
  'footer_trust_3_title'=>'Trust Item 3 Title',
  'footer_trust_3_text'=>'Trust Item 3 Description',
- 'footer_social_instagram'=>'Instagram URL',
- 'footer_social_facebook'=>'Facebook URL',
- 'footer_social_youtube'=>'YouTube URL',
- 'footer_social_tripadvisor'=>'Tripadvisor URL',
- 'footer_social_tiktok'=>'TikTok URL'
 ];
 $defaults=[
  'footer_name'=>site_brand_name(),
@@ -131,7 +126,6 @@ require __DIR__.'/includes/header.php';
  <?php foreach(['footer_contact_title','footer_hours','footer_offer_title','footer_newsletter_placeholder','footer_newsletter_button'] as $key):?><div class="fb-field"><label><?=admin_e($fields[$key])?></label><input name="<?=admin_e($key)?>" value="<?=admin_e($values[$key])?>"></div><?php endforeach;?>
  <?php foreach(['footer_offer_text'] as $key):?><div class="fb-field full"><label><?=admin_e($fields[$key])?></label><textarea name="<?=admin_e($key)?>"><?=admin_e($values[$key])?></textarea></div><?php endforeach;?>
  </div></section>
- <section class="fb-card"><h2>Social Media</h2><div class="fb-grid"><?php foreach(['footer_social_instagram','footer_social_facebook','footer_social_youtube','footer_social_tripadvisor','footer_social_tiktok'] as $key):?><div class="fb-field"><label><?=admin_e($fields[$key])?></label><input type="url" name="<?=admin_e($key)?>" value="<?=admin_e($values[$key])?>" placeholder="https://"></div><?php endforeach;?></div></section>
  <section class="fb-card"><h2>Featured Offers Slider</h2><div class="fb-field"><label>Slider Title</label><input name="footer_slider_title" value="<?=admin_e($values['footer_slider_title'])?>"></div>
  <div class="fb-field" style="margin-top:14px"><label>Promotion Slides (JSON)</label><textarea name="footer_image_slides" style="min-height:180px"><?=admin_e(json_encode($slides,JSON_PRETTY_PRINT|JSON_UNESCAPED_SLASHES|JSON_UNESCAPED_UNICODE))?></textarea><div class="fb-hint">Setiap item: {"image":"uploads/banner.webp","url":"/packages.php","alt":"ATV offer","newtab":false}. Pilih gambar dari Media Library pada input file bila diperlukan dengan menambahkan path gambar di sini.</div></div></section>
  <section class="fb-card"><h2>Trust & Payment</h2><div class="fb-grid">
