@@ -144,7 +144,7 @@ if (isset($_GET['print']) && $_GET['print'] === '1') {
             <div class="info-row"><span class="key">Pickup Service</span><span>:</span><b><?=$booking['pickup_required']?'Yes':'No'?></b></div>
             <div class="info-row"><span class="key">Pickup Area</span><span>:</span><b><?=$booking['pickup_required']?e(trim((string)($booking['pickup_area_name']??'')) ?: 'Not provided'):'-'?></b></div>
             <div class="info-row"><span class="key">Pickup Location</span><span>:</span><b><?=$booking['pickup_required']?e($pickupLocation ?: 'Hotel / Villa'):'Self Arrival'?></b></div>
-            <div class="info-row"><span class="key">Hotel or Villa Name &amp; Room Number</span><span>:</span><b><?=$booking['pickup_required']?e(trim((string)($booking['hotel_name']??'')).((trim((string)($booking['room_number']??''))!=='')?' / Room '.trim((string)$booking['room_number']):'')):'-'?></b></div>
+            <div class="info-row"><span class="key">Hotel / Villa Name</span><span>:</span><b><?=$booking['pickup_required']?e(trim((string)($booking['hotel_name']??'')) ?: 'Not provided'):'-'?></b></div>
             <div class="info-row"><span class="key">Pickup Time</span><span>:</span><b><?=$booking['pickup_required']?e(substr((string)($booking['pickup_time'] ?: '—'),0,5)):'-'?></b></div>
             <div class="info-row"><span class="key">Payment Status</span><span>:</span><b><?=e(strtoupper((string)$booking['payment_status']))?></b></div>
             <div class="info-row"><span class="key">Total Payment</span><span>:</span><b style="color:#f06400;font-size:11pt"><?=e(rupiah($booking['total']))?></b></div>
@@ -289,7 +289,7 @@ require __DIR__ . '/includes/header.php';
           <div class="detail-row"><dt>Activity Time</dt><span class="colon">:</span><dd><?=e(substr((string)($booking['activity_time'] ?: '09:00'),0,5))?></dd></div>
           <div class="detail-row"><dt>Participants</dt><span class="colon">:</span><dd><?=($booking['booking_mode']??'person')==='tandem'?'2 Persons (1 Tandem Unit)':((int)$booking['adults'].' Adults'.((int)$booking['children']>0?', '.(int)$booking['children'].' Children':''))?></dd></div>
           <div class="detail-row"><dt>Hotel / Villa</dt><span class="colon">:</span><dd><?=e($booking['pickup_required'] ? ($booking['hotel_name'] ?: '-') : '-')?></dd></div>
-          <div class="detail-row"><dt>Room Number</dt><span class="colon">:</span><dd><?=e($booking['pickup_required'] ? ($booking['room_number'] ?: '-') : '-')?></dd></div>
+          
           <div class="detail-row"><dt>Payment Status</dt><span class="colon">:</span><dd><span class="status-pill <?=strcasecmp((string)$booking['payment_status'],'paid')===0?'paid':''?>"><i class="fa-solid <?=strcasecmp((string)$booking['payment_status'],'paid')===0?'fa-circle-check':'fa-clock'?>"></i><?=e($booking['payment_status'])?></span></dd></div>
           <div class="detail-row"><dt>Total Payment</dt><span class="colon">:</span><dd class="amount"><?=rupiah($total)?></dd></div>
         </dl>
