@@ -35,8 +35,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       $alt = trim((string)($_POST['alt_text'] ?? ''));
       $category = trim((string)($_POST['category'] ?? ''));
       $sort = (int)($_POST['sort_order'] ?? 0);
-      if (empty($_FILES['image']) || (int)($_FILES['image']['error'] ?? UPLOAD_ERR_NO_FILE) === UPLOAD_ERR_NO_FILE) {
-        throw new RuntimeException('Please choose an image before clicking Upload.');
+      $hasLocalUpload = !empty($_FILES['image']) && (int)($_FILES['image']['error'] ?? UPLOAD_ERR_NO_FILE) !== UPLOAD_ERR_NO_FILE;
+      $hasLibrarySelection = function_exists('admin_media_has_selection') && admin_media_has_selection('image');
+      if (!$hasLocalUpload && !$hasLibrarySelection) {
+        throw new RuntimeException('Please choose an image from your computer or select one from the Media Library.');
       }
       $path = admin_upload('image', 'gallery');
       if (!$path) throw new RuntimeException('The image upload did not return a saved file path.');
@@ -101,7 +103,7 @@ require __DIR__.'/includes/header.php';
     <input type="hidden" name="csrf" value="<?=admin_csrf()?>">
     <input type="hidden" name="act" value="save">
     <div class="formgrid">
-      <div class="field"><label>Image</label><input required type="file" name="image" accept=".jpg,.jpeg,.png,.webp,.gif,image/jpeg,image/png,image/webp,image/gif"></div>
+      <div class="field"><label>Image</label><input type="file" name="image" accept=".jpg,.jpeg,.png,.webp,.gif,image/jpeg,image/png,image/webp,image/gif"></div>
       <div class="field"><label>Title</label><input name="title" maxlength="255"></div>
       <div class="field"><label>Alt Text</label><input name="alt_text" maxlength="500"></div>
       <div class="field"><label>Category</label><input name="category" placeholder="ATV, Rafting, Swing..." maxlength="120"></div>
