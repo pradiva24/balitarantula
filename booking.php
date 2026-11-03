@@ -894,7 +894,7 @@ body {
             </div>
           </div>
           <div class="form-group">
-            <label>Hotel or Villa Name &amp; Room Number</label>
+            <label>Hotel or Villa Name</label>
             <input class="form-control" name="hotel_name" id="hotel_name" value="<?=e($_POST['hotel_name'] ?? '')?>" placeholder="Hotel name &amp; complete address">
           </div>
         </div>
