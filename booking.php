@@ -224,7 +224,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         'adults' => $adults, 'children' => $children, 'booking_mode' => $isTandem ? 'tandem' : 'person', 'customer_name' => $name, 'customer_email' => $email,
                         'customer_whatsapp' => $wa, 'customer_country' => $country, 'payment_method' => $paymentMethod,
                         'payment_status' => 'pending', 'booking_status' => 'new', 'subtotal' => $subtotal, 'discount_amount' => $discount, 'total' => $total,
-                        'pickup_required' => $pickup, 'pickup_price' => $pickupPrice, 'hotel_name' => $hotel, 'room_number' => $room, 'special_request' => $special
+                        'pickup_required' => $pickup, 'pickup_area_id' => $areaId, 'pickup_area_name' => $areaName, 'pickup_price' => $pickupPrice, 'hotel_name' => $hotel, 'room_number' => $room, 'special_request' => $special
                     ];
 
                     $siteName = trim((string)setting('site_name', 'Bali Tarantula Adventure'));
