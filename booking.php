@@ -213,6 +213,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                     $db->commit();
 
+                    // Resolve the selected pickup area again from the saved area ID.
+                    // This ensures email HTML and the attached PDF always receive the
+                    // canonical area name, even if the earlier validation value is empty.
+                    if ($pickup && (int)$areaId > 0) {
+                        try {
+                            $areaNameStmt = $db->prepare('SELECT name FROM pickup_areas WHERE id = ? AND status = 1 LIMIT 1');
+                            $areaNameStmt->execute([(int)$areaId]);
+                            $savedAreaName = trim((string)$areaNameStmt->fetchColumn());
+                            if ($savedAreaName !== '') $areaName = $savedAreaName;
+                        } catch (Throwable $areaLookupError) {
+                            error_log('[BTA PICKUP AREA LOOKUP] ' . $code . ': ' . $areaLookupError->getMessage());
+                        }
+                    }
+
                     $siteBaseUrl = rtrim((string)setting('site_url', BASE_URL), '/');
                     $confirmUrl = $siteBaseUrl . '/booking-confirmation?code=' . rawurlencode($code) . '&token=' . rawurlencode($accessToken);
                     // Email e-ticket opens the same A4 print view used by Booking Success.
