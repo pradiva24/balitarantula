@@ -42,3 +42,56 @@
   .bt-footer-slider-track{gap:10px}
   .bt-footer-slide{border-radius:8px}
 }
+
+
+/* Newsletter: prevent the email field and Subscribe button from overflowing on mobile. */
+.bt-footer .bt-newsletter{
+  display:flex;
+  align-items:stretch;
+  width:100%;
+  min-width:0;
+  box-sizing:border-box;
+}
+.bt-footer .bt-newsletter input[type="email"]{
+  display:block;
+  flex:1 1 0;
+  width:0;
+  min-width:0;
+  max-width:100%;
+  height:52px;
+  box-sizing:border-box;
+  font:inherit;
+  font-size:14px;
+}
+.bt-footer .bt-newsletter button{
+  display:flex;
+  flex:0 0 auto;
+  align-items:center;
+  justify-content:center;
+  min-height:52px;
+  max-width:45%;
+  box-sizing:border-box;
+  padding:0 16px;
+  font-size:14px;
+  line-height:1.2;
+}
+@media(max-width:620px){
+  .bt-footer .bt-footer-contact,
+  .bt-footer .bt-newsletter{width:100%;min-width:0;max-width:100%}
+  .bt-footer .bt-newsletter{gap:0;border-radius:8px}
+  .bt-footer .bt-newsletter input[type="email"]{
+    flex:1 1 0;
+    height:48px;
+    padding:0 11px!important;
+    font-size:13px;
+  }
+  .bt-footer .bt-newsletter input[type="email"]::placeholder{font-size:12px}
+  .bt-footer .bt-newsletter button{
+    flex:0 0 auto;
+    min-height:48px;
+    max-width:42%;
+    padding:0 12px;
+    font-size:13px;
+    white-space:nowrap;
+  }
+}
