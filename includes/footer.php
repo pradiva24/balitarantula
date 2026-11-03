@@ -67,8 +67,8 @@ if($footerSlidesRaw!==''){
 $wa=setting('site_whatsapp','');
 $waButtonText=trim((string)setting('site_whatsapp_button_text','WhatsApp'));
 if($waButtonText==='') $waButtonText='WhatsApp';
-$waMessage=trim((string)setting('site_whatsapp_message','Hello Manuaba Crystalfall, I would like to ask about your experiences.'));
-if($waMessage==='') $waMessage='Hello Manuaba Crystalfall, I would like to ask about your experiences.';
+$waMessage=trim((string)setting('site_whatsapp_message','Hello '.site_brand_name().', I would like to ask about your experiences.'));
+if($waMessage==='') $waMessage='Hello '.site_brand_name().', I would like to ask about your experiences.';
 $bgStyle=$footerBg ? ' style="--footer-bg-image:url(\''.e(asset_url($footerBg)).'\')"' : '';
 ?><link rel="stylesheet" href="<?=BASE_URL?>/assets/css/footer.css?v=22">
 <style id="bt-footer-slider-critical">
