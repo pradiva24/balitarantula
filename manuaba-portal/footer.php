@@ -1,250 +1,132 @@
 <?php
-$footerName = setting('footer_name', site_brand_name());
-$footerDesc = setting('footer_description','Create unforgettable memories with exciting Bali adventures, nature experiences, and local hospitality.');
-$footerTag = setting('footer_tagline','NATURE · ADVENTURE · HAPPINESS');
-$footerBottom = setting('footer_bottom_text','All rights reserved.');
-$footerLogo = setting('footer_logo', setting('site_logo',''));
-$footerBg = setting('footer_background','');
-$quickLinksRaw = setting('footer_quick_links', "Home|/\nAbout Us|/about.php\nActivities|/packages.php\nPackages|/packages.php\nGallery|/#gallery\nBlog|/blog.php\nContact|/contact.php");
-$popularRaw = setting('footer_popular_links', "Bali ATV|/packages.php\nAyung Rafting|/packages.php\nBali Swing|/packages.php\nUbud Activities|/packages.php\nKintamani Tour|/packages.php\nBali Car Rental|/contact.php");
-$socials = [
-    'instagram'=>setting('footer_social_instagram',''),
-    'facebook'=>setting('footer_social_facebook',''),
-    'youtube'=>setting('footer_social_youtube',''),
-    'tripadvisor'=>setting('footer_social_tripadvisor',''),
-    'tiktok'=>setting('footer_social_tiktok',''),
+require __DIR__.'/includes/auth.php';
+$page_title='Footer Builder';
+$db=db();
+
+$fields=[
+ 'footer_name'=>'Footer Brand Name',
+ 'footer_description'=>'Footer Description',
+ 'footer_tagline'=>'Footer Tagline',
+ 'footer_bottom_text'=>'Copyright Text',
+ 'footer_quick_title'=>'Quick Links Title',
+ 'footer_quick_links'=>'Quick Links (one per line: Label|URL)',
+ 'footer_popular_title'=>'Popular Activities Title',
+ 'footer_popular_links'=>'Popular Links (one per line: Label|URL)',
+ 'footer_contact_title'=>'Contact Section Title',
+ 'footer_hours'=>'Business Hours',
+ 'footer_offer_title'=>'Newsletter Heading',
+ 'footer_offer_text'=>'Newsletter Description',
+ 'footer_newsletter_placeholder'=>'Newsletter Placeholder',
+ 'footer_newsletter_button'=>'Newsletter Button',
+ 'footer_slider_title'=>'Promotion Slider Title',
+ 'footer_payment_title'=>'Payment Section Title',
+ 'footer_payment_methods'=>'Payment Methods (comma separated)',
+ 'footer_trust_1_title'=>'Trust Item 1 Title',
+ 'footer_trust_1_text'=>'Trust Item 1 Description',
+ 'footer_trust_2_title'=>'Trust Item 2 Title',
+ 'footer_trust_2_text'=>'Trust Item 2 Description',
+ 'footer_trust_3_title'=>'Trust Item 3 Title',
+ 'footer_trust_3_text'=>'Trust Item 3 Description',
+ 'footer_social_instagram'=>'Instagram URL',
+ 'footer_social_facebook'=>'Facebook URL',
+ 'footer_social_youtube'=>'YouTube URL',
+ 'footer_social_tripadvisor'=>'Tripadvisor URL',
+ 'footer_social_tiktok'=>'TikTok URL'
 ];
-
-$payments = array_values(array_filter(array_map('trim', explode(',', setting('footer_payment_methods','VISA,MASTERCARD,BCA,MANDIRI,BNI,BRI,QRIS')))));
-$paymentIcons=[]; for($pi=1;$pi<=7;$pi++){ $paymentIcons[$pi]=setting('footer_payment_'.$pi.'_icon',''); }
-$wonderfulLogo=setting('footer_wonderful_logo','');
-$footerAssetExists = static function($path): bool {
-    if(!$path || preg_match('~^https?://~i',(string)$path)) return true;
-    return is_file(__DIR__.'/../'.ltrim((string)$path,'/'));
-};
-$parseLinks = static function($raw){
-    $out=[];
-    foreach(preg_split('/\r\n|\r|\n/', (string)$raw) as $line){
-        $line=trim($line); if($line==='') continue;
-        $parts=explode('|',$line,2); $label=trim($parts[0]??''); $url=trim($parts[1]??'#');
-        if($label!=='') $out[]=['label'=>$label,'url'=>$url?:'#'];
-    }
-    return $out;
-};
-$quickLinks=$parseLinks($quickLinksRaw); $popularLinks=$parseLinks($popularRaw);
-
-$footerSlides=[];
-$footerSlidesRaw=(string)setting('footer_image_slides','');
-if($footerSlidesRaw!==''){
-    $decoded=json_decode($footerSlidesRaw,true);
-    if(is_array($decoded)){
-        foreach($decoded as $slide){
-            if(!is_array($slide)) continue;
-            $fimg=trim((string)($slide['image']??''));
-            if($fimg==='' || !$footerAssetExists($fimg)) continue;
-            $furl=trim((string)($slide['url']??''));
-            $falt=trim((string)($slide['alt']??''));
-            $fnew=!empty($slide['newtab']);
-            $footerSlides[]=['image'=>$fimg,'url'=>$furl!==''?$furl:'#','alt'=>$falt!==''?$falt:'Footer promotion','newtab'=>$fnew];
-        }
-    }
+$defaults=[
+ 'footer_name'=>site_brand_name(),
+ 'footer_description'=>'Create unforgettable memories with exciting Bali adventures, nature experiences, and local hospitality.',
+ 'footer_tagline'=>'NATURE · ADVENTURE · HAPPINESS',
+ 'footer_bottom_text'=>'All rights reserved.',
+ 'footer_quick_title'=>'Quick Links',
+ 'footer_quick_links'=>"Home|/\nAbout Us|/about.php\nActivities|/packages.php\nPackages|/packages.php\nGallery|/#gallery\nBlog|/blog.php\nContact|/contact.php",
+ 'footer_popular_title'=>'Popular Activities',
+ 'footer_popular_links'=>"Bali ATV|/packages.php\nAyung Rafting|/packages.php\nBali Swing|/packages.php\nUbud Activities|/packages.php\nKintamani Tour|/packages.php\nBali Car Rental|/contact.php",
+ 'footer_contact_title'=>'Contact Us','footer_hours'=>'Mon – Sun : 08:00 – 18:00',
+ 'footer_offer_title'=>'Get Special Offers','footer_offer_text'=>'Subscribe to get the latest updates and exclusive deals.',
+ 'footer_newsletter_placeholder'=>'Your email address','footer_newsletter_button'=>'Subscribe',
+ 'footer_slider_title'=>'Featured Offers','footer_payment_title'=>'We Accept',
+ 'footer_payment_methods'=>'VISA,MASTERCARD,BCA,MANDIRI,BNI,BRI,QRIS',
+ 'footer_trust_1_title'=>'Authentic','footer_trust_1_text'=>'Bali Experience',
+ 'footer_trust_2_title'=>'Safe & Secure','footer_trust_2_text'=>'Booking',
+ 'footer_trust_3_title'=>'Friendly','footer_trust_3_text'=>'Local Team'
+];
+$values=[];
+foreach($fields as $key=>$label){$values[$key]=setting($key,$defaults[$key]??'');}
+$imageKeys=['footer_logo','footer_background','footer_wonderful_logo'];
+foreach($imageKeys as $key)$values[$key]=setting($key,'');
+for($i=1;$i<=7;$i++)$values['footer_payment_'.$i.'_icon']=setting('footer_payment_'.$i.'_icon','');
+$values['footer_image_slides']=setting('footer_image_slides','[]');
+$slides=json_decode((string)$values['footer_image_slides'],true);
+if(!is_array($slides))$slides=[];
+$errors=[];
+if($_SERVER['REQUEST_METHOD']==='POST'){
+ admin_verify_csrf();
+ try{
+  foreach($fields as $key=>$label){
+   $value=trim((string)($_POST[$key]??''));
+   $st=$db->prepare("INSERT INTO settings(setting_key,setting_value) VALUES(?,?) ON DUPLICATE KEY UPDATE setting_value=VALUES(setting_value),updated_at=NOW()");
+   $st->execute([$key,$value]);
+   $values[$key]=$value;
+  }
+  foreach($imageKeys as $key){
+   $path=admin_upload($key,'footer',$values[$key]);
+   if($path!==null){$st=$db->prepare("INSERT INTO settings(setting_key,setting_value) VALUES(?,?) ON DUPLICATE KEY UPDATE setting_value=VALUES(setting_value),updated_at=NOW()");$st->execute([$key,$path]);$values[$key]=$path;}
+  }
+  for($i=1;$i<=7;$i++){
+   $key='footer_payment_'.$i.'_icon';$path=admin_upload($key,'footer',$values[$key]);
+   if($path!==null){$st=$db->prepare("INSERT INTO settings(setting_key,setting_value) VALUES(?,?) ON DUPLICATE KEY UPDATE setting_value=VALUES(setting_value),updated_at=NOW()");$st->execute([$key,$path]);$values[$key]=$path;}
+  }
+  $raw=trim((string)($_POST['footer_image_slides']??'[]'));
+  $decoded=json_decode($raw,true);
+  if(!is_array($decoded))throw new RuntimeException('Promotion slides harus berupa JSON array yang valid.');
+  $clean=[];
+  foreach($decoded as $slide){
+   if(!is_array($slide))continue;
+   $image=trim((string)($slide['image']??''));
+   if($image==='')continue;
+   $clean[]=['image'=>$image,'url'=>trim((string)($slide['url']??'')),'alt'=>trim((string)($slide['alt']??'')),'newtab'=>!empty($slide['newtab'])];
+  }
+  $values['footer_image_slides']=json_encode($clean,JSON_UNESCAPED_SLASHES|JSON_UNESCAPED_UNICODE);
+  $st=$db->prepare("INSERT INTO settings(setting_key,setting_value) VALUES('footer_image_slides',?) ON DUPLICATE KEY UPDATE setting_value=VALUES(setting_value),updated_at=NOW()");
+  $st->execute([$values['footer_image_slides']]);
+  admin_flash('success','Footer settings berhasil disimpan.');
+  header('Location: footer.php');exit;
+ }catch(Throwable $e){$errors[]=$e->getMessage();}
 }
-$wa=setting('site_whatsapp','');
-$waButtonText=trim((string)setting('site_whatsapp_button_text','WhatsApp'));
-if($waButtonText==='') $waButtonText='WhatsApp';
-$waMessage=trim((string)setting('site_whatsapp_message','Hello Manuaba Crystalfall, I would like to ask about your experiences.'));
-if($waMessage==='') $waMessage='Hello Manuaba Crystalfall, I would like to ask about your experiences.';
-$bgStyle=$footerBg ? ' style="--footer-bg-image:url(\''.e(asset_url($footerBg)).'\')"' : '';
-?><link rel="stylesheet" href="<?=BASE_URL?>/assets/css/footer.css?v=22">
-<style id="bt-footer-slider-critical">
-/* Footer Background Transparent Black Overlay (Darker) */
-.bt-footer{position:relative;background-color:#000000!important;overflow:hidden;}
-.bt-footer:before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.88) 0%,rgba(0,0,0,.95) 100%),var(--footer-bg-image,none)!important;background-size:cover!important;background-position:center!important;background-repeat:no-repeat!important;opacity:1!important;pointer-events:none;}
-.bt-footer-main,.bt-footer-trust,.bt-footer-bottom{position:relative;z-index:1;}
-.bt-footer-trust{background:rgba(0,0,0,.50)!important;}
-.bt-footer-bottom{background:rgba(0,0,0,.92)!important;}
-
-/* Critical slider styles: keep the promo strip compact and horizontal even if footer.css is cached/blocked. */
-.bt-footer-slider{grid-column:1 / span 3;grid-row:2;min-width:0;min-height:0;align-self:start;margin-top:2px;box-sizing:border-box;}
-.bt-footer-slider-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:0 0 8px;}
-.bt-footer-slider-head h3{margin:0;color:#fff;font-size:18px;line-height:1.2;}
-.bt-footer-slider-nav{display:flex;gap:6px;}
-.bt-footer-slider-nav button{width:30px;height:30px;border:1px solid rgba(255,255,255,.28);border-radius:50%;background:rgba(255,255,255,.10);color:#fff;font-size:18px;line-height:1;cursor:pointer;display:grid;place-items:center;padding:0;}
-.bt-footer-slider-nav button:hover{background:#d6efac;color:#103f2d;}
-.bt-footer-slider-viewport{width:100%;height:106px;overflow:hidden;border-radius:8px;}
-.bt-footer-slider-track{display:flex;gap:12px;width:max-content;transform:translateX(0);transition:transform .45s ease;will-change:transform;}
-.bt-footer-slide{position:relative;display:block;flex:0 0 calc((100% - 36px)/4);width:calc((100% - 36px)/4);height:106px;overflow:hidden;border-radius:8px;background:rgba(255,255,255,.07);text-decoration:none;}
-.bt-footer-slide:only-child{flex-basis:100%;width:100%;}
-.bt-footer-slide img{display:block;width:100%;height:100%;object-fit:cover;}
-.bt-footer-slide-overlay{position:absolute;left:0;right:0;bottom:0;padding:6px 9px;background:linear-gradient(transparent,rgba(0,0,0,.72));color:#fff;font-size:11px;font-weight:800;}
-.bt-footer-slide-overlay b{color:#d6efac;}
-.bt-footer-slider-empty{height:106px;display:grid;place-items:center;border:1px dashed rgba(255,255,255,.22);border-radius:8px;color:#c7ddd2;font-size:12px;text-align:center;padding:12px;box-sizing:border-box;}
-@media(max-width:1000px){
- .bt-footer-slider{grid-column:1 / -1;grid-row:auto;order:4;}
- .bt-footer-slider-viewport{height:120px;}
- .bt-footer-slide{flex-basis:calc((100% - 24px)/3);width:calc((100% - 24px)/3);height:120px;}
-}
-@media(max-width:620px){
- .bt-footer-slider{grid-column:1 / -1;}
- .bt-footer-slider-viewport{height:112px;}
- .bt-footer-slider-track{gap:10px;}
- .bt-footer-slide{flex-basis:calc((100% - 10px)/2);width:calc((100% - 10px)/2);height:112px;}
-}
-
-.wa-float{display:inline-flex!important;align-items:center;justify-content:center;gap:8px;white-space:nowrap;}
-.wa-float-icon{display:inline-flex;align-items:center;justify-content:center;font-size:20px;line-height:1;}
-.wa-float-icon i{display:block;}
-.wa-float-label{display:inline-block;}
-@media(max-width:520px){.wa-float{right:14px!important;bottom:14px!important;padding:11px 15px!important;gap:7px!important}.wa-float-icon{font-size:19px!important;}}
+require __DIR__.'/includes/header.php';
+?>
+<style>
+.fb-wrap{max-width:1180px;margin:24px auto;padding:0 18px}.fb-card{background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:22px;margin:0 0 18px}.fb-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px}.fb-field label{display:block;font-size:13px;font-weight:700;margin:0 0 7px}.fb-field input,.fb-field textarea{width:100%;box-sizing:border-box;padding:11px;border:1px solid #d7dce1;border-radius:8px;font:inherit}.fb-field textarea{min-height:110px;resize:vertical}.fb-field.full{grid-column:1/-1}.fb-hint{font-size:12px;color:#667085;margin-top:5px}.fb-preview{display:flex;gap:12px;align-items:center;margin-top:8px;flex-wrap:wrap}.fb-preview img{max-width:180px;max-height:75px;object-fit:contain;background:#f3f4f6;border-radius:6px;padding:5px}.fb-save{position:sticky;bottom:12px;display:flex;justify-content:flex-end;padding:12px;background:rgba(255,255,255,.94);border:1px solid #e5e7eb;border-radius:12px;z-index:5}.fb-save button{background:#f45b20;color:#fff;border:0;border-radius:9px;padding:13px 24px;font-weight:800;cursor:pointer}.fb-error{background:#fff1f0;color:#9f1d16;border:1px solid #ffc9c4;padding:12px;border-radius:8px;margin-bottom:14px}@media(max-width:700px){.fb-grid{grid-template-columns:1fr}.fb-field.full{grid-column:auto}.fb-card{padding:16px}}
 </style>
-<footer class="bt-footer"<?= $bgStyle ?>>
-  <div class="bt-footer-main">
-    <div class="container bt-footer-grid">
-      <section class="bt-footer-brand">
-        <a class="bt-footer-logo" href="<?=BASE_URL?>/" aria-label="<?=e($footerName)?>">
-          <?php if($footerLogo && $footerAssetExists($footerLogo)): ?><img src="<?=e(asset_url($footerLogo))?>" alt="<?=e($footerName)?>" loading="lazy" decoding="async"><?php else: ?><span class="bt-footer-logo-fallback">BT</span><?php endif; ?>
-        </a>
-        <h2><?=e($footerName)?></h2>
-        <p><?=nl2br(e($footerDesc))?></p>
-        <div class="bt-socials" aria-label="Social media">
-          <?php foreach($socials as $network=>$url): if(!$url) continue; $labels=['instagram'=>'Instagram','facebook'=>'Facebook','youtube'=>'YouTube','tripadvisor'=>'Tripadvisor','tiktok'=>'TikTok']; ?>
-            <a href="<?=e($url)?>" target="_blank" rel="noopener noreferrer" aria-label="<?=e($labels[$network])?>" class="bt-social bt-social-<?=e($network)?>">
-              <?=site_icon_html('footer.'.$network, ['instagram'=>'fa-brands fa-instagram','facebook'=>'fa-brands fa-facebook-f','youtube'=>'fa-brands fa-youtube','tripadvisor'=>'fa-brands fa-tripadvisor','tiktok'=>'fa-brands fa-tiktok'][$network] ?? 'fa-solid fa-share-nodes')?>
-            </a>
-          <?php endforeach; ?>
-        </div>
-        <div class="bt-footer-hashtag">#<?=e(preg_replace('/[^A-Za-z0-9]+/','', $footerName))?></div>
-        <div class="bt-footer-mini-tag"><?=e($footerTag)?></div>
-      </section>
-
-      <nav class="bt-footer-column" aria-label="Quick Links">
-        <h3><?=e(setting('footer_quick_title','Quick Links'))?></h3>
-        <?php foreach($quickLinks as $link): ?><a href="<?=e($link['url'])?>"><span><?=site_icon_html("footer.link","fa-solid fa-chevron-right")?></span><?=e($link['label'])?></a><?php endforeach; ?>
-      </nav>
-
-      <nav class="bt-footer-column" aria-label="Popular Activities">
-        <h3><?=e(setting('footer_popular_title','Popular Activities'))?></h3>
-        <?php foreach($popularLinks as $link): ?><a href="<?=e($link['url'])?>"><span><?=site_icon_html("footer.link","fa-solid fa-chevron-right")?></span><?=e($link['label'])?></a><?php endforeach; ?>
-      </nav>
-
-      <section class="bt-footer-slider" aria-label="Promotional banners">
-        <div class="bt-footer-slider-head">
-          <h3><?=e(setting('footer_slider_title','Featured Offers'))?></h3>
-          <?php if(count($footerSlides)>1): ?><div class="bt-footer-slider-nav" aria-label="Slider controls"><button type="button" class="bt-footer-slider-prev" aria-label="Previous slide"><?=site_icon_html("footer.slider_prev","fa-solid fa-chevron-left")?></button><button type="button" class="bt-footer-slider-next" aria-label="Next slide"><?=site_icon_html("footer.slider_next","fa-solid fa-chevron-right")?></button></div><?php endif; ?>
-        </div>
-        <?php if($footerSlides): ?>
-        <div class="bt-footer-slider-viewport">
-          <div class="bt-footer-slider-track">
-            <?php foreach($footerSlides as $i=>$slide): ?>
-              <a class="bt-footer-slide" href="<?=e($slide['url'])?>"<?= $slide['newtab'] ? ' target="_blank" rel="noopener noreferrer"' : '' ?> aria-label="<?=e($slide['alt'])?>">
-                <img src="<?=e(asset_url($slide['image']))?>" alt="<?=e($slide['alt'])?>" loading="lazy" decoding="async">
-                <span class="bt-footer-slide-overlay">View Offer <b><?=site_icon_html("footer.slide_arrow","fa-solid fa-arrow-right")?></b></span>
-              </a>
-            <?php endforeach; ?>
-          </div>
-        </div>
-        <?php else: ?>
-          <div class="bt-footer-slider-empty">Add promotional images from Admin → Footer Builder.</div>
-        <?php endif; ?>
-      </section>
-
-      <section class="bt-footer-contact">
-        <h3><?=e(setting('footer_contact_title','Contact Us'))?></h3>
-        <div class="bt-contact-item"><span class="bt-contact-icon"><?=site_icon_html("footer.address","fa-solid fa-location-dot")?></span><div><?=nl2br(e(setting('site_address','Bali, Indonesia')))?></div></div>
-        <div class="bt-contact-item"><span class="bt-contact-icon"><?=site_icon_html("footer.phone","fa-solid fa-phone")?></span><div><?=e(setting('site_phone',''))?></div></div>
-        <div class="bt-contact-item"><span class="bt-contact-icon"><?=site_icon_html("footer.email","fa-regular fa-envelope")?></span><div><?=e(setting('site_email',''))?></div></div>
-        <div class="bt-contact-item"><span class="bt-contact-icon"><?=site_icon_html("footer.hours","fa-regular fa-clock")?></span><div><?=e(setting('footer_hours','Mon – Sun : 08:00 – 18:00'))?></div></div>
-        <h4><?=e(setting('footer_offer_title','Get Special Offers'))?></h4>
-        <p><?=e(setting('footer_offer_text','Subscribe to get the latest updates and exclusive deals.'))?></p>
-        <form class="bt-newsletter" action="<?=BASE_URL?>/contact-us" method="get">
-          <input type="email" name="newsletter_email" placeholder="<?=e(setting('footer_newsletter_placeholder','Your email address'))?>" aria-label="Email address">
-          <button type="submit"><?=e(setting('footer_newsletter_button','Subscribe'))?></button>
-        </form>
-      </section>
-    </div>
-  </div>
-
-  <style id="bt-hide-trust-mobile-tablet">
-@media screen and (max-width:1024px){
-  .bt-footer .bt-footer-trust,
-  footer .bt-footer-trust{
-    display:none !important;
-    visibility:hidden !important;
-    height:0 !important;
-    min-height:0 !important;
-    max-height:0 !important;
-    margin:0 !important;
-    padding:0 !important;
-    overflow:hidden !important;
-  }
-}
-</style>
-<div class="bt-footer-trust">
-    <div class="container bt-trust-grid">
-      <div class="bt-trust-items">
-        <div class="bt-trust"><span><?=site_icon_html("footer.trust_1","fa-solid fa-circle-check")?></span><strong><?=e(setting('footer_trust_1_title','Authentic'))?><small><?=e(setting('footer_trust_1_text','Bali Experience'))?></small></strong></div>
-        <div class="bt-trust"><span><?=site_icon_html("footer.trust_2","fa-solid fa-shield-heart")?></span><strong><?=e(setting('footer_trust_2_title','Safe & Secure'))?><small><?=e(setting('footer_trust_2_text','Booking'))?></small></strong></div>
-        <div class="bt-trust"><span><?=site_icon_html("footer.trust_3","fa-solid fa-handshake")?></span><strong><?=e(setting('footer_trust_3_title','Friendly'))?><small><?=e(setting('footer_trust_3_text','Local Team'))?></small></strong></div>
-      </div>
-      <div class="bt-payment"><b><?=e(setting('footer_payment_title','We Accept'))?></b><div><?php foreach($payments as $idx=>$pay): $icon=$paymentIcons[$idx+1]??''; ?><span class="bt-payment-item"><?php if($icon && $footerAssetExists($icon)): ?><img src="<?=e(asset_url($icon))?>" alt="<?=e($pay)?>" loading="lazy" decoding="async"><?php else: ?><?=e($pay)?><?php endif; ?></span><?php endforeach; ?></div></div>
-      <div class="bt-wonderful"><?php if($wonderfulLogo && $footerAssetExists($wonderfulLogo)): ?><img src="<?=e(asset_url($wonderfulLogo))?>" alt="Wonderful Indonesia" loading="lazy" decoding="async"><?php else: ?><span>wonderful<br><strong>indonesia</strong></span><?php endif; ?></div>
-    </div>
-  </div>
-
-  <div class="bt-footer-bottom">
-    <div class="container bt-footer-bottom-inner">
-      <div>© <?=date('Y')?> <?=e($footerName)?>. <?=e($footerBottom)?></div>
-      <div class="bt-legal"><a href="<?=BASE_URL?>/page/privacy-policy">Privacy Policy</a><i>|</i><a href="<?=BASE_URL?>/page/terms-conditions">Terms &amp; Conditions</a><i>|</i><a href="<?=BASE_URL?>/sitemap">Sitemap</a></div>
-      <div class="bt-bottom-tag"><?=e($footerTag)?></div>
-    </div>
-  </div>
-
-<?php if(count($footerSlides)>1): ?>
-<script>
-(function(){
-  const root=document.querySelector('.bt-footer-slider');
-  if(!root) return;
-  const track=root.querySelector('.bt-footer-slider-track');
-  const slides=Array.from(root.querySelectorAll('.bt-footer-slide'));
-  if(!track || slides.length<2) return;
-  let index=0;
-  let timer;
-  function visibleCount(){
-    return window.matchMedia('(max-width:620px)').matches ? 2
-      : (window.matchMedia('(max-width:1000px)').matches ? 3 : 4);
-  }
-  function syncSlideWidths(){
-    const count=visibleCount();
-    const viewportWidth=root.querySelector('.bt-footer-slider-viewport')?.clientWidth || root.clientWidth;
-    const gap=count>1 ? (window.matchMedia('(max-width:620px)').matches ? 10 : 12) : 0;
-    const slideWidth=Math.max(1,(viewportWidth-(gap*(count-1)))/count);
-    slides.forEach(slide=>{
-      slide.style.flex='0 0 '+slideWidth+'px';
-      slide.style.width=slideWidth+'px';
-    });
-    track.style.gap=gap+'px';
-    track.style.width=((slideWidth*slides.length)+(gap*Math.max(0,slides.length-1)))+'px';
-  }
-  function step(){
-    syncSlideWidths();
-    const count=visibleCount();
-    const max=Math.max(0,slides.length-count);
-    if(index>max) index=0;
-    const gap=parseFloat(getComputedStyle(track).gap)||0;
-    const w=slides[0].getBoundingClientRect().width;
-    track.style.transform='translate3d(-'+((w+gap)*index)+'px,0,0)';
-  }
-  function next(){ index++; step(); }
-  function prev(){ index=Math.max(0,index-1); step(); }
-  root.querySelector('.bt-footer-slider-next')?.addEventListener('click',()=>{next();restart();});
-  root.querySelector('.bt-footer-slider-prev')?.addEventListener('click',()=>{prev();restart();});
-  function start(){ timer=setInterval(()=>{ next(); },5000); }
-  function restart(){ clearInterval(timer); start(); }
-  window.addEventListener('resize',step,{passive:true});
-  step(); start();
-})();
-</script>
-<?php endif; ?>
-</footer>
-<?php if($wa): ?><a class="wa-float" target="_blank" rel="noopener" aria-label="<?=e($waButtonText)?>" href="<?=e(whatsapp_url($wa,$waMessage))?>"><span class="wa-float-icon"><?=site_icon_html('footer.whatsapp','fa-brands fa-whatsapp')?></span><span class="wa-float-label"><?=e($waButtonText)?></span></a><?php endif; ?>
-</body></html>
+<main class="fb-wrap">
+ <h1>Footer Builder</h1><p>Kelola konten, gambar background, tautan, slider promosi, informasi pembayaran, dan elemen footer website.</p>
+ <?php foreach($errors as $error):?><div class="fb-error"><?=admin_e($error)?></div><?php endforeach;?>
+ <form method="post" enctype="multipart/form-data" id="footerForm"><input type="hidden" name="csrf" value="<?=admin_csrf()?>">
+ <section class="fb-card"><h2>Brand & Background</h2><div class="fb-grid">
+ <?php foreach(['footer_name','footer_tagline','footer_bottom_text'] as $key):?><div class="fb-field"><label><?=admin_e($fields[$key])?></label><input name="<?=admin_e($key)?>" value="<?=admin_e($values[$key])?>"></div><?php endforeach;?>
+ <div class="fb-field full"><label>Footer Description</label><textarea name="footer_description"><?=admin_e($values['footer_description'])?></textarea></div>
+ <?php foreach(['footer_logo'=>'Footer Logo','footer_background'=>'Footer Background Image','footer_wonderful_logo'=>'Wonderful Indonesia Logo'] as $key=>$label):?>
+ <div class="fb-field"><label><?=admin_e($label)?></label><input type="file" name="<?=admin_e($key)?>" accept="image/jpeg,image/png,image/webp,image/gif">
+ <?php if($values[$key]):?><div class="fb-preview"><img src="<?=admin_e(asset_url($values[$key]))?>" alt=""><small><?=admin_e($values[$key])?></small></div><?php endif;?></div>
+ <?php endforeach;?>
+ </div></section>
+ <section class="fb-card"><h2>Navigation Links</h2><div class="fb-grid">
+ <?php foreach(['footer_quick_title','footer_popular_title'] as $key):?><div class="fb-field"><label><?=admin_e($fields[$key])?></label><input name="<?=admin_e($key)?>" value="<?=admin_e($values[$key])?>"></div><?php endforeach;?>
+ <?php foreach(['footer_quick_links','footer_popular_links'] as $key):?><div class="fb-field"><label><?=admin_e($fields[$key])?></label><textarea name="<?=admin_e($key)?>"><?=admin_e($values[$key])?></textarea><div class="fb-hint">Satu tautan per baris dengan format Label|URL</div></div><?php endforeach;?>
+ </div></section>
+ <section class="fb-card"><h2>Contact & Newsletter</h2><div class="fb-grid">
+ <?php foreach(['footer_contact_title','footer_hours','footer_offer_title','footer_newsletter_placeholder','footer_newsletter_button'] as $key):?><div class="fb-field"><label><?=admin_e($fields[$key])?></label><input name="<?=admin_e($key)?>" value="<?=admin_e($values[$key])?>"></div><?php endforeach;?>
+ <?php foreach(['footer_offer_text'] as $key):?><div class="fb-field full"><label><?=admin_e($fields[$key])?></label><textarea name="<?=admin_e($key)?>"><?=admin_e($values[$key])?></textarea></div><?php endforeach;?>
+ </div></section>
+ <section class="fb-card"><h2>Social Media</h2><div class="fb-grid"><?php foreach(['footer_social_instagram','footer_social_facebook','footer_social_youtube','footer_social_tripadvisor','footer_social_tiktok'] as $key):?><div class="fb-field"><label><?=admin_e($fields[$key])?></label><input type="url" name="<?=admin_e($key)?>" value="<?=admin_e($values[$key])?>" placeholder="https://"></div><?php endforeach;?></div></section>
+ <section class="fb-card"><h2>Featured Offers Slider</h2><div class="fb-field"><label>Slider Title</label><input name="footer_slider_title" value="<?=admin_e($values['footer_slider_title'])?>"></div>
+ <div class="fb-field" style="margin-top:14px"><label>Promotion Slides (JSON)</label><textarea name="footer_image_slides" style="min-height:180px"><?=admin_e(json_encode($slides,JSON_PRETTY_PRINT|JSON_UNESCAPED_SLASHES|JSON_UNESCAPED_UNICODE))?></textarea><div class="fb-hint">Setiap item: {"image":"uploads/banner.webp","url":"/packages.php","alt":"ATV offer","newtab":false}. Pilih gambar dari Media Library pada input file bila diperlukan dengan menambahkan path gambar di sini.</div></div></section>
+ <section class="fb-card"><h2>Trust & Payment</h2><div class="fb-grid">
+ <?php foreach(['footer_trust_1_title','footer_trust_1_text','footer_trust_2_title','footer_trust_2_text','footer_trust_3_title','footer_trust_3_text','footer_payment_title','footer_payment_methods'] as $key):?><div class="fb-field"><label><?=admin_e($fields[$key])?></label><input name="<?=admin_e($key)?>" value="<?=admin_e($values[$key])?>"></div><?php endforeach;?>
+ <?php for($i=1;$i<=7;$i++):$key='footer_payment_'.$i.'_icon';?><div class="fb-field"><label>Payment Icon <?=$i?></label><input type="file" name="<?=admin_e($key)?>" accept="image/jpeg,image/png,image/webp,image/svg+xml"><?php if($values[$key]):?><div class="fb-preview"><img src="<?=admin_e(asset_url($values[$key]))?>" alt=""><small><?=admin_e($values[$key])?></small></div><?php endif;?></div><?php endfor;?>
+ </div></section>
+ <div class="fb-save"><button type="submit">Save Footer Settings</button></div>
+ </form>
+</main>
+<?php require __DIR__.'/includes/footer.php'; ?>
