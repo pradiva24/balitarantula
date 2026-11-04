@@ -18,29 +18,29 @@ require __DIR__.'/includes/header.php';
 ?>
 <style>
 .bt-404-page{background:#f5f4ef;color:#5d5b56;font-family:'Inter',system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
-.bt-404-hero{position:relative;min-height:650px;overflow:hidden;display:flex;align-items:center;background:linear-gradient(112deg, #171717 0%, #242321 65%, #30271f 100%);border-bottom:3px solid #ff5a1f}
+.bt-404-hero{position:relative;min-height:650px;overflow:hidden;display:flex;align-items:center;background:linear-gradient(112deg, #171717 0%, #242321 65%, #30271f 100%);border-bottom:3px solid #ed3833}
 .bt-404-bg{position:absolute;inset:0;background:#181818}
 .bt-404-bg img{width:100%;height:100%;object-fit:cover;display:block;opacity:.25}
 .bt-404-overlay{position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,0,0,.92) 0%,rgba(0,0,0,.82) 40%,rgba(0,0,0,.45) 70%,rgba(0,0,0,.2) 100%)}
 .bt-404-content{position:relative;z-index:2;width:min(1180px,92%);margin:0 auto;padding:85px 0;max-width:680px;color:#fff}
-.bt-404-code{font-family:'Barlow Condensed',sans-serif;font-size:clamp(110px,15vw,190px);line-height:.75;font-weight:900;letter-spacing:-6px;color:#ff5a1f;margin:0 0 25px;position:relative}
-.bt-404-code:after{content:"✦";font-size:.18em;position:absolute;left:49%;top:20%;color:#ff5a1f}
-.bt-404-script{font-family:"Brush Script MT","Segoe Script",cursive;font-size:clamp(46px,6vw,72px);font-weight:400;color:#ff5a1f;line-height:.8;margin:-10px 0 28px 80px;transform:rotate(-6deg)}
+.bt-404-code{font-family:'Barlow Condensed',sans-serif;font-size:clamp(110px,15vw,190px);line-height:.75;font-weight:900;letter-spacing:-6px;color:#ed3833;margin:0 0 25px;position:relative}
+.bt-404-code:after{content:"✦";font-size:.18em;position:absolute;left:49%;top:20%;color:#ed3833}
+.bt-404-script{font-family:"Brush Script MT","Segoe Script",cursive;font-size:clamp(46px,6vw,72px);font-weight:400;color:#ed3833;line-height:.8;margin:-10px 0 28px 80px;transform:rotate(-6deg)}
 .bt-404-content h1{font-family:'Barlow Condensed',sans-serif;font-size:clamp(38px,5vw,58px);line-height:0.98;margin:0 0 16px;font-weight:900;letter-spacing:-0.5px;text-transform:uppercase}
 .bt-404-content p{font-size:16px;line-height:1.75;color:#e0ded9;max-width:580px;margin:0 0 30px}
-.bt-404-btn{display:inline-flex;align-items:center;gap:14px;background:#ff5a1f;color:#111111;text-decoration:none;border-radius:8px;padding:15px 30px;font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:900;letter-spacing:1.5px;text-transform:uppercase;transition:.2s ease;box-shadow:0 4px 20px rgba(255, 90, 31, 0.35)}
+.bt-404-btn{display:inline-flex;align-items:center;gap:14px;background:#ed3833;color:#111111;text-decoration:none;border-radius:8px;padding:15px 30px;font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:900;letter-spacing:1.5px;text-transform:uppercase;transition:.2s ease;box-shadow:0 4px 20px rgba(255, 90, 31, 0.35)}
 .bt-404-btn:hover{transform:translateY(-2px);background:#ff743f;color:#111111}
 .bt-404-btn span{font-size:20px;line-height:1}
 .bt-404-explore{position:relative;margin-top:-2px;background:#f5f4ef;padding:70px 0 85px;overflow:hidden;border-top:1px solid #dedbd4}
 .bt-404-wave{display:none}
 .bt-404-explore-inner{width:min(1180px,92%);margin:auto;text-align:center}
-.bt-404-kicker{font-family:'Barlow Condensed',sans-serif;font-size:13px;letter-spacing:2.5px;color:#ff5a1f;font-weight:800;text-transform:uppercase}
+.bt-404-kicker{font-family:'Barlow Condensed',sans-serif;font-size:13px;letter-spacing:2.5px;color:#ed3833;font-weight:800;text-transform:uppercase}
 .bt-404-explore h2{font-family:'Barlow Condensed',sans-serif;font-size:clamp(32px,4.5vw,50px);font-weight:900;letter-spacing:-0.5px;line-height:0.98;margin:8px 0 4px;color:#191919;text-transform:uppercase}
 .bt-404-explore-sub{font-size:12px;letter-spacing:2px;color:#77736b;margin-bottom:32px;text-transform:uppercase}
 .bt-404-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:16px}
-.bt-404-card{background:#ffffff;border:1px solid #dedbd4;border-top:3px solid #ff5a1f;border-radius:12px;padding:24px 14px 22px;text-decoration:none;color:#191919;box-shadow:0 8px 24px rgba(30,25,15,0.04);transition:.2s ease}
-.bt-404-card:hover{transform:translateY(-4px);box-shadow:0 16px 36px rgba(30,25,15,.1);border-color:#ff5a1f}
-.bt-404-card-icon{width:54px;height:54px;border:1.5px solid #ff5a1f;border-radius:50%;display:grid;place-items:center;margin:0 auto 14px;font-size:24px;color:#ff5a1f;background:rgba(255,90,31,0.08)}
+.bt-404-card{background:#ffffff;border:1px solid #dedbd4;border-top:3px solid #ed3833;border-radius:12px;padding:24px 14px 22px;text-decoration:none;color:#191919;box-shadow:0 8px 24px rgba(30,25,15,0.04);transition:.2s ease}
+.bt-404-card:hover{transform:translateY(-4px);box-shadow:0 16px 36px rgba(30,25,15,.1);border-color:#ed3833}
+.bt-404-card-icon{width:54px;height:54px;border:1.5px solid #ed3833;border-radius:50%;display:grid;place-items:center;margin:0 auto 14px;font-size:24px;color:#ed3833;background:rgba(255,90,31,0.08)}
 .bt-404-card h3{font-family:'Barlow Condensed',sans-serif;font-size:20px;margin:0 0 6px;font-weight:800;text-transform:uppercase;letter-spacing:0.5px;color:#191919}
 .bt-404-card p{font-size:13px;margin:0;color:#5d5b56}
 @media(max-width:900px){
