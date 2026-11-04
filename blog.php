@@ -53,7 +53,7 @@ require __DIR__ . '/includes/header.php';
   --bta-text: #5d5b56;
   --bta-muted: #77736b;
   --bta-border: #dedbd4;
-  --bta-orange: #ff5a1f;
+  --bta-orange: #ed3833;
   --bta-orange-hover: #ff743f;
   --bta-orange-glow: rgba(255, 90, 31, 0.35);
   --bta-font-display: 'Barlow Condensed', sans-serif;
