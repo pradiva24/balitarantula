@@ -97,7 +97,7 @@ require __DIR__ . '/includes/header.php';
   --bta-muted: #77736b;
   --bta-border: #dedbd4;
   --bta-border-subtle: #e6e3dc;
-  --bta-orange: #ff5a1f;
+  --bta-orange: #ed3833;
   --bta-orange-hover: #ff743f;
   --bta-orange-glow: rgba(255, 90, 31, 0.35);
   --bta-font-display: 'Barlow Condensed', sans-serif;
@@ -627,8 +627,8 @@ body {
 body{background:#101010;color:#f7f5f0}
 .bta-packages .packages-main-section{background:#101010;padding-top:42px}
 .bta-packages .packages-category-tab{background:#181818;border-color:#343434;color:#e0e0e0;box-shadow:none;border-radius:0}
-.bta-packages .packages-category-tab:hover{background:#222;border-color:#ff5a1f;color:#fff}
-.bta-packages .packages-category-tab.is-active{background:#ff5a1f;border-color:#ff5a1f;color:#111;box-shadow:none}
+.bta-packages .packages-category-tab:hover{background:#222;border-color:#ed3833;color:#fff}
+.bta-packages .packages-category-tab.is-active{background:#ed3833;border-color:#ed3833;color:#111;box-shadow:none}
 .bta-packages .adventure-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
 .bta-packages .adventure-card{height:auto;min-height:430px;border:0;border-radius:0;box-shadow:none;padding:0;background:#252525}
 .bta-packages .adventure-card:hover{transform:translateY(-4px);border-color:transparent;box-shadow:none}
@@ -636,7 +636,7 @@ body{background:#101010;color:#f7f5f0}
 .bta-packages .card-shade{z-index:1;background:linear-gradient(0deg,rgba(0,0,0,.94),rgba(0,0,0,.12) 75%)}
 .bta-packages .package-card-badges{position:absolute;z-index:3;top:16px;left:16px;right:16px;display:flex;align-items:flex-start;justify-content:space-between;gap:8px;pointer-events:none}
 .bta-packages .package-category-badge{display:inline-flex;align-items:center;max-width:70%;padding:8px 12px;border-radius:50px;background:rgba(0,0,0,.68);border:1px solid rgba(255,255,255,.2);color:#fff;font:800 9px/1 var(--bta-font-body);letter-spacing:1px;text-transform:uppercase;backdrop-filter:blur(5px);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.bta-packages .package-best-seller{display:inline-flex;align-items:center;gap:7px;flex:0 0 auto;padding:8px 12px;border-radius:50px;background:#ff5a1f;color:#fff;font:900 9px/1 var(--bta-font-body);letter-spacing:.9px;text-transform:uppercase}
+.bta-packages .package-best-seller{display:inline-flex;align-items:center;gap:7px;flex:0 0 auto;padding:8px 12px;border-radius:50px;background:#ed3833;color:#fff;font:900 9px/1 var(--bta-font-body);letter-spacing:.9px;text-transform:uppercase}
 .bta-packages .package-best-seller-dot{width:7px;height:7px;flex:0 0 7px;border-radius:50%;background:#fff;animation:tabDotPulse 1.2s ease-in-out infinite}
 .bta-packages .card-content{position:absolute;left:0;right:0;bottom:0;padding:24px 22px;z-index:3}
 .bta-packages .adventure-card h3{font-size:clamp(30px,3.2vw,43px);line-height:.92;letter-spacing:.2px;margin:0 0 12px;color:#fff}
@@ -645,10 +645,10 @@ body{background:#101010;color:#f7f5f0}
 .bta-packages .card-price-current{font-size:24px;color:#fff}
 .bta-packages .card-price-current small{font-size:10px;color:#c7c7c7}
 .bta-packages .card-price-old{font-size:12px;color:#c7c7c7}
-.bta-packages .card-price-save{background:#ff5a1f;color:#fff;border-radius:0}
-.bta-packages .card-link{background:transparent;color:#ff5a1f;padding:0;border-radius:0;font-size:13px;letter-spacing:1px;white-space:normal}
+.bta-packages .card-price-save{background:#ed3833;color:#fff;border-radius:0}
+.bta-packages .card-link{background:transparent;color:#ed3833;padding:0;border-radius:0;font-size:13px;letter-spacing:1px;white-space:normal}
 .bta-packages .card-link:hover{background:transparent;color:#ff743f;transform:translateX(3px)}
-.bta-packages .card-link span{color:#ff5a1f}
+.bta-packages .card-link span{color:#ed3833}
 .bta-packages .packages-empty-state{background:#181818;border-color:#343434;border-radius:0;color:#aaa}
 @media(max-width:1024px){.bta-packages .adventure-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.bta-packages .adventure-card{min-height:410px}}
 @media(max-width:640px){.bta-packages .packages-main-section{padding-top:26px}.bta-packages .adventure-grid{grid-template-columns:minmax(0,1fr);gap:14px}.bta-packages .adventure-card{min-height:410px;height:430px}.bta-packages .card-content{padding:22px 20px}.bta-packages .adventure-card h3{font-size:clamp(34px,10vw,46px)}.bta-packages .card-pricing-row{flex-direction:row;align-items:flex-end}.bta-packages .card-link{justify-content:flex-end;font-size:12px}}
@@ -682,8 +682,8 @@ body { color: #222; }
   color:#292929;
 }
 .bta-packages .packages-category-tab.is-active {
-  background:#ff5a1f;
-  border-color:#ff5a1f;
+  background:#ed3833;
+  border-color:#ed3833;
   color:#fff;
   box-shadow:none;
 }
@@ -765,7 +765,7 @@ body { color: #222; }
   border-radius:0;
 }
 .bta-packages .card-price-current {
-  color:#ff5a1f;
+  color:#ed3833;
   font-family:var(--bta-font-body);
   font-size:21px;
   font-weight:800;
@@ -782,7 +782,7 @@ body { color: #222; }
   border-top:1px solid rgba(255,255,255,.35);
   border-radius:0;
   background:transparent;
-  color:#ff5a1f;
+  color:#ed3833;
   padding:14px 0 0;
   font-family:var(--bta-font-body);
   font-size:9px;
