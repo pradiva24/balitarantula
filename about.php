@@ -56,7 +56,7 @@ require __DIR__ . '/includes/header.php';
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800;900&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
 <style id="bta-about-modern-theme">
-:root{--about-bg:#f5f4ef;--about-panel:#fff;--about-heading:#191919;--about-text:#5d5b56;--about-muted:#77736b;--about-border:#dedbd4;--about-orange:#ff5a1f;--about-font-display:'Barlow Condensed',sans-serif;--about-font-body:'Inter',sans-serif}
+:root{--about-bg:#f5f4ef;--about-panel:#fff;--about-heading:#191919;--about-text:#5d5b56;--about-muted:#77736b;--about-border:#dedbd4;--about-orange:#ed3833;--about-font-display:'Barlow Condensed',sans-serif;--about-font-body:'Inter',sans-serif}
 .bta-about{background:var(--about-bg);color:var(--about-text);font-family:var(--about-font-body);line-height:1.65;overflow:hidden}
 .bta-about *{box-sizing:border-box}
 .bta-about .wrap{width:min(1280px,92%);margin:0 auto}
