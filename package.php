@@ -186,7 +186,7 @@ require __DIR__ . '/includes/header.php';
   --bta-muted: #77736b;
   --bta-border: #dedbd4;
   --bta-border-subtle: #e6e3dc;
-  --bta-orange: #ff5a1f;
+  --bta-orange: #ed3833;
   --bta-orange-hover: #ff743f;
   --bta-orange-glow: rgba(255, 90, 31, 0.35);
   --bta-green: #16a34a;
