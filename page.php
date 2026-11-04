@@ -26,9 +26,9 @@ if (strlen($description) > 155) $description = substr($description,0,152).'...';
 
 require __DIR__.'/includes/header.php';
 ?>
-<section class="page-hero" style="position:relative;background:linear-gradient(112deg, #171717 0%, #242321 65%, #30271f 100%);padding:90px 0 65px;overflow:hidden;border-bottom:3px solid #ff5a1f">
+<section class="page-hero" style="position:relative;background:linear-gradient(112deg, #171717 0%, #242321 65%, #30271f 100%);padding:90px 0 65px;overflow:hidden;border-bottom:3px solid #ed3833">
   <div class="container" style="position:relative;z-index:2;max-width:900px;margin:0 auto;padding:0 20px">
-    <span style="display:inline-block;color:#ff5a1f;font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:800;letter-spacing:2.5px;text-transform:uppercase;margin-bottom:8px">Information</span>
+    <span style="display:inline-block;color:#ed3833;font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:800;letter-spacing:2.5px;text-transform:uppercase;margin-bottom:8px">Information</span>
     <h1 style="font-family:'Barlow Condensed',sans-serif;font-size:clamp(36px,5.5vw,64px);font-weight:900;letter-spacing:-0.5px;text-transform:uppercase;color:#fff;margin:0;line-height:0.98"><?=e($page['title'])?></h1>
   </div>
 </section>
