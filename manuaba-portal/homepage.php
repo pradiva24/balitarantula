@@ -159,6 +159,9 @@ if($_SERVER['REQUEST_METHOD']==='POST'){
     // Keep the older settings keys synchronized for compatibility with older homepage builds.
     hp_setting_upsert($db,'homepage_hero_media_mode',$heroMediaMode);
     hp_setting_upsert($db,'homepage_hero_video',$heroVideo);
+    // Intro marquee copy is stored in settings; no homepage_content schema migration is needed.
+    hp_setting_upsert($db,'homepage_marquee_kicker',trim((string)($_POST['marquee_kicker']??'')));
+    hp_setting_upsert($db,'homepage_marquee_title',trim((string)($_POST['marquee_title']??'')));
 
     $vals[]=1;
     $db->prepare('UPDATE homepage_content SET '.implode(',',$set).' WHERE id=?')->execute($vals);
@@ -195,7 +198,7 @@ function hp_check($k){global $home;return !empty($home[$k])?'checked':'';}
 <div class="hp-intro"><div><h2 style="margin:0;color:#173c2e">Homepage Editor</h2><p>Edit every main homepage section, text, CTA and image from one place.</p></div><div class="hp-actions"><a class="hp-btn" href="<?=BASE_URL?>/" target="_blank" rel="noopener">Preview Homepage ↗</a><a class="hp-btn" href="seo.php?key=home">Edit Homepage SEO</a></div></div>
 <div class="hp-note">Packages, reviews and gallery items themselves are managed from their existing Admin menus. This editor controls the homepage presentation, section copy, CTA, statistics, hero slider/video and selected homepage images.</div>
 <div class="hp-tabs">
-<?php foreach([['hero','Hero'],['packages','Experiences'],['story','Story'],['why','Why Choose Us'],['values','Tracks'],['stats','Statistics'],['reviews','Reviews'],['gallery','Gallery'],['cta','CTA']] as $i=>$t): ?><button type="button" class="hp-tab <?=$i===0?'active':''?>" data-tab="<?=$t[0]?>"><?=$t[1]?></button><?php endforeach; ?>
+<?php foreach([['hero','Hero'],['marquee','Intro Marquee'],['packages','Experiences'],['story','Story'],['why','Why Choose Us'],['values','Tracks'],['stats','Statistics'],['reviews','Reviews'],['gallery','Gallery'],['cta','CTA']] as $i=>$t): ?><button type="button" class="hp-tab <?=$i===0?'active':''?>" data-tab="<?=$t[0]?>"><?=$t[1]?></button><?php endforeach; ?>
 </div>
 <form method="post" enctype="multipart/form-data"><input type="hidden" name="csrf" value="<?=admin_csrf()?>">
 
@@ -279,6 +282,18 @@ function hp_check($k){global $home;return !empty($home[$k])?'checked':'';}
   syncHeroMedia();
 })();
 </script>
+</div>
+
+<div class="hp-panel" data-panel="marquee">
+<div class="hp-card">
+<h2>Intro Marquee</h2>
+<div class="hint">Edit the scrolling text strip displayed directly below the homepage hero. Changes are synchronized with the public homepage after saving.</div>
+<div class="hp-grid">
+<div class="hp-field"><label>Small Text / Kicker</label><input name="marquee_kicker" maxlength="160" value="<?=admin_e((string)setting('homepage_marquee_kicker', trim((string)($home['intro_kicker']??'')) ?: 'NOT JUST A RIDE.'))?>" placeholder="NOT JUST A RIDE."></div>
+<div class="hp-field"><label>Main Marquee Text</label><input name="marquee_title" maxlength="255" value="<?=admin_e((string)setting('homepage_marquee_title', trim((string)($home['intro_title']??'')) ?: "IT'S YOUR CALL TO ADVENTURE."))?>" placeholder="IT'S YOUR CALL TO ADVENTURE."></div>
+</div>
+<p style="font-size:10px;color:#718078;margin:14px 0 0">The text repeats automatically to create the continuous marquee animation. Leave either field empty if you want that text element blank.</p>
+</div>
 </div>
 
 <div class="hp-panel" data-panel="packages"><div class="hp-card"><h2>Adventure Experiences Section</h2><div class="hint">Package cards are automatically loaded from Admin → Packages.</div><div class="hp-section-switch"><input type="checkbox" name="packages_enabled" id="packages_enabled" <?=hp_check('packages_enabled')?>><label for="packages_enabled">Show Adventure Experiences Section</label></div><div class="hp-grid"><div class="hp-field"><label>Section Kicker</label><input name="intro_kicker" value="<?=hp_val('intro_kicker')?>"></div><div class="hp-field"><label>Section Title</label><input name="intro_title" value="<?=hp_val('intro_title')?>"></div><div class="hp-field hp-full"><label>Intro Description</label><textarea name="intro_text"><?=hp_val('intro_text')?></textarea></div></div><p style="font-size:10px;color:#718078;margin:15px 0 0">To change package names, photos, prices or descriptions, use <b>Admin → Packages</b>.</p></div></div>
