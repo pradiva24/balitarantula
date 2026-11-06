@@ -153,6 +153,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $bookingMode = $pkg['booking_mode'] ?? 'person';
     $isTandem = $pkg && $bookingMode === 'tandem';
     $isVehicle = $pkg && $bookingMode === 'vehicle';
+    if ($isTandem || $isVehicle) {
+        $adults = $requestedActivityUnits * ($isTandem ? 2 : 4);
+        $children = 0;
+    }
 
     if (!$pkg || $name === '' || !filter_var($email, FILTER_VALIDATE_EMAIL) || $country === '' || !array_key_exists($country, $countries) || !$date || $date < $today) {
         $error = 'Please complete all required fields and select a valid future booking date.';
@@ -1085,23 +1089,27 @@ body {
   }
 
   function unitCount(){
-    return Math.max(1, parseInt(activityUnitsInput?.value || '1', 10) || 1);
+    return Math.max(1, Math.min(50, parseInt(activityUnitsInput?.value || '1', 10) || 1));
   }
 
   function syncGuestFields(){
     const mode = bookingMode();
     const unitBased = mode === 'tandem' || mode === 'vehicle';
-    if (guestCountSelector) guestCountSelector.style.display = '';
+    if (guestCountSelector) guestCountSelector.style.display = unitBased ? 'none' : '';
     if (unitBookingNotice) unitBookingNotice.style.display = unitBased ? 'block' : 'none';
     const guests = (+adults.value || 1) + (+children.value || 0);
+    if (unitBased) {
+      const capacity = mode === 'tandem' ? 2 : 4;
+      adults.value = String(unitCount() * capacity);
+      children.value = '0';
+    }
     if (unitBased && unitBookingText) {
       const cap = mode === 'tandem' ? 2 : 4;
       const units = unitCount();
-      const minimum = Math.max(1, Math.ceil(guests / cap));
       const noun = mode === 'tandem' ? 'unit' : 'vehicle';
       if (unitBookingLabel) unitBookingLabel.textContent = mode === 'tandem' ? 'Number of Tandem ATV Units' : 'Number of Volkswagen Vehicles';
-      unitBookingText.textContent = units + ' ' + noun + (units > 1 ? 's' : '') + ' selected · capacity ' + (units * cap) + ' people. Minimum needed: ' + minimum + '.';
-      unitBookingText.style.color = units < minimum ? '#b91c1c' : '#9a3412';
+      unitBookingText.textContent = units + ' ' + noun + (units > 1 ? 's' : '') + ' selected · ' + (units * cap) + ' participant capacity';
+      unitBookingText.style.color = '#9a3412';
     }
   }
 
@@ -1237,7 +1245,10 @@ body {
   document.querySelector('[name=booking_date]').addEventListener('change', update);
   adults.addEventListener('input', () => { discount = 0; promoResult.textContent = ''; update(); });
   children.addEventListener('input', () => { discount = 0; promoResult.textContent = ''; update(); });
-  if (activityUnitsInput) activityUnitsInput.addEventListener('input', () => { discount = 0; promoResult.textContent = ''; update(); });
+  if (activityUnitsInput) activityUnitsInput.addEventListener('input', () => {
+    activityUnitsInput.value = Math.max(1, Math.min(50, parseInt(activityUnitsInput.value || '1', 10) || 1));
+    discount = 0; promoResult.textContent = ''; update();
+  });
   if (unitMinus) unitMinus.addEventListener('click', () => { activityUnitsInput.value = Math.max(1, unitCount() - 1); discount = 0; promoResult.textContent = ''; update(); });
   if (unitPlus) unitPlus.addEventListener('click', () => { activityUnitsInput.value = Math.min(50, unitCount() + 1); discount = 0; promoResult.textContent = ''; update(); });
   pickup.addEventListener('change', togglePickup);
