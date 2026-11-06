@@ -829,6 +829,11 @@ body>main{margin:0!important;padding:0!important;max-width:none!important;width:
 .bta-home-main .booking-cta .cta-inner h2{color:#fff !important}
 .bta-home-main .booking-cta .cta-inner h2 span{color:#ff8a32 !important}
 
+.bta-home-main .adventure-card-image-link{position:absolute;inset:0;display:block;z-index:1;overflow:hidden}
+.bta-home-main .adventure-card-image-link img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.bta-home-main .adventure-card .card-shade{z-index:2;pointer-events:none}
+.bta-home-main .adventure-card .package-card-badges,.bta-home-main .adventure-card .card-content{z-index:3}
+.bta-home-main .adventure-card-image-link:focus-visible{outline:3px solid var(--orange);outline-offset:-4px}
 </style>
 <script>document.body.classList.add('bta-redesign-home');</script>
 <div class="bta-home-main">
@@ -903,7 +908,9 @@ body>main{margin:0!important;padding:0!important;max-width:none!important;width:
     <div class="adventure-grid package-grid package-slider" id="packageSlider" tabindex="0" aria-label="Adventure packages">
       <?php if ($packages): foreach ($packages as $packageIndex => $p): ?>
         <article class="adventure-card<?= $packageIndex === 0 ? ' card-featured' : '' ?>">
-          <?php if (!empty($p['cover_image'])): ?><img src="<?=e(asset_url($p['cover_image']))?>" alt="<?=e($p['name'] ?? 'Bali adventure package')?>" loading="<?= $packageIndex < 3 ? 'eager' : 'lazy' ?>"><?php else: ?><img src="https://images.unsplash.com/photo-1551632811-561732d1e306?auto=format&fit=crop&w=1200&q=85" alt="Bali adventure experience" loading="lazy"><?php endif; ?>
+          <a class="adventure-card-image-link" href="<?=e(BASE_URL)?>/package/<?=e($p['slug'] ?? '')?>" aria-label="View <?=e($p['name'] ?? 'adventure package')?> details">
+            <?php if (!empty($p['cover_image'])): ?><img src="<?=e(asset_url($p['cover_image']))?>" alt="<?=e($p['name'] ?? 'Bali adventure package')?>" loading="<?= $packageIndex < 3 ? 'eager' : 'lazy' ?>"><?php else: ?><img src="https://images.unsplash.com/photo-1551632811-561732d1e306?auto=format&fit=crop&w=1200&q=85" alt="Bali adventure experience" loading="lazy"><?php endif; ?>
+          </a>
           <div class="card-shade"></div>
           <div class="package-card-badges"><span class="package-category-badge"><?=e(brand_replace_legacy(trim((string)($p['category_name'] ?? '')) ?: 'BALI ADVENTURE'))?></span><?php if ($packageIndex === 0): ?><span class="package-best-seller"><span class="package-best-seller-dot" aria-hidden="true"></span>BEST SELLER</span><?php endif; ?></div>
           <div class="card-content"><h3><?=e($p['name'] ?? 'Adventure Package')?></h3><div class="package-card-prices"><?php $originalPrice = $packageOriginalPrices[(int)($p['id'] ?? 0)] ?? null; $currentPrice = (float)($p['price_adult'] ?? 0); if ($originalPrice !== null && $originalPrice > $currentPrice): ?><span class="package-price-before">Rp <?=number_format($originalPrice, 0, ',', '.')?></span><?php endif; ?><div class="package-price-current"><strong class="package-price-after">Rp <?=number_format($currentPrice, 0, ',', '.')?></strong><span class="package-price-unit">/ person</span></div></div><a class="card-link" href="<?=e(BASE_URL)?>/package/<?=e($p['slug'] ?? '')?>">EXPLORE PACKAGE <span><i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i></span></a></div>
