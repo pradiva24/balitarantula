@@ -834,6 +834,21 @@ body>main{margin:0!important;padding:0!important;max-width:none!important;width:
 .bta-home-main .adventure-card .card-shade{z-index:2;pointer-events:none}
 .bta-home-main .adventure-card .package-card-badges,.bta-home-main .adventure-card .card-content{z-index:3}
 .bta-home-main .adventure-card-image-link:focus-visible{outline:3px solid var(--orange);outline-offset:-4px}
+
+/* Package card actions: white at rest, Bali red on hover/focus. */
+.bta-home-main .package-grid .card-link,
+.bta-home-main .package-grid .card-link span,
+.bta-home-main .package-grid .card-link i{color:#fff!important;transition:color .2s ease}
+.bta-home-main .package-grid .card-link:hover,
+.bta-home-main .package-grid .card-link:focus-visible,
+.bta-home-main .package-grid .card-link:hover span,
+.bta-home-main .package-grid .card-link:focus-visible span,
+.bta-home-main .package-grid .card-link:hover i,
+.bta-home-main .package-grid .card-link:focus-visible i{color:#ed3833!important}
+.bta-home-main .package-slider-btn{border-color:#fff;color:#fff}
+.bta-home-main .package-slider-btn:hover,
+.bta-home-main .package-slider-btn:focus-visible{background:transparent;border-color:#ed3833;color:#ed3833}
+
 </style>
 <script>document.body.classList.add('bta-redesign-home');</script>
 <div class="bta-home-main">
