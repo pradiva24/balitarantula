@@ -813,6 +813,26 @@ body { color: #222; }
   .bta-packages .card-link { justify-content:space-between; }
 }
 
+
+/* Package images open their detail page; card actions use white-to-red hover. */
+.bta-packages .adventure-card{isolation:isolate}
+.bta-packages .adventure-card-image-link{position:absolute;inset:0;display:block;z-index:1;overflow:hidden}
+.bta-packages .adventure-card-image-link img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1;transition:transform .6s ease}
+.bta-packages .adventure-card:hover .adventure-card-image-link img{transform:scale(1.06)}
+.bta-packages .card-shade{z-index:2;pointer-events:none}
+.bta-packages .package-card-badges,
+.bta-packages .adventure-card .card-content{z-index:3}
+.bta-packages .card-link,
+.bta-packages .card-link span,
+.bta-packages .card-link i{color:#fff!important;transition:color .2s ease}
+.bta-packages .card-link:hover,
+.bta-packages .card-link:focus-visible,
+.bta-packages .card-link:hover span,
+.bta-packages .card-link:focus-visible span,
+.bta-packages .card-link:hover i,
+.bta-packages .card-link:focus-visible i{color:#ed3833!important}
+.bta-packages .adventure-card-image-link:focus-visible{outline:3px solid #ed3833;outline-offset:-4px}
+
 </style>
 
 <div class="bta-packages">
@@ -863,11 +883,13 @@ body { color: #222; }
             $packageUrl      = BASE_URL . '/package/' . e($p['slug']);
           ?>
             <article class="adventure-card" data-category="<?=e((string)(int)($p['category_id'] ?? 0))?>">
-              <?php if (!empty($p['cover_image'])): ?>
-                <img src="<?=e(asset_url($p['cover_image']))?>" alt="<?=e($p['name'])?>" loading="lazy" decoding="async">
-              <?php else: ?>
-                <img src="https://images.unsplash.com/photo-1551632811-561732d1e306?auto=format&fit=crop&w=1000&q=85" alt="<?=e($p['name'])?>" loading="lazy">
-              <?php endif; ?>
+              <a class="adventure-card-image-link" href="<?=$packageUrl?>" aria-label="View <?=e($p['name'])?> details">
+                <?php if (!empty($p['cover_image'])): ?>
+                  <img src="<?=e(asset_url($p['cover_image']))?>" alt="<?=e($p['name'])?>" loading="lazy" decoding="async">
+                <?php else: ?>
+                  <img src="https://images.unsplash.com/photo-1551632811-561732d1e306?auto=format&fit=crop&w=1000&q=85" alt="<?=e($p['name'])?>" loading="lazy">
+                <?php endif; ?>
+              </a>
 
               <div class="card-shade"></div>
               <div class="package-card-badges">
