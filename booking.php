@@ -149,9 +149,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $st->execute([$packageId]);
     $pkg = $st->fetch();
     $today = date('Y-m-d');
-    $isTandem = $pkg && (($pkg['booking_mode'] ?? 'person') === 'tandem');
-    // Tandem ATV is sold as one fixed unit carrying exactly two participants.
-    if ($isTandem) { $adults = 2; $children = 0; }
+    $bookingMode = $pkg['booking_mode'] ?? 'person';
+    $isTandem = $pkg && $bookingMode === 'tandem';
+    $isVehicle = $pkg && $bookingMode === 'vehicle';
 
     if (!$pkg || $name === '' || !filter_var($email, FILTER_VALIDATE_EMAIL) || $country === '' || !array_key_exists($country, $countries) || !$date || $date < $today) {
         $error = 'Please complete all required fields and select a valid future booking date.';
@@ -188,7 +188,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         if ($error === '') {
-            $activityPrice = $isTandem ? (float)$pkg['price_adult'] : (($adults * (float)$pkg['price_adult']) + ($children * (float)$pkg['price_child']));
+            $activityUnits = $isTandem ? (int)ceil($guests / 2) : ($isVehicle ? (int)ceil($guests / 4) : 0);
+            $activityUnitPrice = (float)$pkg['price_adult'];
+            $activityPrice = ($isTandem || $isVehicle)
+                ? ($activityUnits * $activityUnitPrice)
+                : (($adults * $activityUnitPrice) + ($children * (float)$pkg['price_child']));
             $subtotal = $activityPrice + $pickupPrice;
             $coupon = coupon_validate($promoCode, $subtotal, $packageId, $date);
             if ($promoCode !== '' && !$coupon['ok']) {
@@ -236,8 +240,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $invoice = strtoupper(rtrim($invoicePrefix, '-')) . '-' . date('Y') . '-' . str_pad((string)$bookingId, 6, '0', STR_PAD_LEFT);
                     $db->prepare("UPDATE bookings SET invoice_number = ? WHERE id = ?")->execute([$invoice, $bookingId]);
 
-                    $items = $isTandem ? [[$pkg['name'] . ' - Tandem ATV Unit', 1, (float)$pkg['price_adult'], (float)$pkg['price_adult']]] : [[$pkg['name'] . ' - Adult', $adults, (float)$pkg['price_adult'], $adults * (float)$pkg['price_adult']]];
-                    if (!$isTandem && $children > 0) $items[] = [$pkg['name'] . ' - Child', $children, (float)$pkg['price_child'], $children * (float)$pkg['price_child']];
+                    if ($isTandem) {
+                        $items = [[$pkg['name'] . ' - Tandem ATV Unit (' . $activityUnits . ' Units)', $activityUnits, $activityUnitPrice, $activityPrice]];
+                    } elseif ($isVehicle) {
+                        $items = [[$pkg['name'] . ' - Volkswagen Vehicle (' . $activityUnits . ' Vehicles)', $activityUnits, $activityUnitPrice, $activityPrice]];
+                    } else {
+                        $items = [[$pkg['name'] . ' - Adult', $adults, $activityUnitPrice, $adults * $activityUnitPrice]];
+                        if ($children > 0) $items[] = [$pkg['name'] . ' - Child', $children, (float)$pkg['price_child'], $children * (float)$pkg['price_child']];
+                    }
                     if ($pickup) $items[] = ['Hotel Transport' . ($areaName ? ' - ' . $areaName : '') . ' (' . $transportGuests . ' Vehicle' . ($transportGuests > 1 ? 's' : '') . ')', $transportGuests, $pickupUnitPrice, $pickupPrice];
                     if ($discount > 0) $items[] = ['Promo Discount - ' . $discountCode, 1, -$discount, -$discount];
 
@@ -268,7 +278,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         'booking_code' => $code, 'access_token' => $accessToken, 'invoice_number' => $invoice, 'package_name' => $pkg['name'],
                         'short_description' => $pkg['short_description'] ?? '', 'cover_image' => $pkg['cover_image'] ?? '',
                         'booking_date' => $date, 'activity_time' => $activityTime, 'pickup_time' => $pickupTime,
-                        'adults' => $adults, 'children' => $children, 'booking_mode' => $isTandem ? 'tandem' : 'person', 'customer_name' => $name, 'customer_email' => $email,
+                        'adults' => $adults, 'children' => $children, 'booking_mode' => $bookingMode, 'customer_name' => $name, 'customer_email' => $email,
                         'customer_whatsapp' => $wa, 'customer_country' => $country, 'payment_method' => $paymentMethod,
                         'payment_status' => 'pending', 'booking_status' => 'new', 'subtotal' => $subtotal, 'discount_amount' => $discount, 'total' => $total,
                         'pickup_required' => $pickup, 'pickup_area_id' => $areaId, 'pickup_area_name' => $areaName, 'pickup_price' => $pickupPrice, 'hotel_name' => $hotel, 'room_number' => $room, 'special_request' => $special
@@ -817,7 +827,7 @@ body {
                       data-cover="<?=e(asset_url($p['cover_image'] ?? ''))?>" 
                       data-description="<?=e($p['short_description'] ?? '')?>" 
                       <?=$packageId == (int)$p['id'] ? 'selected' : ''?>>
-                <?=e($p['name'])?> &mdash; <?=rupiah($p['price_adult'])?> / <?=($p['booking_mode']??'person')==='tandem'?'unit':'adult'?>
+                <?=e($p['name'])?> &mdash; <?=rupiah($p['price_adult'])?> / <?=in_array(($p['booking_mode']??'person'),['tandem','vehicle'],true)?'unit':'adult'?>
               </option>
             <?php endforeach; ?>
           </select>
@@ -835,9 +845,9 @@ body {
               <input class="form-control" type="number" id="children" name="children" min="0" value="<?=e($_POST['children'] ?? '0')?>" placeholder="Children">
             </div>
           </div>
-          <div class="form-group" id="tandemGuestNotice" style="display:none;">
-            <label>Booking Unit</label>
-            <div class="form-control" style="display:flex;align-items:center;background:#fff7ed;border-color:#fed7aa;color:#9a3412;font-weight:700;">1 Tandem ATV Unit · 2 Persons</div>
+          <div class="form-group" id="unitBookingNotice" style="display:none;">
+            <label>Unit Calculation</label>
+            <div class="form-control" id="unitBookingText" style="display:flex;align-items:center;background:#fff7ed;border-color:#fed7aa;color:#9a3412;font-weight:700;">Unit price applies</div>
           </div>
         </div>
 
@@ -1017,7 +1027,8 @@ body {
   const adults = document.getElementById('adults');
   const children = document.getElementById('children');
   const guestCountSelector = document.getElementById('guestCountSelector');
-  const tandemGuestNotice = document.getElementById('tandemGuestNotice');
+  const unitBookingNotice = document.getElementById('unitBookingNotice');
+  const unitBookingText = document.getElementById('unitBookingText');
   const pickup = document.getElementById('pickup_required');
   const area = document.getElementById('pickup_area_id');
   const fields = document.getElementById('pickupFields');
@@ -1050,25 +1061,38 @@ body {
     return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(n);
   }
 
-  function isTandemPackage(){
+  function bookingMode(){
     const o = picker.options[picker.selectedIndex];
-    return o?.dataset.bookingMode === 'tandem';
+    return o?.dataset.bookingMode || 'person';
+  }
+
+  function unitCount(guests){
+    if (bookingMode() === 'tandem') return Math.ceil(guests / 2);
+    if (bookingMode() === 'vehicle') return Math.ceil(guests / 4);
+    return 0;
   }
 
   function syncGuestFields(){
-    const tandem = isTandemPackage();
-    if (guestCountSelector) guestCountSelector.style.display = tandem ? 'none' : '';
-    if (tandemGuestNotice) tandemGuestNotice.style.display = tandem ? 'block' : 'none';
-    if (tandem) { adults.value = '2'; children.value = '0'; }
-    else if (guestCountSelector?.dataset.wasTandem === '1') { adults.value = '1'; children.value = '0'; }
-    if (guestCountSelector) guestCountSelector.dataset.wasTandem = tandem ? '1' : '0';
+    const mode = bookingMode();
+    const unitBased = mode === 'tandem' || mode === 'vehicle';
+    if (guestCountSelector) guestCountSelector.style.display = '';
+    if (unitBookingNotice) unitBookingNotice.style.display = unitBased ? 'block' : 'none';
+    const guests = (+adults.value || 1) + (+children.value || 0);
+    if (unitBased && unitBookingText) {
+      const cap = mode === 'tandem' ? 2 : 4;
+      const label = mode === 'tandem' ? 'Tandem ATV' : 'Volkswagen';
+      unitBookingText.textContent = Math.max(1, Math.ceil(guests / cap)) + ' ' + (mode === 'tandem' ? 'Unit' : 'Vehicle') + ' · max ' + cap + ' persons per ' + (mode === 'tandem' ? 'unit' : 'vehicle');
+    }
   }
 
   function activitySubtotal(){
     const o = picker.options[picker.selectedIndex];
     const a = parseFloat(o?.dataset.adult || 0);
     const c = parseFloat(o?.dataset.child || 0);
-    return isTandemPackage() ? a : ((+adults.value || 1) * a + (+children.value || 0) * c);
+    const guests = (+adults.value || 1) + (+children.value || 0);
+    return (bookingMode() === 'tandem' || bookingMode() === 'vehicle')
+      ? unitCount(guests) * a
+      : ((+adults.value || 1) * a + (+children.value || 0) * c);
   }
 
   function transportInfo(){
@@ -1192,8 +1216,8 @@ body {
   });
 
   document.querySelector('[name=booking_date]').addEventListener('change', update);
-  adults.addEventListener('input', () => { if (isTandemPackage()) { adults.value = '2'; return; } discount = 0; promoResult.textContent = ''; update(); });
-  children.addEventListener('input', () => { if (isTandemPackage()) { children.value = '0'; return; } discount = 0; promoResult.textContent = ''; update(); });
+  adults.addEventListener('input', () => { discount = 0; promoResult.textContent = ''; update(); });
+  children.addEventListener('input', () => { discount = 0; promoResult.textContent = ''; update(); });
   pickup.addEventListener('change', togglePickup);
   area.addEventListener('change', () => { refreshPickupTimes(); update(); });
   if (pickupTime) pickupTime.addEventListener('change', update);
