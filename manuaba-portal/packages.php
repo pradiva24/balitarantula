@@ -366,7 +366,7 @@ try {
       $cat=(int)($_POST['category_id']??0)?:null;
       $data=[
         $cat,$name,$slug,$_POST['short_description']??'',$_POST['description']??'',
-        $_POST['duration']??'',(float)($_POST['price_adult']??0),(float)($_POST['price_child']??0),((($_POST['booking_mode']??'person')==='tandem')?'tandem':'person'),
+        $_POST['duration']??'',(float)($_POST['price_adult']??0),(float)($_POST['price_child']??0),(in_array(($_POST['booking_mode']??'person'),['person','tandem','vehicle'],true)?$_POST['booking_mode']:'person'),
         isset($_POST['featured'])?1:0,isset($_POST['best_seller'])?1:0,(int)($_POST['status']??1),((int)($_POST['booking_enabled']??1)===1?1:0),$_POST['seo_title']??'',
         $_POST['meta_description']??'',$_POST['focus_keyword']??'',$_POST['canonical_url']??'',$_POST['og_image']??'',
         $_POST['og_title']??'',$_POST['og_description']??'',$_POST['schema_json']??''
@@ -811,7 +811,7 @@ if($action==='add'||$action==='edit'):
 <div class="field full"><label>Activity Start Times</label><textarea name="activity_times" rows="5" placeholder="08:00&#10;09:00&#10;10:00"><?php if(!empty($x['id'])){try{$atq=$p->prepare('SELECT TIME_FORMAT(activity_time, "%H:%i") FROM package_activity_times WHERE package_id=? ORDER BY sort_order,activity_time');$atq->execute([(int)$x['id']]);echo admin_e(implode("\n",$atq->fetchAll(PDO::FETCH_COLUMN)));}catch(Throwable $e){}}?></textarea><small class="muted-line">One start time per line in 24-hour format (for example 08:00, 09:00, 10:00). Customers will select one when booking. Leave empty if this activity has no fixed start time.</small></div>
 <div class="field"><label>Price per Person / Tandem Unit</label><input type="number" step="0.01" name="price_adult" value="<?=admin_e($x['price_adult']??0)?>"></div>
 <div class="field"><label>Child Price</label><input type="number" step="0.01" name="price_child" value="<?=admin_e($x['price_child']??0)?>"></div>
-<div class="field"><label>Booking Pricing Mode</label><select name="booking_mode"><option value="person" <?=($x['booking_mode']??'person')==='person'?'selected':''?>>Per Person (Adults / Children)</option><option value="tandem" <?=($x['booking_mode']??'person')==='tandem'?'selected':''?>>Tandem ATV — 1 Unit = 2 Persons</option></select><small class="muted-line">For Tandem ATV, price is per unit. Each booking is fixed to one unit and two participants.</small></div>
+<div class="field"><label>Booking Pricing Mode</label><select name="booking_mode"><option value="person" <?=($x['booking_mode']??'person')==='person'?'selected':''?>>Per Person (Adults / Children)</option><option value="tandem" <?=($x['booking_mode']??'person')==='tandem'?'selected':''?>>Tandem ATV — 1 Unit = up to 2 Persons</option><option value="vehicle" <?=($x['booking_mode']??'person')==='vehicle'?'selected':''?>>Volkswagen Tour — 1 Vehicle = up to 4 Persons</option></select><small class="muted-line">Tandem ATV: price per unit, maximum 2 participants per unit. Volkswagen Tour: price per vehicle, maximum 4 participants per vehicle. Additional units are calculated automatically from the guest count.</small></div>
 <div class="field"><label>Original Price / Before Discount</label><input type="number" step="0.01" min="0" name="original_price" value="<?=admin_e($editOriginalPrice??'')?>" placeholder="e.g. 250000"><small class="muted-line">Shown crossed out above the current adult price. Leave empty to hide it.</small></div>
 <div class="field full package-price-card-admin-field">
 <label>Price Card List</label>
