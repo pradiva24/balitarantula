@@ -1096,6 +1096,9 @@ body {
     const mode = bookingMode();
     const unitBased = mode === 'tandem' || mode === 'vehicle';
     if (guestCountSelector) guestCountSelector.style.display = unitBased ? 'none' : '';
+    if (adults) adults.required = !unitBased;
+    if (children) children.required = false;
+    if (activityUnitsInput) activityUnitsInput.required = unitBased;
     if (unitBookingNotice) unitBookingNotice.style.display = unitBased ? 'block' : 'none';
     const guests = (+adults.value || 1) + (+children.value || 0);
     if (unitBased) {
