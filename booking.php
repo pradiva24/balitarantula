@@ -123,6 +123,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $activityTime = trim((string)($_POST['activity_time'] ?? ''));
     $adults = max(1, (int)($_POST['adults'] ?? 1));
     $children = max(0, (int)($_POST['children'] ?? 0));
+    $requestedActivityUnits = max(1, min(50, (int)($_POST['activity_units'] ?? 1)));
     $pickup = ((int)($_POST['pickup_required'] ?? 0) === 1) ? 1 : 0;
 
     if ($pickup && !$hotelPickupEnabled) {
@@ -166,6 +167,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $error = 'Please select a valid pickup time for your location.';
     } else {
         $guests = $adults + $children;
+        $activityCapacity = $isTandem ? 2 : ($isVehicle ? 4 : 0);
+        $activityUnits = ($isTandem || $isVehicle) ? $requestedActivityUnits : 0;
+        if ($activityCapacity > 0 && $guests > ($activityUnits * $activityCapacity)) {
+            $error = 'Selected units are not enough for the number of guests. Please add more units.';
+        }
         $pickupPrice = 0;
         $pickupUnitPrice = 0;
         $transportGuests = 0;
@@ -188,7 +194,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         if ($error === '') {
-            $activityUnits = $isTandem ? (int)ceil($guests / 2) : ($isVehicle ? (int)ceil($guests / 4) : 0);
             $activityUnitPrice = (float)$pkg['price_adult'];
             $activityPrice = ($isTandem || $isVehicle)
                 ? ($activityUnits * $activityUnitPrice)
@@ -846,8 +851,13 @@ body {
             </div>
           </div>
           <div class="form-group" id="unitBookingNotice" style="display:none;">
-            <label>Unit Calculation</label>
-            <div class="form-control" id="unitBookingText" style="display:flex;align-items:center;background:#fff7ed;border-color:#fed7aa;color:#9a3412;font-weight:700;">Unit price applies</div>
+            <label id="unitBookingLabel">Number of Units</label>
+            <div style="display:flex;align-items:center;gap:8px;">
+              <button type="button" id="unitMinus" class="form-control" style="width:46px;flex:0 0 46px;font-size:22px;font-weight:800;">−</button>
+              <input class="form-control" type="number" id="activity_units" name="activity_units" min="1" max="50" value="<?=e($_POST['activity_units'] ?? '1')?>" style="text-align:center;font-weight:800;" required>
+              <button type="button" id="unitPlus" class="form-control" style="width:46px;flex:0 0 46px;font-size:22px;font-weight:800;">+</button>
+            </div>
+            <small id="unitBookingText" style="display:block;margin-top:7px;color:#9a3412;font-weight:700;">Choose how many units you want to book.</small>
           </div>
         </div>
 
@@ -1029,6 +1039,10 @@ body {
   const guestCountSelector = document.getElementById('guestCountSelector');
   const unitBookingNotice = document.getElementById('unitBookingNotice');
   const unitBookingText = document.getElementById('unitBookingText');
+  const unitBookingLabel = document.getElementById('unitBookingLabel');
+  const activityUnitsInput = document.getElementById('activity_units');
+  const unitMinus = document.getElementById('unitMinus');
+  const unitPlus = document.getElementById('unitPlus');
   const pickup = document.getElementById('pickup_required');
   const area = document.getElementById('pickup_area_id');
   const fields = document.getElementById('pickupFields');
@@ -1066,10 +1080,12 @@ body {
     return o?.dataset.bookingMode || 'person';
   }
 
-  function unitCount(guests){
-    if (bookingMode() === 'tandem') return Math.ceil(guests / 2);
-    if (bookingMode() === 'vehicle') return Math.ceil(guests / 4);
-    return 0;
+  function unitCapacity(){
+    return bookingMode() === 'tandem' ? 2 : (bookingMode() === 'vehicle' ? 4 : 0);
+  }
+
+  function unitCount(){
+    return Math.max(1, parseInt(activityUnitsInput?.value || '1', 10) || 1);
   }
 
   function syncGuestFields(){
@@ -1080,8 +1096,12 @@ body {
     const guests = (+adults.value || 1) + (+children.value || 0);
     if (unitBased && unitBookingText) {
       const cap = mode === 'tandem' ? 2 : 4;
-      const label = mode === 'tandem' ? 'Tandem ATV' : 'Volkswagen';
-      unitBookingText.textContent = Math.max(1, Math.ceil(guests / cap)) + ' ' + (mode === 'tandem' ? 'Unit' : 'Vehicle') + ' · max ' + cap + ' persons per ' + (mode === 'tandem' ? 'unit' : 'vehicle');
+      const units = unitCount();
+      const minimum = Math.max(1, Math.ceil(guests / cap));
+      const noun = mode === 'tandem' ? 'unit' : 'vehicle';
+      if (unitBookingLabel) unitBookingLabel.textContent = mode === 'tandem' ? 'Number of Tandem ATV Units' : 'Number of Volkswagen Vehicles';
+      unitBookingText.textContent = units + ' ' + noun + (units > 1 ? 's' : '') + ' selected · capacity ' + (units * cap) + ' people. Minimum needed: ' + minimum + '.';
+      unitBookingText.style.color = units < minimum ? '#b91c1c' : '#9a3412';
     }
   }
 
@@ -1089,9 +1109,8 @@ body {
     const o = picker.options[picker.selectedIndex];
     const a = parseFloat(o?.dataset.adult || 0);
     const c = parseFloat(o?.dataset.child || 0);
-    const guests = (+adults.value || 1) + (+children.value || 0);
     return (bookingMode() === 'tandem' || bookingMode() === 'vehicle')
-      ? unitCount(guests) * a
+      ? unitCount() * a
       : ((+adults.value || 1) * a + (+children.value || 0) * c);
   }
 
@@ -1218,6 +1237,9 @@ body {
   document.querySelector('[name=booking_date]').addEventListener('change', update);
   adults.addEventListener('input', () => { discount = 0; promoResult.textContent = ''; update(); });
   children.addEventListener('input', () => { discount = 0; promoResult.textContent = ''; update(); });
+  if (activityUnitsInput) activityUnitsInput.addEventListener('input', () => { discount = 0; promoResult.textContent = ''; update(); });
+  if (unitMinus) unitMinus.addEventListener('click', () => { activityUnitsInput.value = Math.max(1, unitCount() - 1); discount = 0; promoResult.textContent = ''; update(); });
+  if (unitPlus) unitPlus.addEventListener('click', () => { activityUnitsInput.value = Math.min(50, unitCount() + 1); discount = 0; promoResult.textContent = ''; update(); });
   pickup.addEventListener('change', togglePickup);
   area.addEventListener('change', () => { refreshPickupTimes(); update(); });
   if (pickupTime) pickupTime.addEventListener('change', update);
