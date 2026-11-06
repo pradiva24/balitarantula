@@ -227,6 +227,34 @@ header.site-header{height:82px!important;min-height:82px!important;padding:0 max
  .site-header.is-scrolled #mainNav.main-nav,.site-header.is-scrolled #mainNav{top:64px!important;inset:64px 0 0!important}
 }
 @media(prefers-reduced-motion:reduce){.site-header #mainNav a,.site-header #mainNav a::after,.site-header .menu-toggle span{transition:none!important}}
+
+/* Mobile navigation: hide utility strip and keep the menu above every page section. */
+@media(max-width:900px){
+  .topline{display:none!important;height:0!important;min-height:0!important;visibility:hidden!important}
+  header.site-header,
+  header.site-header.is-scrolled{
+    position:fixed!important;top:0!important;left:0!important;right:0!important;
+    z-index:100000!important;height:70px!important;min-height:70px!important;
+    background:rgba(12,12,12,.96)!important;
+    -webkit-backdrop-filter:blur(14px)!important;backdrop-filter:blur(14px)!important;
+    isolation:isolate!important;
+  }
+  .site-header #mainNav.main-nav,
+  .site-header #mainNav{
+    position:fixed!important;top:70px!important;left:0!important;right:0!important;bottom:0!important;
+    width:100%!important;height:auto!important;max-height:calc(100dvh - 70px)!important;
+    overflow-y:auto!important;overscroll-behavior:contain!important;
+    z-index:100001!important;background:rgba(12,12,12,.99)!important;
+    -webkit-backdrop-filter:blur(16px)!important;backdrop-filter:blur(16px)!important;
+  }
+  .site-header #mainNav.main-nav.open,
+  .site-header #mainNav.open{display:flex!important}
+}
+@media(max-width:640px){
+  header.site-header,header.site-header.is-scrolled{height:64px!important;min-height:64px!important}
+  .site-header #mainNav.main-nav,
+  .site-header #mainNav{top:64px!important;max-height:calc(100dvh - 64px)!important;padding:24px 22px 32px!important}
+}
 </style>
 
 <?php if(setting('favicon','')):?><link rel="icon" href="<?=e(asset_url(setting('favicon','')))?>"><?php endif;?>
