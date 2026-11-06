@@ -255,6 +255,82 @@ header.site-header{height:82px!important;min-height:82px!important;padding:0 max
   .site-header #mainNav.main-nav,
   .site-header #mainNav{top:64px!important;max-height:calc(100dvh - 64px)!important;padding:24px 22px 32px!important}
 }
+
+/* Mobile menu presentation: compact brand bar and full opaque navigation panel. */
+@media(max-width:900px){
+  header.site-header,header.site-header.is-scrolled{
+    height:64px!important;min-height:64px!important;
+    padding:0 16px!important;z-index:100000!important;
+  }
+  .site-header .menu-toggle{
+    position:relative!important;z-index:100003!important;
+    width:44px!important;height:44px!important;padding:9px!important;
+  }
+  .site-header #mainNav.main-nav,
+  .site-header #mainNav{
+    position:fixed!important;top:64px!important;left:0!important;right:0!important;bottom:0!important;
+    width:100%!important;height:calc(100dvh - 64px)!important;
+    max-height:calc(100dvh - 64px)!important;overflow-y:auto!important;
+    display:none!important;flex-direction:column!important;align-items:stretch!important;
+    justify-content:flex-start!important;gap:0!important;
+    padding:26px 24px 40px!important;margin:0!important;
+    background:#0b0b0b!important;background-color:#0b0b0b!important;
+    opacity:1!important;z-index:100002!important;
+    border-top:1px solid rgba(255,255,255,.16)!important;
+    box-shadow:none!important;isolation:isolate!important;
+  }
+  .site-header #mainNav.main-nav.open,
+  .site-header #mainNav.open{display:flex!important}
+  .site-header #mainNav a{
+    position:relative!important;display:flex!important;align-items:center!important;
+    justify-content:flex-start!important;width:100%!important;min-height:56px!important;
+    padding:16px 0!important;margin:0!important;
+    color:#f5f5f5!important;background:transparent!important;
+    border:0!important;border-bottom:1px solid rgba(255,255,255,.10)!important;
+    border-radius:0!important;text-align:left!important;text-transform:uppercase!important;
+    font:800 27px/1.05 "Barlow Condensed",Impact,sans-serif!important;
+    letter-spacing:.7px!important;white-space:normal!important;
+  }
+  .site-header #mainNav a:hover,
+  .site-header #mainNav a:focus-visible{color:#ed3833!important}
+  .site-header #mainNav a[aria-current="page"],
+  .site-header #mainNav a.active,
+  .site-header #mainNav a.current{
+    color:#ed3833!important;padding-left:34px!important;
+  }
+  .site-header #mainNav a[aria-current="page"]::before,
+  .site-header #mainNav a.active::before,
+  .site-header #mainNav a.current::before{
+    content:""!important;position:absolute!important;left:0!important;top:50%!important;
+    width:24px!important;height:2px!important;background:#ed3833!important;
+    transform:translateY(-50%)!important;
+  }
+  .site-header #mainNav a:not(.nav-book):not(.nav-ticket)::after{display:none!important}
+  .site-header #mainNav .nav-book,
+  .site-header #mainNav a.nav-book{
+    justify-content:center!important;width:100%!important;min-height:50px!important;
+    margin:22px 0 0!important;padding:15px!important;
+    color:#111!important;background:#ed3833!important;border:0!important;
+    font:900 12px/1.2 "Inter",Arial,sans-serif!important;letter-spacing:1px!important;
+  }
+  .site-header #mainNav .nav-ticket{
+    justify-content:center!important;width:100%!important;margin:10px 0 0!important;
+    padding:14px!important;border:1px solid rgba(255,255,255,.25)!important;
+  }
+}
+@media(max-width:640px){
+  header.site-header,header.site-header.is-scrolled{
+    height:58px!important;min-height:58px!important;padding:0 14px!important;
+  }
+  .site-header .site-brand-logo{max-width:88px!important;max-height:42px!important}
+  .site-header .menu-toggle{width:42px!important;height:42px!important}
+  .site-header #mainNav.main-nav,
+  .site-header #mainNav{
+    top:58px!important;height:calc(100dvh - 58px)!important;
+    max-height:calc(100dvh - 58px)!important;padding:24px 14px 36px!important;
+  }
+  .site-header #mainNav a{font-size:28px!important;min-height:58px!important}
+}
 </style>
 
 <?php if(setting('favicon','')):?><link rel="icon" href="<?=e(asset_url(setting('favicon','')))?>"><?php endif;?>
