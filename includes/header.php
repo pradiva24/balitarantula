@@ -331,6 +331,42 @@ header.site-header{height:82px!important;min-height:82px!important;padding:0 max
   }
   .site-header #mainNav a{font-size:28px!important;min-height:58px!important}
 }
+
+/* Check Ticket navigation button: white outline, red hover for border, label and icon. */
+.site-header #mainNav .nav-ticket,
+.site-header #mainNav a.nav-ticket{
+  display:inline-flex!important;align-items:center!important;justify-content:center!important;
+  gap:8px!important;min-height:42px!important;padding:9px 14px!important;
+  border:2px solid #fff!important;border-radius:0!important;
+  background:transparent!important;color:#fff!important;
+  transition:color .2s ease,border-color .2s ease,background .2s ease!important;
+}
+.site-header #mainNav .nav-ticket .ticket-icon,
+.site-header #mainNav a.nav-ticket .ticket-icon{
+  filter:brightness(0) invert(1)!important;
+  transition:filter .2s ease!important;
+}
+.site-header #mainNav .nav-ticket:hover,
+.site-header #mainNav .nav-ticket:focus-visible,
+.site-header #mainNav a.nav-ticket:hover,
+.site-header #mainNav a.nav-ticket:focus-visible{
+  border-color:#ed3833!important;color:#ed3833!important;
+  background:transparent!important;outline:none!important;
+}
+.site-header #mainNav .nav-ticket:hover .ticket-icon,
+.site-header #mainNav .nav-ticket:focus-visible .ticket-icon,
+.site-header #mainNav a.nav-ticket:hover .ticket-icon,
+.site-header #mainNav a.nav-ticket:focus-visible .ticket-icon{
+  filter:brightness(0) saturate(100%) invert(29%) sepia(91%) saturate(3452%) hue-rotate(340deg) brightness(95%) contrast(91%)!important;
+}
+@media(max-width:900px){
+  .site-header #mainNav .nav-ticket,
+  .site-header #mainNav a.nav-ticket{
+    width:100%!important;min-height:52px!important;margin:12px 0 0!important;
+    padding:14px!important;border:2px solid #fff!important;
+    justify-content:center!important;color:#fff!important;
+  }
+}
 </style>
 
 <?php if(setting('favicon','')):?><link rel="icon" href="<?=e(asset_url(setting('favicon','')))?>"><?php endif;?>
