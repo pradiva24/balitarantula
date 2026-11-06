@@ -245,7 +245,7 @@ i[class*="fa-"], span[class*="fa-"], [class^="fa-"], [class*=" fa-"], .fa, .fas,
 </style>
 </head>
 <body>
-<div class="topline"><span>BUILT FOR THE WILD</span><span>BALI, INDONESIA <span class="orange">●</span></span></div>
+<div class="topline"><span>BALI TARANTULA ADVENTURE</span><span>BALI, INDONESIA <span class="orange">●</span></span></div>
 <header class="site-header">
   <a class="brand" href="<?=e(rtrim(BASE_URL,'/').'/')?>" aria-label="<?=e($siteName)?> home">
     <?php $headerLogo = trim((string)setting('site_logo',setting('admin_logo',''))); ?>
