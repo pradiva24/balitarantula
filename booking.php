@@ -159,8 +159,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $error = 'Please select a valid activity start time.';
     } elseif ($pickup && ($adults + $children) < 2) {
         $error = 'Hotel pickup requires a minimum of 2 guests. Please select at least 2 people or choose Ticket Only.';
-    } elseif ($pickup && ($adults + $children) > 4) {
-        $error = 'Hotel pickup is limited to a maximum of 4 guests per transport. Please reduce the number of guests or choose Ticket Only.';
+    ;
     } elseif ($pickup && !$areaId) {
         $error = 'Please select your hotel pickup area.';
     } elseif ($pickup && ($pickupTime === '' || !in_array($pickupTime, $pickupTimeMap[$areaId] ?? [], true))) {
@@ -182,8 +181,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $error = 'Transport price is not configured for this area.';
             } else {
                 $pickupUnitPrice = (float)$ar['price'];
-                $transportGuests = 1; // One private transport, shared by 2–4 guests.
-                $pickupPrice = $pickupUnitPrice;
+                $transportGuests = (int)ceil($guests / 4); // One private transport per maximum of 4 guests.
+                $pickupPrice = $pickupUnitPrice * $transportGuests;
                 $areaName = $ar['name'];
             }
         }
@@ -239,7 +238,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                     $items = $isTandem ? [[$pkg['name'] . ' - Tandem ATV Unit', 1, (float)$pkg['price_adult'], (float)$pkg['price_adult']]] : [[$pkg['name'] . ' - Adult', $adults, (float)$pkg['price_adult'], $adults * (float)$pkg['price_adult']]];
                     if (!$isTandem && $children > 0) $items[] = [$pkg['name'] . ' - Child', $children, (float)$pkg['price_child'], $children * (float)$pkg['price_child']];
-                    if ($pickup) $items[] = ['Hotel Transport' . ($areaName ? ' - ' . $areaName : ''), 1, $pickupUnitPrice, $pickupPrice];
+                    if ($pickup) $items[] = ['Hotel Transport' . ($areaName ? ' - ' . $areaName : '') . ' (' . $transportGuests . ' Vehicle' . ($transportGuests > 1 ? 's' : '') . ')', $transportGuests, $pickupUnitPrice, $pickupPrice];
                     if ($discount > 0) $items[] = ['Promo Discount - ' . $discountCode, 1, -$discount, -$discount];
 
                     $it = $db->prepare("INSERT INTO booking_items(booking_id, item_name, quantity, unit_price, total_price) VALUES(?,?,?,?,?)");
@@ -905,7 +904,7 @@ body {
           <label>Transport Option</label>
           <select class="form-control" name="pickup_required" id="pickup_required">
             <option value="0" <?=((int)($_POST['pickup_required'] ?? 0) === 0) ? 'selected' : ''?>>Ticket Only &mdash; Self Arrival to Basecamp</option>
-            <option value="1" <?=((int)($_POST['pickup_required'] ?? 0) === 1) ? 'selected' : ''?>>Ticket + Private Return Hotel Pickup (2–4 People)</option>
+            <option value="1" <?=((int)($_POST['pickup_required'] ?? 0) === 1) ? 'selected' : ''?>>Ticket + Private Return Hotel Pickup (Min. 2 People · Max. 4 People per Vehicle)</option>
           </select>
         </div>
 
@@ -1076,11 +1075,11 @@ body {
     const guests = (+adults.value || 1) + (+children.value || 0);
     if (pickup.value !== '1' || !area.value) return { unit: 0, count: 0, total: 0, guests };
     if (guests < 2) return { unit: 0, count: 0, total: 0, guests, minGuests: true };
-    if (guests > 4) return { unit: 0, count: 0, total: 0, guests, maxGuests: true };
     const unit = pickupPrices[picker.value + '_' + area.value];
     if (typeof unit !== 'number') return { unit: 0, count: 0, total: 0, missing: true, guests };
-    // Pickup price is per private transport, not per guest.
-    return { unit, count: 1, total: unit, guests };
+    // Each private transport accommodates up to 4 guests; charge once per vehicle.
+    const count = Math.ceil(guests / 4);
+    return { unit, count, total: unit * count, guests };
   }
 
   function renderActivityTimes(){
@@ -1148,8 +1147,6 @@ body {
         summaryPickup.textContent = 'Ticket Only';
       } else if (t.minGuests) {
         summaryPickup.textContent = 'Min. 2 People';
-      } else if (t.maxGuests) {
-        summaryPickup.textContent = 'Max. 4 People per Transport';
       } else if (t.missing) {
         summaryPickup.textContent = 'Price Unavailable';
       } else {
