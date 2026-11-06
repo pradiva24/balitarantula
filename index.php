@@ -26,6 +26,9 @@ try {
 }
 
 
+$marqueeKicker = trim((string)setting('homepage_marquee_kicker', trim((string)($home['intro_kicker'] ?? '')) ?: 'NOT JUST A RIDE.'));
+$marqueeTitle = trim((string)setting('homepage_marquee_title', trim((string)($home['intro_title'] ?? '')) ?: "IT'S YOUR CALL TO ADVENTURE."));
+
 $packages = db()->query("
     SELECT p.*, c.name category_name
     FROM packages p
@@ -895,7 +898,7 @@ body>main{margin:0!important;padding:0!important;max-width:none!important;width:
     <?php if (count($heroSlides) > 1 && $heroMediaMode !== 'video'): ?><div class="bta-hero-dots" aria-label="Hero image slides"><?php foreach($heroSlides as $i => $slide): ?><button type="button" data-bta-hero-dot="<?=$i?>" class="<?= $i === 0 ? 'active' : '' ?>" aria-label="Show hero image <?=$i+1?>"></button><?php endforeach; ?></div><?php endif; ?>
   </section>
 
-  <?php $introKicker = trim((string)($home['intro_kicker'] ?? 'NOT JUST A RIDE.')) ?: 'NOT JUST A RIDE.'; $introTitle = trim((string)($home['intro_title'] ?? "IT'S YOUR CALL TO ADVENTURE.")) ?: "IT'S YOUR CALL TO ADVENTURE."; ?>
+  <?php $introKicker = $marqueeKicker; $introTitle = $marqueeTitle; ?>
   <section class="intro-strip" aria-label="Adventure highlights">
     <div class="intro-marquee">
       <div class="intro-marquee-track">
