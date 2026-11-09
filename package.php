@@ -1202,6 +1202,68 @@ body {
 @media(max-width:850px){.bta-pkg-detail .package-detail-layout{grid-template-columns:minmax(0,1fr)}.bta-pkg-detail .booking-panel{position:relative;top:auto;order:-1}.bta-pkg-detail .package-tabs{top:68px}}
 @media(max-width:640px){.bta-pkg-detail .page-banner{padding-top:130px;min-height:320px}.bta-pkg-detail .package-tabs{gap:16px;margin-inline:-4px}.bta-pkg-detail .package-thumb-btn{flex-basis:66px;height:58px}.bta-pkg-detail .booking-panel{padding:18px}.bta-pkg-detail .panel-actions{grid-template-columns:1fr}.bta-pkg-detail .related-slider-controls{gap:8px}}
 
+
+/* Mobile/tablet fixed price bar: price first, booking actions side-by-side below it. */
+@media(max-width:850px){
+  .bta-pkg-detail{padding-bottom:190px!important}
+  .bta-pkg-detail .booking-panel{
+    position:fixed!important;
+    z-index:999!important;
+    left:0!important;right:0!important;bottom:0!important;top:auto!important;
+    width:100%!important;max-width:none!important;
+    margin:0!important;
+    padding:10px 16px calc(12px + env(safe-area-inset-bottom))!important;
+    display:grid!important;
+    grid-template-columns:minmax(0,1fr)!important;
+    gap:7px!important;
+    border:1px solid #dedbd4!important;
+    border-top:3px solid #ed3833!important;
+    border-radius:14px 14px 0 0!important;
+    background:#fff!important;
+    box-shadow:0 -8px 28px rgba(0,0,0,.16)!important;
+  }
+  .bta-pkg-detail .booking-panel .special-price-badge{display:none!important}
+  .bta-pkg-detail .booking-panel .panel-price-row{
+    grid-column:1!important;grid-row:1!important;margin:0!important;
+  }
+  .bta-pkg-detail .booking-panel .panel-price-old{
+    display:flex;align-items:center;gap:7px;flex-wrap:wrap;
+    margin:0;font-size:12px;line-height:1.2;
+  }
+  .bta-pkg-detail .booking-panel .panel-price-current{
+    display:flex;align-items:baseline;gap:5px;flex-wrap:wrap;
+    margin:0;font-size:23px;line-height:1.15;color:#191919;
+  }
+  .bta-pkg-detail .booking-panel .panel-price-current small{
+    display:inline;font-size:11px;margin:0;white-space:nowrap;
+  }
+  .bta-pkg-detail .booking-panel .panel-actions{
+    grid-column:1!important;grid-row:2!important;
+    display:flex!important;flex-direction:row!important;
+    gap:9px!important;margin:0!important;width:100%;
+  }
+  .bta-pkg-detail .booking-panel .btn-book-now,
+  .bta-pkg-detail .booking-panel .btn-whatsapp{
+    display:flex!important;flex:1 1 0!important;width:50%!important;
+    min-width:0!important;min-height:43px!important;
+    align-items:center!important;justify-content:center!important;
+    padding:9px 8px!important;font-size:11px!important;line-height:1.2!important;
+    white-space:nowrap;
+  }
+  .bta-pkg-detail .booking-panel .panel-confirm-note,
+  .bta-pkg-detail .booking-panel .panel-divider,
+  .bta-pkg-detail .booking-panel .panel-details-list{display:none!important}
+  .bta-pkg-detail .package-tabs{position:sticky!important;top:68px!important;z-index:20!important}
+  .bta-pkg-detail .detail-block,.bta-pkg-detail .faq-item{scroll-margin-top:135px}
+}
+@media(max-width:380px){
+  .bta-pkg-detail{padding-bottom:184px!important}
+  .bta-pkg-detail .booking-panel{padding-left:12px!important;padding-right:12px!important}
+  .bta-pkg-detail .booking-panel .panel-price-current{font-size:21px}
+  .bta-pkg-detail .booking-panel .btn-book-now,
+  .bta-pkg-detail .booking-panel .btn-whatsapp{font-size:10px!important}
+}
+
 </style>
 
 <div class="bta-pkg-detail">
