@@ -833,6 +833,80 @@ body { color: #222; }
 .bta-packages .card-link:focus-visible i{color:#ed3833!important}
 .bta-packages .adventure-card-image-link:focus-visible{outline:3px solid #ed3833;outline-offset:-4px}
 
+
+/* BTA UI refinement: package listing responsive and keyboard-accessible */
+.bta-packages .packages-category-tabs{
+  overscroll-behavior-x:contain;
+  scroll-padding-inline:12px;
+  scroll-snap-type:x proximity;
+}
+.bta-packages .packages-category-tab{
+  min-height:42px;
+  scroll-snap-align:start;
+}
+.bta-packages .packages-category-tab:focus-visible,
+.bta-packages .card-link:focus-visible{
+  outline:2px solid #ed3833;
+  outline-offset:4px;
+}
+.bta-packages .adventure-card{
+  min-width:0;
+  overflow:hidden;
+}
+.bta-packages .adventure-card .card-content{
+  left:0;
+  right:0;
+  width:auto;
+  min-width:0;
+}
+.bta-packages .adventure-card h3{
+  max-width:100%;
+  overflow-wrap:anywhere;
+  text-wrap:balance;
+}
+.bta-packages .adventure-card p{
+  max-width:100%;
+  overflow-wrap:anywhere;
+}
+.bta-packages .card-pricing-row,
+.bta-packages .card-price-box{
+  min-width:0;
+}
+.bta-packages .card-price-current{
+  overflow-wrap:anywhere;
+}
+@media(max-width:767px){
+  .bta-packages .page-banner{padding-top:125px;padding-bottom:42px}
+  .bta-packages .page-banner-content h1{font-size:clamp(42px,10vw,64px);line-height:.94}
+  .bta-packages .page-banner-content p{font-size:14px;line-height:1.75}
+  .bta-packages .packages-category-wrap{margin-bottom:20px}
+}
+@media(max-width:640px){
+  .bta-packages .packages-category-tabs{gap:8px;padding:4px 2px 12px}
+  .bta-packages .packages-category-tab{min-height:40px;padding:9px 15px;font-size:12px}
+  .bta-packages .adventure-card{height:430px;min-height:430px}
+  .bta-packages .adventure-card .card-content{padding:20px 18px}
+  .bta-packages .adventure-card h3{font-size:clamp(27px,8vw,34px);line-height:1}
+  .bta-packages .adventure-card p{font-size:11px;line-height:1.65}
+  .bta-packages .card-price-current{font-size:20px}
+  .bta-packages .card-link{font-size:10px;letter-spacing:.9px}
+}
+@media(max-width:380px){
+  .bta-packages .wrap{width:calc(100% - 24px)}
+  .bta-packages .adventure-card{height:440px;min-height:440px}
+  .bta-packages .adventure-card .card-content{padding:18px 15px}
+  .bta-packages .package-category-badge,
+  .bta-packages .package-best-seller{font-size:8px;padding:7px 9px}
+}
+@media(prefers-reduced-motion:reduce){
+  .bta-packages .adventure-card,
+  .bta-packages .adventure-card-image-link img,
+  .bta-packages .packages-category-tab,
+  .bta-packages .card-link{transition:none!important}
+  .bta-packages .adventure-card:hover{transform:none}
+  .bta-packages .adventure-card:hover .adventure-card-image-link img{transform:none}
+}
+
 </style>
 
 <div class="bta-packages">
