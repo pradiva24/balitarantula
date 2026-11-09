@@ -523,8 +523,4 @@ img{height:auto}
 </script>
 
 
-<style>
-html body { font-family: 'Inter', sans-serif !important; color: #5d5b56; font-size: 15px; }
-html body p, html body li, html body label, html body small, html body .description, html body .content-text { font-family: 'Inter', sans-serif !important; color: #5d5b56; }
-html body .text-muted { color: #77736b !important; }
-</style>
+<!-- Removed legacy global text-color overrides: page components now control contrast on light and dark surfaces. -->
