@@ -378,6 +378,23 @@ body {
     padding: 100px 0 45px;
   }
 }
+
+/* BTA UI refinement: editorial cards and responsive listing */
+.bta-blog .blog-section{min-width:0}
+.bta-blog .blog-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px;align-items:stretch}
+.bta-blog .blog-card{display:flex;flex-direction:column;min-width:0;overflow:hidden;background:#fff;border:1px solid #e8e4dc;box-shadow:0 10px 28px rgba(25,20,12,.045);transition:transform .22s ease,box-shadow .22s ease}
+.bta-blog .blog-card:hover{transform:translateY(-4px);box-shadow:0 16px 34px rgba(25,20,12,.1)}
+.bta-blog .blog-image{display:block;aspect-ratio:16/10;height:auto;overflow:hidden;background:#eee}
+.bta-blog .blog-image img{display:block;width:100%;height:100%;object-fit:cover;transition:transform .55s ease}
+.bta-blog .blog-card:hover .blog-image img{transform:scale(1.045)}
+.bta-blog .blog-copy{display:flex;flex:1;flex-direction:column;min-width:0;padding:22px}
+.bta-blog .blog-copy h2,.bta-blog .blog-copy h3{line-height:1.08;overflow-wrap:anywhere}
+.bta-blog .blog-copy>p:not(.blog-meta){flex:1;line-height:1.75}
+.bta-blog .card-link{display:inline-flex;align-items:center;gap:9px;margin-top:14px}
+@media(max-width:900px){.bta-blog .blog-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:15px}}
+@media(max-width:640px){.bta-blog .page-banner{padding-top:130px;min-height:320px}.bta-blog .blog-grid{grid-template-columns:1fr;gap:16px}.bta-blog .blog-copy{padding:19px}.bta-blog .blog-image{aspect-ratio:16/9}}
+@media(prefers-reduced-motion:reduce){.bta-blog .blog-card,.bta-blog .blog-image img{transition:none}.bta-blog .blog-card:hover,.bta-blog .blog-card:hover .blog-image img{transform:none}}
+
 </style>
 
 <div class="bta-blog">
