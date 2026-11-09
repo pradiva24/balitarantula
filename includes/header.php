@@ -383,6 +383,97 @@ body h1 span,body h2 span,body h3 span,body h4 span,body h5 span,body h6 span,bo
 .fa-brands, .fab, [class*="fa-brands"] { font-family: "Font Awesome 6 Brands" !important; font-weight: 400 !important; font-style: normal !important; text-transform: none !important; }
 i[class*="fa-"], span[class*="fa-"], [class^="fa-"], [class*=" fa-"], .fa, .fas, .far, .fab { font-style: normal !important; line-height: 1 !important; text-rendering: auto !important; text-transform: none !important; -webkit-font-smoothing: antialiased !important; }
 </style>
+<style id="bta-ui-polish">
+/* Bali Tarantula Adventure — global UI polish; presentation only */
+:root{
+  --bta-bg:#101010;--bta-surface:#181818;--bta-surface-2:#202020;
+  --bta-accent:#ed3833;--bta-text:#f7f5f0;--bta-muted:#a7a7a7;
+  --bta-border:rgba(255,255,255,.12);--bta-radius:3px;
+}
+html{scroll-behavior:smooth;scroll-padding-top:90px}
+body{background:var(--bta-bg);color:var(--bta-text);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+::selection{background:var(--bta-accent);color:#fff}
+a,button,input,select,textarea{ -webkit-tap-highlight-color:transparent }
+a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,[tabindex]:focus-visible{
+  outline:2px solid var(--bta-accent)!important;outline-offset:3px!important
+}
+/* Header: cleaner separation and dependable sticky visual state */
+.site-header{z-index:100000;transition:background .25s ease,box-shadow .25s ease,border-color .25s ease}
+.site-header.is-scrolled{background:rgba(12,12,12,.96)!important;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);box-shadow:0 8px 30px rgba(0,0,0,.22);border-bottom:1px solid var(--bta-border)}
+.site-header .main-nav a{transition:color .2s ease,background .2s ease,border-color .2s ease,transform .2s ease}
+.site-header .main-nav a:hover{color:var(--bta-accent)}
+.site-header .nav-book,.site-header .nav-cta{background:var(--bta-accent)!important;color:#111!important;border:1px solid var(--bta-accent)!important;transition:background .2s ease,transform .2s ease!important}
+.site-header .nav-book:hover,.site-header .nav-cta:hover{background:#ff514b!important;transform:translateY(-2px)}
+/* Consistent page rhythm and readable content width */
+main{min-width:0;overflow:clip}
+main section{scroll-margin-top:90px}
+.wrap{width:min(1180px,calc(100% - 48px));margin-inline:auto}
+.page-banner{background-color:#171717;background-blend-mode:normal}
+.page-banner-content h1,.section-heading h2,.inner-title{letter-spacing:.01em;text-wrap:balance}
+.page-banner-content>p:not(.eyebrow),.section-description,.inner-copy p,.article-main p{max-width:68ch}
+.eyebrow{letter-spacing:.16em}
+.section-heading{gap:28px}
+.section-heading .section-description{line-height:1.85}
+/* Cards: image-led, aligned, with subtle motion */
+.adventure-card,.track-card,.blog-card,.review-card,.package-card,.gallery-grid a{
+  border-radius:var(--bta-radius);isolation:isolate
+}
+.adventure-card,.track-card,.blog-card{box-shadow:0 12px 34px rgba(0,0,0,.16)}
+.adventure-card img,.track-card img,.blog-image img,.gallery-grid img{
+  backface-visibility:hidden;transition:transform .55s cubic-bezier(.2,.7,.2,1),filter .35s ease
+}
+.adventure-card:hover img,.track-card:hover img,.blog-image:hover img,.gallery-grid a:hover img{transform:scale(1.045)}
+.card-content p,.track-desc,.blog-copy>p:not(.blog-meta){line-height:1.8}
+.card-link,.track-meta,.blog-meta{letter-spacing:.08em}
+.button,.hero-actions .button,.nav-cta,.nav-book{
+  min-height:48px;font-weight:800;letter-spacing:.07em
+}
+.button-orange,.button-dark,.button-outline,.nav-cta,.nav-book{
+  transition:transform .2s ease,background .2s ease,color .2s ease,border-color .2s ease
+}
+.button-orange:hover,.button-dark:hover,.button-outline:hover{transform:translateY(-2px)}
+/* Form controls: stronger hierarchy and clear focus */
+input,select,textarea{max-width:100%;border-radius:2px}
+input:not([type=checkbox]):not([type=radio]),select,textarea{
+  min-height:44px
+}
+label{line-height:1.5}
+button:disabled,.button[aria-disabled=true]{opacity:.55;cursor:not-allowed}
+/* Image and content blocks */
+img{height:auto}
+.article-cover,.package-cover{border-radius:2px}
+.article-main{min-width:0}
+.article-main p{line-height:1.9}
+.detail-block{padding-top:20px}
+.detail-block ul,.booking-panel ul{line-height:1.9}
+.booking-panel,.article-sidebar,.contact-form{box-shadow:0 14px 36px rgba(0,0,0,.18)}
+/* Reviews, stats and gallery should feel like one design system */
+.reviews-section,.home-gallery-section,.stats-strip{position:relative}
+.review-card{background:rgba(24,24,24,.94);border:1px solid var(--bta-border)}
+.gallery-grid a{background:var(--bta-surface);overflow:hidden}
+.gallery-grid a:focus-visible{outline-offset:4px}
+.site-footer{border-top:1px solid var(--bta-border)}
+/* Responsive spacing and typography */
+@media(max-width:850px){
+  .wrap{width:calc(100% - 40px)}
+  .section-heading{gap:18px}
+}
+@media(max-width:640px){
+  html{scroll-padding-top:70px}
+  main section{scroll-margin-top:70px}
+  .wrap{width:calc(100% - 36px)}
+  .section-heading{margin-bottom:26px}
+  .page-banner{padding-top:132px}
+  .page-banner-content>p:not(.eyebrow){font-size:12px;line-height:1.8}
+  .button,.hero-actions .button{min-height:48px}
+  .article-main p{font-size:13px;line-height:1.85}
+  .contact-form,.article-sidebar,.booking-panel{padding:20px}
+}
+@media(prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{scroll-behavior:auto!important;transition-duration:.01ms!important;animation-duration:.01ms!important;animation-iteration-count:1!important}
+}
+</style>
 </head>
 <body>
 <div class="topline"><span>BALI TARANTULA ADVENTURE</span><span>BALI, INDONESIA <span class="orange">●</span></span></div>
