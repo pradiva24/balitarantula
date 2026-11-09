@@ -515,6 +515,26 @@ body {
     padding: 100px 0 45px;
   }
 }
+
+/* BTA UI refinement: gallery grid and accessible lightbox controls */
+.bta-gallery .gallery-section{min-width:0}
+.bta-gallery .gallery-tabs{display:flex;gap:9px;overflow-x:auto;white-space:nowrap;scrollbar-width:none;padding:4px 2px 13px;overscroll-behavior-x:contain}
+.bta-gallery .gallery-tabs::-webkit-scrollbar{display:none}
+.bta-gallery .gallery-tab-btn{flex:0 0 auto;min-height:42px;padding:10px 17px}
+.bta-gallery .gallery-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.bta-gallery .gallery-card{position:relative;min-width:0;overflow:hidden;aspect-ratio:4/3;background:#eee;cursor:pointer}
+.bta-gallery .gallery-card img{display:block;width:100%;height:100%;object-fit:cover;transition:transform .55s ease}
+.bta-gallery .gallery-card:hover img{transform:scale(1.045)}
+.bta-gallery .gallery-modal{padding:clamp(12px,3vw,30px)}
+.bta-gallery .gallery-modal-content{max-width:min(1100px,92vw);max-height:82vh}
+.bta-gallery .gallery-modal-content img{display:block;max-width:100%;max-height:72vh;object-fit:contain;margin:auto}
+.bta-gallery .gallery-modal-close,.bta-gallery .gallery-modal-nav{min-width:42px;min-height:42px}
+.bta-gallery .gallery-tab-btn:focus-visible,.bta-gallery .gallery-card:focus-visible,.bta-gallery .gallery-modal button:focus-visible{outline:2px solid #ed3833;outline-offset:3px}
+@media(max-width:900px){.bta-gallery .gallery-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:640px){.bta-gallery .page-banner{padding-top:130px;min-height:320px}.bta-gallery .gallery-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.bta-gallery .gallery-card{aspect-ratio:1/1}.bta-gallery .gallery-modal-content{max-width:100%;max-height:78vh}.bta-gallery .gallery-modal-content img{max-height:68vh}}
+@media(max-width:380px){.bta-gallery .gallery-grid{grid-template-columns:1fr}.bta-gallery .gallery-card{aspect-ratio:4/3}}
+@media(prefers-reduced-motion:reduce){.bta-gallery .gallery-card img{transition:none}.bta-gallery .gallery-card:hover img{transform:none}}
+
 </style>
 
 <div class="bta-gallery">
