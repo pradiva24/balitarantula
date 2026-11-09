@@ -516,6 +516,23 @@ body {
 .page-banner::before {
   background-image: url("<?=e(asset_url($contactHeroImage))?>");
 }
+
+/* BTA UI refinement: contact information and form */
+.bta-contact .contact-layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(24px,5vw,64px);align-items:start}
+.bta-contact .contact-intro,.bta-contact .contact-form{min-width:0}
+.bta-contact .contact-detail{display:flex;gap:15px;align-items:flex-start;padding:17px 0;border-bottom:1px solid #e4e0d8}
+.bta-contact .contact-detail>div{min-width:0;overflow-wrap:anywhere}
+.bta-contact .contact-social-links{display:flex;flex-wrap:wrap;gap:10px}
+.bta-contact .contact-social-link{display:inline-flex;align-items:center;justify-content:center;min-width:42px;min-height:42px}
+.bta-contact .contact-form{display:grid;gap:10px;padding:clamp(20px,3vw,30px);background:#fff;border:1px solid #e5e1d9;border-top:3px solid #ed3833;box-shadow:0 14px 38px rgba(20,20,20,.06)}
+.bta-contact .contact-form input,.bta-contact .contact-form select,.bta-contact .contact-form textarea{width:100%;min-width:0;max-width:100%;min-height:46px;padding:12px 13px;border:1px solid #d8d4cc;background:#fff;color:#191919;font:14px var(--font-body,Inter,Arial,sans-serif)}
+.bta-contact .contact-form textarea{min-height:130px;resize:vertical}
+.bta-contact .contact-form input:focus,.bta-contact .contact-form select:focus,.bta-contact .contact-form textarea:focus{outline:2px solid #ed3833;outline-offset:1px;border-color:#ed3833}
+.bta-contact .contact-form .button-orange{min-height:48px;justify-content:center}
+.bta-contact .alert-box{overflow-wrap:anywhere}
+@media(max-width:850px){.bta-contact .contact-layout{grid-template-columns:1fr;gap:28px}}
+@media(max-width:640px){.bta-contact .page-banner{padding-top:130px;min-height:320px}.bta-contact .contact-form{padding:19px}.bta-contact .contact-detail{gap:12px}.bta-contact .contact-social-links{gap:8px}}
+
 </style>
 <?php endif; ?>
 
