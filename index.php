@@ -614,6 +614,14 @@ img{height:auto}
 .bta-hero-dots{position:absolute;z-index:3;left:50%;bottom:28px;transform:translateX(-50%);display:flex;gap:8px}
 .bta-hero-dots button{width:8px;height:8px;padding:0;border:1px solid #fff;background:#ffffff70;border-radius:50%;cursor:pointer}
 .bta-hero-dots button.active{background:var(--orange);border-color:var(--orange);transform:scale(1.25)}
+/* P0 responsive fix: anchor hero utility text to the hero itself, not viewport height. */
+.bta-home-main .hero-bottom{top:auto;bottom:24px}
+@media(max-width:640px){
+  .bta-home-main .hero-bottom{top:auto;bottom:18px;left:18px;right:18px;gap:12px;flex-wrap:wrap}
+  .bta-home-main .hero-bottom>*{min-width:0}
+  .bta-home-main .hero-actions{gap:12px}
+  .bta-home-main .hero-actions .button{max-width:100%;min-width:0}
+}
 /* Homepage integration: adapt existing shared header/footer to the supplied design without editing shared files. */
 body{background:#f5f4ef!important;color:#191919!important}
 
