@@ -364,6 +364,23 @@ body {
     top: auto;
   }
 }
+
+/* BTA UI refinement: article reading width and sidebar */
+.bta-article .article-layout{display:grid;grid-template-columns:minmax(0,2fr) minmax(250px,.78fr);gap:clamp(24px,4vw,54px);align-items:start}
+.bta-article .article-main{min-width:0;max-width:820px}
+.bta-article .article-cover{display:block;width:100%;height:auto;max-height:520px;object-fit:cover}
+.bta-article .article-prose{font-size:16px;line-height:1.9;color:#4e4c47;overflow-wrap:anywhere}
+.bta-article .article-prose h2,.bta-article .article-prose h3{margin:1.7em 0 .65em;line-height:1.1}
+.bta-article .article-prose img,.bta-article .article-prose iframe{max-width:100%;height:auto}
+.bta-article .article-prose blockquote{border-left:3px solid #ed3833;padding:14px 20px;background:#f5f3ef;margin:24px 0}
+.bta-article .article-sidebar{position:sticky;top:92px;min-width:0}
+.bta-article .side-pkg-item{display:flex;gap:12px;align-items:center;padding:12px 0;border-bottom:1px solid #e6e2da}
+.bta-article .side-pkg-item img{width:76px;height:64px;flex:0 0 76px;object-fit:cover}
+.bta-article .side-pkg-info{min-width:0}
+.bta-article .side-pkg-info a{overflow-wrap:anywhere}
+@media(max-width:850px){.bta-article .article-layout{grid-template-columns:1fr}.bta-article .article-sidebar{position:static}.bta-article .article-main{max-width:none}}
+@media(max-width:640px){.bta-article .page-banner{padding-top:130px;min-height:320px}.bta-article .article-prose{font-size:14px;line-height:1.85}.bta-article .article-cover{max-height:360px}.bta-article .sidebar-box{padding:18px}}
+
 </style>
 
 <div class="bta-article">
