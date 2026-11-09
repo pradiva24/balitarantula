@@ -1180,6 +1180,28 @@ body {
   .panel-details-list li span { flex-basis: 40%; }
   .panel-details-list li b { flex-basis: 60%; }
 }
+
+/* BTA UI refinement: package detail layout */
+.bta-pkg-detail .package-detail-layout{grid-template-columns:minmax(0,1.65fr) minmax(280px,.75fr);gap:clamp(22px,3vw,42px);align-items:start}
+.bta-pkg-detail .package-detail-main,.bta-pkg-detail .booking-panel{min-width:0}
+.bta-pkg-detail .package-cover-wrap{overflow:hidden;background:#eee}
+.bta-pkg-detail .package-cover-img{display:block;width:100%;height:auto;max-height:560px;object-fit:cover}
+.bta-pkg-detail .package-thumb-row{display:flex;gap:9px;overflow-x:auto;padding:10px 2px 12px;scrollbar-width:thin}
+.bta-pkg-detail .package-thumb-btn{flex:0 0 76px;height:66px;overflow:hidden;border:2px solid transparent;padding:0;background:#eee;cursor:pointer}
+.bta-pkg-detail .package-thumb-btn img{width:100%;height:100%;object-fit:cover}
+.bta-pkg-detail .package-thumb-btn.is-active,.bta-pkg-detail .package-thumb-btn:focus-visible{border-color:#ed3833}
+.bta-pkg-detail .package-tabs{position:sticky;top:76px;z-index:4;background:rgba(255,255,255,.96);backdrop-filter:blur(12px);padding:13px 4px;overflow-x:auto;flex-wrap:nowrap;white-space:nowrap}
+.bta-pkg-detail .package-tabs a{flex:0 0 auto}
+.bta-pkg-detail .detail-block,.bta-pkg-detail .faq-item{scroll-margin-top:140px}
+.bta-pkg-detail .booking-panel{border-radius:3px;box-shadow:0 14px 38px rgba(20,20,20,.08)}
+.bta-pkg-detail .panel-actions{display:grid;gap:10px}
+.bta-pkg-detail .btn-book-now,.bta-pkg-detail .btn-whatsapp{min-height:48px;display:flex;align-items:center;justify-content:center;gap:9px}
+.bta-pkg-detail .faq-item{border-bottom:1px solid #e5e1da}
+.bta-pkg-detail .faq-answer{line-height:1.8}
+@media(min-width:851px){.bta-pkg-detail .booking-panel{position:sticky;top:92px;align-self:start}}
+@media(max-width:850px){.bta-pkg-detail .package-detail-layout{grid-template-columns:minmax(0,1fr)}.bta-pkg-detail .booking-panel{position:relative;top:auto;order:-1}.bta-pkg-detail .package-tabs{top:68px}}
+@media(max-width:640px){.bta-pkg-detail .page-banner{padding-top:130px;min-height:320px}.bta-pkg-detail .package-tabs{gap:16px;margin-inline:-4px}.bta-pkg-detail .package-thumb-btn{flex-basis:66px;height:58px}.bta-pkg-detail .booking-panel{padding:18px}.bta-pkg-detail .panel-actions{grid-template-columns:1fr}.bta-pkg-detail .related-slider-controls{gap:8px}}
+
 </style>
 
 <div class="bta-pkg-detail">
