@@ -160,6 +160,23 @@ require __DIR__ . '/includes/header.php';
 @media(max-width:700px){.about-why{padding-top:65px;padding-bottom:70px}.about-why-heading{align-items:flex-start;flex-direction:column;gap:18px;margin-bottom:27px}.about-why-heading h2{font-size:clamp(46px,12vw,66px);line-height:.92}.about-why-description{max-width:500px;font-size:13px}.about-reasons{grid-template-columns:1fr}.about-reasons article,.about-reasons article+article,.about-reasons article:nth-child(3){min-height:auto;padding:25px 35px 25px 0;border-left:0;border-bottom:1px solid #45413c;border-top:0}.about-reason-no{top:28px;right:5px}.about-reason-icon{margin-bottom:10px}.about-reasons h3{font-size:25px}.about-reasons p{max-width:350px}.about-values-section{padding:65px 0}.about-values{grid-template-columns:1fr;gap:28px}.about-values .values-photo{min-height:250px;max-height:360px}.about-value-item{grid-template-columns:34px 1fr 24px;gap:10px;padding:15px 0}}
 @media(max-width:980px){.about-card-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.about-story{gap:34px}.about-stat-grid{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:700px){.about-hero{min-height:390px;padding:115px 0 55px}.about-story,.about-values{grid-template-columns:1fr;padding:62px 0;gap:27px}.about-story .story-visual{order:2}.about-story .story-copy{order:1}.about-photo,.about-values .values-photo{min-height:240px;max-height:330px}.about-mindset{min-height:350px;padding:65px 0}.about-section{padding:65px 0}.about-card-grid{grid-template-columns:1fr;gap:14px}.about-values .about-card-grid{grid-template-columns:1fr}.about-stat-grid{grid-template-columns:repeat(2,1fr);gap:14px}.about-stat{padding:14px}.about-cta{min-height:330px;padding:60px 0}}
+
+/* BTA UI refinement: about page rhythm and responsive story sections */
+.bta-about .about-hero{min-height:clamp(480px,66vw,720px);display:flex;align-items:center;overflow:hidden}
+.bta-about .hero-photo,.bta-about .story-visual,.bta-about .about-values-visual,.bta-about .cta-photo{min-width:0;overflow:hidden}
+.bta-about .hero-photo img,.bta-about .about-photo,.bta-about .values-photo,.bta-about .cta-photo img{display:block;width:100%;height:100%;object-fit:cover}
+.bta-about .hero-copy,.bta-about .story-copy,.bta-about .about-values-copy,.bta-about .cta-content{min-width:0}
+.bta-about .about-story,.bta-about .about-values{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(24px,5vw,68px);align-items:center}
+.bta-about .about-quote{border-left:3px solid #ed3833;padding:16px 20px;margin:24px 0;line-height:1.7}
+.bta-about .about-reasons,.bta-about .about-stat-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+.bta-about .about-reason,.bta-about .about-stat{min-width:0}
+.bta-about .about-value-item{display:flex;gap:14px;align-items:flex-start}
+.bta-about .about-value-item .value-copy{min-width:0}
+.bta-about .about-btn{display:inline-flex;align-items:center;gap:10px;min-height:48px}
+@media(max-width:850px){.bta-about .about-story,.bta-about .about-values{grid-template-columns:1fr;gap:28px}.bta-about .about-reasons,.bta-about .about-stat-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:640px){.bta-about .about-hero{min-height:520px}.bta-about .about-reasons,.bta-about .about-stat-grid{gap:10px}.bta-about .about-reason{padding:18px!important}.bta-about .about-stat{padding:14px 10px}.bta-about .about-quote{margin:18px 0;padding:13px 16px}}
+@media(max-width:380px){.bta-about .about-reasons,.bta-about .about-stat-grid{grid-template-columns:1fr}}
+
 </style>
 
 <div class="bta-about">
