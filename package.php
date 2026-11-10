@@ -1264,6 +1264,40 @@ body {
   .bta-pkg-detail .booking-panel .btn-whatsapp{font-size:10px!important}
 }
 
+
+/* Package gallery lightbox and reliable red quick-nav states. */
+.package-cover-img{cursor:zoom-in;touch-action:pan-y}
+.package-photo-lightbox{
+  position:fixed;inset:0;z-index:200000;display:none;align-items:center;justify-content:center;
+  padding:60px 58px;background:rgba(0,0,0,.96);touch-action:pan-y
+}
+.package-photo-lightbox.is-open{display:flex}
+.package-lightbox-image{display:block;max-width:100%;max-height:82vh;width:auto;height:auto;object-fit:contain;user-select:none;-webkit-user-drag:none}
+.package-lightbox-close,.package-lightbox-arrow{
+  position:absolute;z-index:2;display:flex;align-items:center;justify-content:center;
+  width:44px;height:44px;border:1px solid rgba(255,255,255,.55);border-radius:50%;
+  background:rgba(20,20,20,.72);color:#fff;font-size:30px;line-height:1;cursor:pointer
+}
+.package-lightbox-close{top:18px;right:18px;font-size:32px}
+.package-lightbox-prev{left:14px;top:50%;transform:translateY(-50%)}
+.package-lightbox-next{right:14px;top:50%;transform:translateY(-50%)}
+.package-lightbox-counter{position:absolute;bottom:18px;left:50%;transform:translateX(-50%);color:#fff;font:700 13px/1 Inter,sans-serif}
+.package-lightbox-close:hover,.package-lightbox-arrow:hover{background:#ed3833;border-color:#ed3833;color:#fff}
+.package-tabs a:hover,.package-tabs a:focus-visible,.package-tabs a.is-active{
+  background:#ed3833!important;border-color:#ed3833!important;color:#fff!important;
+  border-bottom-color:#ed3833!important;outline:none
+}
+.package-tabs a{border-radius:10px 10px 0 0}
+@media(max-width:767px){
+ .package-photo-lightbox{padding:54px 44px}
+ .package-lightbox-image{max-width:100%;max-height:78vh}
+ .package-lightbox-close{top:12px;right:12px;width:40px;height:40px}
+ .package-lightbox-prev{left:6px}.package-lightbox-next{right:6px}
+ .package-tabs a:hover,.package-tabs a:focus-visible,.package-tabs a.is-active{
+   background:#ed3833!important;border:1px solid #ed3833!important;color:#fff!important;
+   border-radius:999px!important
+ }
+}
 </style>
 
 <div class="bta-pkg-detail">
@@ -1309,6 +1343,16 @@ body {
             <?php endforeach; ?>
           </div>
         <?php endif; ?>
+      </div>
+
+
+      <!-- Full-screen package photo lightbox -->
+      <div class="package-photo-lightbox" id="packagePhotoLightbox" aria-hidden="true" role="dialog" aria-label="Package photo viewer">
+        <button type="button" class="package-lightbox-close" aria-label="Close photo viewer">&times;</button>
+        <button type="button" class="package-lightbox-arrow package-lightbox-prev" aria-label="Previous photo">&#8249;</button>
+        <img class="package-lightbox-image" id="packageLightboxImage" alt="<?=e($p['name'])?>">
+        <button type="button" class="package-lightbox-arrow package-lightbox-next" aria-label="Next photo">&#8250;</button>
+        <span class="package-lightbox-counter" id="packageLightboxCounter"></span>
       </div>
 
       <!-- Quick Nav Tabs -->
@@ -1505,6 +1549,77 @@ function stepPackageCover(direction) {
   const next = (Math.max(0, current) + direction + thumbs.length) % thumbs.length;
   thumbs[next].click();
 }
+
+/* Swipeable main gallery and tap-to-open lightbox. */
+(function(){
+  const cover=document.getElementById('mainPackageCover');
+  const wrap=cover?.closest('.package-cover-wrap');
+  const modal=document.getElementById('packagePhotoLightbox');
+  const lightboxImage=document.getElementById('packageLightboxImage');
+  const counter=document.getElementById('packageLightboxCounter');
+  if(!cover||!wrap||!modal||!lightboxImage)return;
+  const thumbs=()=>Array.from(document.querySelectorAll('.package-thumb-btn'));
+  const images=()=>thumbs().map(b=>b.querySelector('img')?.src).filter(Boolean);
+  const currentIndex=()=>Math.max(0,thumbs().findIndex(b=>b.classList.contains('is-active')));
+  let startX=0,startY=0,swiping=false;
+  function showLightbox(index){
+    const list=images(); if(!list.length)list.push(cover.src);
+    const safe=(index+list.length)%list.length;
+    lightboxImage.src=list[safe]; modal.dataset.index=String(safe);
+    if(counter)counter.textContent=(safe+1)+' / '+list.length;
+    modal.classList.add('is-open');modal.setAttribute('aria-hidden','false');
+    document.body.style.overflow='hidden';
+  }
+  function closeLightbox(){
+    modal.classList.remove('is-open');modal.setAttribute('aria-hidden','true');
+    document.body.style.overflow='';
+  }
+  function moveLightbox(direction){
+    const list=images();if(!list.length)return;
+    const next=(Number(modal.dataset.index||0)+direction+list.length)%list.length;
+    showLightbox(next);
+  }
+  wrap.addEventListener('click',ev=>{
+    if(ev.target.closest('.package-gallery-nav'))return;
+    if(ev.target===cover)showLightbox(currentIndex());
+  });
+  wrap.addEventListener('touchstart',ev=>{
+    if(!ev.touches.length)return;startX=ev.touches[0].clientX;startY=ev.touches[0].clientY;swiping=true;
+  },{passive:true});
+  wrap.addEventListener('touchend',ev=>{
+    if(!swiping||!ev.changedTouches.length)return;swiping=false;
+    const dx=ev.changedTouches[0].clientX-startX,dy=ev.changedTouches[0].clientY-startY;
+    if(Math.abs(dx)>45&&Math.abs(dx)>Math.abs(dy)*1.25)stepPackageCover(dx<0?1:-1);
+  },{passive:true});
+  modal.querySelector('.package-lightbox-close')?.addEventListener('click',closeLightbox);
+  modal.querySelector('.package-lightbox-prev')?.addEventListener('click',()=>moveLightbox(-1));
+  modal.querySelector('.package-lightbox-next')?.addEventListener('click',()=>moveLightbox(1));
+  modal.addEventListener('click',ev=>{if(ev.target===modal)closeLightbox();});
+  modal.addEventListener('touchstart',ev=>{if(!ev.touches.length)return;startX=ev.touches[0].clientX;startY=ev.touches[0].clientY;swiping=true;},{passive:true});
+  modal.addEventListener('touchend',ev=>{
+    if(!swiping||!ev.changedTouches.length)return;swiping=false;
+    const dx=ev.changedTouches[0].clientX-startX,dy=ev.changedTouches[0].clientY-startY;
+    if(Math.abs(dx)>45&&Math.abs(dx)>Math.abs(dy)*1.2)moveLightbox(dx<0?1:-1);
+  },{passive:true});
+  document.addEventListener('keydown',ev=>{
+    if(!modal.classList.contains('is-open'))return;
+    if(ev.key==='Escape')closeLightbox();
+    if(ev.key==='ArrowRight')moveLightbox(1);
+    if(ev.key==='ArrowLeft')moveLightbox(-1);
+  });
+  const navLinks=Array.from(document.querySelectorAll('.package-tabs a'));
+  navLinks.forEach(link=>link.addEventListener('click',()=>{
+    navLinks.forEach(a=>a.classList.toggle('is-active',a===link));
+  }));
+  if('IntersectionObserver'in window){
+    const observer=new IntersectionObserver(entries=>{
+      entries.forEach(entry=>{if(entry.isIntersecting){
+        navLinks.forEach(a=>a.classList.toggle('is-active',a.getAttribute('href')==='#'+entry.target.id));
+      }});
+    },{rootMargin:'-25% 0px -60% 0px',threshold:0});
+    navLinks.forEach(a=>{const section=document.querySelector(a.getAttribute('href'));if(section)observer.observe(section);});
+  }
+})();
 </script>
 
 <?php $disableFloatingWhatsApp = true; require __DIR__ . '/includes/footer.php'; ?>
