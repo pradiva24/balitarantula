@@ -907,6 +907,18 @@ body { color: #222; }
   .bta-packages .adventure-card:hover .adventure-card-image-link img{transform:none}
 }
 
+
+/* Package listing price and discount styling aligned with homepage cards */
+.bta-packages .card-price-box{display:flex;flex-direction:column;align-items:flex-start;gap:7px;margin-bottom:13px}
+.bta-packages .package-price-topline{display:flex;align-items:center;gap:12px;flex-wrap:wrap;min-height:25px}
+.bta-packages .package-price-before{font-size:13px;font-weight:700;color:rgba(255,255,255,.72);text-decoration:line-through;text-decoration-thickness:1.5px}
+.bta-packages .package-discount-badge{position:relative;display:inline-flex;align-items:center;justify-content:center;padding:7px 15px;background:#ffd400;background-image:none;color:#111;border:0;font:italic 900 11px/1 var(--bta-font-body);letter-spacing:.35px;white-space:nowrap;transform:none;clip-path:polygon(9% 0,100% 0,91% 100%,0 100%);box-shadow:none;filter:none}
+.bta-packages .package-price-current{position:relative;display:flex;align-items:stretch;gap:0;flex-wrap:nowrap;width:max-content;max-width:100%;min-height:46px;background:#ed3833;color:#fff;border:0;overflow:visible;clip-path:polygon(0 0,100% 0,96% 100%,0 100%)}
+.bta-packages .package-price-after{display:flex;align-items:center;padding:9px 13px;font-family:var(--bta-font-display);font-size:clamp(20px,2vw,23px);font-style:italic;font-weight:900;line-height:1;color:#fff;letter-spacing:.1px;white-space:nowrap}
+.bta-packages .package-price-unit{position:relative;display:flex;align-items:center;justify-content:center;margin-right:8px;padding:0 18px 0 12px;background:transparent;color:#fff;font-size:clamp(10px,1.1vw,13px);font-style:italic;font-weight:700;white-space:nowrap;isolation:isolate}
+.bta-packages .package-price-unit:before{content:none}
+.bta-packages .package-price-unit span{position:relative;z-index:1}
+@media(max-width:640px){.bta-packages .package-price-current{min-height:42px}.bta-packages .package-price-after{font-size:19px;padding:8px 11px}.bta-packages .package-price-unit{font-size:10px;padding-left:9px;padding-right:12px}}
 </style>
 
 <div class="bta-packages">
@@ -980,14 +992,14 @@ body { color: #222; }
                 <div class="card-pricing-row">
                   <div class="card-price-box">
                     <?php if ($originalPrice > 0): ?>
-                      <div class="card-price-old">
-                        <?=rupiah($originalPrice)?>
-                        <span class="card-price-save">SAVE <?=(int)$discountPercent?>%</span>
+                      <div class="package-price-topline">
+                        <span class="package-price-before"><?=rupiah($originalPrice)?></span>
+                        <span class="package-discount-badge"><?=(int)$discountPercent?>% OFF</span>
                       </div>
                     <?php endif; ?>
-                    <div class="card-price-current">
-                      <?=rupiah($currentPrice)?>
-                      <small>/ person</small>
+                    <div class="package-price-current">
+                      <strong class="package-price-after"><?=rupiah($currentPrice)?></strong>
+                      <span class="package-price-unit"><span>/ person</span></span>
                     </div>
                   </div>
                   <a href="<?=$packageUrl?>" class="card-link">
