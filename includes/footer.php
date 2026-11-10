@@ -275,7 +275,8 @@ html body main .page-banner h1,
 html body main .about-hero h1,
 html body main .page-hero h1,
 html body main .bta-myb-hero h1,
-html body main .success-hero h1 {
+html body main .success-hero h1,
+html body .bt-merch-hero h1 {
   font-family:"Barlow Condensed",Impact,sans-serif!important;
   font-size:68px!important;
   font-weight:900!important;
@@ -293,7 +294,8 @@ html body main .success-hero h1 {
   html body main .about-hero h1,
   html body main .page-hero h1,
   html body main .bta-myb-hero h1,
-  html body main .success-hero h1 {
+  html body main .success-hero h1,
+  html body .bt-merch-hero h1 {
     font-size:38px!important;
   }
 }
