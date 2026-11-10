@@ -919,6 +919,43 @@ body { color: #222; }
 .bta-packages .package-price-unit:before{content:none}
 .bta-packages .package-price-unit span{position:relative;z-index:1}
 @media(max-width:640px){.bta-packages .package-price-current{min-height:42px}.bta-packages .package-price-after{font-size:19px;padding:8px 11px}.bta-packages .package-price-unit{font-size:10px;padding-left:9px;padding-right:12px}}
+
+/* Mobile package page: compact hero CTA and three category tabs per row. */
+@media screen and (max-width:767px){
+  .bta-packages .packages-hero-button{
+    font-size:12px!important;
+  }
+}
+@media screen and (max-width:640px){
+  .bta-packages .packages-category-tabs{
+    display:grid!important;
+    grid-template-columns:repeat(3,minmax(0,1fr))!important;
+    gap:8px!important;
+    overflow:visible!important;
+    white-space:normal!important;
+    padding:4px 2px 12px!important;
+  }
+  .bta-packages .packages-category-tab{
+    display:flex!important;
+    width:100%!important;
+    min-width:0!important;
+    min-height:42px!important;
+    padding:8px 5px!important;
+    gap:5px!important;
+    border-radius:20px!important;
+    font-size:10px!important;
+    line-height:1.15!important;
+    letter-spacing:.35px!important;
+    text-align:center!important;
+    white-space:normal!important;
+    overflow-wrap:anywhere!important;
+  }
+  .bta-packages .packages-category-tab.is-active::before{
+    width:6px!important;
+    height:6px!important;
+    flex:0 0 6px!important;
+  }
+}
 </style>
 
 <div class="bta-packages">
