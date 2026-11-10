@@ -394,3 +394,47 @@
   .tracks-section .tracks-slider-progress,
   .tracks-section .tracks-note { display: block; }
 }
+
+
+/* Final mobile override: the homepage embeds its own CSS after shared stylesheets. */
+@media screen and (max-width: 767px) {
+  html body main .tracks-section #tracksSlider.tracks-grid {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    justify-content: flex-start !important;
+    align-items: stretch !important;
+    gap: 14px !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow-x: scroll !important;
+    overflow-y: hidden !important;
+    grid-template-columns: none !important;
+    padding: 0 0 12px !important;
+    -webkit-overflow-scrolling: touch !important;
+    scroll-snap-type: x mandatory !important;
+  }
+  html body main .tracks-section #tracksSlider.tracks-grid > article.track-card {
+    display: block !important;
+    position: relative !important;
+    flex: 0 0 86% !important;
+    width: 86% !important;
+    max-width: 86% !important;
+    min-width: 86% !important;
+    min-height: 420px !important;
+    height: 420px !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    scroll-snap-align: start !important;
+  }
+  html body main .tracks-section #tracksSlider.tracks-grid > article.track-card img {
+    display: block !important;
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+  }
+  html body main .tracks-section .tracks-slider-progress,
+  html body main .tracks-section .tracks-note {
+    display: flex !important;
+  }
+}
