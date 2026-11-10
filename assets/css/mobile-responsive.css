@@ -438,3 +438,98 @@
     display: flex !important;
   }
 }
+
+/* Booking page — correctly scope the mobile total dock to the actual booking layout.
+   The booking page renders <main class="wrap booking-layout"> (not .bta-booking). */
+@media (max-width: 767px) {
+  main.booking-layout {
+    padding-bottom: calc(148px + env(safe-area-inset-bottom)) !important;
+    scroll-padding-bottom: calc(148px + env(safe-area-inset-bottom));
+  }
+  main.booking-layout > .booking-summary-panel {
+    position: fixed !important;
+    z-index: 10020 !important;
+    left: 12px !important;
+    right: 12px !important;
+    bottom: calc(12px + env(safe-area-inset-bottom)) !important;
+    top: auto !important;
+    width: auto !important;
+    max-height: 84px !important;
+    overflow: hidden !important;
+    margin: 0 !important;
+    padding: 10px 14px !important;
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) auto !important;
+    align-items: center !important;
+    gap: 2px 12px !important;
+    border: 1px solid #e7e4de !important;
+    border-top: 2px solid #ed3833 !important;
+    border-radius: 13px !important;
+    background: rgba(255,255,255,.98) !important;
+    box-shadow: 0 -5px 22px rgba(0,0,0,.14) !important;
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+  }
+  main.booking-layout > .booking-summary-panel .summary-cover,
+  main.booking-layout > .booking-summary-panel .summary-pkg-desc,
+  main.booking-layout > .booking-summary-panel .summary-divider,
+  main.booking-layout > .booking-summary-panel .summary-row {
+    display: none !important;
+  }
+  main.booking-layout > .booking-summary-panel .summary-pkg-name {
+    grid-column: 1 !important;
+    grid-row: 1 !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+    font-size: 13px !important;
+    line-height: 1.2 !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+  }
+  main.booking-layout > .booking-summary-panel .summary-total-box {
+    grid-column: 2 !important;
+    grid-row: 1 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-end !important;
+    gap: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+    background: transparent !important;
+  }
+  main.booking-layout > .booking-summary-panel .summary-total-box span {
+    font: 800 9px/1.2 Inter, sans-serif !important;
+    letter-spacing: .8px !important;
+    color: #777 !important;
+  }
+  main.booking-layout > .booking-summary-panel .summary-total-box strong {
+    font: 900 20px/1.15 "Barlow Condensed", sans-serif !important;
+    color: #ed3833 !important;
+  }
+  main.booking-layout > .booking-summary-panel #summaryPromoRow {
+    display: none !important;
+  }
+  main.booking-layout .button-orange-submit {
+    scroll-margin-bottom: 160px;
+  }
+}
+
+@media (max-width: 380px) {
+  main.booking-layout {
+    padding-bottom: calc(142px + env(safe-area-inset-bottom)) !important;
+  }
+  main.booking-layout > .booking-summary-panel {
+    left: 8px !important;
+    right: 8px !important;
+    padding: 9px 11px !important;
+  }
+  main.booking-layout > .booking-summary-panel .summary-pkg-name {
+    font-size: 12px !important;
+  }
+  main.booking-layout > .booking-summary-panel .summary-total-box strong {
+    font-size: 19px !important;
+  }
+}
+
