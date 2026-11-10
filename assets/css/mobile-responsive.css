@@ -439,7 +439,12 @@
   }
 }
 
-/* Unified page banner title size: identical on desktop, tablet and mobile. */
-html body .page-banner .page-banner-content h1{
+/* One consistent H1 scale for every interior-page hero, desktop and mobile. */
+html body main .page-banner .page-banner-content h1,
+html body main .about-hero h1,
+html body main .page-hero h1,
+html body main .success-hero h1,
+html body main .bta-myb-hero .bta-myb-title{
   font-size:48px!important;
+  line-height:1.02!important;
 }
