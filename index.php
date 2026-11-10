@@ -708,13 +708,13 @@ body>main{margin:0!important;padding:0!important;max-width:none!important;width:
 
 /* Homepage package cards: prices replace the short descriptions. */
 .bta-home-main .package-card-prices{display:flex;flex-direction:column;align-items:flex-start;gap:7px;margin:10px 0 13px;color:#fff}
-.bta-home-main .package-price-topline{display:flex;align-items:center;gap:9px;flex-wrap:wrap;min-height:20px}
+.bta-home-main .package-price-topline{display:flex;align-items:center;gap:12px;flex-wrap:wrap;min-height:25px}
 .bta-home-main .package-price-before{font-size:13px;font-weight:700;color:rgba(255,255,255,.72);text-decoration:line-through;text-decoration-thickness:1.5px}
-.bta-home-main .package-discount-badge{display:inline-flex;align-items:center;justify-content:center;padding:6px 10px;background:#ffd400;color:#111;border:1px solid #111;font:900 10px/1 var(--body);letter-spacing:.4px;white-space:nowrap}
-.bta-home-main .package-price-current{display:flex;align-items:stretch;gap:0;flex-wrap:nowrap;width:max-content;max-width:100%;min-height:48px;background:#ed3833;color:#fff;overflow:visible}
-.bta-home-main .package-price-after{display:flex;align-items:center;padding:10px 15px;font-size:clamp(19px,2vw,21px);font-weight:900;line-height:1;color:#fff;letter-spacing:.1px;white-space:nowrap}
-.bta-home-main .package-price-unit{position:relative;display:flex;align-items:center;justify-content:center;margin-right:7px;padding:0 14px 0 12px;background:#ed3833;color:#fff;font-size:11px;font-weight:700;white-space:nowrap;isolation:isolate}
-.bta-home-main .package-price-unit:before{content:"";position:absolute;z-index:-1;inset:0 -7px 0 0;background:#ed3833;border-right:2px solid #111;transform:skewX(-13deg);transform-origin:bottom}
+.bta-home-main .package-discount-badge{position:relative;display:inline-flex;align-items:center;justify-content:center;padding:7px 13px;background:#ffd400;color:#111;border:2px solid #111;font:italic 900 11px/1 var(--body);letter-spacing:.35px;white-space:nowrap;transform:skewX(-13deg);box-shadow:2px 2px 0 rgba(0,0,0,.35)}
+.bta-home-main .package-price-current{position:relative;display:flex;align-items:stretch;gap:0;flex-wrap:nowrap;width:max-content;max-width:100%;min-height:50px;background:#ed3833;color:#fff;border:2px solid #ff641f;overflow:visible;clip-path:polygon(0 0,100% 0,96% 100%,0 100%)}
+.bta-home-main .package-price-after{display:flex;align-items:center;padding:10px 15px;font-size:clamp(20px,2vw,23px);font-style:italic;font-weight:900;line-height:1;color:#fff;letter-spacing:.1px;white-space:nowrap}
+.bta-home-main .package-price-unit{position:relative;display:flex;align-items:center;justify-content:center;margin-right:8px;padding:0 18px 0 12px;background:#bd2028;color:#fff;font-size:clamp(11px,1.1vw,14px);font-style:italic;font-weight:700;white-space:nowrap;isolation:isolate}
+.bta-home-main .package-price-unit:before{content:"";position:absolute;z-index:-1;inset:-2px -9px -2px 0;background:#bd2028;border-right:3px solid #111;transform:skewX(-13deg);transform-origin:bottom}
 .bta-home-main .package-price-unit span{position:relative;z-index:1}
 @media(max-width:640px){.bta-home-main .package-price-current{min-height:44px}.bta-home-main .package-price-after{font-size:19px;padding:9px 12px}.bta-home-main .package-price-unit{font-size:10px;padding-left:10px;padding-right:12px}}
 .bta-home-main .package-grid .card-content>p{display:none!important}
