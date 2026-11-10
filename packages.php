@@ -956,6 +956,30 @@ body { color: #222; }
     flex:0 0 6px!important;
   }
 }
+
+/* Keep category tabs horizontally swipeable while showing three tabs at a time. */
+@media screen and (max-width:640px){
+  .bta-packages .packages-category-tabs{
+    display:flex!important;
+    flex-wrap:nowrap!important;
+    gap:8px!important;
+    overflow-x:auto!important;
+    overflow-y:hidden!important;
+    white-space:nowrap!important;
+    scroll-snap-type:x mandatory!important;
+    overscroll-behavior-x:contain!important;
+    -webkit-overflow-scrolling:touch!important;
+    scrollbar-width:none!important;
+  }
+  .bta-packages .packages-category-tabs::-webkit-scrollbar{display:none!important}
+  .bta-packages .packages-category-tab{
+    flex:0 0 calc((100% - 16px)/3)!important;
+    width:calc((100% - 16px)/3)!important;
+    max-width:calc((100% - 16px)/3)!important;
+    scroll-snap-align:start!important;
+    border-radius:20px!important;
+  }
+}
 </style>
 
 <div class="bta-packages">
