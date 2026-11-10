@@ -130,7 +130,7 @@ $mybHeroImage=$mybHeroPath!==''?asset_url($mybHeroPath):'';
 
  <div class="bta-myb-wrap">
   <section class="bta-myb-search">
-   <form class="bta-myb-search-card" method="get" action="<?=e(rtrim(BASE_URL,'/').'/my-booking')?>" autocomplete="on">
+   <form class="bta-myb-search-card" method="get" action="<?=e(rtrim(BASE_URL,'/').'/my-booking')?>" autocomplete="off">
     <div class="bta-myb-field">
      <i class="fa-solid fa-ticket-simple bta-myb-field-icon" aria-hidden="true"></i>
      <label for="myb-code">Booking Code / Invoice Number</label>
@@ -139,7 +139,7 @@ $mybHeroImage=$mybHeroPath!==''?asset_url($mybHeroPath):'';
     <div class="bta-myb-field">
      <i class="fa-regular fa-envelope bta-myb-field-icon" aria-hidden="true"></i>
      <label for="myb-email">Email Address</label>
-     <input id="myb-email" type="email" name="email" required value="<?=e($email)?>" placeholder="Enter your email address">
+     <input id="myb-email" type="email" name="email" autocomplete="off" autocapitalize="off" spellcheck="false" required value="<?=e($email)?>" placeholder="Enter your email address">
     </div>
     <button class="bta-myb-submit" type="submit"><i class="fa-solid fa-magnifying-glass"></i> Check Booking</button>
    </form>
