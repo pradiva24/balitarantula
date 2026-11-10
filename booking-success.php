@@ -57,7 +57,8 @@ if (isset($_GET['print']) && $_GET['print'] === '1') {
     $siteAddress = trim((string)setting('site_address', 'Bali, Indonesia'));
     $qrUrl = 'https://api.qrserver.com/v1/create-qr-code/?size=420x420&margin=12&format=png&data=' . rawurlencode((string)$booking['booking_code']);
     $isTandem = (($booking['booking_mode'] ?? 'person') === 'tandem');
-    $participantLabel = $isTandem ? '2 Persons (1 Tandem Unit)' : ((int)$booking['adults'].' Adults'.((int)$booking['children'] > 0 ? ', '.(int)$booking['children'].' Children' : ''));
+    $tandemUnits = $isTandem ? max(1, (int)ceil((int)$booking['adults'] / 2)) : 0;
+    $participantLabel = $isTandem ? ((int)$booking['adults'] . ' Persons (' . $tandemUnits . ' Tandem ' . ($tandemUnits === 1 ? 'Unit' : 'Units') . ')') : ((int)$booking['adults'].' Adults'.((int)$booking['children'] > 0 ? ', '.(int)$booking['children'].' Children' : ''));
     $pickupLocation = trim((string)($booking['hotel_name'] ?? ''));
     if (!empty($booking['pickup_area_name']) && stripos($pickupLocation, (string)$booking['pickup_area_name']) === false) $pickupLocation = trim($pickupLocation.', '.$booking['pickup_area_name'], ', ');
     $bookingStatus = strtoupper((string)($booking['booking_status'] ?? 'confirmed'));
@@ -287,7 +288,7 @@ require __DIR__ . '/includes/header.php';
           <div class="detail-row"><dt>Customer Name</dt><span class="colon">:</span><dd><?=e($booking['customer_name'])?></dd></div>
           <div class="detail-row"><dt>Activity Date</dt><span class="colon">:</span><dd><?=date('D, d M Y',strtotime($booking['booking_date']))?></dd></div>
           <div class="detail-row"><dt>Activity Time</dt><span class="colon">:</span><dd><?=e(substr((string)($booking['activity_time'] ?: '09:00'),0,5))?></dd></div>
-          <div class="detail-row"><dt>Participants</dt><span class="colon">:</span><dd><?=($booking['booking_mode']??'person')==='tandem'?'2 Persons (1 Tandem Unit)':((int)$booking['adults'].' Adults'.((int)$booking['children']>0?', '.(int)$booking['children'].' Children':''))?></dd></div>
+          <div class="detail-row"><dt>Participants</dt><span class="colon">:</span><dd><?=($booking['booking_mode']??'person')==='tandem'?((int)$booking['adults'].' Persons ('.max(1,(int)ceil((int)$booking['adults']/2)).' Tandem '.((int)ceil((int)$booking['adults']/2)===1?'Unit':'Units').')'):((int)$booking['adults'].' Adults'.((int)$booking['children']>0?', '.(int)$booking['children'].' Children':''))?></dd></div>
           <div class="detail-row"><dt>Hotel / Villa</dt><span class="colon">:</span><dd><?=e($booking['pickup_required'] ? ($booking['hotel_name'] ?: '-') : '-')?></dd></div>
           
           <div class="detail-row"><dt>Payment Status</dt><span class="colon">:</span><dd><span class="status-pill <?=strcasecmp((string)$booking['payment_status'],'paid')===0?'paid':''?>"><i class="fa-solid <?=strcasecmp((string)$booking['payment_status'],'paid')===0?'fa-circle-check':'fa-clock'?>"></i><?=e($booking['payment_status'])?></span></dd></div>
