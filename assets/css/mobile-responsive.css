@@ -1,0 +1,107 @@
+/* Bali Tarantula Adventure — responsive refinement
+   Desktop styles are intentionally untouched. Overrides apply only below 1024px. */
+@media (max-width: 1023px) {
+  html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+  body { overflow-x: clip; }
+  img, video, iframe { max-width: 100%; }
+  .wrap, .container, .bta-packages .wrap { width: min(100% - 40px, 100%) !important; }
+  .section { padding-top: 64px !important; padding-bottom: 64px !important; }
+  .section-heading { align-items: flex-start; }
+  .section-heading h2 { overflow-wrap: anywhere; }
+  .adventure-grid, .tracks-grid, .blog-grid, .gallery-grid, .reasons,
+  .review-grid { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
+  .adventure-card, .track-card, .blog-card, .gallery-grid a { min-width: 0; }
+  .adventure-card img, .track-card img, .blog-image img, .gallery-grid img {
+    display: block; width: 100%; height: 100%; object-fit: cover;
+  }
+  .article-layout, .package-detail-layout, .contact-layout {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+  .article-sidebar, .booking-panel { position: static !important; width: 100%; }
+  .contact-form, .article-sidebar, .booking-panel { min-width: 0; }
+  .package-detail-layout .booking-panel { order: 0; }
+  .related-section .adventure-grid { grid-auto-columns: minmax(0, 1fr); }
+  .contact-form input, .contact-form select, .contact-form textarea,
+  .booking-form input, .booking-form select, .booking-form textarea {
+    max-width: 100%; min-width: 0; font-size: 16px;
+  }
+  .button, button, input[type="submit"] { touch-action: manipulation; }
+}
+@media (max-width: 767px) {
+  .wrap, .container, .bta-packages .wrap { width: calc(100% - 32px) !important; }
+  .topline { height: 27px !important; min-height: 27px !important; padding: 0 12px !important; gap: 8px !important; font-size: 8px !important; letter-spacing: 1px !important; }
+  header.site-header { height: 68px !important; min-height: 68px !important; top: 27px !important; padding: 0 16px !important; gap: 12px !important; }
+  .site-header .site-brand-logo { max-width: 142px !important; max-height: 46px !important; }
+  .site-header .menu-toggle { flex: 0 0 44px; width: 44px; height: 44px; }
+  main { min-width: 0; }
+  main section { min-width: 0; }
+  .section { padding: 52px 0 !important; }
+  .section-heading { display: flex; flex-direction: column; gap: 12px !important; margin-bottom: 24px !important; }
+  .section-heading h2, .inner-title {
+    font-size: clamp(2rem, 9vw, 3rem) !important; line-height: 1 !important;
+    letter-spacing: -.02em !important; overflow-wrap: anywhere;
+  }
+  .hero { min-height: 660px !important; min-height: min(760px, 92svh) !important; }
+  .hero-content { width: calc(100% - 32px) !important; max-width: none !important; padding-top: 120px !important; padding-bottom: 48px !important; }
+  .hero h1 { font-size: clamp(2.8rem, 14vw, 4.6rem) !important; line-height: .94 !important; letter-spacing: -.02em !important; overflow-wrap: anywhere; }
+  .hero-text, .hero-content p { max-width: 100% !important; font-size: 14px !important; line-height: 1.65 !important; }
+  .hero-actions { display: grid !important; grid-template-columns: 1fr !important; gap: 10px !important; width: 100%; }
+  .hero-actions .button, .hero-actions .button-outline, .hero-actions .text-link {
+    width: 100% !important; min-height: 48px !important; padding: 0 16px !important;
+  }
+  .hero-stamp { transform: scale(.82); transform-origin: right bottom; }
+  .page-banner { min-height: 310px !important; padding: 116px 0 42px !important; }
+  .page-banner-content { width: calc(100% - 32px) !important; padding: 0 !important; }
+  .page-banner-content h1 { font-size: clamp(2.25rem, 11vw, 3.5rem) !important; line-height: 1 !important; letter-spacing: -.01em !important; overflow-wrap: anywhere; }
+  .page-banner-content>p:not(.eyebrow) { font-size: 13px !important; line-height: 1.65 !important; }
+  .adventure-grid, .tracks-grid, .blog-grid, .gallery-grid, .reasons,
+  .review-grid { grid-template-columns: minmax(0, 1fr) !important; gap: 16px !important; }
+  .adventure-card, .track-card, .blog-card { min-height: 0 !important; }
+  .adventure-card { height: 430px !important; }
+  .adventure-card .card-content, .track-card .track-info, .blog-copy { padding: 18px !important; }
+  .adventure-card .card-content h3, .track-info h3, .blog-copy h2, .blog-copy h3 {
+    font-size: clamp(1.35rem, 6vw, 1.8rem) !important; line-height: 1.08 !important;
+  }
+  .card-content p, .track-desc, .blog-copy>p:not(.blog-meta) { font-size: 13px !important; line-height: 1.65 !important; }
+  .card-pricing-row { gap: 12px !important; align-items: flex-end !important; flex-wrap: wrap !important; }
+  .card-link { min-height: 42px; display: inline-flex; align-items: center; }
+  .gallery-grid a { min-height: 220px; }
+  .manifesto { padding: 54px 0 !important; }
+  .manifesto h2 { font-size: clamp(2.4rem, 11vw, 3.8rem) !important; line-height: .98 !important; }
+  .manifesto-content>p:not(.eyebrow), .inner-copy p { font-size: 14px !important; line-height: 1.75 !important; }
+  .cta-inner h2 { font-size: clamp(2.7rem, 12vw, 4.2rem) !important; line-height: .98 !important; }
+  .article-main h2, .package-detail-main h2 { font-size: clamp(1.7rem, 8vw, 2.35rem) !important; line-height: 1.08 !important; }
+  .article-main h3, .detail-block h3 { font-size: 1.35rem !important; line-height: 1.15 !important; }
+  .article-main p, .package-detail-main p, .detail-block li { font-size: 14px !important; line-height: 1.75 !important; }
+  .article-main img, .package-detail-main img { height: auto; max-width: 100%; }
+  .detail-block, .article-main, .article-sidebar, .booking-panel, .contact-form {
+    padding: 20px !important; min-width: 0; overflow-wrap: anywhere;
+  }
+  .package-detail-layout { gap: 22px !important; }
+  .package-detail-layout .booking-panel { order: 2 !important; }
+  .package-detail-layout .package-detail-main { order: 1 !important; min-width: 0; }
+  .related-section .adventure-grid { display: flex !important; overflow-x: auto !important; scroll-snap-type: x mandatory; gap: 14px !important; padding-bottom: 10px; }
+  .related-section .adventure-card { flex: 0 0 min(82vw, 340px) !important; scroll-snap-align: start; }
+  .contact-layout { gap: 20px !important; }
+  .contact-form label { font-size: 13px !important; }
+  .contact-form input, .contact-form select, .contact-form textarea,
+  .booking-form input, .booking-form select, .booking-form textarea {
+    width: 100% !important; min-height: 48px; box-sizing: border-box; font-size: 16px !important;
+  }
+  .contact-form textarea, .booking-form textarea { min-height: 120px; }
+  .button, .button-orange, .button-dark, .booking-submit { min-height: 48px !important; }
+  .package-gallery, .package-gallery-thumbs { max-width: 100%; }
+  .package-gallery-thumbs { display: flex; gap: 8px; overflow-x: auto; }
+  .package-gallery-thumbs button { flex: 0 0 72px; }
+  .reviews-section { padding: 52px 0 !important; }
+  .review-card { padding: 18px !important; }
+  .site-footer, .bt-footer { overflow: hidden; }
+  .bt-footer .container { width: calc(100% - 32px) !important; }
+}
+@media (max-width: 380px) {
+  .wrap, .container, .bta-packages .wrap { width: calc(100% - 24px) !important; }
+  .hero h1 { font-size: clamp(2.5rem, 13vw, 3.4rem) !important; }
+  .page-banner-content h1 { font-size: clamp(2rem, 10vw, 2.7rem) !important; }
+  .topline { letter-spacing: .5px !important; font-size: 7px !important; }
+  .adventure-card { height: 390px !important; }
+}
