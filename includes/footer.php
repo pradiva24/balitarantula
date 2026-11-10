@@ -282,6 +282,9 @@ html body main .success-hero h1 {
   line-height:1.02!important;
 }
 @media (max-width:767px){
+  html body .about-why-heading h2 {
+    font-size:38px!important;
+  }
   html body main .page-banner .page-banner-content h1,
   html body main .page-banner h1,
   html body main .about-hero h1,
