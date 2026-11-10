@@ -700,8 +700,8 @@ body>main{margin:0!important;padding:0!important;max-width:none!important;width:
 @media(max-width:640px){
   .bta-home-main .hero{align-items:flex-end!important}
   .bta-home-main .hero-content{width:100%!important;padding:0 18px 125px!important;margin:0!important}
-  .bta-home-main .hero h1{display:none!important}
-  .bta-home-main .hero .hero-text{display:block!important;font-size:14px!important;line-height:1.8!important;max-width:100%!important}
+  .bta-home-main .hero h1{display:block!important;font-size:clamp(34px,10vw,48px)!important;line-height:.98!important}
+  .bta-home-main .hero .hero-text{display:none!important}
   .bta-home-main section h2{font-size:clamp(30px,8vw,42px)!important;line-height:1.04!important}
 }
 
