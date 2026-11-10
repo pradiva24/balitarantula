@@ -535,6 +535,46 @@ body {
 @media(max-width:380px){.bta-gallery .gallery-grid{grid-template-columns:1fr}.bta-gallery .gallery-card{aspect-ratio:4/3}}
 @media(prefers-reduced-motion:reduce){.bta-gallery .gallery-card img{transition:none}.bta-gallery .gallery-card:hover img{transform:none}}
 
+
+/* Match Packages category filter: three visible pills with horizontal swipe. */
+@media screen and (max-width:640px){
+  .bta-gallery .gallery-tabs{
+    display:flex!important;
+    flex-wrap:nowrap!important;
+    align-items:center!important;
+    gap:8px!important;
+    overflow-x:auto!important;
+    overflow-y:hidden!important;
+    white-space:nowrap!important;
+    scroll-snap-type:x mandatory!important;
+    overscroll-behavior-x:contain!important;
+    -webkit-overflow-scrolling:touch!important;
+    scrollbar-width:none!important;
+    padding:4px 2px 12px!important;
+  }
+  .bta-gallery .gallery-tabs::-webkit-scrollbar{display:none!important}
+  .bta-gallery .gallery-tab-btn{
+    display:inline-flex!important;
+    flex:0 0 calc((100% - 16px)/3)!important;
+    width:calc((100% - 16px)/3)!important;
+    max-width:calc((100% - 16px)/3)!important;
+    min-width:0!important;
+    min-height:42px!important;
+    padding:8px 5px!important;
+    gap:5px!important;
+    border-radius:20px!important;
+    font-size:10px!important;
+    line-height:1.15!important;
+    letter-spacing:.35px!important;
+    text-align:center!important;
+    white-space:normal!important;
+    overflow-wrap:anywhere!important;
+    scroll-snap-align:start!important;
+  }
+  .bta-gallery .gallery-tab-btn.is-active::before{
+    width:6px!important;height:6px!important;flex:0 0 6px!important;
+  }
+}
 </style>
 
 <div class="bta-gallery">
