@@ -707,11 +707,16 @@ body>main{margin:0!important;padding:0!important;max-width:none!important;width:
 
 
 /* Homepage package cards: prices replace the short descriptions. */
-.bta-home-main .package-card-prices{display:flex;flex-direction:column;align-items:flex-start;gap:5px;margin:10px 0 13px;color:#fff}
-.bta-home-main .package-price-current{display:flex;align-items:baseline;gap:5px;flex-wrap:wrap}
-.bta-home-main .package-price-before{font-size:13px;font-weight:700;color:rgba(255,255,255,.68);text-decoration:line-through;text-decoration-thickness:1.5px}
-.bta-home-main .package-price-after{font-size:clamp(19px,2vw,20px);font-weight:900;line-height:1;color:var(--orange);letter-spacing:.1px}
-.bta-home-main .package-price-unit{font-size:10px;color:rgba(255,255,255,.76);font-weight:600}
+.bta-home-main .package-card-prices{display:flex;flex-direction:column;align-items:flex-start;gap:7px;margin:10px 0 13px;color:#fff}
+.bta-home-main .package-price-topline{display:flex;align-items:center;gap:9px;flex-wrap:wrap;min-height:20px}
+.bta-home-main .package-price-before{font-size:13px;font-weight:700;color:rgba(255,255,255,.72);text-decoration:line-through;text-decoration-thickness:1.5px}
+.bta-home-main .package-discount-badge{display:inline-flex;align-items:center;justify-content:center;padding:6px 10px;background:#ffd400;color:#111;border:1px solid #111;font:900 10px/1 var(--body);letter-spacing:.4px;white-space:nowrap}
+.bta-home-main .package-price-current{display:flex;align-items:stretch;gap:0;flex-wrap:nowrap;width:max-content;max-width:100%;min-height:48px;background:#ed3833;color:#fff;overflow:visible}
+.bta-home-main .package-price-after{display:flex;align-items:center;padding:10px 15px;font-size:clamp(19px,2vw,21px);font-weight:900;line-height:1;color:#fff;letter-spacing:.1px;white-space:nowrap}
+.bta-home-main .package-price-unit{position:relative;display:flex;align-items:center;justify-content:center;margin-right:7px;padding:0 14px 0 12px;background:#ed3833;color:#fff;font-size:11px;font-weight:700;white-space:nowrap;isolation:isolate}
+.bta-home-main .package-price-unit:before{content:"";position:absolute;z-index:-1;inset:0 -7px 0 0;background:#ed3833;border-right:2px solid #111;transform:skewX(-13deg);transform-origin:bottom}
+.bta-home-main .package-price-unit span{position:relative;z-index:1}
+@media(max-width:640px){.bta-home-main .package-price-current{min-height:44px}.bta-home-main .package-price-after{font-size:19px;padding:9px 12px}.bta-home-main .package-price-unit{font-size:10px;padding-left:10px;padding-right:12px}}
 .bta-home-main .package-grid .card-content>p{display:none!important}
 .bta-home-main .package-grid .card-link{color:var(--orange)!important}
 .bta-home-main .package-grid .card-link span{color:var(--orange)!important}
@@ -732,8 +737,8 @@ body>main{margin:0!important;padding:0!important;max-width:none!important;width:
 .bta-home-main .package-slider-toolbar{display:flex;align-items:center;justify-content:space-between;gap:16px;margin:0 0 14px}
 .bta-home-main .package-slider-count{font-size:9px;font-weight:800;letter-spacing:1.5px;color:#77736b}
 .bta-home-main .package-slider-buttons{display:flex;gap:8px}
-.bta-home-main .package-slider-btn{width:42px;height:42px;display:grid;place-items:center;border:1px solid #c9c5bc;background:transparent;color:#191919;font-size:20px;line-height:1;cursor:pointer;transition:background .2s,color .2s,border-color .2s}
-.bta-home-main .package-slider-btn:hover,.bta-home-main .package-slider-btn:focus-visible{background:var(--orange);border-color:var(--orange);color:#111}
+.bta-home-main .package-slider-btn{width:42px;height:42px;display:grid;place-items:center;border:2px solid #111;background:#ed3833;color:#fff;font-size:20px;line-height:1;cursor:pointer;transition:background .2s,color .2s,border-color .2s}
+.bta-home-main .package-slider-btn:hover,.bta-home-main .package-slider-btn:focus-visible{background:#111;border-color:#111;color:#ed3833}
 .bta-home-main .package-slider{display:flex;gap:14px;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;scroll-behavior:smooth;overscroll-behavior-x:contain;scrollbar-width:none;padding:0 0 8px;margin:0;grid-template-columns:none}
 .bta-home-main .package-slider::-webkit-scrollbar{display:none}
 .bta-home-main .package-slider>.adventure-card{flex:0 0 calc((100% - 28px)/3);min-width:0;min-height:430px;scroll-snap-align:start}
@@ -938,7 +943,7 @@ body>main{margin:0!important;padding:0!important;max-width:none!important;width:
           </a>
           <div class="card-shade"></div>
           <div class="package-card-badges"><span class="package-category-badge"><?=e(brand_replace_legacy(trim((string)($p['category_name'] ?? '')) ?: 'BALI ADVENTURE'))?></span><?php if ($packageIndex === 0): ?><span class="package-best-seller"><span class="package-best-seller-dot" aria-hidden="true"></span>BEST SELLER</span><?php endif; ?></div>
-          <div class="card-content"><h3><?=e($p['name'] ?? 'Adventure Package')?></h3><div class="package-card-prices"><?php $originalPrice = $packageOriginalPrices[(int)($p['id'] ?? 0)] ?? null; $currentPrice = (float)($p['price_adult'] ?? 0); if ($originalPrice !== null && $originalPrice > $currentPrice): ?><span class="package-price-before">Rp <?=number_format($originalPrice, 0, ',', '.')?></span><?php endif; ?><div class="package-price-current"><strong class="package-price-after">Rp <?=number_format($currentPrice, 0, ',', '.')?></strong><span class="package-price-unit">/ person</span></div></div><a class="card-link" href="<?=e(BASE_URL)?>/package/<?=e($p['slug'] ?? '')?>">EXPLORE PACKAGE <span><i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i></span></a></div>
+          <div class="card-content"><h3><?=e($p['name'] ?? 'Adventure Package')?></h3><div class="package-card-prices"><?php $originalPrice = $packageOriginalPrices[(int)($p['id'] ?? 0)] ?? null; $currentPrice = (float)($p['price_adult'] ?? 0); $cardDiscountPercent = ($originalPrice !== null && $originalPrice > $currentPrice && $originalPrice > 0) ? (int)round((($originalPrice - $currentPrice) / $originalPrice) * 100) : 0; ?><?php if ($cardDiscountPercent > 0): ?><div class="package-price-topline"><span class="package-price-before">Rp <?=number_format($originalPrice, 0, ',', '.')?></span><span class="package-discount-badge"><?=$cardDiscountPercent?>% OFF</span></div><?php endif; ?><div class="package-price-current"><strong class="package-price-after">Rp <?=number_format($currentPrice, 0, ',', '.')?></strong><span class="package-price-unit"><span>/ person</span></span></div></div><a class="card-link" href="<?=e(BASE_URL)?>/package/<?=e($p['slug'] ?? '')?>">EXPLORE PACKAGE <span><i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i></span></a></div>
         </article>
       <?php endforeach; else: ?><p>No active adventure packages are available at the moment.</p><?php endif; ?>
     </div>
@@ -1014,15 +1019,46 @@ body>main{margin:0!important;padding:0!important;max-width:none!important;width:
     packageSlider.addEventListener('scroll',updatePackageProgress,{passive:true});
     window.addEventListener('resize',updatePackageProgress,{passive:true});
     updatePackageProgress();
+    var packageAutoTimer=null;
+    var packageAutoPaused=false;
+    var packageAutoDelay=4200;
+    var packageStep=function(direction){
+      var cards=packageSlider.querySelectorAll('.adventure-card');
+      var firstCard=cards[0];
+      if(!firstCard||cards.length<2)return;
+      var gap=parseFloat(getComputedStyle(packageSlider).columnGap)||14;
+      var distance=firstCard.getBoundingClientRect().width+gap;
+      var maxScroll=packageSlider.scrollWidth-packageSlider.clientWidth;
+      if(direction>0 && packageSlider.scrollLeft>=maxScroll-8){
+        packageSlider.scrollTo({left:0,behavior:'smooth'});
+      }else if(direction<0 && packageSlider.scrollLeft<=8){
+        packageSlider.scrollTo({left:maxScroll,behavior:'smooth'});
+      }else{
+        packageSlider.scrollBy({left:direction*distance,behavior:'smooth'});
+      }
+    };
     document.querySelectorAll('[data-package-direction]').forEach(function(button){
       button.addEventListener('click',function(){
-        var firstCard=packageSlider.querySelector('.adventure-card');
-        if(!firstCard)return;
-        var gap=parseFloat(getComputedStyle(packageSlider).columnGap)||14;
-        var distance=Math.max(firstCard.getBoundingClientRect().width+gap,packageSlider.clientWidth*.8);
-        packageSlider.scrollBy({left:(button.getAttribute('data-package-direction')==='next'?distance:-distance),behavior:'smooth'});
+        packageStep(button.getAttribute('data-package-direction')==='next'?1:-1);
+        restartPackageAutoSlide();
       });
     });
+    var stopPackageAutoSlide=function(){if(packageAutoTimer){clearInterval(packageAutoTimer);packageAutoTimer=null;}};
+    var startPackageAutoSlide=function(){
+      stopPackageAutoSlide();
+      if(packageAutoPaused || window.matchMedia('(prefers-reduced-motion: reduce)').matches || packageSlider.scrollWidth<=packageSlider.clientWidth+8)return;
+      packageAutoTimer=setInterval(function(){if(!packageAutoPaused)packageStep(1);},packageAutoDelay);
+    };
+    var restartPackageAutoSlide=function(){stopPackageAutoSlide();startPackageAutoSlide();};
+    packageSlider.addEventListener('mouseenter',function(){packageAutoPaused=true;stopPackageAutoSlide();});
+    packageSlider.addEventListener('mouseleave',function(){packageAutoPaused=false;startPackageAutoSlide();});
+    packageSlider.addEventListener('focusin',function(){packageAutoPaused=true;stopPackageAutoSlide();});
+    packageSlider.addEventListener('focusout',function(){packageAutoPaused=false;startPackageAutoSlide();});
+    packageSlider.addEventListener('touchstart',function(){packageAutoPaused=true;stopPackageAutoSlide();},{passive:true});
+    packageSlider.addEventListener('touchend',function(){packageAutoPaused=false;startPackageAutoSlide();},{passive:true});
+    document.addEventListener('visibilitychange',function(){if(document.hidden)stopPackageAutoSlide();else startPackageAutoSlide();});
+    window.addEventListener('resize',restartPackageAutoSlide,{passive:true});
+    startPackageAutoSlide();
   }
   var reviewsSlider=document.getElementById('reviewsSlider');
   if(reviewsSlider){
