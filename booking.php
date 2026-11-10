@@ -1294,4 +1294,30 @@ body {
 })();
 </script>
 
+<!-- Booking mobile layout: keep order summary in normal document flow, never fixed to viewport. -->
+<style id="booking-summary-responsive-fix">
+@media (max-width: 767px) {
+  html body main.booking-layout > aside.booking-summary-panel,
+  html body main.booking-layout > .booking-summary-panel {
+    position: static !important;
+    inset: auto !important;
+    top: auto !important;
+    right: auto !important;
+    bottom: auto !important;
+    left: auto !important;
+    width: 100% !important;
+    max-height: none !important;
+    height: auto !important;
+    overflow: visible !important;
+    margin: 0 !important;
+    transform: none !important;
+    z-index: auto !important;
+  }
+  html body main.booking-layout {
+    padding-bottom: 32px !important;
+    scroll-padding-bottom: 32px !important;
+  }
+}
+</style>
+
 <?php $disableFloatingWhatsApp = true; require __DIR__ . '/includes/footer.php'; ?>
