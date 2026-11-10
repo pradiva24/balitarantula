@@ -438,3 +438,24 @@
     display: flex !important;
   }
 }
+
+
+/* Homepage hero mobile: clearer separation from headline and brand-red primary CTA. */
+@media screen and (max-width:767px){
+  body.home .hero .hero-actions,
+  .home .hero .hero-actions,
+  main > .hero .hero-actions{
+    margin-top:28px!important;
+  }
+  .hero .hero-actions .button-orange{
+    background:#ed3833!important;
+    border-color:#ed3833!important;
+    color:#fff!important;
+  }
+  .hero .hero-actions .button-orange:hover,
+  .hero .hero-actions .button-orange:focus-visible{
+    background:#c92d29!important;
+    border-color:#c92d29!important;
+    color:#fff!important;
+  }
+}
