@@ -172,9 +172,9 @@ if($schemaData===null){
 <style id="bta-global-adventure-navigation-v2">
 /* Shared Bali Tarantula header redesign. Scoped here so all pages using includes/header.php share it. */
 body.menu-open{overflow:hidden!important}
-.topline{display:none!important}
+.topline{height:30px!important;padding:0 max(24px,calc((100vw - 1180px)/2))!important;display:flex!important;align-items:center!important;justify-content:space-between!important;gap:12px!important;background:#ed3833!important;color:#101010!important;font-size:9px!important;font-weight:800!important;letter-spacing:1.7px!important;line-height:1.2!important;position:relative!important;z-index:10000!important;text-transform:uppercase!important}
 .topline .orange{color:#fff!important}
-header.site-header{height:82px!important;min-height:82px!important;padding:0 max(24px,calc((100vw - 1180px)/2))!important;display:flex!important;align-items:center!important;justify-content:space-between!important;gap:24px!important;position:absolute!important;top:0!important;left:0!important;right:0!important;width:100%!important;z-index:9999!important;background:transparent!important;color:#fff!important;border:0!important;border-bottom:1px solid rgba(255,255,255,.17)!important;box-shadow:none!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
+header.site-header{height:82px!important;min-height:82px!important;padding:0 max(24px,calc((100vw - 1180px)/2))!important;display:flex!important;align-items:center!important;justify-content:space-between!important;gap:24px!important;position:absolute!important;top:30px!important;left:0!important;right:0!important;width:100%!important;z-index:9999!important;background:transparent!important;color:#fff!important;border:0!important;border-bottom:1px solid rgba(255,255,255,.17)!important;box-shadow:none!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
 .site-header .brand{display:flex!important;align-items:center!important;gap:10px!important;min-width:0!important;flex:0 1 auto!important;color:#fff!important;text-decoration:none!important}
 .site-header .site-brand-logo{display:block!important;width:auto!important;height:auto!important;max-width:105px!important;max-height:54px!important;object-fit:contain!important}
 .site-header .brand-mark{display:block!important;color:#fff!important;font:900 34px/.9 "Barlow Condensed",Impact,sans-serif!important;letter-spacing:-2px!important;white-space:nowrap!important}
@@ -475,6 +475,7 @@ img{height:auto}
 </style>
 </head>
 <body>
+<div class="topline"><span>BALI TARANTULA ADVENTURE</span><span>BALI, INDONESIA <span class="orange">●</span></span></div>
 <header class="site-header">
   <a class="brand" href="<?=e(rtrim(BASE_URL,'/').'/')?>" aria-label="<?=e($siteName)?> home">
     <?php $headerLogo = trim((string)setting('site_logo',setting('admin_logo',''))); ?>
