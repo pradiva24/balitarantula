@@ -282,6 +282,9 @@ html body main .success-hero h1 {
   line-height:1.02!important;
 }
 @media (max-width:767px){
+  html body .about-why .about-reasons article:nth-child(n+3) {
+    border-top:0!important;
+  }
   html body .about-why-heading h2 {
     font-size:38px!important;
   }
