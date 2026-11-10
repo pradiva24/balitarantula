@@ -865,6 +865,28 @@ body>main{margin:0!important;padding:0!important;max-width:none!important;width:
 .bta-home-main .package-slider-btn:hover,
 .bta-home-main .package-slider-btn:focus-visible{background:transparent;border-color:#ed3833;color:#ed3833}
 
+
+/* Mobile homepage hero correction: override page-level styles with page-scoped specificity. */
+@media screen and (max-width:767px){
+  html body main .bta-home-main .hero .hero-content .hero-actions{
+    margin-top:34px!important;
+    gap:14px!important;
+  }
+  html body main .bta-home-main .hero .hero-content .hero-actions>a.button.button-orange{
+    background:#ed3833!important;
+    background-color:#ed3833!important;
+    color:#fff!important;
+    border:1px solid #ed3833!important;
+  }
+  html body main .bta-home-main .hero .hero-content .hero-actions>a.button.button-orange:hover,
+  html body main .bta-home-main .hero .hero-content .hero-actions>a.button.button-orange:focus-visible,
+  html body main .bta-home-main .hero .hero-content .hero-actions>a.button.button-orange:active{
+    background:#c92d29!important;
+    background-color:#c92d29!important;
+    border-color:#c92d29!important;
+    color:#fff!important;
+  }
+}
 </style>
 <script>document.body.classList.add('bta-redesign-home');</script>
 <div class="bta-home-main">
