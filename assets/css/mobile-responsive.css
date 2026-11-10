@@ -264,3 +264,108 @@
   .bta-pkg-detail .booking-panel .panel-price-current{font-size:19px!important}
   .bta-pkg-detail .booking-panel .btn-book-now,.bta-pkg-detail .booking-panel .btn-whatsapp{font-size:10px!important}
 }
+
+
+/* Booking flow — app-like mobile layout; form names, IDs and behavior stay unchanged. */
+@media(max-width:767px){
+  .bta-booking{background:#f3f3f1;padding-bottom:calc(156px + env(safe-area-inset-bottom))!important}
+  .bta-booking .page-banner{
+    min-height:0!important;padding:108px 0 24px!important;border-bottom:0!important
+  }
+  .bta-booking .page-banner-content{width:calc(100% - 32px)!important}
+  .bta-booking .page-banner-content .eyebrow{font-size:10px!important;letter-spacing:1.6px!important;margin-bottom:8px!important}
+  .bta-booking .page-banner-content h1{font-size:clamp(34px,10vw,46px)!important;line-height:.98!important;margin-bottom:8px!important}
+  .bta-booking .page-banner-content>p:not(.eyebrow){font-size:12px!important;line-height:1.6!important;margin:0!important}
+  .bta-booking .breadcrumbs{display:none!important}
+  .bta-booking .booking-layout{
+    display:flex!important;flex-direction:column!important;gap:14px!important;
+    width:100%!important;padding:14px 12px 20px!important
+  }
+  .bta-booking .booking-card{
+    width:100%!important;padding:20px 15px!important;border:1px solid #e7e5df!important;
+    border-top:3px solid #ed3833!important;border-radius:15px!important;background:#fff!important;
+    box-shadow:0 5px 20px rgba(0,0,0,.045)!important
+  }
+  .bta-booking .booking-section-title{
+    font-size:20px!important;line-height:1.1!important;letter-spacing:.5px!important;
+    margin:8px 0 16px!important;padding-bottom:11px!important;border-bottom:1px solid #eeece7!important
+  }
+  .bta-booking .form-group{margin-bottom:17px!important}
+  .bta-booking .form-group label{font-size:11px!important;letter-spacing:.8px!important;margin-bottom:7px!important}
+  .bta-booking .form-control,
+  .bta-booking input:not([type=checkbox]):not([type=radio]),
+  .bta-booking select,.bta-booking textarea{
+    width:100%!important;min-width:0!important;min-height:48px!important;padding:12px 13px!important;
+    border:1px solid #dedbd4!important;border-radius:10px!important;background:#fff!important;
+    font:500 14px/1.35 Inter,sans-serif!important;color:#191919!important;box-shadow:none!important
+  }
+  .bta-booking .form-control:focus,
+  .bta-booking input:focus,.bta-booking select:focus,.bta-booking textarea:focus{
+    outline:none!important;border-color:#ed3833!important;box-shadow:0 0 0 3px rgba(237,56,51,.12)!important
+  }
+  .bta-booking .form-grid-2{grid-template-columns:minmax(0,1fr)!important;gap:0!important}
+  .bta-booking #guestCountSelector>div,
+  .bta-booking #unitBookingNotice>div{gap:8px!important}
+  .bta-booking #unitMinus,.bta-booking #unitPlus{
+    width:48px!important;min-width:48px!important;flex:0 0 48px!important;border-radius:10px!important
+  }
+  .bta-booking .time-slots-grid{grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:8px!important}
+  .bta-booking .time-slot-btn{
+    min-height:44px!important;border-radius:10px!important;font:800 13px/1 Inter,sans-serif!important
+  }
+  .bta-booking .promo-row{gap:8px!important;align-items:stretch!important}
+  .bta-booking .promo-row .form-control{min-width:0!important}
+  .bta-booking .btn-apply-promo{min-height:48px!important;padding:0 14px!important;border-radius:10px!important;font-size:12px!important;white-space:nowrap}
+  .bta-booking .button-orange-submit{
+    min-height:52px!important;margin-top:18px!important;padding:14px 18px!important;
+    border-radius:11px!important;font-size:15px!important;letter-spacing:.8px!important
+  }
+  .bta-booking .booking-summary-panel{
+    position:fixed!important;z-index:10020!important;left:10px!important;right:10px!important;
+    bottom:calc(64px + env(safe-area-inset-bottom))!important;top:auto!important;
+    width:auto!important;margin:0!important;padding:10px 13px!important;
+    display:grid!important;grid-template-columns:minmax(0,1fr) auto!important;
+    align-items:center!important;gap:2px 12px!important;
+    border:1px solid #e7e4de!important;border-top:2px solid #ed3833!important;
+    border-radius:13px!important;background:rgba(255,255,255,.97)!important;
+    box-shadow:0 -5px 22px rgba(0,0,0,.12)!important;
+    backdrop-filter:blur(15px);-webkit-backdrop-filter:blur(15px)
+  }
+  .bta-booking .booking-summary-panel .summary-cover,
+  .bta-booking .booking-summary-panel .summary-pkg-desc,
+  .bta-booking .booking-summary-panel .summary-divider,
+  .bta-booking .booking-summary-panel .summary-row{display:none!important}
+  .bta-booking .booking-summary-panel .summary-pkg-name{
+    grid-column:1;grid-row:1;margin:0!important;font-size:13px!important;line-height:1.2!important;
+    overflow:hidden;text-overflow:ellipsis;white-space:nowrap
+  }
+  .bta-booking .booking-summary-panel .summary-total-box{
+    grid-column:2;grid-row:1 / span 2;display:flex!important;flex-direction:column!important;
+    align-items:flex-end!important;gap:0!important;margin:0!important;padding:0!important;
+    border:0!important;background:transparent!important
+  }
+  .bta-booking .booking-summary-panel .summary-total-box span{
+    font:800 9px/1.2 Inter,sans-serif!important;letter-spacing:.8px!important;color:#777!important
+  }
+  .bta-booking .booking-summary-panel .summary-total-box strong{
+    font:900 20px/1.15 "Barlow Condensed",sans-serif!important;color:#ed3833!important
+  }
+  .bta-booking .booking-summary-panel #summaryPromoRow{display:none!important}
+  .bta-booking .alert-error{border-radius:10px!important;padding:13px!important;font-size:12px!important}
+}
+
+/* Payment and booking confirmation pages share the same mobile app surface. */
+@media(max-width:767px){
+  body:has(.booking-box) main,
+  body:has(.booking-confirmation),
+  body:has(.booking-success){overflow-x:clip}
+  .booking-box{
+    width:100%!important;padding:20px 15px!important;border-radius:14px!important;
+    box-shadow:0 5px 22px rgba(0,0,0,.06)!important
+  }
+  .booking-box h1{font-size:30px!important;line-height:1.05!important}
+  .booking-box .detail-grid{grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important;gap:12px!important;padding:13px!important}
+  .booking-box .detail-grid>div{min-width:0;overflow-wrap:anywhere}
+  .booking-box>div[style*="display:flex"]{flex-direction:column!important}
+  .booking-box>div[style*="display:flex"] a{width:100%!important;text-align:center!important;justify-content:center!important}
+}
