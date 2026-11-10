@@ -42,6 +42,13 @@
         "ticket": 0
     },
     {
+        "label": "Merchandise",
+        "url": "/merchandise.php",
+        "enabled": 1,
+        "button": 0,
+        "ticket": 0
+    },
+    {
         "label": "Check Ticket",
         "url": "/my-booking",
         "enabled": 1,
