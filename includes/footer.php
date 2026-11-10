@@ -267,6 +267,22 @@ $bgStyle=$footerBg ? ' style="--footer-bg-image:url(\''.e(asset_url($footerBg)).
 <?php endif; ?>
 </footer>
 <?php if($wa && empty($disableFloatingWhatsApp)): ?><a class="wa-float" target="_blank" rel="noopener" aria-label="<?=e($waButtonText)?>" href="<?=e(whatsapp_url($wa,$waMessage))?>"><span class="wa-float-icon"><?=site_icon_html('footer.whatsapp','fa-brands fa-whatsapp')?></span><span class="wa-float-label"><?=e($waButtonText)?></span></a><?php endif; ?>
+
+<style id="bta-unified-all-page-hero-h1">
+/* Final shared hero heading rule. Loaded after each page's own inline styles. */
+html body main .page-banner .page-banner-content h1,
+html body main .page-banner h1,
+html body main .about-hero h1,
+html body main .page-hero h1,
+html body main .bta-myb-hero h1,
+html body main .success-hero h1 {
+  font-family:"Barlow Condensed",Impact,sans-serif!important;
+  font-size:48px!important;
+  font-weight:900!important;
+  line-height:1.02!important;
+}
+</style>
+
 </body></html>
 
 <?php if (function_exists('brand_output_buffer') && ob_get_level() > 0) { @ob_end_flush(); } ?>
