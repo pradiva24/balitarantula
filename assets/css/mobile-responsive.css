@@ -353,3 +353,44 @@
   .booking-box>div[style*="display:flex"]{flex-direction:column!important}
   .booking-box>div[style*="display:flex"] a{width:100%!important;text-align:center!important;justify-content:center!important}
 }
+
+
+/* Fix: keep the homepage track carousel visible and swipeable on mobile. */
+@media (max-width: 767px) {
+  .tracks-section .tracks-grid,
+  #tracksSlider.tracks-grid {
+    display: flex !important;
+    flex-flow: row nowrap !important;
+    align-items: stretch !important;
+    gap: 14px !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    padding: 0 0 10px !important;
+    scroll-snap-type: x mandatory !important;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .tracks-section .tracks-grid::-webkit-scrollbar,
+  #tracksSlider.tracks-grid::-webkit-scrollbar { display: none !important; }
+  .tracks-section .tracks-grid > .track-card,
+  #tracksSlider.tracks-grid > .track-card {
+    display: block !important;
+    flex: 0 0 86% !important;
+    width: 86% !important;
+    min-width: 0 !important;
+    min-height: 420px !important;
+    height: auto !important;
+    scroll-snap-align: start !important;
+  }
+  .tracks-section .track-card .track-info,
+  #tracksSlider .track-card .track-info {
+    left: 22px !important;
+    right: 22px !important;
+    bottom: 22px !important;
+    padding: 0 !important;
+  }
+  .tracks-section .tracks-slider-progress,
+  .tracks-section .tracks-note { display: block; }
+}
