@@ -699,9 +699,9 @@ body>main{margin:0!important;padding:0!important;max-width:none!important;width:
 .bta-home-main .hero .hero-text{font-size:14px!important;line-height:1.8;max-width:min(100%,560px)}
 @media(max-width:640px){
   .bta-home-main .hero-content{padding:65px 18px 0!important}
-  .bta-home-main .hero h1{font-size:clamp(34px,10vw,48px)!important;line-height:.98!important}
+  .bta-home-main .hero h1,
+  .bta-home-main .hero .hero-text{display:none!important}
   .bta-home-main section h2{font-size:clamp(30px,8vw,42px)!important;line-height:1.04!important}
-  .bta-home-main .hero .hero-text{font-size:14px!important;max-width:100%}
 }
 
 
