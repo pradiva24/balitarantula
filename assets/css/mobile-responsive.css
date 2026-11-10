@@ -106,9 +106,9 @@
   .adventure-card { height: 390px !important; }
 }
 
-/* App-style mobile polish for all public pages. */ Desktop rules are untouched. */
+/* App-style mobile polish for all public pages. Desktop rules are untouched. */ */
 @media(max-width:767px){
-  :root{--bta-mobile-nav-space:0px}
+  
   .site-header{box-shadow:0 5px 22px rgba(0,0,0,.18)}
   .section{padding-top:42px!important;padding-bottom:42px!important}
   .section-heading h2{line-height:1.02;letter-spacing:-.02em}
