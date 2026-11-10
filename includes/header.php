@@ -167,7 +167,8 @@ if($schemaData===null){
 <?php endif; ?>
 <?php endif; ?>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-<link rel="stylesheet" href="<?=BASE_URL?>/assets/css/style.css?v=<?=time()?>">\n<link rel="stylesheet" href="<?=BASE_URL?>/assets/css/mobile-responsive.css?v=20261110-2">
+<link rel="stylesheet" href="<?=BASE_URL?>/assets/css/style.css?v=<?=time()?>">
+<link rel="stylesheet" href="<?=BASE_URL?>/assets/css/mobile-responsive.css?v=20261110-2">
 
 <style id="bta-global-adventure-navigation-v2">
 /* Shared Bali Tarantula header redesign. Scoped here so all pages using includes/header.php share it. */
