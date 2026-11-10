@@ -251,7 +251,8 @@ if (!function_exists('bta_pdf_build')) {
         $activityTime = bta_pdf_time($b['activity_time'] ?? '');
         $pickupTime = bta_pdf_time($b['pickup_time'] ?? '');
         $isTandem = (($b['booking_mode'] ?? 'person') === 'tandem');
-        $guests = $isTandem ? '2 Persons (1 Tandem Unit)' : ((int)($b['adults'] ?? 0).' Adults'.((int)($b['children'] ?? 0) > 0 ? ', '.(int)$b['children'].' Children' : ''));
+        $tandemUnits = $isTandem ? max(1, (int)ceil((int)($b['adults'] ?? 0) / 2)) : 0;
+        $guests = $isTandem ? ((int)($b['adults'] ?? 0).' Persons ('.$tandemUnits.' Tandem '.($tandemUnits === 1 ? 'Unit' : 'Units').')') : ((int)($b['adults'] ?? 0).' Adults'.((int)($b['children'] ?? 0) > 0 ? ', '.(int)$b['children'].' Children' : ''));
         $pickupYes = !empty($b['pickup_required']);
         $pickupPlace = trim((string)($b['hotel_name'] ?? ''));
         $pickupArea = trim((string)($b['pickup_area_name'] ?? ''));
