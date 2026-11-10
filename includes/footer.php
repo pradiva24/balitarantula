@@ -277,7 +277,7 @@ html body main .page-hero h1,
 html body main .bta-myb-hero h1,
 html body main .success-hero h1 {
   font-family:"Barlow Condensed",Impact,sans-serif!important;
-  font-size:48px!important;
+  font-size:68px!important;
   font-weight:900!important;
   line-height:1.02!important;
 }
