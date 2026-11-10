@@ -523,4 +523,44 @@ img{height:auto}
 </script>
 
 
+
+<script>
+/* App-like mobile navigation reuses the existing Admin-configured menu URLs. */
+(function(){
+  const nav=document.getElementById('mainNav');
+  if(!nav || document.querySelector('.bta-mobile-nav')) return;
+  const links=Array.from(nav.querySelectorAll('a[href]'));
+  if(!links.length) return;
+  const match=(pattern)=>links.find(a=>pattern.test((a.textContent||'').trim()));
+  const chosen=[match(/^home$/i),match(/adventure|package/i),match(/gallery/i),match(/check\s*ticket|my\s*booking|view\s*ticket/i),match(/book|reserve/i)].filter(Boolean);
+  const unique=[];
+  chosen.forEach(a=>{if(!unique.includes(a))unique.push(a);});
+  if(unique.length<4) links.forEach(a=>{if(unique.length<4&&!unique.includes(a)&&!/book|reserve/i.test(a.textContent||''))unique.push(a);});
+  if(unique.length<2) return;
+  const bar=document.createElement('nav');
+  bar.className='bta-mobile-nav';
+  bar.setAttribute('aria-label','Mobile navigation');
+  const iconFor=(label)=>{
+    const s=label.toLowerCase();
+    if(/home/.test(s))return '⌂';
+    if(/adventure|package/.test(s))return '▣';
+    if(/gallery/.test(s))return '▧';
+    if(/ticket|booking/.test(s))return '▤';
+    if(/book|reserve/.test(s))return '＋';
+    if(/contact/.test(s))return '✉';
+    if(/about/.test(s))return 'ⓘ';
+    return '•';
+  };
+  unique.slice(0,5).forEach(source=>{
+    const a=document.createElement('a');a.href=source.href;
+    a.className='bta-mobile-nav-item'+(/book|reserve/i.test(source.textContent||'')?' is-booking':'');
+    a.setAttribute('aria-label',(source.textContent||'').trim());
+    const icon=document.createElement('span');icon.className='bta-mobile-nav-icon';icon.setAttribute('aria-hidden','true');icon.textContent=iconFor(source.textContent||'');
+    const label=document.createElement('span');label.className='bta-mobile-nav-label';label.textContent=(source.textContent||'').trim().replace(/\s+/g,' ');
+    a.append(icon,label);bar.appendChild(a);
+  });
+  document.body.appendChild(bar);
+})();
+</script>
+
 <!-- Removed legacy global text-color overrides: page components now control contrast on light and dark surfaces. -->
