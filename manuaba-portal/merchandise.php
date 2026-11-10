@@ -13,12 +13,27 @@ $db->exec("CREATE TABLE IF NOT EXISTS merchandise_items (
  updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
  PRIMARY KEY(id), KEY idx_merchandise_status_order(status,sort_order,id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci");
+$db->exec("CREATE TABLE IF NOT EXISTS merchandise_page_settings (
+ id TINYINT UNSIGNED NOT NULL PRIMARY KEY,
+ hero_kicker VARCHAR(180) NOT NULL DEFAULT 'Official Collection',
+ hero_title VARCHAR(255) NOT NULL DEFAULT 'Adventure Merchandise.',
+ hero_description TEXT NULL,
+ hero_image VARCHAR(500) NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci");
+$db->exec("INSERT IGNORE INTO merchandise_page_settings (id) VALUES (1)");
+$pageSettings=$db->query("SELECT * FROM merchandise_page_settings WHERE id=1")->fetch(PDO::FETCH_ASSOC) ?: [];
 $message='';$type='success';
 if($_SERVER['REQUEST_METHOD']==='POST'){
  admin_verify_csrf();
  $action=(string)($_POST['action']??'');
  try{
-  if($action==='save'){
+  if($action==='save_hero'){
+   $kicker=trim((string)($_POST['hero_kicker']??''));$heroTitle=trim((string)($_POST['hero_title']??''));$heroDescription=trim((string)($_POST['hero_description']??''));
+   if($heroTitle==='')throw new RuntimeException('Hero title is required.');
+   $oldHero=(string)($pageSettings['hero_image']??'');$heroImage=admin_upload('hero_image','merchandise',$oldHero);
+   $q=$db->prepare("UPDATE merchandise_page_settings SET hero_kicker=?,hero_title=?,hero_description=?,hero_image=? WHERE id=1");$q->execute([$kicker,$heroTitle,$heroDescription,$heroImage]);
+   admin_flash('success','Merchandise hero updated.');header('Location: merchandise.php#hero-settings');exit;
+  }elseif($action==='save'){
    $id=(int)($_POST['id']??0);$name=trim((string)($_POST['name']??''));$description=trim((string)($_POST['description']??''));
    $wa=trim((string)($_POST['whatsapp_message']??''));$sort=(int)($_POST['sort_order']??0);$status=!empty($_POST['status'])?1:0;
    if($name==='')throw new RuntimeException('Merchandise name is required.');
@@ -34,10 +49,24 @@ if($_SERVER['REQUEST_METHOD']==='POST'){
  }catch(Throwable $e){$message=$e->getMessage();$type='error';error_log('BTA Merchandise admin: '.$e->getMessage());}
 }
 $edit=null;$editId=(int)($_GET['edit']??0);if($editId){$q=$db->prepare("SELECT * FROM merchandise_items WHERE id=?");$q->execute([$editId]);$edit=$q->fetch(PDO::FETCH_ASSOC)?:null;}
+$pageSettings=$db->query("SELECT * FROM merchandise_page_settings WHERE id=1")->fetch(PDO::FETCH_ASSOC) ?: $pageSettings;
 $rows=$db->query("SELECT * FROM merchandise_items ORDER BY sort_order ASC,id DESC")->fetchAll(PDO::FETCH_ASSOC);
 $page_title='Merchandise';
 require __DIR__.'/includes/header.php';
 ?>
+<div class="card" id="hero-settings">
+ <div class="head"><div><h2>Merchandise Hero Settings</h2><p class="muted-line">Edit the banner text and background image shown at the top of the public page.</p></div></div>
+ <form class="form" method="post" enctype="multipart/form-data">
+  <input type="hidden" name="csrf" value="<?=admin_csrf()?>"><input type="hidden" name="action" value="save_hero">
+  <div class="form-grid">
+   <div class="field full"><label>Small Heading / Kicker</label><input name="hero_kicker" maxlength="180" value="<?=admin_e($pageSettings['hero_kicker']??'Official Collection')?>"></div>
+   <div class="field full"><label>Main Hero Title</label><input name="hero_title" required maxlength="255" value="<?=admin_e($pageSettings['hero_title']??'Adventure Merchandise.')?>"></div>
+   <div class="field full"><label>Hero Description</label><textarea name="hero_description" rows="3" maxlength="1200"><?=admin_e($pageSettings['hero_description']??'Take a piece of your Bali adventure home. Explore our merchandise collection and contact our team directly to place your order.')?></textarea></div>
+   <div class="field full"><label>Hero Background Image</label><input type="file" name="hero_image" accept="image/jpeg,image/png,image/webp,image/gif"><small>Leave empty to keep the current image.</small>
+   <?php if(!empty($pageSettings['hero_image'])):?><img class="thumb" style="width:220px;height:110px;object-fit:cover" src="<?=admin_e(asset_url($pageSettings['hero_image']))?>" alt=""><?php endif;?></div>
+  </div><div class="actions"><button class="btn">Save Hero Settings</button></div>
+ </form>
+</div>
 <div class="card">
  <div class="head"><div><h2>Merchandise Manager</h2><p class="muted-line">Manage products displayed on the public merchandise archive page.</p></div><a class="btn gray" href="<?=BASE_URL?>/merchandise.php" target="_blank" rel="noopener">View Page ↗</a></div>
  <?php if($message):?><div class="alert <?=admin_e($type)?>"><?=admin_e($message)?></div><?php endif;?>
