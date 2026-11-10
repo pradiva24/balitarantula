@@ -1265,6 +1265,31 @@ body {
 }
 
 
+
+/* Definitive package tab states: default neutral, active/hover/focus red with white text. */
+.bta-pkg-detail .package-tabs > a,
+.bta-pkg-detail .package-tabs > a:link,
+.bta-pkg-detail .package-tabs > a:visited{
+  background:#fff!important;
+  color:#555!important;
+  border-color:#e3e1dc!important;
+  border-bottom-color:#e3e1dc!important;
+}
+.bta-pkg-detail .package-tabs > a:hover,
+.bta-pkg-detail .package-tabs > a:focus,
+.bta-pkg-detail .package-tabs > a:focus-visible,
+.bta-pkg-detail .package-tabs > a:active,
+.bta-pkg-detail .package-tabs > a.is-active,
+.bta-pkg-detail .package-tabs > a.is-active:link,
+.bta-pkg-detail .package-tabs > a.is-active:visited{
+  background:#ed3833!important;
+  background-color:#ed3833!important;
+  color:#fff!important;
+  border:1px solid #ed3833!important;
+  border-bottom-color:#ed3833!important;
+  -webkit-text-fill-color:#fff!important;
+  outline:none!important;
+}
 /* Package gallery lightbox and reliable red quick-nav states. */
 .package-cover-img{cursor:zoom-in;touch-action:pan-y}
 .package-photo-lightbox{
