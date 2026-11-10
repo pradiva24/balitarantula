@@ -106,25 +106,9 @@
   .adventure-card { height: 390px !important; }
 }
 
-/* App-like bottom navigation — mobile only; desktop remains unchanged. */
-.bta-mobile-nav{display:none}
+/* App-style mobile polish for all public pages. */ Desktop rules are untouched. */
 @media(max-width:767px){
-  body{padding-bottom:calc(68px + env(safe-area-inset-bottom))!important}
-  .bta-mobile-nav{position:fixed;z-index:10050;left:0;right:0;bottom:0;display:grid;grid-auto-columns:minmax(0,1fr);grid-auto-flow:column;align-items:stretch;gap:2px;min-height:64px;padding:7px 8px calc(7px + env(safe-area-inset-bottom));background:rgba(15,15,15,.97);border-top:1px solid rgba(237,56,51,.45);box-shadow:0 -8px 28px rgba(0,0,0,.24);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
-  .bta-mobile-nav-item{display:flex;min-width:0;flex-direction:column;align-items:center;justify-content:center;gap:4px;padding:5px 2px;border-radius:9px;color:#c9c9c9!important;text-decoration:none!important;font-family:Inter,sans-serif;font-size:10px;font-weight:700;line-height:1.15;text-align:center}
-  .bta-mobile-nav-icon{display:grid;place-items:center;width:25px;height:23px;font-size:21px;line-height:1;color:#ed3833}
-  .bta-mobile-nav-label{display:block;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-  .bta-mobile-nav-item.is-booking{margin:0 2px;background:#ed3833;color:#111!important;border-radius:9px}
-  .bta-mobile-nav-item.is-booking .bta-mobile-nav-icon{color:#111}
-  .bta-mobile-nav-item:active{background:rgba(237,56,51,.14)}
-}
-@media(min-width:768px){.bta-mobile-nav{display:none!important}}
-
-
-/* App-style mobile polish for all public pages. Desktop rules are untouched. */
-@media(max-width:767px){
-  :root{--bta-mobile-nav-space:calc(68px + env(safe-area-inset-bottom))}
-  body{padding-bottom:var(--bta-mobile-nav-space)!important}
+  :root{--bta-mobile-nav-space:0px}
   .site-header{box-shadow:0 5px 22px rgba(0,0,0,.18)}
   .section{padding-top:42px!important;padding-bottom:42px!important}
   .section-heading h2{line-height:1.02;letter-spacing:-.02em}
