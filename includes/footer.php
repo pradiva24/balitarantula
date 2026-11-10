@@ -281,6 +281,16 @@ html body main .success-hero h1 {
   font-weight:900!important;
   line-height:1.02!important;
 }
+@media (max-width:767px){
+  html body main .page-banner .page-banner-content h1,
+  html body main .page-banner h1,
+  html body main .about-hero h1,
+  html body main .page-hero h1,
+  html body main .bta-myb-hero h1,
+  html body main .success-hero h1 {
+    font-size:38px!important;
+  }
+}
 </style>
 
 </body></html>
