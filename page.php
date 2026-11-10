@@ -35,7 +35,7 @@ require __DIR__.'/includes/header.php';
 <section class="section" style="padding:60px 0 80px;background:#f5f4ef">
   <div class="container" style="max-width:900px;margin:0 auto;padding:0 20px">
     <article class="page-content" style="background:#ffffff;border:1px solid #dedbd4;border-radius:14px;padding:clamp(24px, 4vw, 44px);box-shadow:0 12px 36px rgba(30,25,15,0.05);font-family:'Inter',sans-serif;font-size:16px;line-height:1.8;color:#5d5b56">
-      <?=nl2br(e($page['content'] ?? ''))?>
+      <?=($page['content'] ?? '')?>
     </article>
   </div>
 </section>
