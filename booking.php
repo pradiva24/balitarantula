@@ -660,6 +660,15 @@ body {
   border-color: var(--bta-orange);
   color: #111111 !important;
 }
+.time-slot-btn:disabled,
+.time-slot-btn:disabled:hover {
+  background: #f3f4f6 !important;
+  border-color: #d8d4cc !important;
+  color: #b8b8b8 !important;
+  cursor: not-allowed !important;
+  pointer-events: none !important;
+  box-shadow: none !important;
+}
 
 .promo-row {
   display: flex;
@@ -1177,27 +1186,22 @@ body {
     return document.querySelector('[name=booking_date]')?.value || '';
   }
 
-  // Use the website server's live clock (Bali timezone), not the visitor device clock.
-  // performance.now() advances monotonically and avoids dependence on the device wall clock.
-  const BTA_ONLINE_TIME_BASE_MS = <?=json_encode((new DateTimeImmutable('now', new DateTimeZone('Asia/Makassar')))->getTimestamp() * 1000)?>;
-  const BTA_PAGE_MONOTONIC_START = performance.now();
-
-  function onlineNow(){
-    return new Date(BTA_ONLINE_TIME_BASE_MS + (performance.now() - BTA_PAGE_MONOTONIC_START));
-  }
+  // Server clock snapshot in Bali timezone. The minute counter advances using
+  // performance.now(), so filtering never depends on the visitor's device clock.
+  const BTA_SERVER_TODAY = <?=json_encode((new DateTimeImmutable('now', new DateTimeZone('Asia/Makassar')))->format('Y-m-d'))?>;
+  const BTA_SERVER_MINUTES_AT_LOAD = <?=json_encode(((int)(new DateTimeImmutable('now', new DateTimeZone('Asia/Makassar')))->format('H')) * 60 + (int)(new DateTimeImmutable('now', new DateTimeZone('Asia/Makassar')))->format('i'))?>;
+  const BTA_MONOTONIC_START = performance.now();
 
   function onlineDate(){
-    const now = onlineNow();
-    const parts = new Intl.DateTimeFormat('en-CA', {timeZone:'Asia/Makassar',year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(now);
-    const get = type => parts.find(p => p.type === type)?.value || '';
-    return get('year') + '-' + get('month') + '-' + get('day');
+    const elapsedMinutes = Math.floor((performance.now() - BTA_MONOTONIC_START) / 60000);
+    const start = new Date(BTA_SERVER_TODAY + 'T00:00:00Z');
+    start.setUTCMinutes(start.getUTCMinutes() + BTA_SERVER_MINUTES_AT_LOAD + elapsedMinutes);
+    return start.toISOString().slice(0, 10);
   }
 
   function onlineMinutes(){
-    const parts = new Intl.DateTimeFormat('en-GB', {timeZone:'Asia/Makassar',hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).formatToParts(onlineNow());
-    const hour = Number(parts.find(p => p.type === 'hour')?.value || 0);
-    const minute = Number(parts.find(p => p.type === 'minute')?.value || 0);
-    return hour * 60 + minute;
+    const elapsedMinutes = Math.floor((performance.now() - BTA_MONOTONIC_START) / 60000);
+    return (BTA_SERVER_MINUTES_AT_LOAD + elapsedMinutes) % 1440;
   }
 
   function isTodayBooking(){
