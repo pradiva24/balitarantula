@@ -69,7 +69,7 @@ require __DIR__ . '/includes/header.php';
 .about-hero .hero-photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-1;opacity:.32}
 .about-hero:after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(90deg,rgba(15,15,15,.92),rgba(15,15,15,.48))}
 .about-hero h1{max-width:900px;margin:0 0 16px;color:#fff;font-size:clamp(46px,7vw,88px);font-weight:900;line-height:.94}
-.about-hero .hero-copy{max-width:650px;margin:0 0 24px;color:#e4e1dc;font-size:16px}
+.about-hero .hero-copy{max-width:650px;margin:0 0 24px;color:#e4e1dc;font-size:13px}
 .about-crumb{color:#c9c6c0;font:700 13px var(--about-font-display);letter-spacing:1.5px;text-transform:uppercase}
 .about-crumb a{color:inherit;text-decoration:none}
 .about-crumb a:hover{color:var(--about-orange)}
