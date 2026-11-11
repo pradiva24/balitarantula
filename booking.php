@@ -1177,12 +1177,19 @@ body {
     return document.querySelector('[name=booking_date]')?.value || '';
   }
 
-  // Bali server date/time is embedded on page load and used consistently for filtering.
-  const BTA_BALI_TODAY = <?=json_encode((new DateTimeImmutable('now', new DateTimeZone('Asia/Makassar')))->format('Y-m-d'))?>;
-  const BTA_BALI_NOW_MINUTES = <?=json_encode(((int)(new DateTimeImmutable('now', new DateTimeZone('Asia/Makassar')))->format('H')) * 60 + (int)(new DateTimeImmutable('now', new DateTimeZone('Asia/Makassar')))->format('i'))?>;
+  // Use the visitor's device-local date and time as requested.
+  function deviceLocalDate(){
+    const now = new Date();
+    return now.getFullYear() + '-' + String(now.getMonth()+1).padStart(2,'0') + '-' + String(now.getDate()).padStart(2,'0');
+  }
+
+  function deviceLocalMinutes(){
+    const now = new Date();
+    return now.getHours() * 60 + now.getMinutes();
+  }
 
   function isTodayBooking(){
-    return selectedBookingDate().trim() === BTA_BALI_TODAY;
+    return selectedBookingDate().trim() === deviceLocalDate();
   }
 
   function isTimeStillAvailable(time){
@@ -1192,8 +1199,7 @@ body {
     const hour = Number(parts[0]);
     const minute = Number(parts[1]);
     if (!Number.isFinite(hour) || !Number.isFinite(minute)) return false;
-    const slotMinutes = hour * 60 + minute;
-    return slotMinutes > BTA_BALI_NOW_MINUTES;
+    return (hour * 60 + minute) > deviceLocalMinutes();
   }
 
   function renderActivityTimes(){
