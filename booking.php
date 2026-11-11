@@ -1214,8 +1214,7 @@ body {
 
   async function syncOnlineClock(){
     try {
-      const url = new URL(window.location.href);
-      url.searchParams.set('booking_clock', '1');
+      const url = new URL('/booking-clock.php', window.location.origin);
       url.searchParams.set('_clock_ts', String(Date.now()));
       const response = await fetch(url.toString(), {
         method: 'GET',
