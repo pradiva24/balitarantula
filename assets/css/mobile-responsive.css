@@ -459,3 +459,24 @@
     color:#fff!important;
   }
 }
+
+
+/* Requested mobile CTA sizing — desktop styles remain unchanged. */
+@media screen and (max-width: 767px) {
+  .about-btn {
+    font-size: 12px !important;
+    padding: 14px !important;
+  }
+
+  .page-banner-content .blog-hero-button {
+    font-size: 12px !important;
+  }
+
+  .bta-pkg-detail .button-orange {
+    font-size: 12px !important;
+  }
+
+  .bta-booking .button-orange-submit {
+    font-size: 12px !important;
+  }
+}
