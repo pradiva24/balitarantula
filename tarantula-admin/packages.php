@@ -453,10 +453,16 @@ try {
           if($hadMediaValue) $_POST[$mediaKey]=$oldMediaValue;
         }
       } else {
-        $ogImage=admin_upload('og_image_upload','packages',$oldOg);
-        // Without a new upload, allow a manually entered URL/path to take effect.
-        if(trim((string)($_POST['og_image']??''))!=='') {
+        // Media Library selection must take priority over the old URL/path
+        // still present in the text field. Otherwise selecting a new image
+        // appears to work, but the previous path overwrites that selection.
+        $selectedOgImage=admin_media_selected('og_image_upload');
+        if($selectedOgImage!==null) {
+          $ogImage=$selectedOgImage;
+        } elseif(trim((string)($_POST['og_image']??''))!=='') {
           $ogImage=trim((string)$_POST['og_image']);
+        } else {
+          $ogImage=admin_upload('og_image_upload','packages',$oldOg);
         }
       } $data[17]=$ogImage;
       $cover=admin_upload('cover_image','packages',$old);
