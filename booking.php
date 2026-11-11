@@ -1187,10 +1187,13 @@ body {
 
   function isTimeStillAvailable(time){
     if (!isTodayBooking()) return true;
-    const match = String(time ?? '').trim().match(/^(\\d{1,2}):(\\d{2})/);
-    if (!match) return false;
-    const minutes = Number(match[1]) * 60 + Number(match[2]);
-    return Number.isFinite(minutes) && minutes > BTA_BALI_NOW_MINUTES;
+    const parts = String(time ?? '').trim().slice(0, 5).split(':');
+    if (parts.length !== 2 || parts[0] === '' || parts[1] === '') return false;
+    const hour = Number(parts[0]);
+    const minute = Number(parts[1]);
+    if (!Number.isFinite(hour) || !Number.isFinite(minute)) return false;
+    const slotMinutes = hour * 60 + minute;
+    return slotMinutes > BTA_BALI_NOW_MINUTES;
   }
 
   function renderActivityTimes(){
