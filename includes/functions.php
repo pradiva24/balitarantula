@@ -143,12 +143,19 @@ function seo_current_page_key(): string {
     ];
     if (isset($static[$path])) return $static[$path];
 
+    // Dynamic content pages get their own central SEO record per slug.
+    if (preg_match('~^/package/([^/]+)$~i', $path, $m) && trim($m[1]) !== '') {
+        return 'package:'.strtolower(trim($m[1]));
+    }
+    if (preg_match('~^/blog/([^/]+)$~i', $path, $m) && trim($m[1]) !== '') {
+        return 'blog:'.strtolower(trim($m[1]));
+    }
     if (preg_match('~^/page/([^/]+)$~i', $path, $m) && trim($m[1])!=='') {
-        return 'page:'.trim($m[1]);
+        return 'page:'.strtolower(trim($m[1]));
     }
     if ($path === '/page.php') {
         $slug=trim((string)($_GET['slug']??''));
-        return $slug!==''?'page:'.$slug:'page';
+        return $slug!==''?'page:'.strtolower($slug):'page';
     }
     if (http_response_code() === 404) return '404';
     return '';
