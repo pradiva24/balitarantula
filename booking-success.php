@@ -3,6 +3,7 @@ declare(strict_types=1);
 require_once __DIR__ . '/config/database.php';
 require_once __DIR__ . '/includes/functions.php';
 require_once __DIR__ . '/includes/eticket-config.php';
+require_once __DIR__ . '/includes/eticket-pdf.php';
 
 if (session_status() !== PHP_SESSION_ACTIVE) session_start();
 
@@ -28,6 +29,28 @@ $st = $db->prepare("
 ");
 $st->execute([$code]);
 $booking = $st->fetch(PDO::FETCH_ASSOC);
+
+// Direct PDF download for mobile/tablet e-ticket button.
+if (isset($_GET['pdf']) && $_GET['pdf'] === '1') {
+    $pdfBooking = $booking;
+    $pdfBooking['package_name'] = (string)($booking['package_name'] ?? 'Bali Adventure');
+    $pdfBooking['pickup_area_name'] = (string)($booking['pickup_area_name'] ?? '');
+    $pdf = bta_pdf_build(
+        $pdfBooking,
+        site_brand_name(),
+        (string)setting('site_email', ''),
+        (string)setting('site_whatsapp', setting('site_phone', '')),
+        (string)setting('site_address', 'Bali, Indonesia')
+    );
+    $filename = preg_replace('/[^A-Za-z0-9_-]/', '_', (string)$booking['booking_code']) . '.pdf';
+    header('Content-Type: application/pdf');
+    header('Content-Disposition: attachment; filename="' . $filename . '"');
+    header('Content-Length: ' . strlen($pdf));
+    header('Cache-Control: private, no-store, no-cache, must-revalidate');
+    header('Pragma: no-cache');
+    echo $pdf;
+    exit;
+}
 
 if (!$booking) {
     http_response_code(404);
@@ -329,7 +352,7 @@ require __DIR__ . '/includes/header.php';
     </div>
 
     <div class="success-actions">
-      <a class="success-action primary" href="<?=BASE_URL?>/booking-success?code=<?=urlencode($booking['booking_code'])?>&amp;print=1" target="_blank"><i class="fa-solid fa-file-arrow-down"></i> Download E-Ticket</a>
+      <a class="success-action primary" id="downloadEticketButton" href="<?=BASE_URL?>/booking-success?code=<?=urlencode($booking['booking_code'])?>&amp;print=1" target="_blank"><i class="fa-solid fa-file-arrow-down"></i> Download E-Ticket</a>
       <a class="success-action whatsapp" href="<?=$waChatUrl?>" target="_blank" rel="noopener"><i class="fa-brands fa-whatsapp"></i> Contact via WhatsApp</a>
       <a class="success-action" href="<?=BASE_URL?>/"><i class="fa-solid fa-house"></i> Back to Homepage</a>
     </div>
@@ -337,6 +360,26 @@ require __DIR__ . '/includes/header.php';
 </div>
 
 <script>
+(function(){
+  const ticketButton=document.getElementById('downloadEticketButton');
+  if(!ticketButton)return;
+  const mobileOrTablet=window.matchMedia('(max-width: 1024px), (pointer: coarse)').matches;
+  if(mobileOrTablet){
+    const url=new URL(ticketButton.href,window.location.href);
+    url.searchParams.delete('print');
+    url.searchParams.set('pdf','1');
+    ticketButton.href=url.toString();
+    ticketButton.removeAttribute('target');
+    ticketButton.addEventListener('click',function(event){
+      event.preventDefault();
+      window.location.href=ticketButton.href;
+    });
+  }else{
+    ticketButton.target='_blank';
+    ticketButton.rel='noopener';
+  }
+})();
+
 (function(){
   const button=document.getElementById('copyBookingCode');
   const code=document.getElementById('btaBookingCode');
