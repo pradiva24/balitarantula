@@ -1177,19 +1177,31 @@ body {
     return document.querySelector('[name=booking_date]')?.value || '';
   }
 
-  // Use the visitor's device-local date and time as requested.
-  function deviceLocalDate(){
-    const now = new Date();
-    return now.getFullYear() + '-' + String(now.getMonth()+1).padStart(2,'0') + '-' + String(now.getDate()).padStart(2,'0');
+  // Use the website server's live clock (Bali timezone), not the visitor device clock.
+  // performance.now() advances monotonically and avoids dependence on the device wall clock.
+  const BTA_ONLINE_TIME_BASE_MS = <?=json_encode((new DateTimeImmutable('now', new DateTimeZone('Asia/Makassar')))->getTimestamp() * 1000)?>;
+  const BTA_PAGE_MONOTONIC_START = performance.now();
+
+  function onlineNow(){
+    return new Date(BTA_ONLINE_TIME_BASE_MS + (performance.now() - BTA_PAGE_MONOTONIC_START));
   }
 
-  function deviceLocalMinutes(){
-    const now = new Date();
-    return now.getHours() * 60 + now.getMinutes();
+  function onlineDate(){
+    const now = onlineNow();
+    const parts = new Intl.DateTimeFormat('en-CA', {timeZone:'Asia/Makassar',year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(now);
+    const get = type => parts.find(p => p.type === type)?.value || '';
+    return get('year') + '-' + get('month') + '-' + get('day');
+  }
+
+  function onlineMinutes(){
+    const parts = new Intl.DateTimeFormat('en-GB', {timeZone:'Asia/Makassar',hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).formatToParts(onlineNow());
+    const hour = Number(parts.find(p => p.type === 'hour')?.value || 0);
+    const minute = Number(parts.find(p => p.type === 'minute')?.value || 0);
+    return hour * 60 + minute;
   }
 
   function isTodayBooking(){
-    return selectedBookingDate().trim() === deviceLocalDate();
+    return selectedBookingDate().trim() === onlineDate();
   }
 
   function isTimeStillAvailable(time){
@@ -1199,7 +1211,7 @@ body {
     const hour = Number(parts[0]);
     const minute = Number(parts[1]);
     if (!Number.isFinite(hour) || !Number.isFinite(minute)) return false;
-    return (hour * 60 + minute) > deviceLocalMinutes();
+    return (hour * 60 + minute) > onlineMinutes();
   }
 
   function renderActivityTimes(){
