@@ -12,37 +12,49 @@ require_once __DIR__ . '/config/midtrans.php';
 if (session_status() !== PHP_SESSION_ACTIVE) session_start();
 $db = db();
 
-try {
-    $bookingModeCol=$db->query("SHOW COLUMNS FROM packages LIKE 'booking_mode'")->fetch(PDO::FETCH_ASSOC);
-    if(!$bookingModeCol) $db->exec("ALTER TABLE packages ADD COLUMN booking_mode VARCHAR(20) NOT NULL DEFAULT 'person' AFTER price_child");
-} catch (Throwable $e) {}
+// Schema migrations belong to deployment/admin maintenance, not customer booking POSTs.
+// Keep the legacy self-heal on normal page views only to avoid DDL locks during checkout.
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+    try {
+        $bookingModeCol=$db->query("SHOW COLUMNS FROM packages LIKE 'booking_mode'")->fetch(PDO::FETCH_ASSOC);
+        if(!$bookingModeCol) $db->exec("ALTER TABLE packages ADD COLUMN booking_mode VARCHAR(20) NOT NULL DEFAULT 'person' AFTER price_child");
+    } catch (Throwable $e) {}
+}
 
 $ticketOnlyEnabled = setting('booking_ticket_only_enabled', '1') === '1';
 $hotelPickupEnabled = setting('booking_hotel_pickup_enabled', '1') === '1';
 $packageId = (int)($_GET['package'] ?? $_POST['package_id'] ?? 0);
 
-try {
-    $db->exec("CREATE TABLE IF NOT EXISTS package_activity_times (
-        id INT UNSIGNED NOT NULL AUTO_INCREMENT,
-        package_id INT UNSIGNED NOT NULL,
-        activity_time TIME NOT NULL,
-        sort_order INT NOT NULL DEFAULT 0,
-        PRIMARY KEY(id),
-        UNIQUE KEY uq_package_activity_time(package_id, activity_time),
-        KEY idx_package_activity_times(package_id),
-        CONSTRAINT fk_package_activity_times_package FOREIGN KEY(package_id) REFERENCES packages(id) ON DELETE CASCADE
-    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci");
-} catch (Throwable $e) {}
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+    try {
+        $db->exec("CREATE TABLE IF NOT EXISTS package_activity_times (
+            id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+            package_id INT UNSIGNED NOT NULL,
+            activity_time TIME NOT NULL,
+            sort_order INT NOT NULL DEFAULT 0,
+            PRIMARY KEY(id),
+            UNIQUE KEY uq_package_activity_time(package_id, activity_time),
+            KEY idx_package_activity_times(package_id),
+            CONSTRAINT fk_package_activity_times_package FOREIGN KEY(package_id) REFERENCES packages(id) ON DELETE CASCADE
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci");
+    } catch (Throwable $e) {}
 
-try {
-    $cols = $db->query("SHOW COLUMNS FROM bookings LIKE 'activity_time'")->fetch();
-    if (!$cols) $db->exec("ALTER TABLE bookings ADD COLUMN activity_time TIME NULL AFTER booking_date");
-} catch (Throwable $e) {}
+    try {
+        $cols = $db->query("SHOW COLUMNS FROM bookings LIKE 'activity_time'")->fetch();
+        if (!$cols) $db->exec("ALTER TABLE bookings ADD COLUMN activity_time TIME NULL AFTER booking_date");
+    } catch (Throwable $e) {}
+}
 
 $activityTimeRows = [];
 $activityTimeMap = [];
 try {
-    $activityTimeRows = $db->query("SELECT package_id, TIME_FORMAT(activity_time, '%H:%i') AS activity_time FROM package_activity_times ORDER BY package_id, sort_order, activity_time")->fetchAll();
+    if ($_SERVER['REQUEST_METHOD'] === 'POST' && $packageId > 0) {
+        $timeStmt = $db->prepare("SELECT package_id, TIME_FORMAT(activity_time, '%H:%i') AS activity_time FROM package_activity_times WHERE package_id = ? ORDER BY sort_order, activity_time");
+        $timeStmt->execute([$packageId]);
+        $activityTimeRows = $timeStmt->fetchAll();
+    } else {
+        $activityTimeRows = $db->query("SELECT package_id, TIME_FORMAT(activity_time, '%H:%i') AS activity_time FROM package_activity_times ORDER BY package_id, sort_order, activity_time")->fetchAll();
+    }
     foreach ($activityTimeRows as $atr) {
         $activityTimeMap[(int)$atr['package_id']][] = $atr['activity_time'];
     }
