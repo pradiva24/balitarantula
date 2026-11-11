@@ -1184,18 +1184,19 @@ body {
     return hour * 60 + minute;
   }
 
+  // Use the server's Bali clock as the single source of truth for same-day filtering.
+  const BTA_BALI_TODAY = <?=json_encode((new DateTimeImmutable('now', new DateTimeZone('Asia/Makassar')))->format('Y-m-d'))?>;
+  const BTA_BALI_NOW_MINUTES = <?=json_encode(((int)(new DateTimeImmutable('now', new DateTimeZone('Asia/Makassar')))->format('H')) * 60 + (int)(new DateTimeImmutable('now', new DateTimeZone('Asia/Makassar')))->format('i'))?>;
+
   function isTodayBooking(){
-    const parts = new Intl.DateTimeFormat('en-CA', {timeZone:'Asia/Makassar',year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(new Date());
-    const get = type => parts.find(p => p.type === type)?.value || '';
-    const today = get('year') + '-' + get('month') + '-' + get('day');
-    return selectedBookingDate() === today;
+    return selectedBookingDate() === BTA_BALI_TODAY;
   }
 
   function isTimeStillAvailable(time){
     if (!isTodayBooking()) return true;
     const parts = String(time).slice(0,5).split(':').map(Number);
     if (parts.length !== 2 || !Number.isFinite(parts[0]) || !Number.isFinite(parts[1])) return false;
-    return (parts[0] * 60 + parts[1]) > baliCurrentTimeMinutes();
+    return (parts[0] * 60 + parts[1]) > BTA_BALI_NOW_MINUTES;
   }
 
   function renderActivityTimes(){
