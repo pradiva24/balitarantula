@@ -1177,33 +1177,29 @@ body {
     return document.querySelector('[name=booking_date]')?.value || '';
   }
 
-  function baliCurrentTimeMinutes(){
-    const parts = new Intl.DateTimeFormat('en-GB', {timeZone:'Asia/Makassar',hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).formatToParts(new Date());
-    const hour = Number(parts.find(p => p.type === 'hour')?.value || 0);
-    const minute = Number(parts.find(p => p.type === 'minute')?.value || 0);
-    return hour * 60 + minute;
-  }
-
-  // Use the server's Bali clock as the single source of truth for same-day filtering.
+  // Bali server date/time is embedded on page load and used consistently for filtering.
   const BTA_BALI_TODAY = <?=json_encode((new DateTimeImmutable('now', new DateTimeZone('Asia/Makassar')))->format('Y-m-d'))?>;
   const BTA_BALI_NOW_MINUTES = <?=json_encode(((int)(new DateTimeImmutable('now', new DateTimeZone('Asia/Makassar')))->format('H')) * 60 + (int)(new DateTimeImmutable('now', new DateTimeZone('Asia/Makassar')))->format('i'))?>;
 
   function isTodayBooking(){
-    return selectedBookingDate() === BTA_BALI_TODAY;
+    return selectedBookingDate().trim() === BTA_BALI_TODAY;
   }
 
   function isTimeStillAvailable(time){
     if (!isTodayBooking()) return true;
-    const parts = String(time).slice(0,5).split(':').map(Number);
-    if (parts.length !== 2 || !Number.isFinite(parts[0]) || !Number.isFinite(parts[1])) return false;
-    return (parts[0] * 60 + parts[1]) > BTA_BALI_NOW_MINUTES;
+    const match = String(time ?? '').trim().match(/^(\\d{1,2}):(\\d{2})/);
+    if (!match) return false;
+    const minutes = Number(match[1]) * 60 + Number(match[2]);
+    return Number.isFinite(minutes) && minutes > BTA_BALI_NOW_MINUTES;
   }
 
   function renderActivityTimes(){
     const id = String(picker.value || '');
     const withTransport = pickup.value === '1';
-    const times = (withTransport ? [] : (activityTimes[id] || [])).filter(isTimeStillAvailable);
+    const allTimes = withTransport ? [] : (activityTimes[id] || []);
+    const times = allTimes.filter(isTimeStillAvailable);
     const previous = activityTimeSelect.value;
+    activityTimeSelect.value = '';
     activityTimeSelect.innerHTML = '<option value="">Select activity time</option>';
     activityTimeOptions.innerHTML = '';
 
@@ -1231,8 +1227,10 @@ body {
   function refreshPickupTimes(){
     if (!pickupTime) return;
     const id = String(area?.value || '');
-    const times = (Array.isArray(pickupTimeMap[id]) ? pickupTimeMap[id] : []).filter(isTimeStillAvailable);
+    const allTimes = Array.isArray(pickupTimeMap[id]) ? pickupTimeMap[id] : [];
+    const times = allTimes.filter(isTimeStillAvailable);
     const previous = pickupTime.value;
+    pickupTime.value = '';
     pickupTime.innerHTML = '<option value="">Select pickup slot</option>';
     times.forEach(t => {
       const opt = document.createElement('option');
