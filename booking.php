@@ -878,7 +878,7 @@ body {
         <div class="form-grid-2">
           <div class="form-group">
             <label id="bookingDateLabel">Activity Date <span class="req">*</span></label>
-            <input class="form-control" type="date" name="booking_date" min="<?= (new DateTimeImmutable('now', new DateTimeZone('Asia/Makassar')))->format('Y-m-d') ?>" value="<?=e($_POST['booking_date'] ?? date('Y-m-d', strtotime('+1 day')))?>" required>
+            <input class="form-control" type="date" name="booking_date" min="<?= (new DateTimeImmutable('now', new DateTimeZone('Asia/Makassar')))->format('Y-m-d') ?>" value="<?=e($_POST['booking_date'] ?? (new DateTimeImmutable('now', new DateTimeZone('Asia/Makassar')))->format('Y-m-d'))?>" required>
           </div>
           <div class="form-group" id="guestCountSelector">
             <label>Guests (Adults &amp; Children) <span class="req">*</span></label>
