@@ -297,7 +297,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $subject = 'Booking ' . $code . ' - ' . $siteName;
                     $emailHtml = bta_booking_email_html($emailBooking, $confirmUrl, 'Booking Received', 'Thank you for choosing Bali Tarantula Adventure. Your booking has been received. Use the button below to open your A4 e-ticket.', 'customer', $ticketUrl);
 
-                    // Email delivery must never block a successfully saved booking.
+                    // Return the customer to the next page immediately after the booking
+                    // transaction is committed. PDF generation and SMTP delivery continue
+                    // after the HTTP response has been flushed (PHP-FPM / FastCGI).
+                    if (strcasecmp($paymentMethod, 'Midtrans') === 0) {
+                        header('Location: ' . rtrim(BASE_URL, '/') . '/midtrans-checkout?code=' . rawurlencode($code) . '&email=' . rawurlencode($email), true, 303);
+                    } else {
+                        header('Location: ' . rtrim(BASE_URL, '/') . '/booking-success?code=' . rawurlencode($code), true, 303);
+                    }
+                    ignore_user_abort(true);
+                    if (function_exists('fastcgi_finish_request')) {
+                        fastcgi_finish_request();
+                    } else {
+                        while (ob_get_level() > 0) { @ob_end_flush(); }
+                        @flush();
+                    }
+                    @set_time_limit(120);
+
+                    // Email delivery runs after the customer response, so slow SMTP/PDF
+                    // processing no longer keeps the booking form loading.
                     // If PDF rendering fails, send the booking email without attachment.
                     $ticketPath = null;
                     $attachments = [];
@@ -352,11 +370,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         if ($ticketPath && is_file($ticketPath)) @unlink($ticketPath);
                     }
 
-                    if (strcasecmp($paymentMethod, 'Midtrans') === 0) {
-                        header('Location: ' . rtrim(BASE_URL, '/') . '/midtrans-checkout?code=' . rawurlencode($code) . '&email=' . rawurlencode($email), true, 303);
-                    } else {
-                        header('Location: ' . rtrim(BASE_URL, '/') . '/booking-success?code=' . rawurlencode($code), true, 303);
-                    }
+                    // The redirect was already sent before the background email work.
                     exit;
 
                 } catch (Throwable $e) {
