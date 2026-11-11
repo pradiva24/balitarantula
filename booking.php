@@ -10,7 +10,7 @@ require_once __DIR__ . '/includes/eticket-config.php';
 require_once __DIR__ . '/config/midtrans.php';
 
 if (session_status() !== PHP_SESSION_ACTIVE) session_start();
-$minimumBookingDate = (new DateTimeImmutable('tomorrow', new DateTimeZone('Asia/Makassar')))->format('Y-m-d');
+$minimumBookingDate = (new DateTimeImmutable('today', new DateTimeZone('Asia/Makassar')))->format('Y-m-d');
 $db = db();
 
 // Schema migrations belong to deployment/admin maintenance, not customer booking POSTs.
@@ -1169,10 +1169,35 @@ body {
     return { unit, count, total: unit * count, guests };
   }
 
+  function selectedBookingDate(){
+    return document.querySelector('[name=booking_date]')?.value || '';
+  }
+
+  function baliCurrentTimeMinutes(){
+    const parts = new Intl.DateTimeFormat('en-GB', {timeZone:'Asia/Makassar',hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).formatToParts(new Date());
+    const hour = Number(parts.find(p => p.type === 'hour')?.value || 0);
+    const minute = Number(parts.find(p => p.type === 'minute')?.value || 0);
+    return hour * 60 + minute;
+  }
+
+  function isTodayBooking(){
+    const parts = new Intl.DateTimeFormat('en-CA', {timeZone:'Asia/Makassar',year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(new Date());
+    const get = type => parts.find(p => p.type === type)?.value || '';
+    const today = get('year') + '-' + get('month') + '-' + get('day');
+    return selectedBookingDate() === today;
+  }
+
+  function isTimeStillAvailable(time){
+    if (!isTodayBooking()) return true;
+    const parts = String(time).slice(0,5).split(':').map(Number);
+    if (parts.length !== 2 || !Number.isFinite(parts[0]) || !Number.isFinite(parts[1])) return false;
+    return (parts[0] * 60 + parts[1]) > baliCurrentTimeMinutes();
+  }
+
   function renderActivityTimes(){
     const id = String(picker.value || '');
     const withTransport = pickup.value === '1';
-    const times = withTransport ? [] : (activityTimes[id] || []);
+    const times = (withTransport ? [] : (activityTimes[id] || [])).filter(isTimeStillAvailable);
     const previous = activityTimeSelect.value;
     activityTimeSelect.innerHTML = '<option value="">Select activity time</option>';
     activityTimeOptions.innerHTML = '';
@@ -1201,12 +1226,14 @@ body {
   function refreshPickupTimes(){
     if (!pickupTime) return;
     const id = String(area?.value || '');
-    const times = Array.isArray(pickupTimeMap[id]) ? pickupTimeMap[id] : [];
+    const times = (Array.isArray(pickupTimeMap[id]) ? pickupTimeMap[id] : []).filter(isTimeStillAvailable);
+    const previous = pickupTime.value;
     pickupTime.innerHTML = '<option value="">Select pickup slot</option>';
     times.forEach(t => {
       const opt = document.createElement('option');
       opt.value = String(t).slice(0, 5);
       opt.textContent = String(t).slice(0, 5);
+      if (opt.value === previous) opt.selected = true;
       pickupTime.appendChild(opt);
     });
   }
@@ -1278,7 +1305,11 @@ body {
     update();
   });
 
-  document.querySelector('[name=booking_date]').addEventListener('change', update);
+  document.querySelector('[name=booking_date]').addEventListener('change', () => {
+    renderActivityTimes();
+    refreshPickupTimes();
+    update();
+  });
   adults.addEventListener('input', () => { discount = 0; promoResult.textContent = ''; update(); });
   children.addEventListener('input', () => { discount = 0; promoResult.textContent = ''; update(); });
   if (activityUnitsInput) activityUnitsInput.addEventListener('input', () => {
