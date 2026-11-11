@@ -1318,6 +1318,9 @@ body {
     scroll-padding-bottom: 32px !important;
   }
 }
+
+/* Mobile booking submit CTA override. */
+@media screen and (max-width:767px){html body .bta-booking button.button-orange-submit,html body .bta-booking input.button-orange-submit{font-size:12px!important;}}
 </style>
 
 <?php $disableFloatingWhatsApp = true; require __DIR__ . '/includes/footer.php'; ?>
