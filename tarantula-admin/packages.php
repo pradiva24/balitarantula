@@ -17,23 +17,23 @@ function package_seo_defaults(array $package): array {
   if(preg_match('/\\b(combo|combination|\\+|&|and)\\b|atv.*rafting|rafting.*atv/i',$lower)){
     $keyword='ATV and rafting Bali';
     $title='ATV & Rafting Bali Combo | Bali Tarantula';
-    $desc='Book an ATV and rafting combo in Bali for two exciting adventures in one trip. Ride off-road trails and enjoy river rapids with local guides. Check packages and reserve online!';
+    $desc='Combine ATV riding and rafting in Bali. Explore off-road trails and river rapids with local guides. Compare packages and book your adventure online!';
   }elseif(preg_match('/tandem/i',$lower)){
     $keyword='tandem ATV Bali';
     $title='Tandem ATV Bali Ride | Bali Tarantula Adventure';
-    $desc='Share a tandem ATV ride in Bali with a partner. Explore muddy tracks, jungle trails and scenic countryside with a professional guide. Check availability and book your ride online!';
+    $desc='Share a tandem ATV ride in Bali. Explore muddy jungle trails and scenic countryside with a professional guide. Check availability and book online!';
   }elseif(preg_match('/single|solo/i',$lower)){
     $keyword='single ATV ride Bali';
     $title='Single ATV Ride Bali | Bali Tarantula Adventure';
-    $desc='Ride your own ATV in Bali across muddy tracks, jungle trails and scenic countryside. Enjoy a guided off-road adventure with safety equipment. Check availability and book online!';
+    $desc='Ride your own ATV in Bali through muddy tracks, jungle trails and scenic countryside. Enjoy a guided off-road adventure. Book online!';
   }elseif(preg_match('/rafting|white.?water/i',$lower)){
     $keyword='Ayung River rafting Ubud';
     $title='Ayung River Rafting Ubud | Bali Tarantula';
-    $desc='Experience Ayung River rafting in Ubud, Bali. Paddle through jungle scenery and exciting rapids with experienced river guides. Find your rafting package and book online today!';
+    $desc='Go Ayung River rafting in Ubud, Bali. Paddle through jungle scenery and exciting rapids with experienced guides. Explore packages and book today!';
   }elseif(preg_match('/volkswagen|\\bvw\\b/i',$lower)){
     $keyword='Volkswagen tour Bali';
     $title='Volkswagen Tour Bali | Bali Tarantula Adventure';
-    $desc='Explore Bali on a scenic Volkswagen tour with countryside views and memorable stops. Discover the route, package details and private tour options, then reserve your Bali trip online!';
+    $desc='Explore Bali on a scenic Volkswagen tour with countryside views and memorable stops. Discover private tour options and reserve your trip online!';
   }elseif(preg_match('/swing/i',$lower)){
     $keyword='Bali swing experience';
     $title='Bali Swing Experience | Bali Tarantula Adventure';
