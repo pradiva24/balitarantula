@@ -174,6 +174,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $error = 'Please complete all required fields. Bookings must be made at least 1 day in advance.';
     } elseif (!$pickup && !empty($activityTimeMap[$packageId]) && !in_array($activityTime, $activityTimeMap[$packageId], true)) {
         $error = 'Please select a valid activity start time.';
+    } elseif (!$pickup && $date === $minimumBookingDate && $activityTime !== '' && $activityTime <= (new DateTimeImmutable('now', new DateTimeZone('Asia/Makassar')))->format('H:i')) {
+        $error = 'The selected activity time has already passed. Please choose a later time.';
     } elseif ($pickup && ($adults + $children) < 2) {
         $error = 'Hotel pickup requires a minimum of 2 guests. Please select at least 2 people or choose Ticket Only.';
     ;
@@ -181,6 +183,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $error = 'Please select your hotel pickup area.';
     } elseif ($pickup && ($pickupTime === '' || !in_array($pickupTime, $pickupTimeMap[$areaId] ?? [], true))) {
         $error = 'Please select a valid pickup time for your location.';
+    } elseif ($pickup && $date === $minimumBookingDate && $pickupTime <= (new DateTimeImmutable('now', new DateTimeZone('Asia/Makassar')))->format('H:i')) {
+        $error = 'The selected pickup time has already passed. Please choose a later time.';
     } else {
         $guests = $adults + $children;
         $activityCapacity = $isTandem ? 2 : ($isVehicle ? 4 : 0);
