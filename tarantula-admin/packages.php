@@ -11,31 +11,50 @@ function package_seo_defaults(array $package): array {
   $name=trim((string)($package['name']??'Bali Adventure'));
   $slug=trim((string)($package['slug']??''));
   $lower=mb_strtolower($name.' '.(string)($package['category_name']??$package['category']??''),'UTF-8');
-  if(preg_match('/tandem/i',$lower)){
+
+  // Match combination products first so "Single ATV & Rafting" is not
+  // incorrectly classified as a Single ATV-only product.
+  if(preg_match('/\\b(combo|combination|\\+|&|and)\\b|atv.*rafting|rafting.*atv/i',$lower)){
+    $keyword='ATV and rafting Bali';
+    $title='ATV & Rafting Bali Combo | Bali Tarantula';
+    $desc='Book an ATV and rafting combo in Bali for two exciting adventures in one trip. Ride off-road trails and enjoy river rapids with local guides. Check packages and reserve online!';
+  }elseif(preg_match('/tandem/i',$lower)){
     $keyword='tandem ATV Bali';
-    $desc='Enjoy a tandem ATV ride in Bali with a partner. Explore muddy tracks, jungle trails and exciting off-road routes with a professional guide. Book your adventure today!';
+    $title='Tandem ATV Bali Ride | Bali Tarantula Adventure';
+    $desc='Share a tandem ATV ride in Bali with a partner. Explore muddy tracks, jungle trails and scenic countryside with a professional guide. Check availability and book your ride online!';
   }elseif(preg_match('/single|solo/i',$lower)){
-    $keyword='single ATV Bali';
-    $desc='Ride your own ATV through Bali’s muddy tracks, jungle trails and scenic countryside. Enjoy a guided off-road adventure with safety equipment. Book your single ATV ride!';
+    $keyword='single ATV ride Bali';
+    $title='Single ATV Ride Bali | Bali Tarantula Adventure';
+    $desc='Ride your own ATV in Bali across muddy tracks, jungle trails and scenic countryside. Enjoy a guided off-road adventure with safety equipment. Check availability and book online!';
   }elseif(preg_match('/rafting|white.?water/i',$lower)){
-    $keyword='Bali white water rafting';
-    $desc='Experience thrilling white water rafting in Bali with experienced river guides. Paddle through scenic jungle landscapes and exciting rapids. Check availability and book your rafting trip!';
+    $keyword='Ayung River rafting Ubud';
+    $title='Ayung River Rafting Ubud | Bali Tarantula';
+    $desc='Experience Ayung River rafting in Ubud, Bali. Paddle through jungle scenery and exciting rapids with experienced river guides. Find your rafting package and book online today!';
+  }elseif(preg_match('/volkswagen|\\bvw\\b/i',$lower)){
+    $keyword='Volkswagen tour Bali';
+    $title='Volkswagen Tour Bali | Bali Tarantula Adventure';
+    $desc='Explore Bali on a scenic Volkswagen tour with countryside views and memorable stops. Discover the route, package details and private tour options, then reserve your Bali trip online!';
   }elseif(preg_match('/swing/i',$lower)){
     $keyword='Bali swing experience';
-    $desc='Enjoy a Bali swing experience surrounded by tropical jungle views. Capture memorable photos and take in the scenery. Discover package details and book your swing adventure!';
-  }elseif(preg_match('/volkswagen|\\bvw\\b|tour/i',$lower)){
-    $keyword='Bali VW tour';
-    $desc='Explore Bali on a scenic Volkswagen tour with beautiful countryside views and memorable stops. Discover the package details and reserve your private Bali experience today!';
+    $title='Bali Swing Experience | Bali Tarantula Adventure';
+    $desc='Enjoy a Bali swing experience surrounded by tropical scenery. Capture memorable photos and take in beautiful views. Explore the package details and book your adventure online!';
   }else{
     $keyword=trim(preg_replace('/\\s+/u',' ',mb_strtolower($name.' Bali','UTF-8')));
+    $title=$name.' | Bali Tarantula Adventure';
     $desc='Discover '.$name.' in Bali with Bali Tarantula Adventure. Enjoy an exciting experience with professional local guides and clear package options. Check details and book online today!';
   }
-  $title=$name.' | Bali Tarantula Adventure';
-  if(mb_strlen($title,'UTF-8')>60)$title=mb_substr($name,0,max(12,60-mb_strlen(' | Bali ATV','UTF-8')),'UTF-8').' | Bali ATV';
-  if(mb_strlen($desc,'UTF-8')>160)$desc=mb_substr($desc,0,157,'UTF-8').'...';
-  return ['seo_title'=>$title,'meta_description'=>$desc,'focus_keyword'=>$keyword,
+
+  // Keep title and description within common search snippet recommendations.
+  if(mb_strlen($title,'UTF-8')>60) $title=mb_substr($title,0,57,'UTF-8').'...';
+  if(mb_strlen($desc,'UTF-8')>160) $desc=mb_substr($desc,0,157,'UTF-8').'...';
+  return [
+    'seo_title'=>$title,
+    'meta_description'=>$desc,
+    'focus_keyword'=>$keyword,
     'canonical_url'=>rtrim(BASE_URL,'/').'/package/'.rawurlencode($slug),
-    'og_title'=>$title,'og_description'=>$desc];
+    'og_title'=>$title,
+    'og_description'=>$desc
+  ];
 }
 
 $action=$_GET['action']??'list';
