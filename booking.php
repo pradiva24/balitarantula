@@ -1322,6 +1322,27 @@ body {
     refreshPickupTimes();
     update();
   });
+
+  // Re-check against the device clock while the booking page remains open.
+  // Expired slots disappear without requiring the visitor to change the date.
+  function refreshTimeAvailability(){
+    const selectedActivityTime = activityTimeSelect.value;
+    const selectedPickupTime = pickupTime?.value || '';
+    renderActivityTimes();
+    refreshPickupTimes();
+    if (selectedActivityTime && !Array.from(activityTimeSelect.options).some(o => o.value === selectedActivityTime)) {
+      activityTimeSelect.value = '';
+    }
+    if (selectedPickupTime && pickupTime && !Array.from(pickupTime.options).some(o => o.value === selectedPickupTime)) {
+      pickupTime.value = '';
+    }
+    update();
+  }
+  window.setInterval(refreshTimeAvailability, 15000);
+  window.addEventListener('focus', refreshTimeAvailability);
+  document.addEventListener('visibilitychange', () => {
+    if (!document.hidden) refreshTimeAvailability();
+  });
   adults.addEventListener('input', () => { discount = 0; promoResult.textContent = ''; update(); });
   children.addEventListener('input', () => { discount = 0; promoResult.textContent = ''; update(); });
   if (activityUnitsInput) activityUnitsInput.addEventListener('input', () => {
