@@ -297,6 +297,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $subject = 'Booking ' . $code . ' - ' . $siteName;
                     $emailHtml = bta_booking_email_html($emailBooking, $confirmUrl, 'Booking Received', 'Thank you for choosing Bali Tarantula Adventure. Your booking has been received. Use the button below to open your A4 e-ticket.', 'customer', $ticketUrl);
 
+                    // Release the PHP session lock before redirect/background work.
+                    // This prevents other requests from the same browser session waiting
+                    // while PDF generation and SMTP delivery continue.
+                    if (session_status() === PHP_SESSION_ACTIVE) {
+                        session_write_close();
+                    }
+
                     // Return the customer to the next page immediately after the booking
                     // transaction is committed. PDF generation and SMTP delivery continue
                     // after the HTTP response has been flushed (PHP-FPM / FastCGI).
