@@ -17,7 +17,7 @@ $discountSelect = $hasDiscount ? 'p.discount_percent' : '0 AS discount_percent';
 $st = db()->prepare("
     SELECT p.id, p.category_id, p.name, p.slug, p.short_description, p.description, p.duration, 
            p.price_adult, {$discountSelect}, p.cover_image, p.seo_title, p.meta_description, 
-           p.canonical_url, p.og_image, c.name AS category_name 
+           p.canonical_url, p.og_image, p.og_title, p.og_description, c.name AS category_name 
     FROM packages p 
     LEFT JOIN categories c ON c.id = p.category_id 
     WHERE p.slug = ? AND p.status = 1 
@@ -36,6 +36,8 @@ $title = $p['seo_title'] ?: ($p['name'] . ' | ' . site_brand_name());
 $description = $p['meta_description'] ?: ($p['short_description'] ?: 'Book ' . $p['name'] . ' with ' . site_brand_name() . '.');
 $canonical = $p['canonical_url'] ?: BASE_URL . '/package/' . rawurlencode($p['slug']);
 $ogImage = $p['og_image'] ?: ($p['cover_image'] ?: '');
+$ogTitle = trim((string)($p['og_title'] ?? '')) ?: $title;
+$ogDescription = trim((string)($p['og_description'] ?? '')) ?: $description;
 
 // Fetch Gallery Images
 $st = db()->prepare("SELECT image_path, alt_text FROM package_images WHERE package_id = ? ORDER BY sort_order, id");
