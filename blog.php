@@ -395,6 +395,9 @@ body {
 @media(max-width:640px){.bta-blog .page-banner{padding-top:130px;min-height:320px}.bta-blog .blog-grid{grid-template-columns:1fr;gap:16px}.bta-blog .blog-copy{padding:19px}.bta-blog .blog-image{aspect-ratio:16/9}}
 @media(prefers-reduced-motion:reduce){.bta-blog .blog-card,.bta-blog .blog-image img{transition:none}.bta-blog .blog-card:hover,.bta-blog .blog-card:hover .blog-image img{transform:none}}
 
+
+/* Mobile blog hero CTA override. */
+@media screen and (max-width:767px){html body .bta-blog .page-banner-content a.blog-hero-button{font-size:12px!important;}}
 </style>
 
 <div class="bta-blog">
