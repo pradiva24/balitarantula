@@ -435,16 +435,50 @@ try {
       $ogImage=admin_upload('og_image_upload','packages',$oldOg); if(trim((string)($_POST['og_image']??''))!=='')$ogImage=trim((string)$_POST['og_image']); $data[17]=$ogImage;
       $cover=admin_upload('cover_image','packages',$old);
       $data[]=$cover;
+      // Build the package write from columns actually present in this database.
+      // Older cPanel databases may not have every optional column, and a single
+      // missing column must not prevent the entire package form from saving.
+      $packageValues=[
+        'category_id'=>$cat,'name'=>$name,'slug'=>$slug,
+        'short_description'=>$_POST['short_description']??'','description'=>$_POST['description']??'',
+        'duration'=>$_POST['duration']??'','price_adult'=>(float)($_POST['price_adult']??0),
+        'price_child'=>(float)($_POST['price_child']??0),
+        'booking_mode'=>(in_array(($_POST['booking_mode']??'person'),['person','tandem','vehicle'],true)?$_POST['booking_mode']:'person'),
+        'featured'=>isset($_POST['featured'])?1:0,'best_seller'=>isset($_POST['best_seller'])?1:0,
+        'status'=>(int)($_POST['status']??1),'booking_enabled'=>((int)($_POST['booking_enabled']??1)===1?1:0),
+        'seo_title'=>$seoTitle,'meta_description'=>$metaDescription,'focus_keyword'=>$focusKeyword,
+        'canonical_url'=>$canonicalUrl,'og_image'=>$ogImage,'og_title'=>$ogTitle,
+        'og_description'=>$ogDescription,'schema_json'=>$_POST['schema_json']??'',
+        'cover_image'=>$cover
+      ];
+      $availableColumns=$p->query("SHOW COLUMNS FROM packages")->fetchAll(PDO::FETCH_COLUMN);
+      $availableLookup=array_fill_keys(array_map('strval',$availableColumns),true);
+      $writeValues=[];
+      foreach($packageValues as $column=>$value){
+        if(isset($availableLookup[$column])) $writeValues[$column]=$value;
+      }
+      foreach(['name','slug','price_adult','price_child','status','cover_image'] as $requiredColumn){
+        if(!isset($availableLookup[$requiredColumn])) throw new RuntimeException('Database packages table is missing required column: '.$requiredColumn);
+      }
       if($id){
-        $st=$p->prepare('UPDATE packages SET category_id=?,name=?,slug=?,short_description=?,description=?,duration=?,price_adult=?,price_child=?,booking_mode=?,featured=?,best_seller=?,status=?,booking_enabled=?,seo_title=?,meta_description=?,focus_keyword=?,canonical_url=?,og_image=?,og_title=?,og_description=?,schema_json=?,cover_image=?,updated_at=NOW() WHERE id=?');
-        $data[]=$id;$st->execute($data);
+        $sets=[];$params=[];
+        foreach($writeValues as $column=>$value){$sets[]='`'.$column.'`=?';$params[]=$value;}
+        if(isset($availableLookup['updated_at'])) $sets[]='updated_at=NOW()';
+        $params[]=$id;
+        $st=$p->prepare('UPDATE packages SET '.implode(',',$sets).' WHERE id=?');
+        $st->execute($params);
       }else{
-        $st=$p->prepare('INSERT INTO packages(category_id,name,slug,short_description,description,duration,price_adult,price_child,booking_mode,featured,best_seller,status,booking_enabled,seo_title,meta_description,focus_keyword,canonical_url,og_image,og_title,og_description,schema_json,cover_image) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)');
-        $st->execute($data);$id=(int)$p->lastInsertId();
-        try {
-          $nextOrder=(int)$p->query('SELECT COALESCE(MAX(homepage_order),0)+1 FROM packages')->fetchColumn();
-          $p->prepare('UPDATE packages SET homepage_order=? WHERE id=?')->execute([$nextOrder,$id]);
-        } catch(Throwable $e) {}
+        $columns=array_keys($writeValues);
+        $quoted=array_map(static fn($column)=>'`'.$column.'`',$columns);
+        $placeholders=array_fill(0,count($columns),'?');
+        $st=$p->prepare('INSERT INTO packages('.implode(',',$quoted).') VALUES('.implode(',',$placeholders).')');
+        $st->execute(array_values($writeValues));$id=(int)$p->lastInsertId();
+        if(isset($availableLookup['homepage_order'])){
+          try {
+            $nextOrder=(int)$p->query('SELECT COALESCE(MAX(homepage_order),0)+1 FROM packages')->fetchColumn();
+            $p->prepare('UPDATE packages SET homepage_order=? WHERE id=?')->execute([$nextOrder,$id]);
+          } catch(Throwable $e) { error_log('BTA package homepage order save: '.$e->getMessage()); }
+        }
       }
 
       // Save the activity time options for this package (one HH:MM value per line).
@@ -636,7 +670,28 @@ try {
         // Do not break the rest of the package save if an old DB schema is encountered.
       }
 
-      admin_flash('','Package saved');
+      // Save the page-level hero fields shown in the package editor as well.
+      // These were previously displayed in this form but never persisted here.
+      $heroOld='';
+      try{
+        $heroStmt=$p->prepare("SELECT setting_value FROM settings WHERE setting_key='packages_hero_image' LIMIT 1");
+        $heroStmt->execute();$heroOld=(string)$heroStmt->fetchColumn();
+      }catch(Throwable $e){}
+      $heroImage=package_hero_upload('package_hero_image',$heroOld);
+      $heroHasUpload=isset($_FILES['package_hero_image']) && (int)($_FILES['package_hero_image']['error']??UPLOAD_ERR_NO_FILE)!==UPLOAD_ERR_NO_FILE;
+      if(!$heroHasUpload && isset($_POST['remove_package_hero_image']) && $_POST['remove_package_hero_image']==='1'){
+        if($heroOld) admin_delete_image($heroOld);
+        $heroImage='';
+      }
+      package_hero_upsert($p,'packages_hero_kicker',trim((string)($_POST['package_hero_kicker']??'')));
+      package_hero_upsert($p,'packages_hero_title',trim((string)($_POST['package_hero_title']??'')));
+      package_hero_upsert($p,'packages_hero_accent',trim((string)($_POST['package_hero_accent']??'')));
+      package_hero_upsert($p,'packages_hero_text',trim((string)($_POST['package_hero_text']??'')));
+      package_hero_upsert($p,'packages_hero_button_text',trim((string)($_POST['package_hero_button_text']??'')));
+      package_hero_upsert($p,'packages_hero_button_url',trim((string)($_POST['package_hero_button_url']??'')));
+      package_hero_upsert($p,'packages_hero_image',$heroImage);
+
+      admin_flash('','Package saved successfully. All submitted package settings have been processed.');
       header('Location: packages.php?action=edit&id='.$id);exit;
     }
 
