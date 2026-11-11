@@ -161,7 +161,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $st = $db->prepare("SELECT * FROM packages WHERE id = ? AND status = 1 AND booking_enabled = 1");
     $st->execute([$packageId]);
     $pkg = $st->fetch();
-    $today = (new DateTimeImmutable('now', new DateTimeZone('Asia/Makassar')))->format('Y-m-d');
+    $minimumBookingDate = (new DateTimeImmutable('tomorrow', new DateTimeZone('Asia/Makassar')))->format('Y-m-d');
     $bookingMode = $pkg['booking_mode'] ?? 'person';
     $isTandem = $pkg && $bookingMode === 'tandem';
     $isVehicle = $pkg && $bookingMode === 'vehicle';
@@ -170,8 +170,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $children = 0;
     }
 
-    if (!$pkg || $name === '' || !filter_var($email, FILTER_VALIDATE_EMAIL) || $country === '' || !array_key_exists($country, $countries) || !$date || $date < $today) {
-        $error = 'Please complete all required fields and select a valid future booking date.';
+    if (!$pkg || $name === '' || !filter_var($email, FILTER_VALIDATE_EMAIL) || $country === '' || !array_key_exists($country, $countries) || !$date || $date < $minimumBookingDate) {
+        $error = 'Please complete all required fields. Bookings must be made at least 1 day in advance.';
     } elseif (!$pickup && !empty($activityTimeMap[$packageId]) && !in_array($activityTime, $activityTimeMap[$packageId], true)) {
         $error = 'Please select a valid activity start time.';
     } elseif ($pickup && ($adults + $children) < 2) {
@@ -878,7 +878,7 @@ body {
         <div class="form-grid-2">
           <div class="form-group">
             <label id="bookingDateLabel">Activity Date <span class="req">*</span></label>
-            <input class="form-control" type="date" name="booking_date" min="<?= (new DateTimeImmutable('now', new DateTimeZone('Asia/Makassar')))->format('Y-m-d') ?>" value="<?=e($_POST['booking_date'] ?? (new DateTimeImmutable('now', new DateTimeZone('Asia/Makassar')))->format('Y-m-d'))?>" required>
+            <input class="form-control" type="date" name="booking_date" min="<?= (new DateTimeImmutable('tomorrow', new DateTimeZone('Asia/Makassar')))->format('Y-m-d') ?>" value="<?=e($_POST['booking_date'] ?? (new DateTimeImmutable('tomorrow', new DateTimeZone('Asia/Makassar')))->format('Y-m-d'))?>" required>
           </div>
           <div class="form-group" id="guestCountSelector">
             <label>Guests (Adults &amp; Children) <span class="req">*</span></label>
