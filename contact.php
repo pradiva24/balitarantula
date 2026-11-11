@@ -11,7 +11,7 @@ if (empty($_SESSION['contact_token'])) {
 $siteName = trim((string)site_brand_name());
 $title = 'Contact Us | ' . $siteName;
 $description = 'Contact ' . $siteName . ' in Bali. Plan your thrilling ATV and outdoor adventure with our expedition crew.';
-$canonical = rtrim(BASE_URL, '/') . '/contact';
+$canonical = rtrim(BASE_URL, '/') . '/contact-us';
 
 /* Load Contact Us page content managed from Manuaba Portal. */
 $contactPageData = [];
