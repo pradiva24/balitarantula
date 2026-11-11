@@ -1225,7 +1225,7 @@ body {
       });
       if (!response.ok) throw new Error('Clock request failed: ' + response.status);
       const clock = await response.json();
-      if (!/^\d{4}-\\d{2}-\\d{2}$/.test(clock.date) || !Number.isFinite(Number(clock.minutes))) {
+      if (!/^\d{4}-\d{2}-\d{2}$/.test(clock.date) || !Number.isFinite(Number(clock.minutes))) {
         throw new Error('Invalid online clock response');
       }
       BTA_ONLINE_DATE = clock.date;
