@@ -133,6 +133,15 @@ if($schemaData===null){
         if($address!=='') $schemaData['@graph'][1]['address']=['@type'=>'PostalAddress','addressLocality'=>$address,'addressCountry'=>'ID'];
     }
 }
+
+// On package detail pages, use the configured OG image as the preferred
+// structured-data image as well. Google supports WebP; no format conversion
+// is required. Keep the cover image as fallback when no OG image is set.
+if (isset($p) && is_array($p) && !empty($p['name']) && $ogImage !== '') {
+    if (is_array($schemaData)) {
+        $schemaData['image'] = [$ogImage];
+    }
+}
 ?>
 <!doctype html>
 <html lang="en">
