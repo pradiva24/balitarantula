@@ -15,7 +15,9 @@ $canonical = isset($canonical) ? trim((string)$canonical) : '';
 $ogImage = isset($ogImage) ? trim((string)$ogImage) : '';
 $ogTitle = $title;
 $ogDescription = $description;
-$robots = 'index,follow';
+// Private/transaction pages must never be indexed by default, even if an SEO row is missing.
+$noIndexKeys = ['booking','booking-success','booking-confirmation','my-booking','payment','midtrans-checkout','404'];
+$robots = in_array($seoPageKey, $noIndexKeys, true) ? 'noindex,nofollow' : 'index,follow';
 $schemaJson = '';
 
 if ($seoRecord) {
@@ -25,6 +27,7 @@ if ($seoRecord) {
     $ogTitle = seo_value($seoRecord,'og_title',$title);
     $ogDescription = seo_value($seoRecord,'og_description',$description);
     $ogImage = seo_value($seoRecord,'og_image',$ogImage);
+    // An explicit robots value in Central SEO takes precedence; blank values keep safe defaults.
     $robots = seo_value($seoRecord,'robots',$robots);
     $schemaJson = trim((string)($seoRecord['schema_json'] ?? ''));
 }
