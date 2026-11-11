@@ -431,7 +431,13 @@ try {
       ];
       $old=null;
       if($id){$q=$p->prepare('SELECT cover_image FROM packages WHERE id=?');$q->execute([$id]);$old=$q->fetchColumn();}
-      $oldOg=''; if($id){$q=$p->prepare('SELECT og_image FROM packages WHERE id=?');$q->execute([$id]);$oldOg=(string)($q->fetchColumn()?:'');}
+      // og_image is optional on older databases; never let its absence block
+      // saving every other package field.
+      $oldOg='';
+      if($id){
+        try{$q=$p->prepare('SELECT og_image FROM packages WHERE id=?');$q->execute([$id]);$oldOg=(string)($q->fetchColumn()?:'');}
+        catch(Throwable $ignored){$oldOg='';}
+      }
       $ogImage=admin_upload('og_image_upload','packages',$oldOg); if(trim((string)($_POST['og_image']??''))!=='')$ogImage=trim((string)$_POST['og_image']); $data[17]=$ogImage;
       $cover=admin_upload('cover_image','packages',$old);
       $data[]=$cover;
