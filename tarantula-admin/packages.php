@@ -438,13 +438,26 @@ try {
         try{$q=$p->prepare('SELECT og_image FROM packages WHERE id=?');$q->execute([$id]);$oldOg=(string)($q->fetchColumn()?:'');}
         catch(Throwable $ignored){$oldOg='';}
       }
-      $ogImage=admin_upload('og_image_upload','packages',$oldOg);
       $ogUpload=$_FILES['og_image_upload']??null;
-      $hasNewOgUpload=is_array($ogUpload) && (int)($ogUpload['error']??UPLOAD_ERR_NO_FILE)===UPLOAD_ERR_OK;
-      // A newly uploaded image must override the stale URL/path field.
-      // Without a new upload, allow a manually entered URL/path to take effect.
-      if(!$hasNewOgUpload && trim((string)($_POST['og_image']??''))!=='') {
-        $ogImage=trim((string)$_POST['og_image']);
+      $hasNewOgUpload=is_array($ogUpload) && (int)($ogUpload['error']??UPLOAD_ERR_NO_FILE)!==UPLOAD_ERR_NO_FILE;
+      if($hasNewOgUpload) {
+        // admin_upload() prioritizes Media Library selection. When a local
+        // file is selected, ignore any stale hidden Media Library value.
+        $mediaKey='media_og_image_upload';
+        $hadMediaValue=array_key_exists($mediaKey,$_POST);
+        $oldMediaValue=$_POST[$mediaKey]??null;
+        unset($_POST[$mediaKey]);
+        try {
+          $ogImage=admin_upload('og_image_upload','packages',$oldOg);
+        } finally {
+          if($hadMediaValue) $_POST[$mediaKey]=$oldMediaValue;
+        }
+      } else {
+        $ogImage=admin_upload('og_image_upload','packages',$oldOg);
+        // Without a new upload, allow a manually entered URL/path to take effect.
+        if(trim((string)($_POST['og_image']??''))!=='') {
+          $ogImage=trim((string)$_POST['og_image']);
+        }
       } $data[17]=$ogImage;
       $cover=admin_upload('cover_image','packages',$old);
       $data[]=$cover;
