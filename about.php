@@ -64,7 +64,7 @@ require __DIR__ . '/includes/header.php';
 .bta-about .eyebrow:before{content:"";width:24px;height:2px;background:currentColor}
 .bta-about h1,.bta-about h2,.bta-about h3{font-family:var(--about-font-display);text-transform:uppercase}
 .bta-about .accent{color:var(--about-orange)}
-.about-hero{position:relative;min-height:430px;display:flex;align-items:center;padding:135px 0 70px;background:#171717;border-bottom:3px solid var(--about-orange);isolation:isolate}
+.about-hero{position:relative;min-height:380px!important;display:flex;align-items:center;padding:135px 0 70px;background:#171717;border-bottom:3px solid var(--about-orange);isolation:isolate}
 .about-hero:before{content:"";position:absolute;inset:0;z-index:-2;background:linear-gradient(110deg,#171717,#30271f)}
 .about-hero .hero-photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-1;opacity:.32}
 .about-hero:after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(90deg,rgba(15,15,15,.92),rgba(15,15,15,.48))}
