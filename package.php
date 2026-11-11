@@ -1323,6 +1323,9 @@ body {
    border-radius:999px!important
  }
 }
+
+/* Mobile package detail orange CTA override. */
+@media screen and (max-width:767px){html body .bta-pkg-detail a.button-orange,html body .bta-pkg-detail button.button-orange{font-size:12px!important;}}
 </style>
 
 <div class="bta-pkg-detail">
