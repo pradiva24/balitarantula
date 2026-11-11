@@ -878,7 +878,17 @@ body {
         <div class="form-grid-2">
           <div class="form-group">
             <label id="bookingDateLabel">Activity Date <span class="req">*</span></label>
-            <input class="form-control" type="date" name="booking_date" min="<?=e($minimumBookingDate)?>" value="<?=e(!empty($_POST['booking_date']) && $_POST['booking_date'] >= $minimumBookingDate ? $_POST['booking_date'] : $minimumBookingDate)?>" required>
+            <input type="hidden" name="booking_date" id="booking_date_value" value="<?=e(!empty($_POST['booking_date']) && $_POST['booking_date'] >= $minimumBookingDate ? $_POST['booking_date'] : $minimumBookingDate)?>">
+            <input class="form-control" type="text" id="booking_date_display" value="<?=e(date('d M Y', strtotime(!empty($_POST['booking_date']) && $_POST['booking_date'] >= $minimumBookingDate ? $_POST['booking_date'] : $minimumBookingDate)))?>" placeholder="Select activity date" readonly required aria-haspopup="dialog" aria-expanded="false" style="cursor:pointer;background:#fff;">
+            <div id="bta-date-picker" hidden style="margin-top:8px;padding:12px;border:1px solid #ddd;border-radius:10px;background:#fff;max-width:320px;color:#222;">
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+                <button type="button" id="bta-date-prev" aria-label="Previous month" style="border:0;background:#f1f1f1;padding:7px 12px;border-radius:6px;">‹</button>
+                <strong id="bta-date-month"></strong>
+                <button type="button" id="bta-date-next" aria-label="Next month" style="border:0;background:#f1f1f1;padding:7px 12px;border-radius:6px;">›</button>
+              </div>
+              <div id="bta-date-grid" style="display:grid;grid-template-columns:repeat(7,1fr);gap:4px;text-align:center;"></div>
+              <small style="display:block;margin-top:9px;color:#777;">Bookings must be made at least 1 day in advance.</small>
+            </div>
           </div>
           <div class="form-group" id="guestCountSelector">
             <label>Guests (Adults &amp; Children) <span class="req">*</span></label>
@@ -1324,6 +1334,48 @@ body {
   renderActivityTimes();
   syncGuestFields();
   togglePickup();
+})();
+</script>
+
+
+<script>
+(function(){
+  const value=document.getElementById('booking_date_value');
+  const display=document.getElementById('booking_date_display');
+  const panel=document.getElementById('bta-date-picker');
+  const grid=document.getElementById('bta-date-grid');
+  const monthLabel=document.getElementById('bta-date-month');
+  if(!value||!display||!panel||!grid)return;
+  const today=new Date(); today.setHours(0,0,0,0);
+  const minDate=new Date(today); minDate.setDate(minDate.getDate()+1);
+  let view=new Date(minDate.getFullYear(),minDate.getMonth(),1);
+  const pad=n=>String(n).padStart(2,'0');
+  const iso=d=>d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());
+  const format=d=>d.toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'});
+  function render(){
+    monthLabel.textContent=view.toLocaleDateString('en-US',{month:'long',year:'numeric'});
+    grid.innerHTML='';
+    ['S','M','T','W','T','F','S'].forEach(x=>{const e=document.createElement('div');e.textContent=x;e.style.cssText='font-size:12px;font-weight:700;padding:5px 0;';grid.appendChild(e);});
+    const first=new Date(view.getFullYear(),view.getMonth(),1).getDay();
+    const days=new Date(view.getFullYear(),view.getMonth()+1,0).getDate();
+    for(let i=0;i<first;i++){grid.appendChild(document.createElement('div'));}
+    for(let day=1;day<=days;day++){
+      const d=new Date(view.getFullYear(),view.getMonth(),day);const b=document.createElement('button');b.type='button';b.textContent=day;
+      const disabled=d<minDate;
+      b.disabled=disabled;
+      b.style.cssText='padding:8px 2px;border:0;border-radius:6px;font:inherit;'+(disabled?'background:#f3f4f6;color:#c4c4c4;cursor:not-allowed;':'background:#fff;color:#222;cursor:pointer;');
+      if(iso(d)===value.value)b.style.cssText+='background:#ed3833;color:#fff;font-weight:700;';
+      if(!disabled)b.addEventListener('click',()=>{value.value=iso(d);display.value=format(d);panel.hidden=true;display.setAttribute('aria-expanded','false');value.dispatchEvent(new Event('change',{bubbles:true}));});
+      grid.appendChild(b);
+    }
+    document.getElementById('bta-date-prev').disabled=(view.getFullYear()===minDate.getFullYear()&&view.getMonth()===minDate.getMonth());
+  }
+  display.addEventListener('click',()=>{panel.hidden=!panel.hidden;display.setAttribute('aria-expanded',String(!panel.hidden));if(!panel.hidden)render();});
+  document.getElementById('bta-date-prev').addEventListener('click',()=>{view=new Date(view.getFullYear(),view.getMonth()-1,1);render();});
+  document.getElementById('bta-date-next').addEventListener('click',()=>{view=new Date(view.getFullYear(),view.getMonth()+1,1);render();});
+  display.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();display.click();}});
+  document.addEventListener('click',e=>{if(!panel.contains(e.target)&&e.target!==display){panel.hidden=true;display.setAttribute('aria-expanded','false');}});
+  render();
 })();
 </script>
 
