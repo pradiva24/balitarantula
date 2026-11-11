@@ -30,6 +30,15 @@ $st = $db->prepare("
 $st->execute([$code]);
 $booking = $st->fetch(PDO::FETCH_ASSOC);
 
+if (!$booking) {
+    http_response_code(404);
+    $title = 'Booking Not Found | ' . site_brand_name();
+    require __DIR__ . '/includes/header.php';
+    echo '<main style="max-width:800px;margin:100px auto;padding:40px 20px;text-align:center;color:#fff;"><h1>Booking Not Found</h1><p>We could not find booking <strong>' . e($code) . '</strong>.</p><a class="button button-orange" style="margin-top:20px;display:inline-block;" href="' . e(BASE_URL . '/packages') . '">BACK TO PACKAGES</a></main>';
+    require __DIR__ . '/includes/footer.php';
+    exit;
+}
+
 // Direct PDF download for mobile/tablet e-ticket button.
 if (isset($_GET['pdf']) && $_GET['pdf'] === '1') {
     $pdfBooking = $booking;
@@ -49,15 +58,6 @@ if (isset($_GET['pdf']) && $_GET['pdf'] === '1') {
     header('Cache-Control: private, no-store, no-cache, must-revalidate');
     header('Pragma: no-cache');
     echo $pdf;
-    exit;
-}
-
-if (!$booking) {
-    http_response_code(404);
-    $title = 'Booking Not Found | ' . site_brand_name();
-    require __DIR__ . '/includes/header.php';
-    echo '<main style="max-width:800px;margin:100px auto;padding:40px 20px;text-align:center;color:#fff;"><h1>Booking Not Found</h1><p>We could not find booking <strong>' . e($code) . '</strong>.</p><a class="button button-orange" style="margin-top:20px;display:inline-block;" href="' . e(BASE_URL . '/packages') . '">BACK TO PACKAGES</a></main>';
-    require __DIR__ . '/includes/footer.php';
     exit;
 }
 
