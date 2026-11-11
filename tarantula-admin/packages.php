@@ -368,7 +368,7 @@ try {
         $cat,$name,$slug,$_POST['short_description']??'',$_POST['description']??'',
         $_POST['duration']??'',(float)($_POST['price_adult']??0),(float)($_POST['price_child']??0),(in_array(($_POST['booking_mode']??'person'),['person','tandem','vehicle'],true)?$_POST['booking_mode']:'person'),
         isset($_POST['featured'])?1:0,isset($_POST['best_seller'])?1:0,(int)($_POST['status']??1),((int)($_POST['booking_enabled']??1)===1?1:0),$_POST['seo_title']??'',
-        $_POST['meta_description']??'',$_POST['focus_keyword']??'',$_POST['canonical_url']??'',$_POST['og_image']??'',
+        $_POST['meta_description']??'',$_POST['focus_keyword']??',(trim((string)($_POST['canonical_url']??'')) ?: rtrim(BASE_URL,'/').'/package/'.rawurlencode($slug)),$_POST['og_image']??'',
         $_POST['og_title']??'',$_POST['og_description']??'',$_POST['schema_json']??''
       ];
       $old=null;
@@ -966,10 +966,10 @@ if(!empty($x['id'])){
   <small class="muted-line">Only FAQ items with both a question and an answer are saved. The first item stays closed until a visitor clicks it.</small>
 </div>
 
-<div class="field"><label>SEO Title</label><input id="pkgSeoTitle" name="seo_title" maxlength="255" value="<?=admin_e($x['seo_title']??'')?>"><span class="seo-meter">Recommended ≤ 60 chars</span></div>
-<div class="field full"><label>Meta Description</label><textarea id="pkgMetaDescription" name="meta_description" maxlength="320"><?=admin_e($x['meta_description']??'')?></textarea><span class="seo-meter">Recommended 140–160 chars</span></div>
+<div class="field"><label>SEO Title</label><input id="pkgSeoTitle" name="seo_title" maxlength="255" value="<?=admin_e($x['seo_title']??'')?>"><span class="seo-meter"><span id="pkgSeoTitleCount">0</span>/60 characters recommended</span></div>
+<div class="field full"><label>Meta Description</label><textarea id="pkgMetaDescription" name="meta_description" maxlength="320"><?=admin_e($x['meta_description']??'')?></textarea><span class="seo-meter"><span id="pkgMetaDescriptionCount">0</span>/160 characters · recommended 140–160</span></div>
 <div class="field"><label>Focus Keyword</label><input id="pkgFocusKeyword" name="focus_keyword" value="<?=admin_e($x['focus_keyword']??'')?>"></div>
-<div class="field"><label>Canonical URL</label><input id="pkgCanonical" name="canonical_url" value="<?=admin_e($x['canonical_url']??'')?>" placeholder="https://manuabacrystalfall.com/package/slug"></div>
+<div class="field"><label>Canonical URL</label><input id="pkgCanonical" name="canonical_url" value="<?=admin_e($x['canonical_url']??'')?>" placeholder="Generated automatically from package slug"></div>
 <div class="field"><label>OG Title</label><input id="pkgOgTitle" name="og_title" value="<?=admin_e($x['og_title']??'')?>"></div>
 <div class="field"><label>OG Description</label><textarea id="pkgOgDescription" name="og_description"><?=admin_e($x['og_description']??'')?></textarea></div>
 <div class="field full"><label>Open Graph Image URL / Path</label><input id="pkgOgImage" name="og_image" value="<?=admin_e($x['og_image']??'')?>" placeholder="uploads/packages/social-image.webp or https://..."><small class="muted-line">Leave blank to use the cover image.</small></div>
@@ -1134,8 +1134,9 @@ $pkgGood0=count(array_filter($pkgChecks0,fn($v)=>$v[0]==='good')); $pkgBad0=coun
 </script>
 <script>(function(){
 const $=id=>document.getElementById(id),t=$('pkgSeoTitle'),d=$('pkgMetaDescription'),k=$('pkgFocusKeyword'),c=$('pkgCanonical'),ot=$('pkgOgTitle'),od=$('pkgOgDescription'),oi=$('pkgOgImage'),sc=$('pkgSchema'),up=$('pkgOgUpload'),checks=$('pkgSeoChecks'),score=$('pkgSeoScore'),pt=$('pkgSeoPreviewTitle'),pu=$('pkgSeoPreviewUrl'),pd=$('pkgSeoPreviewDesc'),pi=$('pkgSeoPreviewImage');if(!checks)return;
+const titleCount=$('pkgSeoTitleCount'),descCount=$('pkgMetaDescriptionCount'),slugInput=document.querySelector('input[name="slug"]'),canonicalWasSaved=!!c.value.trim();
 const norm=s=>(s||'').toString().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').trim();
-function run(){const a=[],T=t.value.trim(),D=d.value.trim(),K=norm(k.value),C=c.value.trim(),I=oi.value.trim(),OT=ot.value.trim(),OD=od.value.trim(),S=sc.value.trim();function add(status,name,detail){a.push({status,name,detail})}
+function run(){const a=[],T=t.value.trim(),D=d.value.trim(),K=norm(k.value),C=c.value.trim(),I=oi.value.trim(),OT=ot.value.trim(),OD=od.value.trim(),S=sc.value.trim();if(titleCount)titleCount.textContent=String(T.length);if(descCount)descCount.textContent=String(D.length);function add(status,name,detail){a.push({status,name,detail})}
 add(T.length>=30&&T.length<=60?'good':(T.length>=20&&T.length<=70?'warn':'bad'),'SEO title',T.length+' karakter. Target 30–60 karakter; topik utama sebaiknya di awal.');
 add(D.length>=120&&D.length<=160?'good':(D.length>=70&&D.length<=200?'warn':'bad'),'Meta description',D.length+' karakter. Target sekitar 120–160 karakter.');
 add(K?(norm(T).includes(K)?'good':'bad'):'warn','Focus keyword di title',K?(norm(T).includes(K)?'Keyword ditemukan di SEO title.':'Keyword belum ditemukan di SEO title.'):'Isi focus keyword untuk analisis.');
@@ -1148,6 +1149,7 @@ add(S?(function(){try{JSON.parse(S);return 'good'}catch(e){return 'bad'}})():'wa
 const good=a.filter(x=>x.status==='good').length,bad=a.filter(x=>x.status==='bad').length,warn=a.length-good-bad;score.textContent=good+' baik · '+warn+' perlu ditingkatkan · '+bad+' masalah';score.className='pkg-seo-score '+(bad?'bad':(warn?'warn':'good'));checks.innerHTML='';a.forEach(x=>{const el=document.createElement('div');el.className='pkg-seo-check '+x.status;const dot=document.createElement('span');dot.className='pkg-seo-dot';const body=document.createElement('div'),name=document.createElement('strong'),detail=document.createElement('div');detail.className='pkg-seo-detail';name.textContent=x.name;detail.textContent=x.detail;body.append(name,detail);el.append(dot,body);checks.appendChild(el)});
 pt.textContent=T||'Package SEO title';pu.textContent=C||'Canonical URL belum diisi';pd.textContent=D||'Meta description preview';if(effectiveImage){pi.src=/^https?:\/\//i.test(effectiveImage)?effectiveImage:'../'+effectiveImage.replace(/^\//,'');pi.style.display='block'}else if(up.files&&up.files[0]){pi.src=URL.createObjectURL(up.files[0]);pi.style.display='block'}else{pi.style.display='none';pi.removeAttribute('src')}
 }
-['pkgSeoTitle','pkgMetaDescription','pkgFocusKeyword','pkgCanonical','pkgOgTitle','pkgOgDescription','pkgOgImage','pkgSchema'].forEach(id=>$(id)?.addEventListener('input',run));up?.addEventListener('change',()=>{if(up.files?.[0]){pi.src=URL.createObjectURL(up.files[0]);pi.style.display='block'}});run();
+['pkgSeoTitle','pkgMetaDescription','pkgFocusKeyword','pkgCanonical','pkgOgTitle','pkgOgDescription','pkgOgImage','pkgSchema'].forEach(id=>$(id)?.addEventListener('input',run));
+slugInput?.addEventListener('input',()=>{if(!canonicalWasSaved){const slug=slugInput.value.trim().toLowerCase().replace(/[^a-z0-9-]+/g,'-').replace(/^-+|-+$/g,'');c.value=slug?'https://balitarantula.com/package/'+encodeURIComponent(slug):'';run()}});up?.addEventListener('change',()=>{if(up.files?.[0]){pi.src=URL.createObjectURL(up.files[0]);pi.style.display='block'}});run();
 })();</script>
 <?php endif;require __DIR__.'/includes/footer.php';
