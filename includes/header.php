@@ -31,6 +31,10 @@ if ($seoRecord) {
     $robots = seo_value($seoRecord,'robots',$robots);
     $schemaJson = trim((string)($seoRecord['schema_json'] ?? ''));
 }
+// Enforce noindex for private/transaction endpoints regardless of saved SEO settings.
+if (in_array($seoPageKey, $noIndexKeys, true)) {
+    $robots = 'noindex,nofollow';
+}
 // Ensure the configured Site Name occurs exactly once in browser and social titles,
 // including when it appears inside a longer SEO title segment.
 $normalizeBrandTitle = static function (string $value) use ($siteName): string {
