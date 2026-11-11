@@ -10,6 +10,7 @@ require_once __DIR__ . '/includes/eticket-config.php';
 require_once __DIR__ . '/config/midtrans.php';
 
 if (session_status() !== PHP_SESSION_ACTIVE) session_start();
+$minimumBookingDate = (new DateTimeImmutable('tomorrow', new DateTimeZone('Asia/Makassar')))->format('Y-m-d');
 $db = db();
 
 // Schema migrations belong to deployment/admin maintenance, not customer booking POSTs.
@@ -161,7 +162,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $st = $db->prepare("SELECT * FROM packages WHERE id = ? AND status = 1 AND booking_enabled = 1");
     $st->execute([$packageId]);
     $pkg = $st->fetch();
-    $minimumBookingDate = (new DateTimeImmutable('tomorrow', new DateTimeZone('Asia/Makassar')))->format('Y-m-d');
     $bookingMode = $pkg['booking_mode'] ?? 'person';
     $isTandem = $pkg && $bookingMode === 'tandem';
     $isVehicle = $pkg && $bookingMode === 'vehicle';
@@ -878,7 +878,7 @@ body {
         <div class="form-grid-2">
           <div class="form-group">
             <label id="bookingDateLabel">Activity Date <span class="req">*</span></label>
-            <input class="form-control" type="date" name="booking_date" min="<?= (new DateTimeImmutable('tomorrow', new DateTimeZone('Asia/Makassar')))->format('Y-m-d') ?>" value="<?=e($_POST['booking_date'] ?? (new DateTimeImmutable('tomorrow', new DateTimeZone('Asia/Makassar')))->format('Y-m-d'))?>" required>
+            <input class="form-control" type="date" name="booking_date" min="<?=e($minimumBookingDate)?>" value="<?=e(!empty($_POST['booking_date']) && $_POST['booking_date'] >= $minimumBookingDate ? $_POST['booking_date'] : $minimumBookingDate)?>" required>
           </div>
           <div class="form-group" id="guestCountSelector">
             <label>Guests (Adults &amp; Children) <span class="req">*</span></label>
