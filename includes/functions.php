@@ -150,6 +150,14 @@ function seo_current_page_key(): string {
     if (preg_match('~^/blog/([^/]+)$~i', $path, $m) && trim($m[1]) !== '') {
         return 'blog:'.strtolower(trim($m[1]));
     }
+    if ($path === '/package.php') {
+        $slug = trim((string)($_GET['slug'] ?? ''));
+        return $slug !== '' ? 'package:'.strtolower($slug) : 'package';
+    }
+    if ($path === '/blog-detail.php') {
+        $slug = trim((string)($_GET['slug'] ?? ''));
+        return $slug !== '' ? 'blog:'.strtolower($slug) : 'blog-detail';
+    }
     if (preg_match('~^/page/([^/]+)$~i', $path, $m) && trim($m[1])!=='') {
         return 'page:'.strtolower(trim($m[1]));
     }
