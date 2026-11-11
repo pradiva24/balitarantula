@@ -13,6 +13,25 @@ if (session_status() !== PHP_SESSION_ACTIVE) session_start();
 $minimumBookingDate = (new DateTimeImmutable('today', new DateTimeZone('Asia/Makassar')))->format('Y-m-d');
 $db = db();
 
+// Always serve fresh booking HTML/clock data; cached HTML can contain an old timestamp.
+if (!headers_sent()) {
+    header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0');
+    header('Pragma: no-cache');
+    header('Expires: 0');
+}
+
+// Lightweight online clock endpoint used by the booking slot filter.
+if (isset($_GET['booking_clock']) && (string)$_GET['booking_clock'] === '1') {
+    $clockNow = new DateTimeImmutable('now', new DateTimeZone('Asia/Makassar'));
+    header('Content-Type: application/json; charset=utf-8');
+    echo json_encode([
+        'date' => $clockNow->format('Y-m-d'),
+        'minutes' => ((int)$clockNow->format('H')) * 60 + (int)$clockNow->format('i'),
+        'time' => $clockNow->format('H:i:s')
+    ]);
+    exit;
+}
+
 // Schema migrations belong to deployment/admin maintenance, not customer booking POSTs.
 // Keep the legacy self-heal on normal page views only to avoid DDL locks during checkout.
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -1186,22 +1205,35 @@ body {
     return document.querySelector('[name=booking_date]')?.value || '';
   }
 
-  // Server clock snapshot in Bali timezone. The minute counter advances using
-  // performance.now(), so filtering never depends on the visitor's device clock.
-  const BTA_SERVER_TODAY = <?=json_encode((new DateTimeImmutable('now', new DateTimeZone('Asia/Makassar')))->format('Y-m-d'))?>;
-  const BTA_SERVER_MINUTES_AT_LOAD = <?=json_encode(((int)(new DateTimeImmutable('now', new DateTimeZone('Asia/Makassar')))->format('H')) * 60 + (int)(new DateTimeImmutable('now', new DateTimeZone('Asia/Makassar')))->format('i'))?>;
-  const BTA_MONOTONIC_START = performance.now();
+  // Online clock is fetched directly from this PHP page, using Asia/Makassar.
+  let BTA_ONLINE_DATE = <?=json_encode((new DateTimeImmutable('now', new DateTimeZone('Asia/Makassar')))->format('Y-m-d'))?>;
+  let BTA_ONLINE_MINUTES = <?=json_encode(((int)(new DateTimeImmutable('now', new DateTimeZone('Asia/Makassar')))->format('H')) * 60 + (int)(new DateTimeImmutable('now', new DateTimeZone('Asia/Makassar')))->format('i'))?>;
 
-  function onlineDate(){
-    const elapsedMinutes = Math.floor((performance.now() - BTA_MONOTONIC_START) / 60000);
-    const start = new Date(BTA_SERVER_TODAY + 'T00:00:00Z');
-    start.setUTCMinutes(start.getUTCMinutes() + BTA_SERVER_MINUTES_AT_LOAD + elapsedMinutes);
-    return start.toISOString().slice(0, 10);
-  }
+  function onlineDate(){ return BTA_ONLINE_DATE; }
+  function onlineMinutes(){ return BTA_ONLINE_MINUTES; }
 
-  function onlineMinutes(){
-    const elapsedMinutes = Math.floor((performance.now() - BTA_MONOTONIC_START) / 60000);
-    return (BTA_SERVER_MINUTES_AT_LOAD + elapsedMinutes) % 1440;
+  async function syncOnlineClock(){
+    try {
+      const url = new URL(window.location.href);
+      url.searchParams.set('booking_clock', '1');
+      url.searchParams.set('_clock_ts', String(Date.now()));
+      const response = await fetch(url.toString(), {
+        method: 'GET',
+        cache: 'no-store',
+        credentials: 'same-origin',
+        headers: {'Accept':'application/json','Cache-Control':'no-cache'}
+      });
+      if (!response.ok) throw new Error('Clock request failed: ' + response.status);
+      const clock = await response.json();
+      if (!/^\\d{4}-\\d{2}-\\d{2}$/.test(clock.date) || !Number.isFinite(Number(clock.minutes))) {
+        throw new Error('Invalid online clock response');
+      }
+      BTA_ONLINE_DATE = clock.date;
+      BTA_ONLINE_MINUTES = Number(clock.minutes);
+      refreshTimeAvailability();
+    } catch (error) {
+      console.error('[BTA booking clock]', error);
+    }
   }
 
   function isTodayBooking(){
@@ -1354,10 +1386,11 @@ body {
     }
     update();
   }
-  window.setInterval(refreshTimeAvailability, 15000);
-  window.addEventListener('focus', refreshTimeAvailability);
+  syncOnlineClock();
+  window.setInterval(syncOnlineClock, 15000);
+  window.addEventListener('focus', syncOnlineClock);
   document.addEventListener('visibilitychange', () => {
-    if (!document.hidden) refreshTimeAvailability();
+    if (!document.hidden) syncOnlineClock();
   });
   adults.addEventListener('input', () => { discount = 0; promoResult.textContent = ''; update(); });
   children.addEventListener('input', () => { discount = 0; promoResult.textContent = ''; update(); });
