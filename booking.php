@@ -161,7 +161,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $st = $db->prepare("SELECT * FROM packages WHERE id = ? AND status = 1 AND booking_enabled = 1");
     $st->execute([$packageId]);
     $pkg = $st->fetch();
-    $today = date('Y-m-d');
+    $today = (new DateTimeImmutable('now', new DateTimeZone('Asia/Makassar')))->format('Y-m-d');
     $bookingMode = $pkg['booking_mode'] ?? 'person';
     $isTandem = $pkg && $bookingMode === 'tandem';
     $isVehicle = $pkg && $bookingMode === 'vehicle';
@@ -878,7 +878,7 @@ body {
         <div class="form-grid-2">
           <div class="form-group">
             <label id="bookingDateLabel">Activity Date <span class="req">*</span></label>
-            <input class="form-control" type="date" name="booking_date" min="<?=date('Y-m-d')?>" value="<?=e($_POST['booking_date'] ?? date('Y-m-d', strtotime('+1 day')))?>" required>
+            <input class="form-control" type="date" name="booking_date" min="<?= (new DateTimeImmutable('now', new DateTimeZone('Asia/Makassar')))->format('Y-m-d') ?>" value="<?=e($_POST['booking_date'] ?? date('Y-m-d', strtotime('+1 day')))?>" required>
           </div>
           <div class="form-group" id="guestCountSelector">
             <label>Guests (Adults &amp; Children) <span class="req">*</span></label>
