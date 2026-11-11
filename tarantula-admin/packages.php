@@ -6,6 +6,38 @@ try {
   $bookingModeCol=$p->query("SHOW COLUMNS FROM packages LIKE 'booking_mode'")->fetch(PDO::FETCH_ASSOC);
   if(!$bookingModeCol) $p->exec("ALTER TABLE packages ADD COLUMN booking_mode VARCHAR(20) NOT NULL DEFAULT 'person' AFTER price_child");
 } catch(Throwable $e) {}
+
+function package_seo_defaults(array $package): array {
+  $name=trim((string)($package['name']??'Bali Adventure'));
+  $slug=trim((string)($package['slug']??''));
+  $lower=mb_strtolower($name.' '.(string)($package['category_name']??$package['category']??''),'UTF-8');
+  if(preg_match('/tandem/i',$lower)){
+    $keyword='tandem ATV Bali';
+    $desc='Enjoy a tandem ATV ride in Bali with a partner. Explore muddy tracks, jungle trails and exciting off-road routes with a professional guide. Book your adventure today!';
+  }elseif(preg_match('/single|solo/i',$lower)){
+    $keyword='single ATV Bali';
+    $desc='Ride your own ATV through Bali’s muddy tracks, jungle trails and scenic countryside. Enjoy a guided off-road adventure with safety equipment. Book your single ATV ride!';
+  }elseif(preg_match('/rafting|white.?water/i',$lower)){
+    $keyword='Bali white water rafting';
+    $desc='Experience thrilling white water rafting in Bali with experienced river guides. Paddle through scenic jungle landscapes and exciting rapids. Check availability and book your rafting trip!';
+  }elseif(preg_match('/swing/i',$lower)){
+    $keyword='Bali swing experience';
+    $desc='Enjoy a Bali swing experience surrounded by tropical jungle views. Capture memorable photos and take in the scenery. Discover package details and book your swing adventure!';
+  }elseif(preg_match('/volkswagen|\\bvw\\b|tour/i',$lower)){
+    $keyword='Bali VW tour';
+    $desc='Explore Bali on a scenic Volkswagen tour with beautiful countryside views and memorable stops. Discover the package details and reserve your private Bali experience today!';
+  }else{
+    $keyword=trim(preg_replace('/\\s+/u',' ',mb_strtolower($name.' Bali','UTF-8')));
+    $desc='Discover '.$name.' in Bali with Bali Tarantula Adventure. Enjoy an exciting experience with professional local guides and clear package options. Check details and book online today!';
+  }
+  $title=$name.' | Bali Tarantula Adventure';
+  if(mb_strlen($title,'UTF-8')>60)$title=mb_substr($name,0,max(12,60-mb_strlen(' | Bali ATV','UTF-8')),'UTF-8').' | Bali ATV';
+  if(mb_strlen($desc,'UTF-8')>160)$desc=mb_substr($desc,0,157,'UTF-8').'...';
+  return ['seo_title'=>$title,'meta_description'=>$desc,'focus_keyword'=>$keyword,
+    'canonical_url'=>rtrim(BASE_URL,'/').'/package/'.rawurlencode($slug),
+    'og_title'=>$title,'og_description'=>$desc];
+}
+
 $action=$_GET['action']??'list';
 $id=(int)($_GET['id']??0);
 
@@ -364,12 +396,19 @@ try {
       $name=trim($_POST['name']);
       $slug=admin_slug($_POST['slug']?:$name);
       $cat=(int)($_POST['category_id']??0)?:null;
+      $seoDefaults=package_seo_defaults(['name'=>$name,'slug'=>$slug]);
+      $seoTitle=trim((string)($_POST['seo_title']??'')) ?: $seoDefaults['seo_title'];
+      $metaDescription=trim((string)($_POST['meta_description']??'')) ?: $seoDefaults['meta_description'];
+      $focusKeyword=trim((string)($_POST['focus_keyword']??'')) ?: $seoDefaults['focus_keyword'];
+      $canonicalUrl=trim((string)($_POST['canonical_url']??'')) ?: $seoDefaults['canonical_url'];
+      $ogTitle=trim((string)($_POST['og_title']??'')) ?: $seoTitle;
+      $ogDescription=trim((string)($_POST['og_description']??'')) ?: $metaDescription;
       $data=[
         $cat,$name,$slug,$_POST['short_description']??'',$_POST['description']??'',
         $_POST['duration']??'',(float)($_POST['price_adult']??0),(float)($_POST['price_child']??0),(in_array(($_POST['booking_mode']??'person'),['person','tandem','vehicle'],true)?$_POST['booking_mode']:'person'),
-        isset($_POST['featured'])?1:0,isset($_POST['best_seller'])?1:0,(int)($_POST['status']??1),((int)($_POST['booking_enabled']??1)===1?1:0),$_POST['seo_title']??'',
-        $_POST['meta_description']??'',$_POST['focus_keyword']??',(trim((string)($_POST['canonical_url']??'')) ?: rtrim(BASE_URL,'/').'/package/'.rawurlencode($slug)),$_POST['og_image']??'',
-        $_POST['og_title']??'',$_POST['og_description']??'',$_POST['schema_json']??''
+        isset($_POST['featured'])?1:0,isset($_POST['best_seller'])?1:0,(int)($_POST['status']??1),((int)($_POST['booking_enabled']??1)===1?1:0),$seoTitle,
+        $metaDescription,$focusKeyword,$canonicalUrl,$_POST['og_image']??'',
+        $ogTitle,$ogDescription,$_POST['schema_json']??''
       ];
       $old=null;
       if($id){$q=$p->prepare('SELECT cover_image FROM packages WHERE id=?');$q->execute([$id]);$old=$q->fetchColumn();}
@@ -712,6 +751,12 @@ if($action==='hero'):
 
 if($action==='add'||$action==='edit'):
   $x=$item??[];
+  if($x){
+    $seoDefaults=package_seo_defaults($x);
+    foreach(['seo_title','meta_description','focus_keyword','canonical_url','og_title','og_description'] as $seoField){
+      if(trim((string)($x[$seoField]??''))==='') $x[$seoField]=$seoDefaults[$seoField];
+    }
+  }
   $packageHeroAdmin=[
     'kicker'=>strtoupper(site_brand_name()),
     'title'=>'CHOOSE YOUR',
