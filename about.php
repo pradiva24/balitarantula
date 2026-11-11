@@ -177,6 +177,9 @@ require __DIR__ . '/includes/header.php';
 @media(max-width:640px){.bta-about .about-hero{min-height:520px}.bta-about .about-reasons,.bta-about .about-stat-grid{gap:10px}.bta-about .about-reason{padding:18px!important}.bta-about .about-stat{padding:14px 10px}.bta-about .about-quote{margin:18px 0;padding:13px 16px}}
 @media(max-width:380px){.bta-about .about-reasons,.bta-about .about-stat-grid{grid-template-columns:1fr}}
 
+
+/* Mobile CTA override: keep this after the page theme rules. */
+@media screen and (max-width:767px){html body .bta-about a.about-btn{font-size:12px!important;padding:14px!important;}}
 </style>
 
 <div class="bta-about">
