@@ -2,11 +2,13 @@
 require_once __DIR__.'/config/database.php';
 require_once __DIR__.'/includes/functions.php';
 
-// Admin-managed redirects are checked before legacy defaults and homepage fallback.
+// Only redirect explicitly known legacy URLs or active admin redirect rules.
+// Unknown URLs must remain a real 404; never send every missing page to homepage.
 $requestPath = rawurldecode((string)(parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH) ?: '/'));
 $requestPath = strtolower('/' . trim(preg_replace('~/+~', '/', $requestPath), '/'));
 $redirectTarget = null;
 $redirectStatus = 301;
+
 try {
     $stmt = db()->prepare("SELECT target_path, redirect_type FROM redirect_rules WHERE source_path = ? AND is_active = 1 LIMIT 1");
     $stmt->execute([$requestPath]);
@@ -18,6 +20,7 @@ try {
 } catch (Throwable $e) {
     error_log('Redirect rules lookup failed: ' . $e->getMessage());
 }
+
 if ($redirectTarget === null) {
     $legacyRedirects = [
         '/about-us' => '/about', '/aboutus' => '/about',
@@ -28,13 +31,19 @@ if ($redirectTarget === null) {
         '/atv-adventure-bali' => '/packages', '/rafting' => '/packages',
         '/white-water-rafting' => '/packages'
     ];
-    $redirectTarget = $legacyRedirects[$requestPath] ?? '/';
+    $redirectTarget = $legacyRedirects[$requestPath] ?? null;
 }
-$redirectUrl = preg_match('~^https?://~i', $redirectTarget)
-    ? $redirectTarget
-    : rtrim(BASE_URL, '/') . ($redirectTarget === '/' ? '/' : '/' . ltrim($redirectTarget, '/'));
-header('Location: ' . $redirectUrl, true, $redirectStatus);
-exit;
+
+if ($redirectTarget !== null && $redirectTarget !== '') {
+    $redirectUrl = preg_match('~^https?://~i', $redirectTarget)
+        ? $redirectTarget
+        : rtrim(BASE_URL, '/') . '/' . ltrim($redirectTarget, '/');
+    header('Location: ' . $redirectUrl, true, $redirectStatus);
+    exit;
+}
+
+// This request genuinely did not match a page or an explicit redirect.
+http_response_code(404);
 
 $title = setting('404_title', 'Oops! Page Not Found');
 $description = setting('404_description', "It looks like this page took a little adventure and got lost in the jungle. But don't worry, there are still many amazing experiences waiting for you at <?=e(site_brand_name())?>!");
