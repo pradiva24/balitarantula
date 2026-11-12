@@ -2,8 +2,31 @@
 require_once __DIR__.'/config/database.php';
 require_once __DIR__.'/includes/functions.php';
 
-// Always return a real HTTP 404, including direct access to /404.php or /404.
-http_response_code(404);
+// Redirect legacy URLs to the closest current destination.
+// Any unmatched URL that reaches this handler falls back to the homepage.
+$requestPath = rawurldecode((string)(parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH) ?: '/'));
+$requestPath = strtolower('/' . trim(preg_replace('~/+~', '/', $requestPath), '/'));
+$legacyRedirects = [
+    '/about-us' => '/about',
+    '/aboutus' => '/about',
+    '/contact-us' => '/contact',
+    '/contactus' => '/contact',
+    '/our-packages' => '/packages',
+    '/atv' => '/packages',
+    '/atv-tour' => '/packages',
+    '/atv-ride' => '/packages',
+    '/atv-ride-bali' => '/packages',
+    '/atv-adventure' => '/packages',
+    '/atv-adventure-bali' => '/packages',
+    '/rafting' => '/packages',
+    '/white-water-rafting' => '/packages',
+    '/gallery' => '/gallery',
+    '/blog' => '/blog',
+];
+$redirectPath = $legacyRedirects[$requestPath] ?? '/';
+$redirectUrl = rtrim(BASE_URL, '/') . ($redirectPath === '/' ? '/' : $redirectPath);
+header('Location: ' . $redirectUrl, true, 301);
+exit;
 
 $title = setting('404_title', 'Oops! Page Not Found');
 $description = setting('404_description', "It looks like this page took a little adventure and got lost in the jungle. But don't worry, there are still many amazing experiences waiting for you at <?=e(site_brand_name())?>!");
