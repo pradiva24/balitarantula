@@ -8,4 +8,4 @@ Disallow: /database/
 Disallow: /includes/
 Disallow: /uploads/payment-proofs/
 
-Sitemap: https://balitarantula.com/sitemap
+Sitemap: https://balitarantula.com/sitemap.php
