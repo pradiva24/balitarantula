@@ -1,2 +1,15 @@
-# Route Apache 404 responses through the legacy URL redirect handler.
+# Bali Tarantula Adventure - clean URL routing
+Options -MultiViews
+RewriteEngine On
+
+# Serve existing files and directories directly.
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+
+# Map clean static URLs to their matching PHP pages (e.g. /about -> /about.php).
+RewriteCond %{DOCUMENT_ROOT}/$1.php -f
+RewriteRule ^([A-Za-z0-9_-]+)/?$ $1.php [L,QSA]
+
+# Render the custom 404 page only after the normal PHP page lookup fails.
 ErrorDocument 404 /404.php
