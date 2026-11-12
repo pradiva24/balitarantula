@@ -172,7 +172,7 @@ require __DIR__.'/includes/header.php';
   <input type="hidden" name="csrf" value="<?=admin_e(admin_csrf())?>"><input type="hidden" name="action" value="save">
   <div class="gsc-formgrid">
    <div class="gsc-field gsc-field-wide"><label for="gsc-client-id">OAuth Client ID</label><input id="gsc-client-id" name="client_id" type="text" required placeholder="...apps.googleusercontent.com" value="<?=admin_e($settings['gsc_client_id'])?>" autocomplete="off"></div>
-   <div class="gsc-field gsc-field-wide"><label for="gsc-client-secret">OAuth Client Secret</label><input id="gsc-client-secret" name="client_secret" type="password" required placeholder="Masukkan Client Secret (kosongkan jika tidak diganti)" autocomplete="new-password"></div>
+   <div class="gsc-field gsc-field-wide"><label for="gsc-client-secret">OAuth Client Secret</label><input id="gsc-client-secret" name="client_secret" type="password" placeholder="Masukkan Client Secret (kosongkan jika tidak diganti)" autocomplete="new-password"></div>
    <div class="gsc-field gsc-field-wide"><label for="gsc-property">Search Console Property</label><input id="gsc-property" name="property" type="text" required value="<?=admin_e($settings['gsc_property'])?>" placeholder="sc-domain:balitarantula.com"></div>
   </div>
   <div class="gsc-redirect"><div><strong>Authorized redirect URI</strong><code><?=admin_e($redirectUri)?></code></div></div>
