@@ -7,7 +7,7 @@ $db = db();
 $page_title = 'Google Search Console';
 $settings = [
  'gsc_client_id' => '', 'gsc_client_secret' => '',
- 'gsc_property' => (string)($gscConfig['property'] ?? 'sc-domain:manuabacrystalfall.com'),
+ 'gsc_property' => (string)($gscConfig['property'] ?? 'sc-domain:balitarantula.com'),
  'gsc_token' => '', 'gsc_refresh_token' => '', 'gsc_token_expiry' => '0'
 ];
 try {
@@ -16,7 +16,7 @@ try {
 } catch(Throwable $e) { /* setup below will report a safe message */ }
 $settings['gsc_client_id'] = trim((string)($settings['gsc_client_id'] ?: ($gscConfig['client_id'] ?? '')));
 $settings['gsc_client_secret'] = trim((string)($settings['gsc_client_secret'] ?: ($gscConfig['client_secret'] ?? '')));
-$settings['gsc_property'] = trim((string)($settings['gsc_property'] ?: ($gscConfig['property'] ?? 'sc-domain:manuabacrystalfall.com')));
+$settings['gsc_property'] = trim((string)($settings['gsc_property'] ?: ($gscConfig['property'] ?? 'sc-domain:balitarantula.com')));
 $gscConfigured = $settings['gsc_client_id'] !== '' && $settings['gsc_client_secret'] !== '';
 function gsc_save(PDO $db,string $key,string $value):void {
  $q=$db->prepare('SELECT id FROM settings WHERE setting_key=?'); $q->execute([$key]); $id=$q->fetchColumn();
@@ -50,7 +50,7 @@ function gsc_api(string $url,string $token,?array $body=null):array {
  $ch=curl_init($url);curl_setopt_array($ch,[CURLOPT_RETURNTRANSFER=>true,CURLOPT_CONNECTTIMEOUT=>10,CURLOPT_TIMEOUT=>25,CURLOPT_POST=>true,CURLOPT_POSTFIELDS=>json_encode($body),CURLOPT_HTTPHEADER=>$headers]);$raw=curl_exec($ch);$err=curl_error($ch);$status=(int)curl_getinfo($ch,CURLINFO_HTTP_CODE);curl_close($ch);if($raw===false)throw new RuntimeException('Google API connection failed: '.$err);$j=json_decode($raw,true);if($status<200||$status>=300)throw new RuntimeException((string)($j['error']['message']??'Google API request failed').' (HTTP '.$status.')');return is_array($j)?$j:[];
 }
 $notice='';$noticeType='';$error='';
-$redirectUri=rtrim(BASE_URL,'/').'/manuaba-portal/search-console.php?oauth_callback=1';
+$redirectUri=rtrim(BASE_URL,'/').'/tarantula-admin/search-console.php?oauth_callback=1';
 try {
  if(isset($_GET['oauth_callback'])) {
   if(!hash_equals((string)($_SESSION['gsc_oauth_state']??''),(string)($_GET['state']??'')) || empty($_SESSION['gsc_oauth_state'])) throw new RuntimeException('OAuth state validation failed. Please connect again.');
