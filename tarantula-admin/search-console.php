@@ -159,12 +159,12 @@ require __DIR__.'/includes/header.php';
    <div class="gsc-actions"><button class="gsc-btn" type="submit"><i class="fa-solid fa-file-circle-check"></i> Simpan / Perbarui File Verifikasi</button><a class="gsc-btn secondary" target="_blank" rel="noopener" href="https://search.google.com/search-console/">Buka Google Search Console</a></div>
   </form>
  </section>
- <?php if(!$connected): ?>
  <section class="gsc-panel">
+ <?php if(!$connected): ?>
  <div class="gsc-panel-intro"><span class="gsc-step"><i class="fa-brands fa-google"></i></span><div><h3>Hubungkan akun Google</h3><p class="gsc-muted">Klik tombol di bawah, pilih akun Google yang memiliki akses ke properti Search Console, lalu setujui izin baca. Setelah berhasil, dashboard performa SEO akan tampil di halaman ini.</p></div></div>
  <div class="gsc-actions" style="margin-top:20px"><form method="post"><input type="hidden" name="csrf" value="<?=admin_e(admin_csrf())?>"><input type="hidden" name="action" value="connect"><button class="gsc-btn" type="submit"><i class="fa-brands fa-google"></i> Connect with Google</button></form></div>
- <?php if(!$gscConfigured): ?><div class="gsc-note error" style="margin-top:16px"><strong>Konfigurasi OAuth belum lengkap.</strong> Isi form konfigurasi di bawah ini satu kali untuk mengaktifkan koneksi Google.</div><?php endif; ?>
- <?php if(!$gscConfigured): ?>
+ <?php endif; ?>
+ <?php if(!$gscConfigured): ?><div class="gsc-note error" style="margin-top:16px"><strong>Konfigurasi OAuth belum lengkap.</strong> Isi form konfigurasi di bawah ini untuk mengaktifkan koneksi.</div><?php else: ?><div class="gsc-note success" style="margin-top:16px">Kredensial OAuth tersimpan. Anda dapat memperbaruinya di bawah ini.</div><?php endif; ?>
  <div class="gsc-divider"></div>
  <h3>Konfigurasi Google Search Console</h3>
  <p class="gsc-muted">Masukkan atau perbarui kredensial OAuth dari Google Cloud. Data disimpan pada pengaturan website Bali Tarantula. Kosongkan Client Secret jika ingin mempertahankan secret yang sudah tersimpan. Jangan bagikan Client Secret.</p>
