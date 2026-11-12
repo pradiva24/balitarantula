@@ -2,30 +2,38 @@
 require_once __DIR__.'/config/database.php';
 require_once __DIR__.'/includes/functions.php';
 
-// Redirect legacy URLs to the closest current destination.
-// Any unmatched URL that reaches this handler falls back to the homepage.
+// Admin-managed redirects are checked before legacy defaults and homepage fallback.
 $requestPath = rawurldecode((string)(parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH) ?: '/'));
 $requestPath = strtolower('/' . trim(preg_replace('~/+~', '/', $requestPath), '/'));
-$legacyRedirects = [
-    '/about-us' => '/about',
-    '/aboutus' => '/about',
-    '/contact-us' => '/contact',
-    '/contactus' => '/contact',
-    '/our-packages' => '/packages',
-    '/atv' => '/packages',
-    '/atv-tour' => '/packages',
-    '/atv-ride' => '/packages',
-    '/atv-ride-bali' => '/packages',
-    '/atv-adventure' => '/packages',
-    '/atv-adventure-bali' => '/packages',
-    '/rafting' => '/packages',
-    '/white-water-rafting' => '/packages',
-    '/gallery' => '/gallery',
-    '/blog' => '/blog',
-];
-$redirectPath = $legacyRedirects[$requestPath] ?? '/';
-$redirectUrl = rtrim(BASE_URL, '/') . ($redirectPath === '/' ? '/' : $redirectPath);
-header('Location: ' . $redirectUrl, true, 301);
+$redirectTarget = null;
+$redirectStatus = 301;
+try {
+    $stmt = db()->prepare("SELECT target_path, redirect_type FROM redirect_rules WHERE source_path = ? AND is_active = 1 LIMIT 1");
+    $stmt->execute([$requestPath]);
+    $rule = $stmt->fetch(PDO::FETCH_ASSOC);
+    if ($rule) {
+        $redirectTarget = (string)$rule['target_path'];
+        $redirectStatus = in_array((int)$rule['redirect_type'], [301, 302], true) ? (int)$rule['redirect_type'] : 301;
+    }
+} catch (Throwable $e) {
+    error_log('Redirect rules lookup failed: ' . $e->getMessage());
+}
+if ($redirectTarget === null) {
+    $legacyRedirects = [
+        '/about-us' => '/about', '/aboutus' => '/about',
+        '/contact-us' => '/contact', '/contactus' => '/contact',
+        '/our-packages' => '/packages', '/atv' => '/packages',
+        '/atv-tour' => '/packages', '/atv-ride' => '/packages',
+        '/atv-ride-bali' => '/packages', '/atv-adventure' => '/packages',
+        '/atv-adventure-bali' => '/packages', '/rafting' => '/packages',
+        '/white-water-rafting' => '/packages'
+    ];
+    $redirectTarget = $legacyRedirects[$requestPath] ?? '/';
+}
+$redirectUrl = preg_match('~^https?://~i', $redirectTarget)
+    ? $redirectTarget
+    : rtrim(BASE_URL, '/') . ($redirectTarget === '/' ? '/' : '/' . ltrim($redirectTarget, '/'));
+header('Location: ' . $redirectUrl, true, $redirectStatus);
 exit;
 
 $title = setting('404_title', 'Oops! Page Not Found');
