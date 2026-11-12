@@ -1,0 +1,2 @@
+# Route Apache 404 responses through the legacy URL redirect handler.
+ErrorDocument 404 /404.php
