@@ -1,15 +1,25 @@
-# Bali Tarantula Adventure - clean URL routing
+# Bali Tarantula Adventure - restore website URL routing
 Options -MultiViews
 RewriteEngine On
 
-# Serve existing files and directories directly.
+# 1) Keep real files and folders accessible without rewriting.
 RewriteCond %{REQUEST_FILENAME} -f [OR]
 RewriteCond %{REQUEST_FILENAME} -d
 RewriteRule ^ - [L]
 
-# Map clean static URLs to their matching PHP pages (e.g. /about -> /about.php).
-RewriteCond %{DOCUMENT_ROOT}/$1.php -f
-RewriteRule ^([A-Za-z0-9_-]+)/?$ $1.php [L,QSA]
+# 2) Dynamic detail routes (must be checked before generic page routes).
+# Package detail: /package/package-slug -> package.php?slug=package-slug
+RewriteRule ^package/([^/]+)/?$ package.php?slug=$1 [L,QSA,NC]
 
-# Render the custom 404 page only after the normal PHP page lookup fails.
+# Blog detail: /blog/article-slug -> blog-detail.php?slug=article-slug
+RewriteRule ^blog/([^/]+)/?$ blog-detail.php?slug=$1 [L,QSA,NC]
+
+# CMS page detail: /page/page-slug -> page.php?slug=$1
+RewriteRule ^page/([^/]+)/?$ page.php?slug=$1 [L,QSA,NC]
+
+# 3) Clean static PHP URLs: /about -> about.php, /contact -> contact.php, etc.
+RewriteCond %{DOCUMENT_ROOT}/$1.php -f
+RewriteRule ^([A-Za-z0-9_-]+)/?$ $1.php [L,QSA,NC]
+
+# 4) Only genuinely unresolved requests reach the custom 404 page.
 ErrorDocument 404 /404.php
