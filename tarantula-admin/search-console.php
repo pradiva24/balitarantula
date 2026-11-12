@@ -167,13 +167,13 @@ require __DIR__.'/includes/header.php';
  <?php if(!$gscConfigured): ?>
  <div class="gsc-divider"></div>
  <h3>Konfigurasi Google Search Console</h3>
- <p class="gsc-muted">Masukkan kredensial OAuth dari Google Cloud satu kali. Data disimpan di tabel settings portal agar tidak perlu mengedit file server. Jangan bagikan Client Secret.</p>
+ <p class="gsc-muted">Masukkan atau perbarui kredensial OAuth dari Google Cloud. Data disimpan pada pengaturan website Bali Tarantula. Kosongkan Client Secret jika ingin mempertahankan secret yang sudah tersimpan. Jangan bagikan Client Secret.</p>
  <form method="post" autocomplete="off">
   <input type="hidden" name="csrf" value="<?=admin_e(admin_csrf())?>"><input type="hidden" name="action" value="save">
   <div class="gsc-formgrid">
    <div class="gsc-field gsc-field-wide"><label for="gsc-client-id">OAuth Client ID</label><input id="gsc-client-id" name="client_id" type="text" required placeholder="...apps.googleusercontent.com" value="<?=admin_e($settings['gsc_client_id'])?>" autocomplete="off"></div>
-   <div class="gsc-field gsc-field-wide"><label for="gsc-client-secret">OAuth Client Secret</label><input id="gsc-client-secret" name="client_secret" type="password" required placeholder="Masukkan Client Secret" autocomplete="new-password"></div>
-   <div class="gsc-field gsc-field-wide"><label for="gsc-property">Search Console Property</label><input id="gsc-property" name="property" type="text" required value="<?=admin_e($settings['gsc_property'])?>" placeholder="sc-domain:manuabacrystalfall.com"></div>
+   <div class="gsc-field gsc-field-wide"><label for="gsc-client-secret">OAuth Client Secret</label><input id="gsc-client-secret" name="client_secret" type="password" required placeholder="Masukkan Client Secret (kosongkan jika tidak diganti)" autocomplete="new-password"></div>
+   <div class="gsc-field gsc-field-wide"><label for="gsc-property">Search Console Property</label><input id="gsc-property" name="property" type="text" required value="<?=admin_e($settings['gsc_property'])?>" placeholder="sc-domain:balitarantula.com"></div>
   </div>
   <div class="gsc-redirect"><div><strong>Authorized redirect URI</strong><code><?=admin_e($redirectUri)?></code></div></div>
   <div class="gsc-actions"><button class="gsc-btn" type="submit"><i class="fa-solid fa-floppy-disk"></i> Simpan Konfigurasi</button></div>
