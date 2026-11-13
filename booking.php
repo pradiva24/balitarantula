@@ -965,23 +965,29 @@ body {
         <div class="form-grid-2">
           <div class="form-group">
             <label for="customer_country">Country / Nationality <span class="req">*</span></label>
-            <input class="form-control" type="text" name="customer_country" id="customer_country" list="customerCountryOptions" value="<?=e($_POST['customer_country'] ?? '')?>" placeholder="Type or select your country" autocomplete="country-name" required>
-            <datalist id="customerCountryOptions">
-              <?php foreach ($countries as $countryName => $callingCode): ?>
-                <option value="<?=e($countryName)?>"></option>
-              <?php endforeach; ?>
-            </datalist>
+            <div class="bta-search-select" id="countrySelect">
+              <input class="form-control bta-search-select-input" type="text" id="customer_country_search" value="<?=e($_POST['customer_country'] ?? '')?>" placeholder="Select country" autocomplete="off" aria-label="Search country" aria-expanded="false" required>
+              <input type="hidden" name="customer_country" id="customer_country" value="<?=e($_POST['customer_country'] ?? '')?>">
+              <span class="bta-select-chevron" aria-hidden="true">▾</span>
+              <div class="bta-search-select-menu" role="listbox">
+                <?php foreach ($countries as $countryName => $callingCode): ?>
+                  <button type="button" class="bta-search-select-option" data-value="<?=e($countryName)?>" data-search="<?=e(strtolower($countryName))?>"><?=e($countryName)?></button>
+                <?php endforeach; ?>
+              </div>
+            </div>
           </div>
           <div class="form-group">
             <label for="customer_whatsapp">WhatsApp Phone <span class="req">*</span></label>
             <div style="display:flex; gap:8px;">
-              <div style="flex:0 0 145px; min-width:115px;">
-                <input class="form-control" type="text" name="whatsapp_country_code" id="whatsapp_country_code" list="whatsappCountryCodeOptions" value="<?=e($_POST['whatsapp_country_code'] ?? '+62')?>" placeholder="+62" autocomplete="tel-country-code" required>
-                <datalist id="whatsappCountryCodeOptions">
+              <div class="bta-search-select bta-code-select" id="callingCodeSelect">
+                <input class="form-control bta-search-select-input" type="text" id="whatsapp_country_code_search" value="<?=e($_POST['whatsapp_country_code'] ?? '+62')?>" placeholder="+62" autocomplete="off" aria-label="Search calling code" aria-expanded="false" required>
+                <input type="hidden" name="whatsapp_country_code" id="whatsapp_country_code" value="<?=e($_POST['whatsapp_country_code'] ?? '+62')?>">
+                <span class="bta-select-chevron" aria-hidden="true">▾</span>
+                <div class="bta-search-select-menu" role="listbox">
                   <?php foreach (array_values(array_unique(array_filter($countries))) as $callingCode): ?>
-                    <option value="<?=e($callingCode)?>"></option>
+                    <button type="button" class="bta-search-select-option" data-value="<?=e($callingCode)?>" data-search="<?=e(strtolower($callingCode))?>"><?=e($callingCode)?></button>
                   <?php endforeach; ?>
-                </datalist>
+                </div>
               </div>
               <input class="form-control" name="customer_whatsapp" id="customer_whatsapp" value="<?=e($_POST['customer_whatsapp'] ?? '')?>" placeholder="812 3456 789" required>
             </div>
@@ -1105,6 +1111,17 @@ body {
   </main>
 </div>
 
+<style id="bta-searchable-select-styles">
+.bta-search-select{position:relative;width:100%}
+.bta-search-select-input{width:100%;padding-right:38px!important;cursor:text}
+.bta-select-chevron{position:absolute;right:14px;top:50%;transform:translateY(-50%);pointer-events:none;color:#8b9290;font-size:16px}
+.bta-search-select-menu{display:none;position:absolute;z-index:10050;top:calc(100% + 5px);left:0;right:0;max-height:250px;overflow-y:auto;background:#fff;border:1px solid #d9dedb;border-radius:10px;box-shadow:0 12px 28px rgba(0,0,0,.16);padding:5px}
+.bta-search-select.is-open .bta-search-select-menu{display:block}
+.bta-search-select-option{display:block;width:100%;padding:10px 12px;border:0;border-radius:7px;background:transparent;color:#202522;text-align:left;font:inherit;font-size:14px;cursor:pointer}
+.bta-search-select-option:hover,.bta-search-select-option.is-active{background:#f1f3f2;color:#171a18}
+.bta-code-select{flex:0 0 145px;min-width:115px}
+@media(max-width:480px){.bta-code-select{flex-basis:112px;min-width:100px}}
+</style>
 <script>
 (function(){
   const picker = document.getElementById('package_picker');
@@ -1363,13 +1380,72 @@ body {
     update();
   }
 
-  // Choosing a nationality suggests its calling code; both fields remain searchable/editable.
-  if (countryInput && whatsappCodeInput) {
-    countryInput.addEventListener('change', () => {
-      const suggestedCode = countryCallingCodes[countryInput.value];
-      if (suggestedCode) whatsappCodeInput.value = suggestedCode;
+  // Searchable dropdowns styled like the other native booking selects.
+  function initSearchSelect(rootId, searchId, hiddenId, onSelect) {
+    const root = document.getElementById(rootId);
+    const search = document.getElementById(searchId);
+    const hidden = document.getElementById(hiddenId);
+    if (!root || !search || !hidden) return;
+    const menu = root.querySelector('.bta-search-select-menu');
+    const options = Array.from(menu.querySelectorAll('.bta-search-select-option'));
+    function close(){ root.classList.remove('is-open'); search.setAttribute('aria-expanded','false'); }
+    function open(){
+      root.classList.add('is-open');
+      search.setAttribute('aria-expanded','true');
+      filter();
+    }
+    function filter(){
+      const q = search.value.trim().toLowerCase();
+      options.forEach(option => {
+        const match = (option.dataset.search || option.dataset.value.toLowerCase()).includes(q);
+        option.hidden = !match;
+      });
+    }
+    function choose(option){
+      search.value = option.dataset.value;
+      hidden.value = option.dataset.value;
+      close();
+      if (typeof onSelect === 'function') onSelect(option.dataset.value);
+    }
+    search.addEventListener('focus', open);
+    search.addEventListener('click', open);
+    search.addEventListener('input', () => {
+      hidden.value = '';
+      open();
     });
+    options.forEach(option => option.addEventListener('click', () => choose(option)));
+    search.addEventListener('keydown', event => {
+      if (event.key === 'Escape') close();
+      if (event.key === 'Enter') {
+        const visible = options.find(option => !option.hidden);
+        if (visible) { event.preventDefault(); choose(visible); }
+      }
+      if (event.key === 'ArrowDown') {
+        const visible = options.find(option => !option.hidden);
+        if (visible) { event.preventDefault(); visible.focus(); }
+      }
+    });
+    options.forEach((option, index) => option.addEventListener('keydown', event => {
+      if (event.key === 'Escape') { close(); search.focus(); }
+      if (event.key === 'ArrowDown') { event.preventDefault(); (options.slice(index + 1).find(x => !x.hidden) || search).focus(); }
+      if (event.key === 'ArrowUp') { event.preventDefault(); (options.slice(0,index).reverse().find(x => !x.hidden) || search).focus(); }
+    }));
+    document.addEventListener('click', event => { if (!root.contains(event.target)) close(); });
+    if (search.value && options.some(option => option.dataset.value === search.value)) hidden.value = search.value;
   }
+
+  initSearchSelect('countrySelect', 'customer_country_search', 'customer_country', value => {
+    const suggestedCode = countryCallingCodes[value];
+    if (suggestedCode) {
+      const codeSearch = document.getElementById('whatsapp_country_code_search');
+      const codeHidden = document.getElementById('whatsapp_country_code');
+      if (codeSearch && codeHidden) {
+        codeSearch.value = suggestedCode;
+        codeHidden.value = suggestedCode;
+      }
+    }
+  });
+  initSearchSelect('callingCodeSelect', 'whatsapp_country_code_search', 'whatsapp_country_code');
 
   picker.addEventListener('change', () => {
     syncGuestFields();
