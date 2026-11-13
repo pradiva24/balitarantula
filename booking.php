@@ -190,24 +190,49 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     $validCallingCodes = array_values(array_unique(array_filter($countries)));
-    if (!$pkg || $name === '' || !filter_var($email, FILTER_VALIDATE_EMAIL) || $country === '' || !array_key_exists($country, $countries) || !in_array($waCode, $validCallingCodes, true) || !$date || $date < $minimumBookingDate) {
-        $error = 'Please complete all required fields. Bookings must be made at least 1 day in advance.';
-    } elseif (!$pickup && !empty($activityTimeMap[$packageId]) && !in_array($activityTime, $activityTimeMap[$packageId], true)) {
-        $error = 'Please select a valid activity start time.';
-    } elseif (!$pickup && $date === $minimumBookingDate && $activityTime !== '' && $activityTime <= (new DateTimeImmutable('now', new DateTimeZone('Asia/Makassar')))->format('H:i')) {
-        $error = 'The selected activity time has already passed. Please choose a later time.';
-    } elseif ($pickup && ($adults + $children) < 2) {
-        $error = 'Hotel pickup requires a minimum of 2 guests. Please select at least 2 people or choose Ticket Only.';
-    ;
-    } elseif ($pickup && $hotel === '') {
-        $error = 'Please enter your hotel or villa name for pickup.';
-    } elseif ($pickup && !$areaId) {
-        $error = 'Please select your hotel pickup area.';
-    } elseif ($pickup && ($pickupTime === '' || !in_array($pickupTime, $pickupTimeMap[$areaId] ?? [], true))) {
-        $error = 'Please select a valid pickup time for your location.';
-    } elseif ($pickup && $date === $minimumBookingDate && $pickupTime <= (new DateTimeImmutable('now', new DateTimeZone('Asia/Makassar')))->format('H:i')) {
-        $error = 'The selected pickup time has already passed. Please choose a later time.';
-    } else {
+    $dateObject = DateTimeImmutable::createFromFormat('!Y-m-d', (string)$date, new DateTimeZone('Asia/Makassar'));
+    $validDate = $dateObject && $dateObject->format('Y-m-d') === $date;
+
+    // Keep the first validation error so the customer sees the actual field that needs attention.
+    if ($error === '') {
+        if (!$pkg) {
+            $error = 'The selected activity/package is unavailable. Please choose another package.';
+        } elseif ($name === '') {
+            $error = 'Please enter the lead guest name.';
+        } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            $error = 'Please enter a valid email address for your e-ticket.';
+        } elseif ($country === '') {
+            $error = 'Please select your country/nationality from the dropdown.';
+        } elseif (!array_key_exists($country, $countries)) {
+            $error = 'The selected country is not valid. Please choose a country from the dropdown list.';
+        } elseif ($waCode === '') {
+            $error = 'Please select your WhatsApp country calling code.';
+        } elseif (!in_array($waCode, $validCallingCodes, true)) {
+            $error = 'The WhatsApp country code is invalid. Please choose a code from the dropdown list.';
+        } elseif ($waDigits === '') {
+            $error = 'Please enter your WhatsApp phone number.';
+        } elseif (!$validDate) {
+            $error = 'Please select a valid activity date.';
+        } elseif ($date < $minimumBookingDate) {
+            $error = 'The selected activity date has passed. Please choose an available future date.';
+        } elseif (!$pickup && !empty($activityTimeMap[$packageId]) && !in_array($activityTime, $activityTimeMap[$packageId], true)) {
+            $error = 'Please select an available activity start time.';
+        } elseif (!$pickup && $date === $minimumBookingDate && $activityTime !== '' && $activityTime <= (new DateTimeImmutable('now', new DateTimeZone('Asia/Makassar')))->format('H:i')) {
+            $error = 'The selected activity time has already passed. Please choose a later time.';
+        } elseif ($pickup && ($adults + $children) < 2) {
+            $error = 'Hotel pickup requires at least 2 guests. Please increase the guest count or choose Ticket Only.';
+        } elseif ($pickup && $hotel === '') {
+            $error = 'Please enter your hotel or villa name for pickup.';
+        } elseif ($pickup && !$areaId) {
+            $error = 'Please select your hotel pickup area.';
+        } elseif ($pickup && ($pickupTime === '' || !in_array($pickupTime, $pickupTimeMap[$areaId] ?? [], true))) {
+            $error = 'Please select a valid pickup time for your selected area.';
+        } elseif ($pickup && $date === $minimumBookingDate && $pickupTime <= (new DateTimeImmutable('now', new DateTimeZone('Asia/Makassar')))->format('H:i')) {
+            $error = 'The selected pickup time has already passed. Please choose a later time.';
+        }
+    }
+
+    if ($error === '') {
         $guests = $adults + $children;
         $activityCapacity = $isTandem ? 2 : ($isVehicle ? 4 : 0);
         $activityUnits = ($isTandem || $isVehicle) ? $requestedActivityUnits : 0;
