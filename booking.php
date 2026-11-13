@@ -189,7 +189,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $children = 0;
     }
 
-    if (!$pkg || $name === '' || !filter_var($email, FILTER_VALIDATE_EMAIL) || $country === '' || !array_key_exists($country, $countries) || !$date || $date < $minimumBookingDate) {
+    $validCallingCodes = array_values(array_unique(array_filter($countries)));
+    if (!$pkg || $name === '' || !filter_var($email, FILTER_VALIDATE_EMAIL) || $country === '' || !array_key_exists($country, $countries) || !in_array($waCode, $validCallingCodes, true) || !$date || $date < $minimumBookingDate) {
         $error = 'Please complete all required fields. Bookings must be made at least 1 day in advance.';
     } elseif (!$pickup && !empty($activityTimeMap[$packageId]) && !in_array($activityTime, $activityTimeMap[$packageId], true)) {
         $error = 'Please select a valid activity start time.';
@@ -198,6 +199,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } elseif ($pickup && ($adults + $children) < 2) {
         $error = 'Hotel pickup requires a minimum of 2 guests. Please select at least 2 people or choose Ticket Only.';
     ;
+    } elseif ($pickup && $hotel === '') {
+        $error = 'Please enter your hotel or villa name for pickup.';
     } elseif ($pickup && !$areaId) {
         $error = 'Please select your hotel pickup area.';
     } elseif ($pickup && ($pickupTime === '' || !in_array($pickupTime, $pickupTimeMap[$areaId] ?? [], true))) {
@@ -962,21 +965,24 @@ body {
         <div class="form-grid-2">
           <div class="form-group">
             <label for="customer_country">Country / Nationality <span class="req">*</span></label>
-            <select class="form-control" name="customer_country" id="customer_country" required>
-              <option value="">Select your country</option>
-              <?php foreach ($countries as $c => $code): ?>
-                <option value="<?=e($c)?>" <?=((string)($_POST['customer_country'] ?? '') === $c) ? 'selected' : ''?>><?=e($c)?></option>
+            <input class="form-control" type="text" name="customer_country" id="customer_country" list="customerCountryOptions" value="<?=e($_POST['customer_country'] ?? '')?>" placeholder="Type or select your country" autocomplete="country-name" required>
+            <datalist id="customerCountryOptions">
+              <?php foreach ($countries as $countryName => $callingCode): ?>
+                <option value="<?=e($countryName)?>"></option>
               <?php endforeach; ?>
-            </select>
+            </datalist>
           </div>
           <div class="form-group">
             <label for="customer_whatsapp">WhatsApp Phone <span class="req">*</span></label>
             <div style="display:flex; gap:8px;">
-              <select class="form-control" name="whatsapp_country_code" style="max-width:110px;">
-                <?php foreach ($countries as $c => $code): if ($code !== ''): ?>
-                  <option value="<?=e($code)?>" <?=((string)($_POST['whatsapp_country_code'] ?? '+62') === $code) ? 'selected' : ''?>><?=e($code)?></option>
-                <?php endif; endforeach; ?>
-              </select>
+              <div style="flex:0 0 145px; min-width:115px;">
+                <input class="form-control" type="text" name="whatsapp_country_code" id="whatsapp_country_code" list="whatsappCountryCodeOptions" value="<?=e($_POST['whatsapp_country_code'] ?? '+62')?>" placeholder="+62" autocomplete="tel-country-code" required>
+                <datalist id="whatsappCountryCodeOptions">
+                  <?php foreach (array_values(array_unique(array_filter($countries))) as $callingCode): ?>
+                    <option value="<?=e($callingCode)?>"></option>
+                  <?php endforeach; ?>
+                </datalist>
+              </div>
               <input class="form-control" name="customer_whatsapp" id="customer_whatsapp" value="<?=e($_POST['customer_whatsapp'] ?? '')?>" placeholder="812 3456 789" required>
             </div>
           </div>
@@ -1016,8 +1022,8 @@ body {
             </div>
           </div>
           <div class="form-group">
-            <label>Hotel or Villa Name</label>
-            <input class="form-control" name="hotel_name" id="hotel_name" value="<?=e($_POST['hotel_name'] ?? '')?>" placeholder="Hotel name &amp; complete address">
+            <label for="hotel_name">Hotel or Villa Name <span class="req">*</span></label>
+            <input class="form-control" name="hotel_name" id="hotel_name" value="<?=e($_POST['hotel_name'] ?? '')?>" placeholder="Enter hotel or villa name and complete address" autocomplete="street-address">
           </div>
         </div>
 
@@ -1116,6 +1122,9 @@ body {
   const area = document.getElementById('pickup_area_id');
   const fields = document.getElementById('pickupFields');
   const hotel = document.getElementById('hotel_name');
+  const countryInput = document.getElementById('customer_country');
+  const whatsappCodeInput = document.getElementById('whatsapp_country_code');
+  const countryCallingCodes = <?=json_encode($countries, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES)?>;
   const pickupTime = document.getElementById('pickup_time');
   const promo = document.getElementById('promo_code');
   const promoBtn = document.getElementById('applyPromo');
@@ -1352,6 +1361,14 @@ body {
     if (yes) refreshPickupTimes();
     renderActivityTimes();
     update();
+  }
+
+  // Choosing a nationality suggests its calling code; both fields remain searchable/editable.
+  if (countryInput && whatsappCodeInput) {
+    countryInput.addEventListener('change', () => {
+      const suggestedCode = countryCallingCodes[countryInput.value];
+      if (suggestedCode) whatsappCodeInput.value = suggestedCode;
+    });
   }
 
   picker.addEventListener('change', () => {
