@@ -80,6 +80,39 @@ try {
 $wa = trim((string)setting('site_whatsapp', ''));
 $waUrl = $wa ? whatsapp_url($wa, 'Hello Bali Tarantula Adventure, I would like to inquire about booking: ' . $p['name'] . '.') : '';
 
+// Load the package-specific CTA configuration saved from Admin → Packages.
+$actionButtons = [
+    'book_now'   => ['enabled' => 1, 'url' => '', 'label' => 'Book Now'],
+    'book_now_2' => ['enabled' => 0, 'url' => '', 'label' => 'Book Now 2'],
+    'whatsapp_1' => ['enabled' => 0, 'url' => '', 'label' => 'WhatsApp 1'],
+    'whatsapp_2' => ['enabled' => 1, 'url' => '', 'label' => 'WhatsApp'],
+];
+try {
+    $ab = db()->prepare('SELECT button_key, enabled, custom_url, label FROM package_action_buttons WHERE package_id = ?');
+    $ab->execute([(int)$p['id']]);
+    foreach ($ab->fetchAll(PDO::FETCH_ASSOC) as $button) {
+        $key = (string)($button['button_key'] ?? '');
+        if (isset($actionButtons[$key])) {
+            $actionButtons[$key] = [
+                'enabled' => (int)($button['enabled'] ?? 0),
+                'url' => trim((string)($button['custom_url'] ?? '')),
+                'label' => trim((string)($button['label'] ?? '')),
+            ];
+        }
+    }
+} catch (Throwable $e) {
+    // Keep the legacy Book Now + site WhatsApp defaults if the table is unavailable.
+}
+
+// Only allow valid HTTP(S) destinations for admin-configured external buttons.
+$isSafeExternalUrl = static function (string $url): bool {
+    if ($url === '' || !filter_var($url, FILTER_VALIDATE_URL)) {
+        return false;
+    }
+    $scheme = strtolower((string)parse_url($url, PHP_URL_SCHEME));
+    return in_array($scheme, ['http', 'https'], true);
+};
+
 // Pricing calculation
 $currentPrice = (float)($p['price_adult'] ?? 0);
 $discountPercent = max(0, min(90, (float)($p['discount_percent'] ?? 0)));
@@ -1470,13 +1503,36 @@ body {
         </div>
       </div>
 
-      <!-- Action Buttons -->
+      <!-- Action Buttons: visibility, labels and custom URLs are controlled in Admin → Packages. -->
       <div class="panel-actions">
-        <a href="<?=BASE_URL?>/booking?package=<?=(int)$p['id']?>" class="btn-book-now">
-          BOOK NOW <span><i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i></span>
-        </a>
-        <?php if ($waUrl): ?>
-          <a href="<?=$waUrl?>" target="_blank" rel="noopener" class="btn-whatsapp">
+        <?php if (!empty($actionButtons['book_now']['enabled'])): ?>
+          <a href="<?=BASE_URL?>/booking?package=<?=(int)$p['id']?>" class="btn-book-now">
+            BOOK NOW <span><i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i></span>
+          </a>
+        <?php endif; ?>
+
+        <?php
+          $bookNow2Url = $actionButtons['book_now_2']['url'];
+          if (!empty($actionButtons['book_now_2']['enabled']) && $isSafeExternalUrl($bookNow2Url)):
+            $bookNow2Label = $actionButtons['book_now_2']['label'] !== '' ? $actionButtons['book_now_2']['label'] : 'Book Now 2';
+        ?>
+          <a href="<?=e($bookNow2Url)?>" target="_blank" rel="noopener noreferrer" class="btn-book-now">
+            <?=e($bookNow2Label)?> <span><i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i></span>
+          </a>
+        <?php endif; ?>
+
+        <?php
+          $whatsapp1Url = $actionButtons['whatsapp_1']['url'];
+          if (!empty($actionButtons['whatsapp_1']['enabled']) && $isSafeExternalUrl($whatsapp1Url)):
+            $whatsapp1Label = $actionButtons['whatsapp_1']['label'] !== '' ? $actionButtons['whatsapp_1']['label'] : 'WhatsApp 1';
+        ?>
+          <a href="<?=e($whatsapp1Url)?>" target="_blank" rel="noopener noreferrer" class="btn-whatsapp">
+            <?=e($whatsapp1Label)?> <span><i class="fa-brands fa-whatsapp" aria-hidden="true"></i></span>
+          </a>
+        <?php endif; ?>
+
+        <?php if (!empty($actionButtons['whatsapp_2']['enabled']) && $waUrl): ?>
+          <a href="<?=e($waUrl)?>" target="_blank" rel="noopener noreferrer" class="btn-whatsapp">
             WHATSAPP <span><i class="fa-brands fa-whatsapp" aria-hidden="true"></i></span>
           </a>
         <?php endif; ?>
