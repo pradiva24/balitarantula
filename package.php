@@ -1361,6 +1361,29 @@ body {
 
 /* Mobile package detail orange CTA override. */
 @media screen and (max-width:767px){html body .bta-pkg-detail a.button-orange,html body .bta-pkg-detail button.button-orange{font-size:12px!important;}}
+
+
+/* Mobile CTA layout: support all four configurable package buttons without squeezing them. */
+@media (max-width:850px){
+  .bta-pkg-detail .booking-panel .panel-actions{
+    display:grid!important;
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+    grid-auto-rows:minmax(43px,auto);
+    gap:8px!important;
+    width:100%!important;
+  }
+  .bta-pkg-detail .booking-panel .panel-actions > a{
+    width:100%!important;
+    min-width:0!important;
+    min-height:43px!important;
+    padding:8px 6px!important;
+    font-size:11px!important;
+    line-height:1.2!important;
+    white-space:normal!important;
+    text-align:center!important;
+    overflow-wrap:anywhere;
+  }
+}
 </style>
 
 <div class="bta-pkg-detail">
